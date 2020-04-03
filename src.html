@@ -1,0 +1,25 @@
+<br>
+<br>
+Building on Windows
+<br>
+O Compiler is at one project. The <i>ld</i> linker is if <a href="http://www.mingw.org/wiki/Getting_Started">mingw</a> binutils tools are installed.
+<br>
+The compiler and the linker have to be in the PATH environment variable.
+<br>
+The dependencies are explained into <a href="readme-win.html">readme-win.html</a>.
+<br>
+Launch <i>make_windows.bat</i> to build and to link.
+<br>
+<br>
+Building on Linux
+<br>
+Take the compiler from the site and link the objects with <i>gcc</i> (<i>ld</i> may not take the right interpreter path).
+<br>
+Put the compiler into the PATH variable; for example: somewhere into the <i>~.bashrc</i> or <i>/etc/profile</i> file the PATH can be temporarry rewritten, <i>export PATH=/opt/ocompiler:${PATH}</i>.
+<br>
+The dependencies are described in <a href="readme-lin.html">readme-lin.html</a>.
+<br>
+Launch <i>make_linux</i>.
+<br>
+<br>
+After building, go into the <i>build</i> folder and continue with readme.html.

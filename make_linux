@@ -1,0 +1,9 @@
+
+cp ./html/readme-lin.html ./build/readme.html
+cp -r ./html/html ./build/
+cp ./version.txt ./build/sys/
+
+cd src
+
+../lin_make_objects
+../lin_link_objects
