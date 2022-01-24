@@ -43,5 +43,4 @@ call search_clear_memory()
 
 #gtk_main reaction
 call exit((TRUE))
-return (TRUE)
-
+#return (TRUE) i don't remember why i set this but ostream main part doesn't have linux exit in code
