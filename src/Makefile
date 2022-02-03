@@ -53,9 +53,14 @@ all: ${items} ounused lnk
 ounused:
 	ounused ${logs}
 
+#libgtk2.0-dev:i386
+#libjpeg8-dev:i386 is already
+#libgstreamer1.0-dev:i386
+#`pkg-config --libs gtk+-2.0 gstreamer-0.10 gstreamer-interfaces-0.10 gstreamer-pbutils-0.10 libsoup-2.4 gstreamer-app-0.10` -ljpeg -lasound
 lnk:
 	if [ "${platform}" = "lin" ]; then \
-		$(LD) ${syms} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 ${obs} -lc -o ${projname}; \
+		export PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig/:${PKG_CONFIG_PATH}; \
+		$(LD) ${syms} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 ${obs} -o ${projname} -lc -lm `pkg-config --libs gtk+-2.0 gstreamer-1.0` -ljpeg; \
 	else \
 		i686-w64-mingw32-ld ${syms} ${obs} -lmsvcrt -o ${wprojname}; \
 	fi
