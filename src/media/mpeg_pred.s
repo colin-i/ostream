@@ -4,7 +4,7 @@ include "../_include/include.h"
 
 const zig_zag=0
 const horizontal=1
-const vertical=2
+#const vertical=2
 
 #cbp
 function mpeg_mb_prediction(sd x,sd y,sd mb_width,sd qcoeff,sd acpred_direction)

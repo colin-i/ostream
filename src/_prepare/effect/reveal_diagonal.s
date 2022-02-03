@@ -49,7 +49,7 @@ function stage_reveal_diagonal_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd ro
     data effect_side_x#1
     data effect_side_y#1
     const left_is_effect=0
-    const right_is_effect=1
+    #const right_is_effect=1
     const top_is_effect=0
     const bottom_is_effect=1
     data diagonal#1

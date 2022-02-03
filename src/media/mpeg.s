@@ -1296,18 +1296,18 @@ function mpeg_vol_header()
     #"VOP" flags
 #define XVID_VOP_DEBUG                (1<< 0) /* print debug messages in frames */
     #use halfpel interpolation
-    const XVID_VOP_HALFPEL=2$1
+    #const XVID_VOP_HALFPEL=2$1
     #use 4 motion vectors per MB
-    const XVID_VOP_INTER4V=2$2
+    #const XVID_VOP_INTER4V=2$2
     #use trellis based R-D "optimal" quantization
-    const XVID_VOP_TRELLISQUANT=2$3
+    #const XVID_VOP_TRELLISQUANT=2$3
 #define XVID_VOP_CHROMAOPT            (1<< 4) /* enable chroma optimization pre-filter */
 #define XVID_VOP_CARTOON              (1<< 5) /* use 'cartoon mode' */
 #define XVID_VOP_GREYSCALE            (1<< 6) /* enable greyscale only mode (even for  color input material chroma is ignored) */
     #high quality ac prediction
-    const XVID_VOP_HQACPRED=2$7
+    #const XVID_VOP_HQACPRED=2$7
     #enable DCT-ME and use it for mode decision
-    const XVID_VOP_MODEDECISION_RD=2$8
+    #const XVID_VOP_MODEDECISION_RD=2$8
 #define XVID_VOP_FAST_MODEDECISION_RD (1<<12) /* use simplified R-D mode decision */
 #define XVID_VOP_RD_BVOP              (1<<13) /* enable rate-distortion mode decision in b-frames */
 #define XVID_VOP_RD_PSNRHVSM          (1<<14) /* use PSNR-HVS-M as metric for rate-distortion optimizations */

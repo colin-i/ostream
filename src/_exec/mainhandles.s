@@ -93,10 +93,10 @@ endfunction
 
 #######info
 #info window widget
-function infowidget()
-    data widget#1
-    Data mainwinInfoIndex=mainwinInfoIndex
-    setcall widget boxwidget_nth(mainwinInfoIndex)
-    return widget
-endfunction
+#function infowidget()
+#    data widget#1
+#    Data mainwinInfoIndex=mainwinInfoIndex
+#    setcall widget boxwidget_nth(mainwinInfoIndex)
+#    return widget
+#endfunction
 

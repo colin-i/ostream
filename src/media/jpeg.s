@@ -5,7 +5,7 @@ format elfobj
 include "../_include/include.h"
 
 const JPEG_LIB_VERSION=80
-const JCS_RGB=2
+#const JCS_RGB=2
 
 import "texter" texter
 

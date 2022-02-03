@@ -39,7 +39,7 @@ function stage_effect_scale_set()
 endfunction
 
 const start_from_image=0
-const end_with_image=1
+#const end_with_image=1
 
 import "gtk_toggle_button_get_active" gtk_toggle_button_get_active
 

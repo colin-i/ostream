@@ -90,7 +90,7 @@ function uri_get_content_forward_data(ss uri,sd forward,sd data)
     call g_object_unref(msg)
 endfunction
 
-function uri_get_content_forward(ss uri,sd forward)
-    data null=0
-    call uri_get_content_forward_data(uri,forward,null)
-endfunction
+#function uri_get_content_forward(ss uri,sd forward)
+#    data null=0
+#    call uri_get_content_forward_data(uri,forward,null)
+#endfunction

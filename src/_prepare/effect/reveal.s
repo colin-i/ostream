@@ -130,7 +130,7 @@ function stage_reveal_centerline_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd 
         dec last_frame
 
         const width_axis=0
-        const height_axis=1
+        #const height_axis=1
 
         import "gtk_toggle_button_get_active" gtk_toggle_button_get_active
 

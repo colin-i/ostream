@@ -3,7 +3,6 @@
 Const noerror=0
 Const error=-1
 
-Const FORWARD=1
 Const BACKWARD=-1
 
 const void=0
@@ -12,13 +11,13 @@ const void=0
 #-charsnullcompilationstyle
 Const dword_null=1+10
 Const sign_int_null=1+10+1
-Const sign_int_null_dwords=sign_int_null/4
+#Const sign_int_null_dwords=sign_int_null/4
 
 Const mainwinEditIndex=0
 Const mainwinDrawIndex=mainwinEditIndex+1
 Const mainwinButtonsIndex=mainwinDrawIndex+1
 Const mainwinStageIndex=mainwinButtonsIndex+1
-Const mainwinInfoIndex=mainwinStageIndex+1
+#Const mainwinInfoIndex=mainwinStageIndex+1
 
 #Const mainwintotal=mainwinInfoIndex+1
 #Const reverseSubstract=mainwintotal/2
@@ -48,12 +47,12 @@ const search_preferences_wrap_index=search_preferences_uri_index+1
 const stage_bpp=32
 
 
-const stage_f_length_init=0
-const stage_f_length_add=1
-const stage_f_length_free=2
+#const stage_f_length_init=0
+#const stage_f_length_add=1
+#const stage_f_length_free=2
 const stage_f_length_get=3
-const stage_f_length_set=4
-const stage_f_length_insert=5
+#const stage_f_length_set=4
+#const stage_f_length_insert=5
 
 const get_rgb=0
 const set_rgb=1
@@ -70,7 +69,7 @@ const stage_frame_form_data_pixbuf=3
 
 const uncover=0
 const cover=1
-const in_effect=0
+#const in_effect=0
 const out_effect=1
 
 
@@ -107,7 +106,7 @@ const format_mkv=format_mxf+1
     const format_mkv_xvid=2
     const format_mkv_rgb24=3
         const format_mkv_last=format_mkv+format_mkv_rgb24
-const format_mp4=format_mkv_last+1
+#const format_mp4=format_mkv_last+1
 
 const sound_endian_def=1234
 

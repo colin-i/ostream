@@ -5,6 +5,9 @@ format elfobj
 
 include "../_include/include.h"
 
+Const X_OK=1
+Const FORWARD=1
+
 import "getpid" getpid
 import "fopen" fopen
 import "sprintf" sprintf
@@ -18,7 +21,6 @@ import "getdelim" getdelim
 import "slen" slen
 import "memoryalloc" memoryalloc
 import "free" free
-import "valinmem" valinmem
 import "cpymem" cpymem
 
 #err
@@ -855,3 +857,12 @@ function sound_preview_end_and_no_errors_continuation(sd handle,sd status)
     endif
     return (TRUE)
 endfunction
+
+import "valinmemsens" valinmemsens
+#return valueinmem
+Function valinmem(str content,data size,chars delim)
+        Data returnvalue#1
+        Data forward=FORWARD
+        SetCall returnvalue valinmemsens(content,size,delim,forward)
+        Return returnvalue
+Endfunction

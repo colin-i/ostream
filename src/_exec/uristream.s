@@ -1,5 +1,5 @@
 
-format elf obj
+format elfobj
 
 include "../_include/include.h"
 

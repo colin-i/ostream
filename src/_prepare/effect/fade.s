@@ -53,7 +53,7 @@ function stage_fade_tool(sd *part,sd k,sd nr,sd pixels,sd w,sd h,sd rowstride,sd
             call rgb_uint_to_colors(valuepixel,colors)
 
             const fadein=0
-            const fadeout=1
+            #const fadeout=1
             import "rule3_offset" rule3_offset
             if in_out==(fadein)
                 setcall red rule3_offset(k,last_index,red_bg,red)

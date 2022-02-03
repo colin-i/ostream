@@ -45,13 +45,12 @@ function buttonfield_setimage(str filename,data button)
     call pixbuf_from_file_forward_data(filename,setimage,button)
 endfunction
 
-function buttonfield_label(sd box,sd text)
-    sd button
-    setcall button buttonfield(box)
-
-    call gtk_button_set_label(button,text)
-    return button
-endfunction
+#function buttonfield_label(sd box,sd text)
+#    sd button
+#    setcall button buttonfield(box)
+#    call gtk_button_set_label(button,text)
+#    return button
+#endfunction
 
 
 ##########color
@@ -740,10 +739,10 @@ function pixbuf_from_file_forward_data(ss filename,sd forward,sd data)
     return ret
 endfunction
 
-function pixbuf_from_file_forward(ss filename,sd forward)
-    data z=0
-    call pixbuf_from_file_forward_data(filename,forward,z)
-endfunction
+#function pixbuf_from_file_forward(ss filename,sd forward)
+#    data z=0
+#    call pixbuf_from_file_forward_data(filename,forward,z)
+#endfunction
 
 import "gdk_pixbuf_copy" gdk_pixbuf_copy
 function pixbuf_copy(sd pixbuf)
@@ -764,13 +763,13 @@ function pixbuf_get_wh(sd pixbuf,sd p_coord)
 endfunction
 
 #rowstride
-function pixbuf_get_wh_rowstride_pixels(sd pixbuf,sd p_p,sd wh)
-    setcall p_p# gdk_pixbuf_get_pixels(pixbuf)
-    call pixbuf_get_wh(pixbuf,wh)
-    sd rw
-    setcall rw gdk_pixbuf_get_rowstride(pixbuf)
-    return rw
-endfunction
+#function pixbuf_get_wh_rowstride_pixels(sd pixbuf,sd p_p,sd wh)
+#    setcall p_p# gdk_pixbuf_get_pixels(pixbuf)
+#    call pixbuf_get_wh(pixbuf,wh)
+#    sd rw
+#    setcall rw gdk_pixbuf_get_rowstride(pixbuf)
+#    return rw
+#endfunction
 
 #0/pixbuf
 function pixbuf_new_subpixels(sd pixbuf,sd left,sd top,sd right,sd bottom)
@@ -947,25 +946,24 @@ function progressfield(sd container)
 endfunction
 
 ##############radio
-function radiofield_prepare(sd previousbutton,ss text)
-    import "gtk_radio_button_new_with_label" gtk_radio_button_new_with_label
-    import "gtk_radio_button_get_group" gtk_radio_button_get_group
+#function radiofield_prepare(sd previousbutton,ss text)
+#    import "gtk_radio_button_new_with_label" gtk_radio_button_new_with_label
+#    import "gtk_radio_button_get_group" gtk_radio_button_get_group
 
-    sd radiogroup
-    setcall radiogroup gtk_radio_button_get_group(previousbutton)
+#    sd radiogroup
+#    setcall radiogroup gtk_radio_button_get_group(previousbutton)
 
-    sd rd
-    setcall rd gtk_radio_button_new_with_label(radiogroup,text)
-    return rd
-endfunction
+#    sd rd
+#    setcall rd gtk_radio_button_new_with_label(radiogroup,text)
+#    return rd
+#endfunction
 
-function radiofield(sd previousbutton,ss text,sd box)
-    sd rd
-    setcall rd radiofield_prepare(previousbutton,text)
-
-    call packstart_default(box,rd)
-    return rd
-endfunction
+#function radiofield(sd previousbutton,ss text,sd box)
+#    sd rd
+#    setcall rd radiofield_prepare(previousbutton,text)
+#    call packstart_default(box,rd)
+#    return rd
+#endfunction
 
 ##############widget
 #ancestor

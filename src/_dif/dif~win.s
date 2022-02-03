@@ -310,8 +310,6 @@ endfunction
 
 ###############mass capture to file
 
-import "filechooserfield_folder" filechooserfield_folder
-
 function mass_folder()
     sd foldername
     setcall foldername mass_init_file()
@@ -589,7 +587,7 @@ const MMSYSERR_NOERROR=0
 const WAVE_MAPPER=-1
 const CALLBACK_NULL=0
 #const CALLBACK_FUNCTION=0x30000
-const WOM_DONE=0x3BD
+#const WOM_DONE=0x3BD
 const WAVE_FORMAT_PCM=1
 
 function sound_preview_mm_hwaveout()
@@ -680,11 +678,11 @@ function sound_preview_mm_buffers_data()
     data ptr#1
     return #ptr
 endfunction
-function sound_preview_mm_buffers_data_set(sd value)
-    sd data
-    setcall data sound_preview_mm_buffers_data()
-    set data# value
-endfunction
+#function sound_preview_mm_buffers_data_set(sd value)
+#    sd data
+#    setcall data sound_preview_mm_buffers_data()
+#    set data# value
+#endfunction
 
 #
 function sound_preview_buffers_bool()
@@ -837,4 +835,25 @@ function sound_preview_end_and_no_errors()
         inc i
     endwhile
     return (TRUE)
+endfunction
+
+Const GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER=2
+
+import "mainwidget" mainwidget
+importx "gtk_file_chooser_dialog_new" gtk_file_chooser_dialog_new
+import "filechooserfield_dialog" filechooserfield_dialog
+
+#folder/0
+function filechooserfield_folder()
+    str select_folder="Select Folder"
+    sd main
+    setcall main mainwidget()
+    str GTK_STOCK_CANCEL="gtk-cancel"
+    data responsecancel=GTK_RESPONSE_CANCEL
+    str GTK_STOCK_OK="gtk-ok"
+    sd dialog
+    setcall dialog gtk_file_chooser_dialog_new(select_folder,main,(GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER),GTK_STOCK_CANCEL,responsecancel,GTK_STOCK_OK,(GTK_RESPONSE_ACCEPT),0)
+    sd filename
+    setcall filename filechooserfield_dialog(dialog)
+    return filename
 endfunction

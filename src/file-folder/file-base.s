@@ -302,18 +302,18 @@ function file_get_dword_reverse(sd file,sd p_dw)
     return (noerror)
 endfunction
 #err
-function file_seek_cursor_get_dword(sd file,sd offset,sd p_dw)
-    sd err
-    setcall err file_seek_cursor(file,offset)
-    if err!=(noerror)
-        return err
-    endif
-    setcall err file_get_dword(file,p_dw)
-    if err!=(noerror)
-        return err
-    endif
-    return (noerror)
-endfunction
+#function file_seek_cursor_get_dword(sd file,sd offset,sd p_dw)
+#    sd err
+#    setcall err file_seek_cursor(file,offset)
+#    if err!=(noerror)
+#        return err
+#    endif
+#    setcall err file_get_dword(file,p_dw)
+#    if err!=(noerror)
+#        return err
+#    endif
+#    return (noerror)
+#endfunction
 #err
 function file_seek_cursor_get_dword_reverse(sd file,sd offset,sd p_dw)
     sd err

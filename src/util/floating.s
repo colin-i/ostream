@@ -170,12 +170,12 @@ function float_sub(sd A,sd B)
     call fstp(p_A)
     return A
 endfunction
-function double_sub(sd p_A,sd p_B)
-    call fld_quad(p_A)
-    call getoneax(p_B)
-    HEX 0xDC,fsub_op*to_regopcode
-    call fstp_quad(p_A)
-endfunction
+#function double_sub(sd p_A,sd p_B)
+#    call fld_quad(p_A)
+#    call getoneax(p_B)
+#    HEX 0xDC,fsub_op*to_regopcode
+#    call fstp_quad(p_A)
+#endfunction
 function fsub_quad(sd p_A)
     call getoneax(p_A)
     HEX 0xDC,fsub_op*to_regopcode

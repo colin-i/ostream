@@ -94,30 +94,30 @@ function mp4_duration_1000(sd way)
 endfunction
 
 
-function mp4_AVCProfileIndication(sd way,sd value)
-    data AVCProfileIndication#1
-    if way==(value_set)
-        set AVCProfileIndication value
-    else
-        return AVCProfileIndication
-    endelse
-endfunction
-function mp4_profile_compatibility(sd way,sd value)
-    data profile_compatibility#1
-    if way==(value_set)
-        set profile_compatibility value
-    else
-        return profile_compatibility
-    endelse
-endfunction
-function mp4_AVCLevelIndication(sd way,sd value)
-    data AVCLevelIndication#1
-    if way==(value_set)
-        set AVCLevelIndication value
-    else
-        return AVCLevelIndication
-    endelse
-endfunction
+#function mp4_AVCProfileIndication(sd way,sd value)
+#    data AVCProfileIndication#1
+#    if way==(value_set)
+#        set AVCProfileIndication value
+#    else
+#        return AVCProfileIndication
+#    endelse
+#endfunction
+#function mp4_profile_compatibility(sd way,sd value)
+#    data profile_compatibility#1
+#    if way==(value_set)
+#        set profile_compatibility value
+#    else
+#        return profile_compatibility
+#    endelse
+#endfunction
+#function mp4_AVCLevelIndication(sd way,sd value)
+#    data AVCLevelIndication#1
+#    if way==(value_set)
+#        set AVCLevelIndication value
+#    else
+#        return AVCLevelIndication
+#    endelse
+#endfunction
 
 function mp4_SampleCount(sd way)
     data SampleCount#1

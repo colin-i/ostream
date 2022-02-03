@@ -9,7 +9,7 @@ import "gtk_widget_get_window" gtk_widget_get_window
 
 const stage_pencil_pixbuf_set=0
 const stage_pencil_pixbuf_get=1
-const stage_pencil_pixbuf_on_ok=2
+#const stage_pencil_pixbuf_on_ok=2
 #pixbuf
 function stage_pencil_pixbuf(sd action,sd value)
     data pixbuf#1

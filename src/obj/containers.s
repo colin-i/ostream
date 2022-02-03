@@ -232,12 +232,12 @@ function dialogfield_modal_texter_core(ss title,sd forward_init,ss buttontext)
     return dialog
 endfunction
 #void
-function dialogfield_modal_texter(ss title,sd forward_init,ss buttontext)
-    sd dialog
-    setcall dialog dialogfield_modal_texter_core(title,forward_init,buttontext)
-    call gtk_dialog_run(dialog)
-    call gtk_widget_destroy(dialog)
-endfunction
+#function dialogfield_modal_texter(ss title,sd forward_init,ss buttontext)
+#    sd dialog
+#    setcall dialog dialogfield_modal_texter_core(title,forward_init,buttontext)
+#    call gtk_dialog_run(dialog)
+#    call gtk_widget_destroy(dialog)
+#endfunction
 function dialogfield_modal_texter_sync(ss title,sd forward_init,ss buttontext,sd global_flag,sd stop_flag)
     sd dialog
     setcall dialog dialogfield_modal_texter_core(title,forward_init,buttontext)
@@ -337,21 +337,6 @@ function filechooserfield_dialog(sd dialog)
         endif
     endif
     call gtk_widget_destroy(dialog)
-    return filename
-endfunction
-
-#folder/0
-function filechooserfield_folder()
-    str select_folder="Select Folder"
-    sd main
-    setcall main mainwidget()
-    str GTK_STOCK_CANCEL="gtk-cancel"
-    data responsecancel=GTK_RESPONSE_CANCEL
-    str GTK_STOCK_OK="gtk-ok"
-    sd dialog
-    setcall dialog gtk_file_chooser_dialog_new(select_folder,main,(GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER),GTK_STOCK_CANCEL,responsecancel,GTK_STOCK_OK,(GTK_RESPONSE_ACCEPT),0)
-    sd filename
-    setcall filename filechooserfield_dialog(dialog)
     return filename
 endfunction
 

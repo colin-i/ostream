@@ -1,11 +1,11 @@
 
 
 
-Const GDK_KEY_PRESS=8
+#Const GDK_KEY_PRESS=8
 
 
-Const GDK_Return=0xff0d
-Const GDK_KP_Enter=0xff8d
+#Const GDK_Return=0xff0d
+#Const GDK_KP_Enter=0xff8d
 
 
 Const GDK_LEFT_PTR=68
@@ -17,7 +17,7 @@ Const GDK_BUTTON_PRESS_MASK=0x80
 
 Const GDK_BUTTON1_MASK=0x100
 
-Const GDK_CURRENT_TIME=0
+#Const GDK_CURRENT_TIME=0
 
 Const GDK_RGB_DITHER_NONE=0
 
