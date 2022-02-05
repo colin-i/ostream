@@ -67,10 +67,17 @@ ounused:
 #libsoup2.4-1:i386 is already
 #libasound2-dev:i386	libasound2:i386 is already
 
+#at xenial
+#dev gtk libgstreamer-plugins-base0.10-dev  soup jpeg asound
+#gtk plugins
+
 lnk:
 	if [ "${platform}" = "lin" ]; then \
-		export PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig/:${PKG_CONFIG_PATH}; \
-		$(LD) ${syms} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 ${obs} -o ${projname} -lc -lm `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lgthread-2.0; \
+#		export PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig/:${PKG_CONFIG_PATH}; \
+#		$(LD) ${syms} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 ${obs} -o ${projname} -lc -lm `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lgthread-2.0; \
+#cc because -pthread not for ld
+#nostdlib because is complaining about main
+		$(CC) -nostdlib ${syms} ${obs} -o ${projname} `pkg-config --libs gtk+-2.0 gstreamer-pbutils-0.10 gstreamer-interfaces-0.10 gstreamer-app-0.10` -lsoup-2.4 -ljpeg -lasound -lm -lpthread -lc; \
 	else \
 		i686-w64-mingw32-ld ${syms} ${obs} -lmsvcrt -o ${wprojname}; \
 	fi
