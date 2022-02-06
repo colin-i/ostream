@@ -4,7 +4,7 @@ format elfobj
 
 include "../_include/include.h"
 
-import "realloc" realloc
+importx "_realloc" realloc
 
 import "strerrno" strerrno
 

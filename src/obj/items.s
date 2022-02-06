@@ -204,7 +204,7 @@ function texter(str text)
     sd info#1
     setcall info get_current_texter_pointer()
     call gtk_entry_set_text(info#,text)
-    import "printf" printf
+    importx "_printf" printf
     call printf(text)
     chars nl={0xa,0}
     str newline^nl

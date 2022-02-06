@@ -74,11 +74,12 @@ lnk:
 	if [ "${platform}" = "lin" ]; then \
 		$(CC) -nostdlib ${syms} ${obs} -o ${projname} `pkg-config --libs gtk+-2.0 gstreamer-pbutils-0.10 gstreamer-interfaces-0.10 gstreamer-app-0.10` -lsoup-2.4 -ljpeg -lasound -lm -lpthread -lc; \
 	else \
-		i686-w64-mingw32-ld --large-address-aware ${syms} ${obs} -o ${wprojname} -lmsvcr100 -lkernel32 -lmsvcrt -lgdi32 -luser32 -lwinmm -L../_fix/w/ -lgtk -lgdk -lgdkpix -lglib -lgobject -lgio -lgthread -lgstreamer -lgstinterfaces -lgstpbutils -lcairo -lpango -lgstapp -lsoup -ljpeg; \
+		i686-w64-mingw32-ld --large-address-aware ${syms} ${obs} -o ${wprojname} -lmsvcr100 -lkernel32 -lmsvcrt -lgdi32 -luser32 -lwinmm -lmingwex -lmingw32 -L../_fix/w/ -lgtk -lgdk -lgdkpix -lglib -lgobject -lgio -lgthread -lgstreamer -lgstinterfaces -lgstpbutils -lcairo -lpango -lgstapp -lsoup -ljpeg; \
 	fi
 fast:
 	$(eval obs = `printf ' %s.o' ${items}`)
 link: fast lnk
+#cos is in -lmingwex that will work with -lmingw32 -lmsvcrt
 #		ld --large-address-aware -mi386pe -subsystem windows ${syms} ${obs} -o ${wprojname} -lmsvcr100 -lkernel32 -lmsvcrt -lgdi32 -luser32 -lwinmm; \
 # -nostdlib
 # -lmsvcr100 -lkernel32 -lmsvcrt -lgdi32 -luser32 -lwinmm; \

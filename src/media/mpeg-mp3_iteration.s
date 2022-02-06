@@ -229,7 +229,7 @@ function mp3_quantize(sd l3enc_tt,sd stepsize)
             import "fmul_quad" fmul_quad
             import "fild_value" fild_value
             import "fstp_quad" fstp_quad
-            import "sqrt" sqrt
+            importx "_sqrt" sqrt
             import "double_to_int" double_to_int
             call fild_value(abs_value)
             call fmul_quad(scale)

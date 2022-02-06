@@ -214,9 +214,9 @@ import "fadd_quad" fadd_quad
 import "fdiv_quad" fdiv_quad
 import "fild_value" fild_value
 import "double_to_int" double_to_int
-import "sqrt" sqrt
-import "sin" sin
-import "cos" cos
+importx "_sqrt" sqrt
+importx "_sin" sin
+importx "_cos" cos
 import "slen" slen
 
 function l3_mdct_init()

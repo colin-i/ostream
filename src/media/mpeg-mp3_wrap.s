@@ -41,13 +41,13 @@ endfunction
 
 import "fild" fild
 import "fstp_quad" fstp_quad
-import "sqrt" sqrt
+importx "_sqrt" sqrt
 import "str_to_double" str_to_double
 import "fimul" fimul
 import "fsub_quad" fsub_quad
 import "fadd_quad" fadd_quad
 import "fdiv_quad" fdiv_quad
-import "pow" pow
+importx "_pow" pow
 import "fst_quad" fst_quad
 import "fcom_quad_greater" fcom_quad_greater
 
