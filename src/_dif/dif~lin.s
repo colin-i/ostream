@@ -10,7 +10,7 @@ Const FORWARD=1
 
 import "getpid" getpid
 import "fopen" fopen
-import "sprintf" sprintf
+importx "_sprintf" sprintf
 import "getenv" getenv
 import "access" access
 
@@ -20,7 +20,7 @@ import "strerrno" strerrno
 import "getdelim" getdelim
 import "slen" slen
 import "memoryalloc" memoryalloc
-import "free" free
+importx "_free" free
 import "cpymem" cpymem
 
 #err

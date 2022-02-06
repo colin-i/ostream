@@ -471,7 +471,7 @@ function mpeg_image_h(sd action,sd h)
 endfunction
 
 import "memalloc" memalloc
-import "free" free
+importx "_free" free
 
 ##input
 

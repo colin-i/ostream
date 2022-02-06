@@ -80,7 +80,7 @@ function search_connect_pixbuf(sd bus,sd pipe)
     call connect_signal_data(bus,px,fn,pipe)
 endfunction
 
-import "sprintf" sprintf
+importx "_sprintf" sprintf
 
 function search_get_image(ss uri,sd handle)
     ss launcher="uridecodebin uri=\"%s\" ! ffmpegcolorspace ! gdkpixbufsink %s=%u"

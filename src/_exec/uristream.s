@@ -75,7 +75,7 @@ function splitGstClockTime(data ptrclock,data ptrtime)
 endfunction
 
 import "gst_element_query_position" gst_element_query_position
-import "sprintf" sprintf
+importx "_sprintf" sprintf
 #false=stop timer,true=displayed
 function streamtimer(data *data)
     data playbool#1

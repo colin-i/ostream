@@ -8,7 +8,7 @@ format elfobj
 include "../_include/include.h"
 
 import "fopen" fopen
-import "fclose" fclose
+importx "_fclose" fclose
 import "fseek" fseek
 import "ftell" ftell
 import "fread" fread

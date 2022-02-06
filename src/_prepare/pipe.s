@@ -5,7 +5,7 @@ format elfobj
 
 include "../_include/include.h"
 
-import "sprintf" sprintf
+importx "_sprintf" sprintf
 
 import "stage_get_frames_container" stage_get_frames_container
 

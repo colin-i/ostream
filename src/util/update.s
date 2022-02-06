@@ -6,7 +6,7 @@ format elfobj
 
 include "../_include/include.h"
 
-import "free" free
+importx "_free" free
 import "g_object_unref" g_object_unref
 
 import "file_get_content" file_get_content
@@ -90,7 +90,7 @@ function update_mem()
     return #mem
 endfunction
 import "openfile" openfile
-import "fclose" fclose
+importx "_fclose" fclose
 function update_set(sd value)
     ss path
     setcall path update_path()

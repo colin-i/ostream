@@ -188,7 +188,7 @@ Function strinmem_portions_advance(sd str_sz,str match,sd takeall,sd advance)
         Return size
 EndFunction
 
-import "free" free
+importx "_free" free
 #e
 function memtostrFw_data(sd mem,sd size,sd forward,sd data)
     sd err

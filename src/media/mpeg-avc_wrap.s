@@ -15,7 +15,7 @@ import "avc_mb_data" avc_mb_data
 import "avc_input_dequant" avc_input_dequant
 
 import "memalloc" memalloc
-import "free" free
+importx "_free" free
 
 #bool
 function avc_init(sd pixbuf)

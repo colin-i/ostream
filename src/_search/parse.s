@@ -32,7 +32,7 @@ function search_parse_URIs_launch(ss str,sd table)
     call search_get_image(str,img)
 endfunction
 
-import "sprintf" sprintf
+importx "_sprintf" sprintf
 
 function search_parse_URIs(ss str,sd table)
     data ind=search_preferences_wrap_index

@@ -8,7 +8,7 @@ import "file_write" file_write
 import "pixbuf_get_wh" pixbuf_get_wh
 import "alloc_block" alloc_block
 import "memoryalloc" memoryalloc
-import "free" free
+importx "_free" free
 
 #bool
 function write_jpeg(sd file,sd pixbuf,sd quality)

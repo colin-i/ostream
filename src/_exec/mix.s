@@ -105,7 +105,7 @@ function mix_done_save()
     call save_inform_saved(ptr_dest#)
 endfunction
 
-import "sprintf" sprintf
+importx "_sprintf" sprintf
 
 function mix_launch_got_command(sd command)
     #create the pipe

@@ -31,7 +31,7 @@ function mp3_init()
     return 1
 endfunction
 
-import "free" free
+importx "_free" free
 
 function mp3_free()
     sd output

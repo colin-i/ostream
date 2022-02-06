@@ -4,7 +4,7 @@ format elfobj
 
 include "../../_include/include.h"
 
-import "sprintf" sprintf
+importx "_sprintf" sprintf
 
 data dialog#1
 const stage_file_dialog^dialog
@@ -193,7 +193,7 @@ function stage_file_frame_main_set(sd ptr_pack,sd eventbox)
     setcall ptr_pack# gdk_pixbuf_get_height(pix)
 endfunction
 
-import "free" free
+importx "_free" free
 
 #all returns of this timeout are false to not launch it again from here
 function stage_file_need_fn(sd appsrc)

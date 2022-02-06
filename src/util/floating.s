@@ -21,7 +21,7 @@ function double_to_float(sd p_double)
     return value
 endfunction
 
-import "sscanf" sscanf
+importx "_sscanf" sscanf
 
 #float
 function int_to_float(sd number)

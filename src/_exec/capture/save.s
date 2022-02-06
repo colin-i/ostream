@@ -5,7 +5,7 @@
 format elfobj
 
 import "timeNode" time
-import "sprintf" sprintf
+importx "_sprintf" sprintf
 
 include "../../_include/include.h"
 

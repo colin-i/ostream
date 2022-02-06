@@ -47,7 +47,7 @@ function is_local_avi()
     endif
     return 0
 endfunction
-import "free" free
+importx "_free" free
 #location
 function aviwrite(sd combo_flag,sd data)
     #get file path

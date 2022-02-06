@@ -1430,7 +1430,7 @@ endfunction
 
 
 
-import "free" free
+importx "_free" free
 
 #
 
