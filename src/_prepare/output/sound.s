@@ -163,7 +163,7 @@ function stage_sound_init_appsink(sd filepath)
     endif
 
     #concatenate the command
-    import "sprintf" sprintf
+    importx "_sprintf" sprintf
     sd channels
     setcall channels stage_sound_channels((value_get))
     sd rate
@@ -177,7 +177,7 @@ function stage_sound_init_appsink(sd filepath)
     call stage_sound_command()
 
     #clean
-    import "free" free
+    importx "_free" free
     call free(escapedpath)
     call free(command)
 endfunction

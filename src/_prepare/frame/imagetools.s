@@ -207,7 +207,7 @@ function headline_dlg(sd action,sd vbox)
         str nr_ascii^str_data
         str format="%u"
         sd nr=10
-        import "sprintf" sprintf
+        importx "_sprintf" sprintf
         while nr!=51
             call sprintf(nr_ascii,format,nr)
             import "gtk_combo_box_text_append_text" gtk_combo_box_text_append_text
@@ -683,7 +683,7 @@ function stage_lines_modify_img(sd img_nr)
     endif
     #
     import "gdk_pixbuf_new_from_data" gdk_pixbuf_new_from_data
-    import "free" free
+    importx "_free" free
     data free_callback^free
     sd newpixbuf
     setcall newpixbuf gdk_pixbuf_new_from_data(newmem,(GDK_COLORSPACE_RGB),(FALSE),8,w,h,stride,free_callback,newmem)

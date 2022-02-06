@@ -312,7 +312,7 @@ function stage_start_pipe(ss uri)
 
     setcall pipe launch_pipe_start(mem)
 
-    import "free" free
+    importx "_free" free
     call free(mem)
     if pipe==0
         return (void)

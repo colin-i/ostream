@@ -381,7 +381,7 @@ function av_display_progress(sd image_nr,sd flag_simple)
     str string^data
     str format_stage="Processed images: %u/%u"
     str format_capture="Processed images: %u"
-    import "sprintf" sprintf
+    importx "_sprintf" sprintf
     if flag_simple==(av_info_all)
         import "stage_get_frames" stage_get_frames
         sd totalframes

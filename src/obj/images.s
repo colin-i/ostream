@@ -308,7 +308,7 @@ function rgb_to_yuvi420_forward_data(sd rgb,sd width,sd height,sd forward,sd dat
     call rgb_to_yuvi420(rgb,yuv,width,height)
 
     setcall err forward(yuv,size,data)
-    import "free" free
+    importx "_free" free
     call free(yuv)
     return err
 endfunction

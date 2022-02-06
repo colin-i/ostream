@@ -81,7 +81,7 @@ function macro_blocks_core(sd action,sd mbpos,sd sector,sd item)
     data modes_size#1
 
     import "memalloc" memalloc
-    import "free" free
+    importx "_free" free
     import "mpeg_image_w" mpeg_image_w
     import "mpeg_image_h" mpeg_image_h
     import "multiple_of_nr" multiple_of_nr

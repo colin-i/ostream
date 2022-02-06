@@ -282,7 +282,7 @@ function stage_save_img()
     sd file
     sd p_file^file
     import "openfile" openfile
-    import "fclose" fclose
+    importx "_fclose" fclose
     sd er
     ss mode="wb"
     setcall er openfile(p_file,location,mode)

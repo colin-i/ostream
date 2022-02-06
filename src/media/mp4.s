@@ -1600,7 +1600,7 @@ function mp4_mdat_sound(sd file)
                 set rate 0
             endif
             #
-            import "sprintf" sprintf
+            importx "_sprintf" sprintf
             sd bytesleft
             setcall bytesleft stage_sound_alloc_getremainingsize()
             chars buffer#100
@@ -2431,7 +2431,7 @@ function mp4_expand_go(ss filepath,ss temppath)
     endif
     #open read to get previous values
     import "openfile" openfile
-    import "fclose" fclose
+    importx "_fclose" fclose
     sd file
     sd err
     setcall err openfile(#file,temppath,"rb")

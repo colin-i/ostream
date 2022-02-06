@@ -113,7 +113,7 @@ function avc_ini_headers()
     sd length=16
     sd ver_len
     #
-    #import "sprintf" sprintf
+    #importx "_sprintf" sprintf
     #chars version_data#256
     #str version^version_data
     #str format="x264 - core %d%s - H.264/MPEG-4 AVC codec - Copyleft 2005 - http://www.videolan.org/x264.html"

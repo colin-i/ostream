@@ -108,7 +108,7 @@ function stage_scale_init(sd vbox,sd *dialog)
 
     str format="%u"
 
-    import "sprintf" sprintf
+    importx "_sprintf" sprintf
     import "gtk_entry_set_text" gtk_entry_set_text
 
     call sprintf(strconv,format,width)

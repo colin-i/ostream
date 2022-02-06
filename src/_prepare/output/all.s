@@ -35,7 +35,7 @@ function stage_progress_dialog_inc(sd frame)
     sd doublehigh
     sd double^doublelow
     str doubleformat="%lf"
-    import "sscanf" sscanf
+    importx "_sscanf" sscanf
     call sscanf(doublestring,doubleformat,double)
     import "gtk_progress_bar_set_fraction" gtk_progress_bar_set_fraction
     data pbar#1

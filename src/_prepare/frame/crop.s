@@ -89,7 +89,7 @@ function stage_crop_tool(sd action,sd vbox)
         import "boxpackstart" boxpackstart
         call boxpackstart(vbox,origs,0,20)
 
-        import "sprintf" sprintf
+        importx "_sprintf" sprintf
         import "labelfield_l" labelfield_l
 
         call sprintf(text,format,w,width_orig)

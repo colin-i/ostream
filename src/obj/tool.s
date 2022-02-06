@@ -99,7 +99,7 @@ function object_set_dword_name(sd object,sd int_name)
     chars str_name#dword_null
     str s_name^str_name
     str dw_str="%u"
-    import "sprintf" sprintf
+    importx "_sprintf" sprintf
     call sprintf(s_name,dw_str,int_name)
 
     ss name

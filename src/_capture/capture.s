@@ -239,7 +239,7 @@ function capture_files_loop(sd action)
         sd temp_file
         setcall temp_file capture_temp_file((value_get))
         if temp_file!=0
-            import "fclose" fclose
+            importx "_fclose" fclose
             call fclose(temp_file)
         endif
 
@@ -1139,7 +1139,7 @@ function capture_raw_files(sd output_file)
             sub all_frames frames_per_file
         endelse
 
-        import "sprintf" sprintf
+        importx "_sprintf" sprintf
         chars outfile_data#100
         str outfile^outfile_data
         str outformat="%s.%u"

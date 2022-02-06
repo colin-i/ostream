@@ -293,7 +293,7 @@ function editfield_with_int(sd int)
     chars spc#sign_int_null
     str intstring^spc
     str frm="%i"
-    import "sprintf" sprintf
+    importx "_sprintf" sprintf
     call sprintf(intstring,frm,int)
     sd entry
     setcall entry gtk_entry_new()

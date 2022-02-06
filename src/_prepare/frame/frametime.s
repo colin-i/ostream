@@ -46,7 +46,7 @@ function stage_frame_time_init(sd vbox,sd *dialog)
     #convert to string and set to edit
     chars nr#dword_null
     str ptr_nr^nr
-    import "sprintf" sprintf
+    importx "_sprintf" sprintf
     ss dw="%u"
     call sprintf(ptr_nr,dw,length)
     import "gtk_entry_set_text" gtk_entry_set_text
@@ -109,7 +109,7 @@ function stage_frame_time_numbers(sd method,sd arg1,sd newvalue,sd numberoftimes
         return 1
     elseif method==(stage_frame_time_free)
         #const stage_frame_time_free=2
-        import "free" free
+        importx "_free" free
         if frames!=0
             call free(frames)
         endif

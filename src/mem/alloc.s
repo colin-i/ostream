@@ -104,7 +104,7 @@ function alloc_block(sd action,sd mem,sd size,sd append,sd append_size)
         endif
         return value
     elseif action==(value_unset)
-        import "free" free
+        importx "_free" free
         call free(mem)
     else
     #if action==(value_append)

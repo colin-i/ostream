@@ -88,7 +88,7 @@ function on_discover(data *discoverer,data info,data gerror,data passdata)
                 set conjunction nullstring
             endelse
 
-            import "sprintf" sprintf
+            importx "_sprintf" sprintf
             str infodispformat="%s%s%s %s: "
             chars infodisp#40
             str infotext^infodisp

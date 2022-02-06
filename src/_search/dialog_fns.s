@@ -107,7 +107,7 @@ function search_clear_memory()
     set mem mem#
     data null=0
     if mem!=null
-        import "free" free
+        importx "_free" free
         call free(mem)
     endif
 endfunction

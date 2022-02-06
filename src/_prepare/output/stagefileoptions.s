@@ -345,7 +345,7 @@ function stage_file_options_structure(sd start,sd arg1)
 
         call write_sound_options(audio_file,p_channels,p_rate,p_bps)
 
-        import "fclose" fclose
+        importx "_fclose" fclose
         call fclose(audio_file)
 #
         import "gtk_toggle_button_get_active" gtk_toggle_button_get_active

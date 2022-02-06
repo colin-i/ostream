@@ -113,7 +113,7 @@ function search_get_image(ss uri,sd handle)
 
     setcall pipeline launch_pipe(mem)
 
-    import "free" free
+    importx "_free" free
     call free(mem)
     if pipeline==n
         return n

@@ -63,7 +63,7 @@ function search_parse_URIs(ss str,sd table)
     str form="%s%s%s"
     call sprintf(mem,form,s1,s2,s3)
     call search_parse_URIs_launch(mem,table)
-    import "free" free
+    importx "_free" free
     call free(mem)
 endfunction
 
