@@ -4,6 +4,8 @@ format elfobj
 
 include "../_include/include.h"
 
+Const GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER=2
+
 Import "GetModuleFileNameA" GetModuleFileName
 
 import "memoryalloc" memoryalloc
@@ -335,7 +337,7 @@ function mass_foldername(ss foldername)
     call stage_file_options_info_message((value_set),info)
 endfunction
 
-import "free" free
+importx "_free" free
 
 function fileiterate(ss foldername,ss spec,sd forward,sd data)
     if foldername==0
@@ -836,8 +838,6 @@ function sound_preview_end_and_no_errors()
     endwhile
     return (TRUE)
 endfunction
-
-Const GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER=2
 
 import "mainwidget" mainwidget
 importx "gtk_file_chooser_dialog_new" gtk_file_chooser_dialog_new

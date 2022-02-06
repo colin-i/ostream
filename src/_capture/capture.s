@@ -599,7 +599,7 @@ function capture_free_cairo(sd cairo,sd surface)
 endfunction
 
 import "memalloc" memalloc
-import "free" free
+importx "_free" free
 
 function capture_free_cairo_and_mem(sd cairo,sd surface,sd mem)
     call capture_free_cairo(cairo,surface)

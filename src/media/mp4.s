@@ -1224,7 +1224,7 @@ const stco_size=!-stco_start
 endfunction
 
 import "memalloc" memalloc
-import "free" free
+importx "_free" free
 import "texter" texter
 
 import "mp4_expand_startfile_set" mp4_expand_startfile_set

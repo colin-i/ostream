@@ -155,7 +155,7 @@ function mix_launch_got_command(sd command)
 endfunction
 
 import "allocsum_null" allocsum_null
-import "free" free
+importx "_free" free
 
 function mix_launch_got_audio_string(sd audiostring)
     data vid#1

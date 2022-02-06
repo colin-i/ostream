@@ -6,8 +6,7 @@ syms=-s
 ifeq (${platform},win)
 	OFLAGS = inplace_reloc 0 include_sec 1
 else
-	OFLAGS =
-	# underscore_pref 1
+	OFLAGS = underscore_pref 1
 endif
 
 cap = _capture/capture
@@ -73,17 +72,20 @@ ounused:
 
 lnk:
 	if [ "${platform}" = "lin" ]; then \
-#		export PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig/:${PKG_CONFIG_PATH}; \
-#		$(LD) ${syms} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 ${obs} -o ${projname} -lc -lm `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lgthread-2.0; \
-#cc because -pthread not for ld
-#nostdlib because is complaining about main
 		$(CC) -nostdlib ${syms} ${obs} -o ${projname} `pkg-config --libs gtk+-2.0 gstreamer-pbutils-0.10 gstreamer-interfaces-0.10 gstreamer-app-0.10` -lsoup-2.4 -ljpeg -lasound -lm -lpthread -lc; \
 	else \
-		i686-w64-mingw32-ld ${syms} ${obs} -lmsvcrt -o ${wprojname}; \
+		i686-w64-mingw32-ld --large-address-aware ${syms} ${obs} -o ${wprojname} -lmsvcr100 -lkernel32 -lmsvcrt -lgdi32 -luser32 -lwinmm -L../_fix/w/ -lgtk -lgdk -lgdkpix -lglib -lgobject -lgio -lgthread -lgstreamer -lgstinterfaces -lgstpbutils -lcairo -lpango -lgstapp -lsoup -ljpeg; \
 	fi
 fast:
 	$(eval obs = `printf ' %s.o' ${items}`)
 link: fast lnk
+#		ld --large-address-aware -mi386pe -subsystem windows ${syms} ${obs} -o ${wprojname} -lmsvcr100 -lkernel32 -lmsvcrt -lgdi32 -luser32 -lwinmm; \
+# -nostdlib
+# -lmsvcr100 -lkernel32 -lmsvcrt -lgdi32 -luser32 -lwinmm; \
+#		export PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig/:${PKG_CONFIG_PATH}; \
+#		$(LD) ${syms} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 ${obs} -o ${projname} -lc -lm `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lgthread-2.0; \
+#cc because -pthread not for ld
+#nostdlib because is complaining about main
 
 %: %.s
 	${OCOMP} $< ${OFLAGS}

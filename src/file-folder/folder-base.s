@@ -21,7 +21,7 @@ function dirch(str value)
     return noerr
 endfunction
 
-import "free" free
+importx "_free" free
 
 import "Scriptfullpath" Scriptfullpath
 import "endoffolders" endoffolders

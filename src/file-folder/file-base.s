@@ -244,7 +244,7 @@ function file_get_content_forward(ss filename,sd forward)
         return err
     endif
     call forward(mem,size)
-    import "free" free
+    importx "_free" free
     call free(mem)
 endfunction
 

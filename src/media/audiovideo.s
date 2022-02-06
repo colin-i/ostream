@@ -557,7 +557,7 @@ function av_expand()
 
     call av_expand_go(filename)
 
-    import "free" free
+    importx "_free" free
     call free(filename)
 endfunction
 import "cmpmem_s" cmpmem_s

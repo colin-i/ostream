@@ -183,7 +183,7 @@ function save_stream_dest_ready(str dest)
     data ptrmem^mem
 
     import "allocsum_null" allocsum_null
-    import "free" free
+    importx "_free" free
     data err#1
     setcall err allocsum_null(strings,ptrmem)
     data noerr=noerror

@@ -1,0 +1,11 @@
+
+s="'0,/^import \""
+s+=${1}
+s+="\"/s/^import \""
+s+=${1}
+s+="\"/importx \"_"
+s+=${1}
+s+="\"/'"
+echo $s
+
+find -name "*.s" | xargs sed -i "0,/^import \"${1}\"/s/^import \"${1}\"/importx \"_${1}\"/"
