@@ -7,11 +7,11 @@ format elfobj
 
 include "../_include/include.h"
 
-import "fopen" fopen
+importx "_fopen" fopen
 importx "_fclose" fclose
-import "fseek" fseek
-import "ftell" ftell
-import "fread" fread
+importx "_fseek" fseek
+importx "_ftell" ftell
+importx "_fread" fread
 
 import "memoryalloc" memoryalloc
 import "strerrno" strerrno
@@ -138,7 +138,7 @@ endfunction
 
 #rename return
 function change_name(ss oldpath,ss newpath)
-    import "rename" rename
+    importx "_rename" rename
     import "texter" texter
     sd ret
     setcall ret rename(oldpath,newpath)
@@ -372,7 +372,7 @@ function file_write(sd buffer,sd size,sd file)
     endif
     data byte=1
     sd sizewrote
-    import "fwrite" fwrite
+    importx "_fwrite" fwrite
     setcall sizewrote fwrite(buffer,byte,size,file)
     if sizewrote!=z
         return noe

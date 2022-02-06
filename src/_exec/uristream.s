@@ -27,7 +27,7 @@ function streamerror(data *bus,data message)
     call stream_error(message)
 endfunction
 
-import "lldiv" lldiv
+importx "_lldiv" lldiv
 function splitGstClockTime(data ptrclock,data ptrtime)
     data dword=4
 

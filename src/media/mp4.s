@@ -2412,7 +2412,7 @@ function mp4_extend(ss filename)
     call av_dialog_run(mp4_dialog,filename)
 endfunction
 import "change_name" change_name
-import "remove" remove
+importx "_remove" remove
 function mp4_expand_go(ss filepath,ss temppath)
     #rename
     import "cpymem" cpymem

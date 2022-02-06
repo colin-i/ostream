@@ -173,7 +173,7 @@ function l3_subband_init()
     import "fadd_quad" fadd_quad
     import "double_to_int" double_to_int
     importx "_cos" cos
-    import "modf" modf
+    importx "_modf" modf
     sd value
     sd value_2
     sd fl

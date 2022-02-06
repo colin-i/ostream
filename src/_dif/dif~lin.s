@@ -9,7 +9,7 @@ Const X_OK=1
 Const FORWARD=1
 
 import "getpid" getpid
-import "fopen" fopen
+importx "_fopen" fopen
 importx "_sprintf" sprintf
 import "getenv" getenv
 import "access" access
