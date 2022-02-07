@@ -3,6 +3,10 @@ format elfobj
 
 include "../_include/include.h"
 
+importx "_sprintf" sprintf
+importx "_sscanf" sscanf
+importx "_strlen" strlen
+
 import "getplaybin2ptr" getplaybin2ptr
 
 import "nullifyplaybin" nullifyplaybin
@@ -27,7 +31,63 @@ function streamerror(data *bus,data message)
     call stream_error(message)
 endfunction
 
-importx "_lldiv" lldiv
+function ldiv_lowdivisor(sd p,sd dividendlow,sd dividendhigh,sd divisor)
+	sd n
+	#20 and a null
+	chars input#21
+	vstr instr^input
+	call sprintf(instr,"%llu",dividendlow,dividendhigh)
+	sd size
+	setcall size strlen(instr)
+	# Find prefix of number that is larger than divisor.
+	sd idx=0
+	sd temp
+	set temp instr#
+	sub temp (_0)
+	while temp<divisor
+		inc instr
+		inc idx
+		set n instr#
+		sub n (_0)
+		mult temp 10
+		add temp n
+	endwhile
+	# As result can be very large store it in string
+	chars quotient#21
+	vstr outstr^quotient
+	# Repeatedly divide divisor with temp. After every division, update temp to include one more digit.
+	set outstr# 0
+	while size>idx
+		# Store result in answer i.e. temp / divisor
+		set n temp
+		div n divisor
+		add n (_0)
+		set outstr# n
+		inc outstr
+		set outstr# 0
+		# Take next digit of number
+		rem temp divisor
+		mult temp 10
+		inc instr
+		inc idx
+		add temp instr#
+		sub temp (_0)
+	endwhile
+	# If divisor is greater than number
+	setcall size strlen(#quotient)
+	if size==0
+		set p# 0
+		add p (DWORD)
+		set p# 0
+		add p (DWORD)
+		set p# dividendlow
+		return (void)
+	endif
+	# set quotient and remainder
+	call sscanf(#quotient,"%llu",p)
+	add p (2*DWORD)
+	set p# temp
+endfunction
 function splitGstClockTime(data ptrclock,data ptrtime)
     data dword=4
 
@@ -46,20 +106,20 @@ function splitGstClockTime(data ptrclock,data ptrtime)
     set ptrS ptrtime
 
     data nomLow#1
-    data nomHigh=0
+    #data nomHigh=0
     data resLow#1
     data resHigh#1
     data remLow#1
-    data *remHigh#1
+    #data *remHigh#1
     data ptrresult^resLow
 
     data gstsec=GST_SECOND
     set nomLow gstsec
-    call lldiv(ptrresult,clockLow,clockHigh,nomLow,nomHigh)
+    call ldiv_lowdivisor(ptrresult,clockLow,clockHigh,nomLow) #,nomHigh
 
     data secinH=3600
     set nomLow secinH
-    call lldiv(ptrresult,resLow,resHigh,nomLow,nomHigh)
+    call ldiv_lowdivisor(ptrresult,resLow,resHigh,nomLow) #,nomHigh
 
     set ptrH# resLow
 
@@ -75,7 +135,6 @@ function splitGstClockTime(data ptrclock,data ptrtime)
 endfunction
 
 import "gst_element_query_position" gst_element_query_position
-importx "_sprintf" sprintf
 #false=stop timer,true=displayed
 function streamtimer(data *data)
     data playbool#1
