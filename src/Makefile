@@ -80,11 +80,13 @@ lnk:
 	else \
 		i686-w64-mingw32-ld --large-address-aware ${syms} ${obs} -o ${wprojname} \
 		`dpkg -L mingw-w64-i686-dev | grep '\.a' | sed 's/..$$//' | grep -o '[^\/]*$$' | sed 's/lib/-l/' | xargs echo` \
-		-L../_fix/w/ -lgtk -lgdk -lgdkpix -lglib -lgobject -lgio -lgthread -lgstreamer -lgstinterfaces -lgstpbutils -lcairo -lpango -lgstapp -lsoup -ljpeg; \
+		-L`echo ~`/.wine/drive_c/gstreamer-sdk/0.10/x86/lib/ \
+		-lgtk-win32-2.0; \
 	fi
 fast:
 	$(eval obs = `printf ' %s.o' ${items}`)
 link: fast lnk
+#-lgdk -lgdkpix -lglib -lgobject -lgio -lgthread -lgstreamer -lgstinterfaces -lgstpbutils -lcairo -lpango -lgstapp -lsoup -ljpeg; \
 #snprintf with problems unresolved
 #cos is in -lmingwex that will work with -lmingw32 -lmsvcrt
 

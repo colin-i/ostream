@@ -7,7 +7,7 @@ import "gtk_init" gtk_init
 import "gst_init" gst_init
 import "initfn" initfn
 import "gtk_main" gtk_main
-import "exit" exit
+importx "_exit" exit
 
 entry _start()
 
@@ -15,7 +15,7 @@ call gtk_init(0,0)
 call gst_init(0,0)
 
 const LC_NUMERIC=4
-import "setlocale" setlocale
+importx "_setlocale" setlocale
 call setlocale((LC_NUMERIC),"English")
 
 import "g_thread_init" g_thread_init
