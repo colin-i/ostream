@@ -6,9 +6,9 @@ format elfobj
 
 include "../_include/include.h"
 
-import "soup_session_sync_new" soup_session_sync_new
-import "soup_message_new" soup_message_new
-import "soup_session_send_message" soup_session_send_message
+importx "_soup_session_sync_new" soup_session_sync_new
+importx "_soup_message_new" soup_message_new
+importx "_soup_session_send_message" soup_session_send_message
 
 
 function getSessionMessageBody(data sessionMsg,data ptrmsgmem,data ptrmsgsize)
@@ -61,7 +61,7 @@ function uri_get_content(str uri,data ptrmsg,data ptrmsgmem,data ptrmsgsize)
         return urierr
     endif
 
-    import "g_object_unref" g_object_unref
+    importx "_g_object_unref" g_object_unref
     call g_object_unref(session)
 
     call getSessionMessageBody(ptrmsg#,ptrmsgmem,ptrmsgsize)

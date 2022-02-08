@@ -65,7 +65,7 @@ function stage_preview_next(sd random_key)
     sd timeoutduration
     setcall timeoutduration rule3(length,fps,1000)
 
-    import "gdk_threads_add_timeout" gdk_threads_add_timeout
+    importx "_gdk_threads_add_timeout" gdk_threads_add_timeout
     data f^stage_preview_timeout
     call gdk_threads_add_timeout(timeoutduration,f,random_key)
 endfunction
@@ -111,7 +111,7 @@ function stage_preview_timeout(sd key)
         sd wind
         importx "_gtk_widget_get_window" gtk_widget_get_window
         setcall wind gtk_widget_get_window(ebox)
-        import "gdk_window_get_position" gdk_window_get_position
+        importx "_gdk_window_get_position" gdk_window_get_position
         call gdk_window_get_position(wind,#x,#y)
         import "stage_scroll" stage_scroll
         sd scrl
@@ -122,7 +122,7 @@ function stage_preview_timeout(sd key)
         sd value#2
         sd upper#2
         sd page_size#2
-        import "g_object_get" g_object_get
+        importx "_g_object_get" g_object_get
         call g_object_get(adj,"value",#value,"upper",#upper,"page-size",#page_size,0)
         import "double_to_int" double_to_int
         setcall value double_to_int(#value)

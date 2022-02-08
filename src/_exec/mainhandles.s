@@ -3,7 +3,7 @@
 format elfobj
 
 importx "_gtk_window_list_toplevels" gtk_window_list_toplevels
-import "g_list_free" g_list_free
+importx "_g_list_free" g_list_free
 
 include "../_include/include.h"
 

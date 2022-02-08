@@ -22,7 +22,7 @@ function init_jerr(sd jstruct)
     sd jerr
     setcall jerr get_jerr()
 
-    import "jpeg_std_error" jpeg_std_error
+    importx "_jpeg_std_error" jpeg_std_error
     #jstruct.err
     setcall jstruct# jpeg_std_error(jerr)
 
@@ -84,7 +84,7 @@ function read_jpeg(sd file,sd forward)
     import "jpeg_get_jdestruct_size" jpeg_get_jdestruct_size
     sd jdestruct_size
     setcall jdestruct_size jpeg_get_jdestruct_size()
-    import "jpeg_CreateDecompress" jpeg_CreateDecompress
+    importx "_jpeg_CreateDecompress" jpeg_CreateDecompress
     call jpeg_CreateDecompress(jdestruct,(JPEG_LIB_VERSION),jdestruct_size)
     setcall continue jpeg_continue((value_get))
     if continue==0
@@ -94,7 +94,7 @@ function read_jpeg(sd file,sd forward)
     call read_jpeg_prepare(file,forward)
 
     #free memory
-    import "jpeg_destroy_decompress" jpeg_destroy_decompress
+    importx "_jpeg_destroy_decompress" jpeg_destroy_decompress
     call jpeg_destroy_decompress(jdestruct)
 
     setcall continue jpeg_continue((value_get))
@@ -108,7 +108,7 @@ function read_jpeg_prepare(sd file,sd forward)
     sd continue
 
     #associate decompress file
-    import "jpeg_stdio_src" jpeg_stdio_src
+    importx "_jpeg_stdio_src" jpeg_stdio_src
     call jpeg_stdio_src(jdestruct,file)
     setcall continue jpeg_continue((value_get))
     if continue==0
@@ -116,7 +116,7 @@ function read_jpeg_prepare(sd file,sd forward)
     endif
 
     #read headers
-    import "jpeg_read_header" jpeg_read_header
+    importx "_jpeg_read_header" jpeg_read_header
     #2nd arg=TRUE to reject a tables-only JPEG file as an error
     call jpeg_read_header(jdestruct,(TRUE))
     setcall continue jpeg_continue((value_get))
@@ -124,7 +124,7 @@ function read_jpeg_prepare(sd file,sd forward)
         return continue
     endif
 
-    import "jpeg_start_decompress" jpeg_start_decompress
+    importx "_jpeg_start_decompress" jpeg_start_decompress
     call jpeg_start_decompress(jdestruct)
     setcall continue jpeg_continue((value_get))
     if continue==0
@@ -133,7 +133,7 @@ function read_jpeg_prepare(sd file,sd forward)
 
     call read_jpeg_scanlines(forward)
 
-    import "jpeg_finish_decompress" jpeg_finish_decompress
+    importx "_jpeg_finish_decompress" jpeg_finish_decompress
     call jpeg_finish_decompress(jdestruct)
 endfunction
 
@@ -174,7 +174,7 @@ function read_jpeg_scanlines(sd forward)
     setcall output_height jpeg_get_jdestruct_output_height()
     setcall output_height structure_get_int(jdestruct,output_height)
 
-    import "jpeg_read_scanlines" jpeg_read_scanlines
+    importx "_jpeg_read_scanlines" jpeg_read_scanlines
     sd j=0
     while j!=output_height
         call jpeg_read_scanlines(jdestruct,buffer,1)

@@ -73,7 +73,7 @@ endfunction
 
 #alignment
 function linked_instance(sd destcontainer,sd lots,sd trigbutton,sd callbackfunc,sd callbackdata,sd closefunc)
-    import "g_signal_handlers_disconnect_matched" g_signal_handlers_disconnect_matched
+    importx "_g_signal_handlers_disconnect_matched" g_signal_handlers_disconnect_matched
     call g_signal_handlers_disconnect_matched(trigbutton,(G_SIGNAL_MATCH_FUNC|G_SIGNAL_MATCH_DATA),0,0,0,callbackfunc,callbackdata)
 
     sd buttonscontainer

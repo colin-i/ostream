@@ -17,8 +17,8 @@ endfunction
 
 #ve
 function search_photo_set(sd pixbuf,sd img)
-    import "gdk_pixbuf_get_width" gdk_pixbuf_get_width
-    import "gdk_pixbuf_get_height" gdk_pixbuf_get_height
+    importx "_gdk_pixbuf_get_width" gdk_pixbuf_get_width
+    importx "_gdk_pixbuf_get_height" gdk_pixbuf_get_height
 
     sd w
     sd h

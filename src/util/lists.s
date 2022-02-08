@@ -11,7 +11,7 @@ function widget_get_children_number_count_fn(sd *element,sd data)
 endfunction
 
 function widget_get_children_number_count(sd list,sd *data)
-    import "g_list_foreach" g_list_foreach
+    importx "_g_list_foreach" g_list_foreach
     sd nr=0
     sd ptr_nr^nr
     data fn^widget_get_children_number_count_fn
@@ -26,7 +26,7 @@ function widget_forward_children_data(sd widget,sd forward,sd data)
     setcall GList gtk_container_get_children(widget)
     sd ret
     setcall ret forward(GList,data)
-    import "g_list_free" g_list_free
+    importx "_g_list_free" g_list_free
     call g_list_free(GList)
     return ret
 endfunction
@@ -42,14 +42,14 @@ endfunction
 
 #pos
 function widget_position_in_container(sd widget,sd container)
-    import "g_list_index" g_list_index
+    importx "_g_list_index" g_list_index
     data f^g_list_index
     sd ret
     setcall ret widget_forward_children_data(container,f,widget)
     return ret
 endfunction
 
-import "g_list_nth_data" g_list_nth_data
+importx "_g_list_nth_data" g_list_nth_data
 
 function nthwidgetFromcontainer(data container,data index)
     data widget#1

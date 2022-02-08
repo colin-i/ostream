@@ -2,7 +2,7 @@
 
 format elfobj
 
-import "g_object_unref" g_object_unref
+importx "_g_object_unref" g_object_unref
 
 include "../_include/include.h"
 
@@ -160,7 +160,7 @@ endfunction
 importx "_gtk_entry_buffer_new" gtk_entry_buffer_new
 importx "_gtk_entry_buffer_set_max_length" gtk_entry_buffer_set_max_length
 importx "_gtk_entry_new_with_buffer" gtk_entry_new_with_buffer
-import "g_signal_connect_data" g_signal_connect_data
+importx "_g_signal_connect_data" g_signal_connect_data
 #GtkWidget
 function editfield(data container,data length)
     data GtkWidget#1
@@ -496,7 +496,7 @@ endfunction
 ##############pixbuf
 #pixbuf/0
 function new_pixbuf(sd width,sd height)
-    import "gdk_pixbuf_new" gdk_pixbuf_new
+    importx "_gdk_pixbuf_new" gdk_pixbuf_new
     sd pixbuf
     setcall pixbuf gdk_pixbuf_new((GDK_COLORSPACE_RGB),0,8,width,height)
     if pixbuf==0
@@ -514,23 +514,23 @@ function new_pixbuf_color(sd width,sd height,sd color)
     if pixbuf==0
         return 0
     endif
-    import "gdk_pixbuf_fill" gdk_pixbuf_fill
+    importx "_gdk_pixbuf_fill" gdk_pixbuf_fill
     call gdk_pixbuf_fill(pixbuf,color)
     return pixbuf
 endfunction
 
 #return a pixbuf
 function msgelement_pixbuf(sd msg)
-    import "gst_message_get_structure" gst_message_get_structure
+    importx "_gst_message_get_structure" gst_message_get_structure
     sd struct
     setcall struct gst_message_get_structure(msg)
 
     str pix="pixbuf"
-    import "gst_structure_get_value" gst_structure_get_value
+    importx "_gst_structure_get_value" gst_structure_get_value
     sd value
     setcall value gst_structure_get_value(struct,pix)
 
-    import "g_value_dup_object" g_value_dup_object
+    importx "_g_value_dup_object" g_value_dup_object
     sd pixbuf
     setcall pixbuf g_value_dup_object(value)
 
@@ -546,10 +546,10 @@ function msgelement_pixbuf_forward_data(sd msg,sd forward,sd data)
     call g_object_unref(pixbuf)
 endfunction
 
-import "gdk_pixbuf_get_width" gdk_pixbuf_get_width
-import "gdk_pixbuf_get_height" gdk_pixbuf_get_height
-import "gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
-import "gdk_pixbuf_get_rowstride" gdk_pixbuf_get_rowstride
+importx "_gdk_pixbuf_get_width" gdk_pixbuf_get_width
+importx "_gdk_pixbuf_get_height" gdk_pixbuf_get_height
+importx "_gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
+importx "_gdk_pixbuf_get_rowstride" gdk_pixbuf_get_rowstride
 
 import "rgb_px_get" rgb_px_get
 import "rgb_px_set" rgb_px_set
@@ -684,8 +684,8 @@ function pixbuf_in_window_scale_forward(sd pixbuf,sd window,sd forward)
     sd w
     sd h
 
-    import "gdk_window_get_width" gdk_window_get_width
-    import "gdk_window_get_height" gdk_window_get_height
+    importx "_gdk_window_get_width" gdk_window_get_width
+    importx "_gdk_window_get_height" gdk_window_get_height
 
     setcall W gdk_window_get_width(window)
     if W==0
@@ -707,7 +707,8 @@ endfunction
 
 
 #forward a pixbuf
-import "gdk_pixbuf_new_from_file" gdk_pixbuf_new_from_file
+importx "_gdk_pixbuf_new_from_file_utf8" gdk_pixbuf_new_from_file
+#gdk_pixbuf_new_from_file is a preprocessor macro which simply functions as an alias for gdk_pixbuf_new_from_file_utf8
 import "gerrtoerr" gerrtoerr
 import "getptrgerr" getptrgerr
 #function pixbuf from file
@@ -744,7 +745,7 @@ endfunction
 #    call pixbuf_from_file_forward_data(filename,forward,z)
 #endfunction
 
-import "gdk_pixbuf_copy" gdk_pixbuf_copy
+importx "_gdk_pixbuf_copy" gdk_pixbuf_copy
 function pixbuf_copy(sd pixbuf)
     sd px
     setcall px gdk_pixbuf_copy(pixbuf)
@@ -828,7 +829,7 @@ endfunction
 #display the pixbuf
 function pixbuf_draw_onwindow(sd pixbuf,sd drawable)
     data diether=GDK_RGB_DITHER_NONE
-    import "gdk_draw_pixbuf" gdk_draw_pixbuf
+    importx "_gdk_draw_pixbuf" gdk_draw_pixbuf
     #(GdkDrawable *drawable,GdkGC *gc,const GdkPixbuf *pixbuf,
     #gint src_x,gint src_y,gint dest_x,gint dest_y,
     #gint width,gint height,GdkRgbDither dither,gint x_dither,gint y_dither)
@@ -881,7 +882,7 @@ function surface_to_pixbufdata(sd surface,sd pixbuf)
     sd height
     sd wh^width
     call pixbuf_get_wh(pixbuf,wh)
-    import "cairo_image_surface_get_data" cairo_image_surface_get_data
+    importx "_cairo_image_surface_get_data" cairo_image_surface_get_data
     sd bytes
     setcall bytes cairo_image_surface_get_data(surface)
     sd pixels
@@ -993,6 +994,6 @@ function widget_redraw(sd widget)
         call texter(nodraw)
         return nodraw
     endif
-    import "gdk_window_invalidate_rect" gdk_window_invalidate_rect
+    importx "_gdk_window_invalidate_rect" gdk_window_invalidate_rect
     call gdk_window_invalidate_rect(drawable,0,0)
 endfunction

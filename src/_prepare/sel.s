@@ -38,8 +38,8 @@ function stage_sel_img_set(sd newparent)
     return img
 endfunction
 
-import "gdk_pixbuf_get_width" gdk_pixbuf_get_width
-import "gdk_pixbuf_get_height" gdk_pixbuf_get_height
+importx "_gdk_pixbuf_get_width" gdk_pixbuf_get_width
+importx "_gdk_pixbuf_get_height" gdk_pixbuf_get_height
 
 #returns the new img with the length set and added to the parent
 function stage_img_with_length(ss file,sd parent)
@@ -67,7 +67,7 @@ function stage_img_with_length(ss file,sd parent)
     data f^stage_img_with_length_fn
     call pixbuf_scale_forward_data(pixbuf,w,h,f,img)
 
-    import "g_object_unref" g_object_unref
+    importx "_g_object_unref" g_object_unref
     call g_object_unref(pixbuf)
 
     import "container_child" container_child
@@ -80,10 +80,10 @@ function stage_img_with_length_fn(sd pixb,sd img)
     setcall w gdk_pixbuf_get_width(pixb)
     sd h
     setcall h gdk_pixbuf_get_height(pixb)
-    import "gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
+    importx "_gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
     sd pixels
     setcall pixels gdk_pixbuf_get_pixels(pixb)
-    import "gdk_pixbuf_get_rowstride" gdk_pixbuf_get_rowstride
+    importx "_gdk_pixbuf_get_rowstride" gdk_pixbuf_get_rowstride
 
     sd rowsub
     set rowsub w

@@ -158,7 +158,7 @@ function unref_pixbuf_frame(sd widget,sd *data)
     import "object_get_dword_name" object_get_dword_name
     sd pixbuf
     setcall pixbuf object_get_dword_name(widget)
-    import "g_object_unref" g_object_unref
+    importx "_g_object_unref" g_object_unref
     call g_object_unref(pixbuf)
 endfunction
 
@@ -617,7 +617,7 @@ function sound_widget()
     return #widget
 endfunction
 
-import "gdk_window_get_height" gdk_window_get_height
+importx "_gdk_window_get_height" gdk_window_get_height
 
 #min size ptr
 function stage_trace_min_size()
@@ -650,9 +650,9 @@ function stage_init_frame_sizes()
         set frame_width# 10
         return 25
     endif
-    import "gdk_pixbuf_get_width" gdk_pixbuf_get_width
+    importx "_gdk_pixbuf_get_width" gdk_pixbuf_get_width
     setcall frame_width# gdk_pixbuf_get_width(pixbuf)
-    import "gdk_pixbuf_get_height" gdk_pixbuf_get_height
+    importx "_gdk_pixbuf_get_height" gdk_pixbuf_get_height
     sd height
     setcall height gdk_pixbuf_get_height(pixbuf)
     add height 5
@@ -705,7 +705,7 @@ importx "_gtk_widget_size_request" gtk_widget_size_request
 function sound_widget_motion(sd *widget,sd EventMotion,sd *data)
     sd state
     sd p_state^state
-    import "gdk_event_get_state" gdk_event_get_state
+    importx "_gdk_event_get_state" gdk_event_get_state
     call gdk_event_get_state(EventMotion,p_state)
     and state (GDK_BUTTON1_MASK)
     if state!=0
@@ -775,10 +775,10 @@ function sound_widget_expose(sd drawWd,sd ev_expose,sd *data)
     sd pixbuf
     set pixbuf pixbuf_location#
     if pixbuf!=0
-        import "gdk_cairo_create" gdk_cairo_create
-        import "gdk_cairo_set_source_pixbuf" gdk_cairo_set_source_pixbuf
-        import "cairo_paint" cairo_paint
-        import "cairo_destroy" cairo_destroy
+        importx "_gdk_cairo_create" gdk_cairo_create
+        importx "_gdk_cairo_set_source_pixbuf" gdk_cairo_set_source_pixbuf
+        importx "_cairo_paint" cairo_paint
+        importx "_cairo_destroy" cairo_destroy
         import "structure_get_int" structure_get_int
 
         sd left
@@ -802,7 +802,7 @@ function sound_widget_expose(sd drawWd,sd ev_expose,sd *data)
         if width<=0
             return (TRUE)
         endif
-        import "gdk_pixbuf_new_subpixbuf" gdk_pixbuf_new_subpixbuf
+        importx "_gdk_pixbuf_new_subpixbuf" gdk_pixbuf_new_subpixbuf
         sd expose_pixbuf
         setcall expose_pixbuf gdk_pixbuf_new_subpixbuf(pixbuf,left,0,width,px_height)
         if expose_pixbuf!=0
@@ -922,7 +922,7 @@ function sound_pixbuf_paint()
     sd pixbuf
     setcall pixbuf new_pixbuf(width,height)
     if pixbuf!=0
-        import "gdk_pixbuf_fill" gdk_pixbuf_fill
+        importx "_gdk_pixbuf_fill" gdk_pixbuf_fill
         call gdk_pixbuf_fill(pixbuf,0xffFFffFF)
         #sound pulse
         #draw all samples
@@ -935,7 +935,7 @@ function sound_pixbuf_paint()
         set bytespersample bps
         div bytespersample 8
         #
-        import "gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
+        importx "_gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
         import "rgb_get_rowstride" rgb_get_rowstride
         sd half
         set half height

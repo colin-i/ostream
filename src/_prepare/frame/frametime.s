@@ -253,8 +253,8 @@ const frame_unit_green=0
 const frame_unit_blue=0
 
 import "stage_sel_framebar_pixbuf" stage_sel_framebar_pixbuf
-import "gdk_pixbuf_get_width" gdk_pixbuf_get_width
-import "gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
+importx "_gdk_pixbuf_get_width" gdk_pixbuf_get_width
+importx "_gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
 
 function stage_split_frame()
     sd framebarpixbuf
@@ -390,8 +390,8 @@ function stage_frame_unit_select(sd widget,sd event)
     mult cursor2 3
     add cursor2 cursor1
 
-    import "gdk_pixbuf_get_height" gdk_pixbuf_get_height
-    import "gdk_pixbuf_get_rowstride" gdk_pixbuf_get_rowstride
+    importx "_gdk_pixbuf_get_height" gdk_pixbuf_get_height
+    importx "_gdk_pixbuf_get_rowstride" gdk_pixbuf_get_rowstride
 
     sd height
     setcall height gdk_pixbuf_get_height(pixbuf)

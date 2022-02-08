@@ -656,7 +656,7 @@ function stage_lines_modify_img(sd img_nr)
     import "rgb_get_all_sizes" rgb_get_all_sizes
     sd p_stride^stride
     setcall size rgb_get_all_sizes(w,h,p_stride)
-    import "gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
+    importx "_gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
     sd bytes
     setcall bytes gdk_pixbuf_get_pixels(pixbuf)
     sd newmem=0
@@ -682,7 +682,7 @@ function stage_lines_modify_img(sd img_nr)
         return (void)
     endif
     #
-    import "gdk_pixbuf_new_from_data" gdk_pixbuf_new_from_data
+    importx "_gdk_pixbuf_new_from_data" gdk_pixbuf_new_from_data
     importx "_free" free
     data free_callback^free
     sd newpixbuf
@@ -699,7 +699,7 @@ function stage_lines_modify_img(sd img_nr)
         #
     call object_set_dword_name(ebox,newpixbuf)
         #
-    import "g_object_unref" g_object_unref
+    importx "_g_object_unref" g_object_unref
     call g_object_unref(oldpixbuf)
 endfunction
 import "memalloc" memalloc

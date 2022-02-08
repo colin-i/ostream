@@ -182,7 +182,7 @@ endfunction
 
 
 
-import "gdk_x11_drawable_get_xid" gdk_x11_drawable_get_xid
+importx "gdk_x11_drawable_get_xid" gdk_x11_drawable_get_xid
 function gdkGetdrawable(data window)
     data windraw#1
     setcall windraw gdk_x11_drawable_get_xid(window)
@@ -215,7 +215,7 @@ endfunction
 
 
 
-importx "_gtk_file_chooser_get_filename" gtk_file_chooser_get_filename
+importx "gtk_file_chooser_get_filename" gtk_file_chooser_get_filename
 function file_chooser_get_fname(sd dialog)
     sd file
     setcall file gtk_file_chooser_get_filename(dialog)
@@ -288,9 +288,9 @@ function term_toggle(sd action,sd value)
 endfunction
 
 function capture_alternative_init(sd vbox)
-    importx "_gtk_check_button_new_with_label" gtk_check_button_new_with_label
-    importx "_gtk_container_add" gtk_container_add
-    importx "_gtk_widget_set_tooltip_markup" gtk_widget_set_tooltip_markup
+    importx "gtk_check_button_new_with_label" gtk_check_button_new_with_label
+    importx "gtk_container_add" gtk_container_add
+    importx "gtk_widget_set_tooltip_markup" gtk_widget_set_tooltip_markup
     ss term_txt="Terminal(if exists)"
     sd term_entry
     setcall term_entry gtk_check_button_new_with_label(term_txt)
@@ -302,12 +302,12 @@ endfunction
 function capture_alternative_set(sd *p_cairoflag,sd p_term)
     sd t_entry
     setcall t_entry term_toggle((value_get))
-    importx "_gtk_toggle_button_get_active" gtk_toggle_button_get_active
+    importx "gtk_toggle_button_get_active" gtk_toggle_button_get_active
     setcall p_term# gtk_toggle_button_get_active(t_entry)
 endfunction
 #bool
 function capture_alternative_prepare()
-    importx "_gtk_widget_hide_all" gtk_widget_hide_all
+    importx "gtk_widget_hide_all" gtk_widget_hide_all
     import "mainwidget" mainwidget
     import "dialog_handle" dialog_handle
     sd win
@@ -323,7 +323,7 @@ function capture_alternative_prepare()
     import "getptrgerr" getptrgerr
     sd ptrgerr
     setcall ptrgerr getptrgerr()
-    import "g_thread_create" g_thread_create
+    importx "g_thread_create" g_thread_create
     data forward^capture_alt_thread_proc
     sd thread
     setcall thread g_thread_create(forward,0,1,ptrgerr)
@@ -343,7 +343,7 @@ function capture_alternative_free()
     sd event
     setcall event capture_alt_ev((value_get))
     call closeevent(event)
-    import "g_thread_join" g_thread_join
+    importx "g_thread_join" g_thread_join
     call capture_alt_thread_dup((value_set),0)
     sd thread
     setcall thread capture_alt_thread((value_get))
@@ -352,7 +352,7 @@ function capture_alternative_free()
 endfunction
 
 function capture_alt_showback()
-	importx "_gtk_widget_show_all" gtk_widget_show_all
+    importx "gtk_widget_show_all" gtk_widget_show_all
     sd win
     setcall win mainwidget()
     call gtk_widget_show_all(win)
@@ -663,7 +663,7 @@ function alsa_write(sd procedure,sd random_key,sd bf_pos,sd all_buffer_size)
         return (void)
     endif
     #all values are in frames(blockalign values) except pos
-    import "gdk_threads_add_timeout" gdk_threads_add_timeout
+    importx "gdk_threads_add_timeout" gdk_threads_add_timeout
     sd main_frames
     sd period_size
     sd err

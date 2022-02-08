@@ -17,7 +17,7 @@ function endofstream()
     call nullifyplaybin()
 endfunction
 
-import "gst_message_parse_error" gst_message_parse_error
+importx "_gst_message_parse_error" gst_message_parse_error
 import "getptrgerr" getptrgerr
 import "gerrtoerr" gerrtoerr
 function stream_error(data message)
@@ -134,7 +134,7 @@ function splitGstClockTime(data ptrclock,data ptrtime)
     set ptrS# remLow
 endfunction
 
-import "gst_element_query_position" gst_element_query_position
+importx "_gst_element_query_position" gst_element_query_position
 #false=stop timer,true=displayed
 function streamtimer(data *data)
     data playbool#1
@@ -203,8 +203,8 @@ function get_playbool()
     return ptr#
 endfunction
 
-import "gst_message_parse_state_changed" gst_message_parse_state_changed
-import "gdk_threads_add_timeout" gdk_threads_add_timeout
+importx "_gst_message_parse_state_changed" gst_message_parse_state_changed
+importx "_gdk_threads_add_timeout" gdk_threads_add_timeout
 function statechanged(data *bus,data message)
     data newstate#1
     data ptrnewstate^newstate
@@ -230,7 +230,7 @@ function statechanged(data *bus,data message)
         import "setmem" setmem
         call setmem(duration,quadword,clock_none)
 
-        import "gst_element_query_duration" gst_element_query_duration
+        importx "_gst_element_query_duration" gst_element_query_duration
         data format=GST_FORMAT_TIME
         data ptrformat^format
         data ptrplaybin#1
@@ -247,8 +247,8 @@ function stop()
     call texter(stopped)
 endfunction
 
-import "g_object_set" g_object_set
-import "gst_element_set_state" gst_element_set_state
+importx "_g_object_set" g_object_set
+importx "_gst_element_set_state" gst_element_set_state
 #void
 function streamuri(data buffer)
     call nullifyplaybin()

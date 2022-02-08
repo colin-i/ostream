@@ -3,14 +3,14 @@
 
 format elfobj
 
-import "gst_discoverer_new" gst_discoverer_new
-import "gst_discoverer_start" gst_discoverer_start
-import "gst_discoverer_discover_uri_async" gst_discoverer_discover_uri_async
-import "gst_discoverer_stop" gst_discoverer_stop
-import "gst_discoverer_info_get_uri" gst_discoverer_info_get_uri
-import "gst_discoverer_info_get_result" gst_discoverer_info_get_result
+importx "_gst_discoverer_new" gst_discoverer_new
+importx "_gst_discoverer_start" gst_discoverer_start
+importx "_gst_discoverer_discover_uri_async" gst_discoverer_discover_uri_async
+importx "_gst_discoverer_stop" gst_discoverer_stop
+importx "_gst_discoverer_info_get_uri" gst_discoverer_info_get_uri
+importx "_gst_discoverer_info_get_result" gst_discoverer_info_get_result
 
-import "gst_object_unref" gst_object_unref
+importx "_gst_object_unref" gst_object_unref
 
 import "strstrdisp" strstrdisp
 
@@ -32,10 +32,10 @@ function on_discover(data *discoverer,data info,data gerror,data passdata)
     data misses=GST_DISCOVERER_MISSING_PLUGINS
 
     if result==ok
-        import "gst_discoverer_info_get_video_streams" gst_discoverer_info_get_video_streams
-        import "gst_discoverer_info_get_audio_streams" gst_discoverer_info_get_audio_streams
-        import "gst_discoverer_stream_info_list_free" gst_discoverer_stream_info_list_free
-        import "g_list_first" g_list_first
+        importx "_gst_discoverer_info_get_video_streams" gst_discoverer_info_get_video_streams
+        importx "_gst_discoverer_info_get_audio_streams" gst_discoverer_info_get_audio_streams
+        importx "_gst_discoverer_stream_info_list_free" gst_discoverer_stream_info_list_free
+        importx "_g_list_first" g_list_first
 
         data videoinfo#1
         data audioinfo#1
@@ -117,9 +117,9 @@ function on_discover(data *discoverer,data info,data gerror,data passdata)
         str busyerr="Busy error. Uri: "
         call strstrdisp(busyerr,uri)
     elseif result==misses
-        import "gst_discoverer_info_get_misc" gst_discoverer_info_get_misc
-        import "gst_structure_to_string" gst_structure_to_string
-        import "g_free" g_free
+        importx "_gst_discoverer_info_get_misc" gst_discoverer_info_get_misc
+        importx "_gst_structure_to_string" gst_structure_to_string
+        importx "_g_free" g_free
         data st#1
         setcall st gst_discoverer_info_get_misc(info)
         str message#1

@@ -10,7 +10,7 @@ importx "_gtk_window_set_default_size" gtk_window_set_default_size
 importx "_gtk_main_quit" gtk_main_quit
 importx "_gtk_widget_show_all" gtk_widget_show_all
 
-import "g_signal_connect_data" g_signal_connect_data
+importx "_g_signal_connect_data" g_signal_connect_data
 
 import "vboxfield" vboxfield
 import "editfieldEnter" editfieldEnter

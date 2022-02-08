@@ -120,7 +120,7 @@ function stage_sound()
             #sound import
                 call stage_sound_init_appsink(filepath)
             endif
-            import "g_free" g_free
+            importx "_g_free" g_free
             call g_free(filepath)
         endif
     else
@@ -719,7 +719,7 @@ function stage_sound_alloc(sd action,sd newblock,sd newblock_size)
 endfunction
 
 function stage_sound_expand(sd gstappsink,sd *user_data)
-    import "g_signal_emit_by_name" g_signal_emit_by_name
+    importx "_g_signal_emit_by_name" g_signal_emit_by_name
     ss method="pull-buffer"
     sd buffer
     sd p_buffer^buffer
@@ -745,7 +745,7 @@ function stage_sound_expand(sd gstappsink,sd *user_data)
     #print time
     call stage_sound_alloc((stage_sound_alloc_printtexter_time))
 
-    import "gst_mini_object_unref" gst_mini_object_unref
+    importx "_gst_mini_object_unref" gst_mini_object_unref
     call gst_mini_object_unref(buffer)
 endfunction
 

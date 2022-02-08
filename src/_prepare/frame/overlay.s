@@ -51,7 +51,7 @@ function stage_overlay_set()
     sd overlay
     setcall overlay pixbuf_from_file(filename)
 
-    import "g_free" g_free
+    importx "_g_free" g_free
     call g_free(filename)
 
     if overlay==0

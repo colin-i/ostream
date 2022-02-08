@@ -9,7 +9,7 @@ import "getptrgerr" getptrgerr
 import "gerrtoerr" gerrtoerr
 
 function add_bus_signal_watch_got_bus(sd bus)
-    import "gst_bus_add_signal_watch" gst_bus_add_signal_watch
+    importx "_gst_bus_add_signal_watch" gst_bus_add_signal_watch
     call gst_bus_add_signal_watch(bus)
 endfunction
 function add_bus_signal_watch(sd pipe)
@@ -17,7 +17,7 @@ function add_bus_signal_watch(sd pipe)
     call bus_signals(pipe,f)
 endfunction
 function remove_bus_signal_watch_got_bus(sd bus)
-    import "gst_bus_remove_signal_watch" gst_bus_remove_signal_watch
+    importx "_gst_bus_remove_signal_watch" gst_bus_remove_signal_watch
     call gst_bus_remove_signal_watch(bus)
 endfunction
 function remove_bus_signal_watch(sd pipe)
@@ -25,7 +25,7 @@ function remove_bus_signal_watch(sd pipe)
     call bus_signals(pipe,f)
 endfunction
 
-import "gst_object_unref" gst_object_unref
+importx "_gst_object_unref" gst_object_unref
 function unset_pipe_and_watch(sd pipe)
     call remove_bus_signal_watch(pipe)
     call gst_object_unref(pipe)
@@ -36,7 +36,7 @@ function launch_pipe(ss mem)
     sd ptrgerr
     setcall ptrgerr getptrgerr()
 
-    import "gst_parse_launch" gst_parse_launch
+    importx "_gst_parse_launch" gst_parse_launch
     sd pipe
     setcall pipe gst_parse_launch(mem,ptrgerr)
 
@@ -49,7 +49,7 @@ function launch_pipe(ss mem)
 endfunction
 
 
-import "gst_element_set_state" gst_element_set_state
+importx "_gst_element_set_state" gst_element_set_state
 #e
 function start_pipe(sd pipe)
     data play=GST_STATE_PLAYING
@@ -105,7 +105,7 @@ endfunction
 #
 
 #
-import "gst_message_parse_error" gst_message_parse_error
+importx "_gst_message_parse_error" gst_message_parse_error
 function def_error(sd message)
     sd ptrgerr#1
     setcall ptrgerr getptrgerr()
@@ -150,7 +150,7 @@ endfunction
 #
 function bus_signals_data(sd element,sd forwardToSignals,sd forwardToSignalsData)
     sd bus#1
-    import "gst_element_get_bus" gst_element_get_bus
+    importx "_gst_element_get_bus" gst_element_get_bus
     setcall bus gst_element_get_bus(element)
 
     call forwardToSignals(bus,forwardToSignalsData)
@@ -217,8 +217,8 @@ function err_signal_modal(sd pipe,sd closemodalForward)
     call bus_signals_data(pipe,f,closemodalForward)
 endfunction
 
-import "gst_bin_iterate_sinks" gst_bin_iterate_sinks
-import "gst_iterator_free" gst_iterator_free
+importx "_gst_bin_iterate_sinks" gst_bin_iterate_sinks
+importx "_gst_iterator_free" gst_iterator_free
 function iterate_sinks_data(sd pipe,sd forward,sd data)
     sd iter
     setcall iter gst_bin_iterate_sinks(pipe)
@@ -235,7 +235,7 @@ function iterate_firstsink(sd pipe,sd forward)
     call gst_iterator_free(iter)
 endfunction
 
-import "gst_iterator_next" gst_iterator_next
+importx "_gst_iterator_next" gst_iterator_next
 #e
 function iterate_next_forward_data_free(sd iter,sd forward,sd data)
     sd elem

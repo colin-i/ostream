@@ -6,7 +6,7 @@ include "../_include/include.h"
 
 Const GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER=2
 
-Import "GetModuleFileNameA" GetModuleFileName
+importx "_GetModuleFileNameA@12" GetModuleFileName
 
 import "memoryalloc" memoryalloc
 import "texter" texter
@@ -31,7 +31,7 @@ function Scriptfullpath(data ptrfullpath)
     return noerr
 endfunction
 
-import "_get_errno" get_errno
+importx "__get_errno" get_errno
 #errno
 function geterrno()
     sd er
@@ -40,7 +40,7 @@ function geterrno()
 endfunction
 
 
-import "gdk_win32_drawable_get_handle" gdk_win32_drawable_get_handle
+importx "_gdk_win32_drawable_get_handle" gdk_win32_drawable_get_handle
 function gdkGetdrawable(data window)
     data windraw#1
     setcall windraw gdk_win32_drawable_get_handle(window)
@@ -53,7 +53,7 @@ function system_variables_alignment_pad(data value,data greatest)
 endfunction
 
 
-import "_time32" time
+importx "__time32" time
 function timeNode(data ptrtime_t)
     data time_t#1
     setcall time_t time(ptrtime_t)
@@ -110,14 +110,14 @@ endfunction
 
 #milliseconds
 function get_time()
-    import "GetTickCount" GetTickCount
+    importx "_GetTickCount@0" GetTickCount
     sd milliseconds
     setcall milliseconds GetTickCount()
     return milliseconds
 endfunction
 
 function sleepMs(sd value)
-    import "Sleep" Sleep
+    importx "_Sleep@4" Sleep
     call Sleep(value)
 endfunction
 
@@ -221,11 +221,11 @@ function capture_alternative_set(sd p_no_alternative)
 endfunction
 #bool
 function capture_alternative_prepare(sd p_mem,sd pix_width,sd pix_height)
-    import "GetWindowDC" GetWindowDC
-    import "CreateCompatibleDC" CreateCompatibleDC
-    import "SelectObject" SelectObject
-    import "DeleteObject" DeleteObject
-    import "CreateDIBSection" CreateDIBSection
+    importx "_GetWindowDC@4" GetWindowDC
+    importx "_CreateCompatibleDC@4" CreateCompatibleDC
+    importx "_SelectObject@8" SelectObject
+    importx "_DeleteObject@4" DeleteObject
+    importx "_CreateDIBSection@24" CreateDIBSection
 
     sd srcDC
     setcall srcDC GetWindowDC(0)
@@ -271,9 +271,9 @@ function capture_alternative_prepare(sd p_mem,sd pix_width,sd pix_height)
     return 1
 endfunction
 function capture_alternative_append(sd x,sd y,sd pix_width,sd pix_height,sd cursor_flag)
-    import "BitBlt" BitBlt
-    import "GetCursorInfo" GetCursorInfo
-    import "DrawIcon" DrawIcon
+    importx "_BitBlt@36" BitBlt
+    importx "_GetCursorInfo@4" GetCursorInfo
+    importx "_DrawIcon@16" DrawIcon
     sd srcDC
     setcall srcDC GetWindowDC(0)
     sd destDC
@@ -391,9 +391,9 @@ function fileiteration(sd p_foldername,ss spec,sd forward,sd data)
     chars reserve_name#260
     str reserve^reserve_name
 
-    import "_findfirst64i32" findfirst
-    import "_findnext64i32" findnext
-    import "_findclose" findclose
+    importx "__findfirst64i32" findfirst
+    importx "__findnext64i32" findnext
+    importx "__findclose" findclose
 
     sd handle
     setcall handle findfirst(foldername,file_info)
@@ -528,7 +528,7 @@ endfunction
 const INFINITE=-1
 
 function shutdown()
-    import "CreateProcessA" CreateProcess
+    importx "_CreateProcessA@40" CreateProcess
     import "setmemzero" setmemzero
     const startupsize=68
     chars startup#startupsize
@@ -549,8 +549,8 @@ function shutdown()
         call texter(er)
         return 0
     endif
-    import "WaitForSingleObject" WaitForSingleObject
-    import "CloseHandle" CloseHandle
+    importx "_WaitForSingleObject@8" WaitForSingleObject
+    importx "_CloseHandle@4" CloseHandle
     call WaitForSingleObject(hprocess,(INFINITE))
     call CloseHandle(hprocess)
     call CloseHandle(hthread)
@@ -561,7 +561,7 @@ endfunction
 
 #er
 function file_seek_dif_cursor(sd file,sd off)
-    import "_fseeki64" fseek64
+    importx "__fseeki64" fseek64
     import "seek_err" seek_err
     sd int
     setcall int fseek64(file,off,0,(SEEK_CUR))
@@ -571,12 +571,12 @@ function file_seek_dif_cursor(sd file,sd off)
 endfunction
 
 #sound preview
-import "waveOutOpen" waveOutOpen
-import "waveOutClose" waveOutClose
-import "waveOutReset" waveOutReset
-import "waveOutPrepareHeader" waveOutPrepareHeader
-import "waveOutUnprepareHeader" waveOutUnprepareHeader
-import "waveOutWrite" waveOutWrite
+importx "_waveOutOpen@24" waveOutOpen
+importx "_waveOutClose@4" waveOutClose
+importx "_waveOutReset@4" waveOutReset
+importx "_waveOutPrepareHeader@12" waveOutPrepareHeader
+importx "_waveOutUnprepareHeader@12" waveOutUnprepareHeader
+importx "_waveOutWrite@12" waveOutWrite
 
 import "stage_sound_channels" stage_sound_channels
 import "stage_sound_rate" stage_sound_rate
@@ -840,7 +840,7 @@ function sound_preview_end_and_no_errors()
 endfunction
 
 import "mainwidget" mainwidget
-importx "gtk_file_chooser_dialog_new" gtk_file_chooser_dialog_new
+importx "_gtk_file_chooser_dialog_new" gtk_file_chooser_dialog_new
 import "filechooserfield_dialog" filechooserfield_dialog
 
 #folder/0

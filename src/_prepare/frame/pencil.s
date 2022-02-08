@@ -26,18 +26,18 @@ const stage_pencil_cursor_set=0
 const stage_pencil_cursor_get=1
 const stage_pencil_cursor_free=2
 
-import "g_object_unref" g_object_unref
+importx "_g_object_unref" g_object_unref
 
 #cursor
 function stage_pencil_cursor(sd action)
     data cursor#1
     if action==(stage_pencil_cursor_set)
-        import "gdk_cursor_new" gdk_cursor_new
+        importx "_gdk_cursor_new" gdk_cursor_new
         setcall cursor gdk_cursor_new((GDK_PENCIL))
     elseif action==(stage_pencil_cursor_get)
         return cursor
     else
-        import "gdk_cursor_unref" gdk_cursor_unref
+        importx "_gdk_cursor_unref" gdk_cursor_unref
         call gdk_cursor_unref(cursor)
     #if action==(stage_pencil_cursor_free)
     endelse
@@ -235,7 +235,7 @@ endfunction
 
 function stage_pencil_realize(sd drawing,sd *data)
     #pencil cursor over drawing area
-    import "gdk_window_set_cursor" gdk_window_set_cursor
+    importx "_gdk_window_set_cursor" gdk_window_set_cursor
     sd window
     setcall window gtk_widget_get_window(drawing)
     sd cursor
@@ -243,8 +243,8 @@ function stage_pencil_realize(sd drawing,sd *data)
     call gdk_window_set_cursor(window,cursor)
 endfunction
 
-import "gdk_pixbuf_get_width" gdk_pixbuf_get_width
-import "gdk_pixbuf_get_height" gdk_pixbuf_get_height
+importx "_gdk_pixbuf_get_width" gdk_pixbuf_get_width
+importx "_gdk_pixbuf_get_height" gdk_pixbuf_get_height
 
 #bool false, continue events
 function stage_pencil_setpixel(sd *ebox,sd event,sd *data)
@@ -357,7 +357,7 @@ function stage_pencil_setpixel(sd *ebox,sd event,sd *data)
     mult width width_size
     mult height height_size
     #redraw
-    import "gdk_window_invalidate_rect" gdk_window_invalidate_rect
+    importx "_gdk_window_invalidate_rect" gdk_window_invalidate_rect
     sd window
     setcall window gtk_widget_get_window(drawfield)
     call gdk_window_invalidate_rect(window,rect,0)
@@ -369,7 +369,7 @@ endfunction
 function stage_pencil_motion(sd *widget,sd EventMotion,sd *data)
     sd state
     sd p_state^state
-    import "gdk_event_get_state" gdk_event_get_state
+    importx "_gdk_event_get_state" gdk_event_get_state
     call gdk_event_get_state(EventMotion,p_state)
     and state (GDK_BUTTON1_MASK)
     if state!=0
@@ -468,7 +468,7 @@ function stage_pencil_expose(sd drawwidget,sd ev_expose,sd *data)
         if zoomed_pixbuf!=0
             sd drawable
             setcall drawable gtk_widget_get_window(drawwidget)
-            import "gdk_draw_pixbuf" gdk_draw_pixbuf
+            importx "_gdk_draw_pixbuf" gdk_draw_pixbuf
             call gdk_draw_pixbuf(drawable,0,zoomed_pixbuf,0,0,left,top,width,height,(GDK_RGB_DITHER_NONE),0,0)
             call g_object_unref(zoomed_pixbuf)
         endif

@@ -4,7 +4,7 @@ format elfobj
 include "../_include/include.h"
 
 importx "_gtk_init" gtk_init
-import "gst_init" gst_init
+importx "_gst_init" gst_init
 import "initfn" initfn
 importx "_gtk_main" gtk_main
 importx "_exit" exit
@@ -18,7 +18,7 @@ const LC_NUMERIC=4
 importx "_setlocale" setlocale
 call setlocale((LC_NUMERIC),"English")
 
-import "g_thread_init" g_thread_init
+importx "_g_thread_init" g_thread_init
 call g_thread_init(0)
 
 import "gstset" gstset

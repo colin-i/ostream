@@ -479,7 +479,7 @@ function rgb_to_yuvi420_write(sd rgb,sd width,sd height,sd file)
     return err
 endfunction
 
-import "gdk_pixbuf_get_rowstride" gdk_pixbuf_get_rowstride
+importx "_gdk_pixbuf_get_rowstride" gdk_pixbuf_get_rowstride
 
 #bool
 function rgb_test(sd pixbuf)
@@ -487,8 +487,8 @@ function rgb_test(sd pixbuf)
         return 0
     endif
 
-    import "gdk_pixbuf_get_width" gdk_pixbuf_get_width
-    import "gdk_pixbuf_get_height" gdk_pixbuf_get_height
+    importx "_gdk_pixbuf_get_width" gdk_pixbuf_get_width
+    importx "_gdk_pixbuf_get_height" gdk_pixbuf_get_height
     sd w
     sd h
     setcall w gdk_pixbuf_get_width(pixbuf)
@@ -587,7 +587,7 @@ function rgb_px_set(sd value,ss bytes,sd x,sd y,sd bps,sd n_chan,sd rowstride)
     call rgb_get_set(p_value,bytes,x,y,bps,n_chan,rowstride,(set_rgb))
 endfunction
 
-import "gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
+importx "_gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
 
 function rgb_pixbuf_get_pixel(ss pixbuf,sd x,sd y,sd bps,sd n_chan)
     sd pixels
@@ -634,7 +634,7 @@ function draw_expose_text(sd widget,ss text)
     setcall wind gtk_widget_get_window(widget)
 
     #creates the cairo context
-    import "gdk_cairo_create" gdk_cairo_create
+    importx "_gdk_cairo_create" gdk_cairo_create
     sd cairo
     setcall cairo gdk_cairo_create(wind)
     import "int_to_double" int_to_double
@@ -643,24 +643,24 @@ function draw_expose_text(sd widget,ss text)
     sd p_cairo_double^cairo_double_low
 
     #set a black source
-    import "cairo_set_source_rgb" cairo_set_source_rgb
+    importx "_cairo_set_source_rgb" cairo_set_source_rgb
     call cairo_set_source_rgb(cairo,0,0,0,0,0,0)
 
     #set text size
-    import "cairo_set_font_size" cairo_set_font_size
+    importx "_cairo_set_font_size" cairo_set_font_size
     call int_to_double(20,p_cairo_double)
     call cairo_set_font_size(cairo,cairo_double_low,cairo_double_high)
 
     #move to let text space
-    import "cairo_move_to" cairo_move_to
+    importx "_cairo_move_to" cairo_move_to
     call cairo_move_to(cairo,0,0,cairo_double_low,cairo_double_high)
 
     #draw text
-    import "cairo_show_text" cairo_show_text
+    importx "_cairo_show_text" cairo_show_text
     call cairo_show_text(cairo,text)
 
     #free cairo
-    import "cairo_destroy" cairo_destroy
+    importx "_cairo_destroy" cairo_destroy
     call cairo_destroy(cairo)
 endfunction
 
@@ -674,15 +674,15 @@ function pixbuf_draw_text(sd pixbuf,ss text,sd x,sd y,sd size,sd color,sd coordi
 
     call pixbuf_get_wh(pixbuf,p_wh)
 
-    import "gdk_pixmap_new" gdk_pixmap_new
+    importx "_gdk_pixmap_new" gdk_pixmap_new
     sd pixmap
     setcall pixmap gdk_pixmap_new(0,width,height,24)
 
-    import "gdk_gc_new" gdk_gc_new
+    importx "_gdk_gc_new" gdk_gc_new
     sd gc
     setcall gc gdk_gc_new(pixmap)
 
-    import "gdk_draw_pixbuf" gdk_draw_pixbuf
+    importx "_gdk_draw_pixbuf" gdk_draw_pixbuf
     call gdk_draw_pixbuf(pixmap,gc,pixbuf,0,0,0,0,width,height,(GDK_RGB_DITHER_NONE),0,0)
 
     importx "_gtk_window_new" gtk_window_new
@@ -696,18 +696,18 @@ function pixbuf_draw_text(sd pixbuf,ss text,sd x,sd y,sd size,sd color,sd coordi
     importx "_gtk_widget_destroy" gtk_widget_destroy
     call gtk_widget_destroy(scratch)
 
-    import "g_strdup_printf" g_strdup_printf
+    importx "_g_strdup_printf" g_strdup_printf
     ss format="<b><span foreground='#%06x' font='%u'>%s</span></b>"
     ss markup
     setcall markup g_strdup_printf(format,color,size,text)
 
-    import "pango_layout_set_markup" pango_layout_set_markup
+    importx "_pango_layout_set_markup" pango_layout_set_markup
     call pango_layout_set_markup(pangolayout,markup,-1)
 
     #determine the positioning method: coordinates(x,y) or location(x factor,y factor)
     if coordinates_flag==0
         #location
-        import "pango_layout_get_pixel_size" pango_layout_get_pixel_size
+        importx "_pango_layout_get_pixel_size" pango_layout_get_pixel_size
         sd text_width
         sd text_height
         sd p_text_width^text_width
@@ -730,15 +730,15 @@ function pixbuf_draw_text(sd pixbuf,ss text,sd x,sd y,sd size,sd color,sd coordi
         setcall y rule3(y,2,available_h)
     endif
 
-    import "gdk_draw_layout" gdk_draw_layout
+    importx "_gdk_draw_layout" gdk_draw_layout
     call gdk_draw_layout(pixmap,gc,x,y,pangolayout)
 
-    import "gdk_pixbuf_get_from_drawable" gdk_pixbuf_get_from_drawable
+    importx "_gdk_pixbuf_get_from_drawable" gdk_pixbuf_get_from_drawable
     sd pix_buf
     setcall pix_buf gdk_pixbuf_get_from_drawable((NULL),pixmap,(NULL),0,0,0,0,width,height)
 
-    import "g_object_unref" g_object_unref
-    import "g_free" g_free
+    importx "_g_object_unref" g_object_unref
+    importx "_g_free" g_free
     call g_free(markup)
     call g_object_unref(pangolayout)
     call g_object_unref(gc)
@@ -749,7 +749,7 @@ endfunction
 
 
 function draw_default_cursor(sd root,sd def_x,sd def_y,sd width,sd height,sd cairo)
-    import "gdk_window_get_pointer" gdk_window_get_pointer
+    importx "_gdk_window_get_pointer" gdk_window_get_pointer
     sd x
     sd y
     sd p_x^x
@@ -758,7 +758,7 @@ function draw_default_cursor(sd root,sd def_x,sd def_y,sd width,sd height,sd cai
     sub x def_x
     sub y def_y
 
-    import "gdk_display_get_default" gdk_display_get_default
+    importx "_gdk_display_get_default" gdk_display_get_default
     sd display
     setcall display gdk_display_get_default()
     if display==0
@@ -766,9 +766,9 @@ function draw_default_cursor(sd root,sd def_x,sd def_y,sd width,sd height,sd cai
         call texter(disp_err)
         return 0
     endif
-    import "gdk_cursor_new_for_display" gdk_cursor_new_for_display
-    import "gdk_cursor_get_image" gdk_cursor_get_image
-    import "gdk_cursor_unref" gdk_cursor_unref
+    importx "_gdk_cursor_new_for_display" gdk_cursor_new_for_display
+    importx "_gdk_cursor_get_image" gdk_cursor_get_image
+    importx "_gdk_cursor_unref" gdk_cursor_unref
     sd Cursor
     setcall Cursor gdk_cursor_new_for_display(display,(GDK_LEFT_PTR))
     call draw_cursor(Cursor,x,y,width,height,cairo)
@@ -845,9 +845,9 @@ endfunction
 ##cairo
 
 function cairo_draw_default_cursor(sd cairo,sd cPixbuf,sd x,sd y,sd left,sd top,sd cWidth,sd cHeight)
-    import "gdk_cairo_set_source_pixbuf" gdk_cairo_set_source_pixbuf
-    import "cairo_rectangle" cairo_rectangle
-    import "cairo_fill" cairo_fill
+    importx "_gdk_cairo_set_source_pixbuf" gdk_cairo_set_source_pixbuf
+    importx "_cairo_rectangle" cairo_rectangle
+    importx "_cairo_fill" cairo_fill
     sd double_x_low
     sd double_x_high
     sd double_y_low

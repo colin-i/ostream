@@ -56,7 +56,7 @@ function stage_add_centered_fn(sd filename)
     sd p_pixbuf^pixbuf
     call stage_get_sel_pixbuf(p_pixbuf)
     call stage_pixbuf_in_container_pixbuf(newpixbuf,pixbuf)
-    import "g_object_unref" g_object_unref
+    importx "_g_object_unref" g_object_unref
     call g_object_unref(newpixbuf)
     import "stage_redraw" stage_redraw
     call stage_redraw()
@@ -185,7 +185,7 @@ function stage_frame_form_data_init(sd vbox,sd pixbuf)
     call gtk_table_attach_defaults(table,value,0,1,0,1)
     setcall value gtk_entry_new()
     if pixbuf!=0
-        import "gdk_pixbuf_get_width" gdk_pixbuf_get_width
+        importx "_gdk_pixbuf_get_width" gdk_pixbuf_get_width
         sd wd
         setcall wd gdk_pixbuf_get_width(pixbuf)
         call int_to_entry(wd,value)
@@ -199,7 +199,7 @@ function stage_frame_form_data_init(sd vbox,sd pixbuf)
     call gtk_table_attach_defaults(table,value,0,1,1,2)
     setcall value gtk_entry_new()
     if pixbuf!=0
-        import "gdk_pixbuf_get_height" gdk_pixbuf_get_height
+        importx "_gdk_pixbuf_get_height" gdk_pixbuf_get_height
         sd hg
         setcall hg gdk_pixbuf_get_height(pixbuf)
         call int_to_entry(hg,value)

@@ -135,12 +135,12 @@ function stage_effect_scale_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd rowst
     sd newpixbuf
 
     import "pixbuf_scale" pixbuf_scale
-    import "g_object_unref" g_object_unref
+    importx "_g_object_unref" g_object_unref
 
     if subpixels==0
         setcall newpixbuf pixbuf_scale(animpixbuf,frame_width,frame_height)
     else
-        import "gdk_pixbuf_new_subpixbuf" gdk_pixbuf_new_subpixbuf
+        importx "_gdk_pixbuf_new_subpixbuf" gdk_pixbuf_new_subpixbuf
         sd croppixbuf
         setcall croppixbuf gdk_pixbuf_new_subpixbuf(animpixbuf,left,top,frame_width,frame_height)
         if croppixbuf==0
@@ -159,7 +159,7 @@ function stage_effect_scale_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd rowst
 
     import "rgb_px_get" rgb_px_get
     import "rgb_px_set" rgb_px_set
-    import "gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
+    importx "_gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
 
     import "rgb_get_all_sizes" rgb_get_all_sizes
     sd rowstr

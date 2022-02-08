@@ -1,7 +1,7 @@
 
 format elfobj
 
-import "g_error_free" g_error_free
+importx "_g_error_free" g_error_free
 
 import "texter" texter
 import "geterrno" geterrno

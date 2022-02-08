@@ -131,7 +131,7 @@ function capture_init(sd vbox,sd *dialog)
     call capture_alternative_init(vbox)
 endfunction
 
-import "g_object_unref" g_object_unref
+importx "_g_object_unref" g_object_unref
 
 function capture_start()
     #set capture rect, can return if arguments are not right
@@ -291,7 +291,7 @@ function capture_split(sd action,sd value)
     endelse
 endfunction
 
-import "gdk_get_default_root_window" gdk_get_default_root_window
+importx "_gdk_get_default_root_window" gdk_get_default_root_window
 import "sleepMs" sleepMs
 import "texter" texter
 
@@ -330,7 +330,7 @@ function capture_rect(sd action,sd index,sd value)
     else
     #if action==(value_setrect)
     #bool
-        import "gdk_drawable_get_size" gdk_drawable_get_size
+        importx "_gdk_drawable_get_size" gdk_drawable_get_size
         sd root
         setcall root gdk_get_default_root_window()
         sd maxwidth
@@ -591,8 +591,8 @@ function capture_rect_screenshot(sd action)
     endelse
 endfunction
 
-import "cairo_destroy" cairo_destroy
-import "cairo_surface_destroy" cairo_surface_destroy
+importx "_cairo_destroy" cairo_destroy
+importx "_cairo_surface_destroy" cairo_surface_destroy
 function capture_free_cairo(sd cairo,sd surface)
     call cairo_destroy(cairo)
     call cairo_surface_destroy(surface)
@@ -661,7 +661,7 @@ function capture_pixbuf(sd action,sd x,sd y,sd pix_width,sd pix_height,sd cursor
             #cairo surface and cairo context
             sd root
             setcall root gdk_get_default_root_window()
-            import "cairo_image_surface_create" cairo_image_surface_create
+            importx "_cairo_image_surface_create" cairo_image_surface_create
             setcall surface cairo_image_surface_create((CAIRO_FORMAT_RGB24),width,height)
             if surface==0
                 str surf="Image surface error"
@@ -669,13 +669,13 @@ function capture_pixbuf(sd action,sd x,sd y,sd pix_width,sd pix_height,sd cursor
                 return 0
             endif
 
-            import "cairo_create" cairo_create
+            importx "_cairo_create" cairo_create
             setcall cairo cairo_create(surface)
             sd x_value
             sd y_value
             sd p_xy_value^x_value
             call capture_get_xy(p_xy_value)
-            import "gdk_cairo_set_source_window" gdk_cairo_set_source_window
+            importx "_gdk_cairo_set_source_window" gdk_cairo_set_source_window
             sd double_x_low
             sd double_x_high
             sd double_y_low
@@ -704,7 +704,7 @@ function capture_pixbuf(sd action,sd x,sd y,sd pix_width,sd pix_height,sd cursor
                 return 0
             endif
         endelse
-        import "gdk_pixbuf_new_from_data" gdk_pixbuf_new_from_data
+        importx "_gdk_pixbuf_new_from_data" gdk_pixbuf_new_from_data
         setcall pixbuf gdk_pixbuf_new_from_data(mem,(GDK_COLORSPACE_RGB),(FALSE),8,width,height,rowstr,0,0)
         if pixbuf==0
             call capture_free_stuff(cairo_flag,cairo,surface,mem)
@@ -943,7 +943,7 @@ function capture_direct_run(sd output_file,sd method)
             return 0
         endif
         #write screenshot
-        import "gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
+        importx "_gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
         sd bytes
         setcall bytes gdk_pixbuf_get_pixels(pixbuf)
         setcall er file_write(bytes,rgb_rect_size,file)
@@ -1003,7 +1003,7 @@ endfunction
 import "draw_default_cursor" draw_default_cursor
 
 function capture_get_cairo_pixbuf(sd x,sd y,sd wdt,sd hgt,sd cursor_flag,sd cairo,sd surface)
-    import "cairo_paint" cairo_paint
+    importx "_cairo_paint" cairo_paint
     call cairo_paint(cairo)
 
     if cursor_flag==1

@@ -135,7 +135,7 @@ function mix_launch_got_command(sd command)
     endif
     mult timeout 1000
     data f^mix_timeout
-    import "gdk_threads_add_timeout" gdk_threads_add_timeout
+    importx "_gdk_threads_add_timeout" gdk_threads_add_timeout
     call gdk_threads_add_timeout(timeout,f,0)
     #and set the file length value to 0
     sd ptr_length%ptr_filelength

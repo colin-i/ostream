@@ -40,7 +40,7 @@ endfunction
 function viewport_test(sd container,sd widget)
     data null=0
 
-    import "g_type_name" g_type_name
+    importx "_g_type_name" g_type_name
     sd obj
     set obj container#
     set obj obj#
@@ -104,7 +104,7 @@ function object_set_dword_name(sd object,sd int_name)
 
     ss name
     setcall name getsubject()
-    import "g_object_set" g_object_set
+    importx "_g_object_set" g_object_set
     data null=0
     call g_object_set(object,name,s_name,null)
 endfunction
@@ -117,7 +117,7 @@ function object_get_dword_name(sd object)
     sd ptr_str^handle_str
 
     data null=0
-    import "g_object_get" g_object_get
+    importx "_g_object_get" g_object_get
     call g_object_get(object,name,ptr_str,null)
 
     import "strtoint" strtoint
@@ -125,7 +125,7 @@ function object_get_dword_name(sd object)
     sd ptr_img^img
     call strtoint(handle_str,ptr_img)
 
-    import "g_free" g_free
+    importx "_g_free" g_free
     call g_free(handle_str)
 
     return img

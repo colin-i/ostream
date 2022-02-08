@@ -391,7 +391,7 @@ function mpeg_frame(sd type,sd sec,sd nth_sec,sd pixbuf,sd vop_coded)
     ##frame blocks
 
     #rgb to rounded yuv
-    import "gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
+    importx "_gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
     sd bytes
     setcall bytes gdk_pixbuf_get_pixels(pixbuf)
     call mpeg_input_mem((value_rgbtoyuv),bytes)

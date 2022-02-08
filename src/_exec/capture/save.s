@@ -193,7 +193,7 @@ function save_stream_dest_ready(str dest)
 
     call sprintf(mem,format,src,sr_prop,m1,dest,secondstream)
 
-    import "gst_parse_launch" gst_parse_launch
+    importx "_gst_parse_launch" gst_parse_launch
 
     import "getptrgerr" getptrgerr
     import "gerrtoerr" gerrtoerr
@@ -216,7 +216,7 @@ function save_stream_dest_ready(str dest)
     data sg^recSignals
     call bus_signals_data(pipe,sg,dest)
 
-    import "gst_element_set_state" gst_element_set_state
+    importx "_gst_element_set_state" gst_element_set_state
     data play=GST_STATE_PLAYING
     call gst_element_set_state(pipe,play)
 endfunction

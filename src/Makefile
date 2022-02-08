@@ -78,16 +78,17 @@ lnk:
 	if [ "${platform}" = "lin" ]; then \
 		$(CC) -nostdlib ${syms} ${obs} -o ${projname} `pkg-config --libs gtk+-2.0 gstreamer-pbutils-0.10 gstreamer-interfaces-0.10 gstreamer-app-0.10` -lsoup-2.4 -ljpeg -lasound -lm -lpthread -lc; \
 	else \
-		i686-w64-mingw32-ld --large-address-aware ${syms} ${obs} -o ${wprojname} \
+		i686-w64-mingw32-ld --large-address-aware ${syms} ${obs} -o ${wprojname} --start-group \
 		`dpkg -L mingw-w64-i686-dev | grep '\.a' | sed 's/..$$//' | grep -o '[^\/]*$$' | sed 's/lib/-l/' | xargs echo` \
-		-L`echo ~`/.wine/drive_c/gstreamer-sdk/0.10/x86/lib/ \
-		-lgtk-win32-2.0; \
+		--end-group -L`echo ~`/.wine/drive_c/gstreamer-sdk/0.10/x86/lib/ \
+		-lgtk-win32-2.0 -lgdk-win32-2.0 -lgdk_pixbuf-2.0 -lglib-2.0 -lgobject-2.0 -lgio-2.0 -lgthread-2.0 \
+		-lgstreamer-0.10 -lgstapp-0.10 -lgstinterfaces-0.10 -lgstpbutils-0.10 \
+		-lcairo -lpango-1.0 -lsoup-2.4 -ljpeg; \
 	fi
 fast:
 	$(eval obs = `printf ' %s.o' ${items}`)
 link: fast lnk
-#-lgdk -lgdkpix -lglib -lgobject -lgio -lgthread -lgstreamer -lgstinterfaces -lgstpbutils -lcairo -lpango -lgstapp -lsoup -ljpeg; \
-#snprintf with problems unresolved
+#snprintf with circular unresolved requirements
 #cos is in -lmingwex that will work with -lmingw32 -lmsvcrt
 
 %: %.s

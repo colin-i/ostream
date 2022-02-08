@@ -49,7 +49,7 @@ endfunction
 #guint8 group;
 #guint is_modifier : 1;
 
-import "g_signal_connect_data" g_signal_connect_data
+importx "_g_signal_connect_data" g_signal_connect_data
 
 #v
 function connect_signal_data(data instance,str event,data callback,data passdata)
@@ -74,7 +74,7 @@ import "double_to_int" double_to_int
 
 #x
 function eventbutton_get_coords(sd event,sd p_y)
-    import "gdk_event_get_coords" gdk_event_get_coords
+    importx "_gdk_event_get_coords" gdk_event_get_coords
     sd _x#2
     sd _y#2
     sd _p_x^_x

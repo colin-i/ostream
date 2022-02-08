@@ -204,7 +204,7 @@ function av_dialog_run(sd forward,sd data)
     import "getptrgerr" getptrgerr
     sd ptrgerr
     setcall ptrgerr getptrgerr()
-    import "g_thread_create" g_thread_create
+    importx "_g_thread_create" g_thread_create
     sd thread
     setcall thread g_thread_create(forward,data,1,ptrgerr)
     if thread==0
@@ -244,7 +244,7 @@ function av_dialog_run(sd forward,sd data)
             call capture_alt_ev_wait()
         endelse
         #close the other thread and get return(optional)
-        import "g_thread_join" g_thread_join
+        importx "_g_thread_join" g_thread_join
         setcall bool g_thread_join(thread)
     endelse
 

@@ -72,8 +72,8 @@ function stage_crop_tool(sd action,sd vbox)
         data width_orig#1
         data height_orig#1
 
-        import "gdk_pixbuf_get_width" gdk_pixbuf_get_width
-        import "gdk_pixbuf_get_height" gdk_pixbuf_get_height
+        importx "_gdk_pixbuf_get_width" gdk_pixbuf_get_width
+        importx "_gdk_pixbuf_get_height" gdk_pixbuf_get_height
         setcall width_orig gdk_pixbuf_get_width(pixbuf)
         setcall height_orig gdk_pixbuf_get_height(pixbuf)
 
@@ -175,7 +175,7 @@ function stage_crop_tool(sd action,sd vbox)
         if action==(stage_crop_tool_preview)
             import "widget_draw_pixbuf" widget_draw_pixbuf
             call widget_draw_pixbuf(display,croppixbuf)
-            import "g_object_unref" g_object_unref
+            importx "_g_object_unref" g_object_unref
             call g_object_unref(croppixbuf)
         else
         #if action==(stage_crop_tool_set)
@@ -213,8 +213,8 @@ function stage_crop_maximize()
     #
     importx "_gtk_widget_get_window" gtk_widget_get_window
     sd wind
-    import "gdk_window_get_width" gdk_window_get_width
-    import "gdk_window_get_height" gdk_window_get_height
+    importx "_gdk_window_get_width" gdk_window_get_width
+    importx "_gdk_window_get_height" gdk_window_get_height
     call gtk_window_maximize(dialog)
     setcall wind gtk_widget_get_window(dialog)
     sd w

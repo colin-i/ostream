@@ -120,11 +120,11 @@ import "texter" texter
 
 function stage_prepare_pixbuf(sd pixbuf,sd mem,sd w,sd h)
     sd px_pixels
-    import "gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
+    importx "_gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
     setcall px_pixels gdk_pixbuf_get_pixels(pixbuf)
 
     sd px_bps
-    import "gdk_pixbuf_get_bits_per_sample" gdk_pixbuf_get_bits_per_sample
+    importx "_gdk_pixbuf_get_bits_per_sample" gdk_pixbuf_get_bits_per_sample
     setcall px_bps gdk_pixbuf_get_bits_per_sample(pixbuf)
 
     data minbps=pixbuf_minbps
@@ -135,7 +135,7 @@ function stage_prepare_pixbuf(sd pixbuf,sd mem,sd w,sd h)
     endif
 
     sd px_nchan
-    import "gdk_pixbuf_get_n_channels" gdk_pixbuf_get_n_channels
+    importx "_gdk_pixbuf_get_n_channels" gdk_pixbuf_get_n_channels
     setcall px_nchan gdk_pixbuf_get_n_channels(pixbuf)
 
     data minnchan=pixbuf_minnchan
@@ -146,7 +146,7 @@ function stage_prepare_pixbuf(sd pixbuf,sd mem,sd w,sd h)
     endif
 
     sd px_rowstride
-    import "gdk_pixbuf_get_rowstride" gdk_pixbuf_get_rowstride
+    importx "_gdk_pixbuf_get_rowstride" gdk_pixbuf_get_rowstride
     setcall px_rowstride gdk_pixbuf_get_rowstride(pixbuf)
 
     import "rgb_get_set" rgb_get_set
@@ -186,8 +186,8 @@ function stage_file_frame_main_set(sd ptr_pack,sd eventbox)
     set ptr_pack# pix
     add ptr_pack a
 
-    import "gdk_pixbuf_get_width" gdk_pixbuf_get_width
-    import "gdk_pixbuf_get_height" gdk_pixbuf_get_height
+    importx "_gdk_pixbuf_get_width" gdk_pixbuf_get_width
+    importx "_gdk_pixbuf_get_height" gdk_pixbuf_get_height
     setcall ptr_pack# gdk_pixbuf_get_width(pix)
     add ptr_pack a
     setcall ptr_pack# gdk_pixbuf_get_height(pix)
@@ -244,7 +244,7 @@ function stage_file_need_fn(sd appsrc)
 
         call stage_prepare_pixbuf(pixbuf,mem,w,h)
 
-        import "gst_app_buffer_new" gst_app_buffer_new
+        importx "_gst_app_buffer_new" gst_app_buffer_new
         data free_fn^free
         sd buffer
         setcall buffer gst_app_buffer_new(mem,framesize,free_fn,mem)
@@ -258,22 +258,22 @@ function stage_file_need_fn(sd appsrc)
         setcall fps stage_file_options_fps()
         call sprintf(gstcaps,capsformat,w,h,bpp,fps)
 
-        import "gst_caps_from_string" gst_caps_from_string
+        importx "_gst_caps_from_string" gst_caps_from_string
         sd caps
         setcall caps gst_caps_from_string(gstcaps)
 
-        import "gst_buffer_set_caps" gst_buffer_set_caps
+        importx "_gst_buffer_set_caps" gst_buffer_set_caps
         call gst_buffer_set_caps(buffer,caps)
 
-        import "gst_caps_unref" gst_caps_unref
+        importx "_gst_caps_unref" gst_caps_unref
         call gst_caps_unref(caps)
 
         sd flow
         sd ptr_flow^flow
-        import "g_signal_emit_by_name" g_signal_emit_by_name
+        importx "_g_signal_emit_by_name" g_signal_emit_by_name
         str push="push-buffer"
         call g_signal_emit_by_name(appsrc,push,buffer,ptr_flow)
-        import "gst_mini_object_unref" gst_mini_object_unref
+        importx "_gst_mini_object_unref" gst_mini_object_unref
         call gst_mini_object_unref(buffer)
         data ok=GST_FLOW_OK
         if flow<ok
@@ -286,7 +286,7 @@ function stage_file_need_fn(sd appsrc)
         setcall eventbox stage_nthwidgetFromcontainer(file_frames)
         if eventbox==0
             #state must be play or pause
-            import "gst_app_src_end_of_stream" gst_app_src_end_of_stream
+            importx "_gst_app_src_end_of_stream" gst_app_src_end_of_stream
             call gst_app_src_end_of_stream(appsrc)
 
             import "save_inform_saved" save_inform_saved
@@ -299,7 +299,7 @@ function stage_file_need_fn(sd appsrc)
     return false
 endfunction
 function stage_file_need(sd appsrc,sd *arg1,sd *data)
-    import "gdk_threads_add_timeout" gdk_threads_add_timeout
+    importx "_gdk_threads_add_timeout" gdk_threads_add_timeout
     #set a timeout to allow the progress bar redrawing
     data msec=0
     data f^stage_file_need_fn
@@ -332,7 +332,7 @@ function stage_file_command(ss command)
     call bus_signals(pipe,connects)
 
     #connect appsrc to add pixbufs
-    import "gst_bin_get_by_name" gst_bin_get_by_name
+    importx "_gst_bin_get_by_name" gst_bin_get_by_name
     ss srcname
     setcall srcname stage_get_src_name()
     sd appsrc
@@ -353,7 +353,7 @@ function stage_file_command(ss command)
     setcall queue stage_frame_size(w,h)
     data queueframes=1
     mult queue queueframes
-    import "gst_app_src_set_max_bytes" gst_app_src_set_max_bytes
+    importx "_gst_app_src_set_max_bytes" gst_app_src_set_max_bytes
     call gst_app_src_set_max_bytes(appsrc,queue)
 
     #launch a modal progress bar
@@ -361,7 +361,7 @@ function stage_file_command(ss command)
     call stage_progress_dialog(inits)
 
     #state null appsrc and unref
-    import "gst_object_unref" gst_object_unref
+    importx "_gst_object_unref" gst_object_unref
     call gst_object_unref(appsrc)
     #state null pipe, remove the watch and unref the pipe
     import "default_unref" default_unref

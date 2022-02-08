@@ -7,9 +7,9 @@ format elfobj
 include "../../_include/include.h"
 
 function stage_screenshot()
-    import "gdk_get_default_root_window" gdk_get_default_root_window
-    import "gdk_drawable_get_size" gdk_drawable_get_size
-    import "gdk_window_get_origin" gdk_window_get_origin
+    importx "_gdk_get_default_root_window" gdk_get_default_root_window
+    importx "_gdk_drawable_get_size" gdk_drawable_get_size
+    importx "_gdk_window_get_origin" gdk_window_get_origin
     sd root
     setcall root gdk_get_default_root_window()
     sd width
@@ -23,7 +23,7 @@ function stage_screenshot()
     call gdk_drawable_get_size(root,p_width,p_height)
     call gdk_window_get_origin(root,p_x_orig,p_y_orig)
 
-    import "gdk_pixbuf_get_from_drawable" gdk_pixbuf_get_from_drawable
+    importx "_gdk_pixbuf_get_from_drawable" gdk_pixbuf_get_from_drawable
     sd pixbuf
     setcall pixbuf gdk_pixbuf_get_from_drawable((NULL),root,(NULL),x_orig,y_orig,0,0,width,height)
     if pixbuf==0

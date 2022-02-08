@@ -52,7 +52,7 @@ function stage_scale_set()
     sd ptr_eventbox^eventbox
     call stage_get_sel_parent(ptr_eventbox)
 
-    import "g_object_unref" g_object_unref
+    importx "_g_object_unref" g_object_unref
     call g_object_unref(currentpixbuf)
 
     import "object_set_dword_name" object_set_dword_name
@@ -96,8 +96,8 @@ function stage_scale_init(sd vbox,sd *dialog)
 
     set pixbuf ptr_pix#
 
-    import "gdk_pixbuf_get_width" gdk_pixbuf_get_width
-    import "gdk_pixbuf_get_height" gdk_pixbuf_get_height
+    importx "_gdk_pixbuf_get_width" gdk_pixbuf_get_width
+    importx "_gdk_pixbuf_get_height" gdk_pixbuf_get_height
     sd width
     sd height
     setcall width gdk_pixbuf_get_width(pixbuf)
@@ -218,7 +218,7 @@ function scale_signal_changed(sd widget,sd data)
 
     #disconnect for not trigger in chain
     data fn_set^scale_signal_changed
-    import "g_signal_handlers_disconnect_matched" g_signal_handlers_disconnect_matched
+    importx "_g_signal_handlers_disconnect_matched" g_signal_handlers_disconnect_matched
     call g_signal_handlers_disconnect_matched(wd_entry,(G_SIGNAL_MATCH_FUNC),0,0,0,fn_set,0)
     call g_signal_handlers_disconnect_matched(hg_entry,(G_SIGNAL_MATCH_FUNC),0,0,0,fn_set,0)
 

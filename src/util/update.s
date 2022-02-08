@@ -7,7 +7,7 @@ format elfobj
 include "../_include/include.h"
 
 importx "_free" free
-import "g_object_unref" g_object_unref
+importx "_g_object_unref" g_object_unref
 
 import "file_get_content" file_get_content
 import "uri_get_content" uri_get_content

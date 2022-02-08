@@ -535,9 +535,9 @@ function mkv_track(sd file,sd size,sd filepos)
     return bool
 endfunction
 
-import "gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
-import "gdk_pixbuf_get_width" gdk_pixbuf_get_width
-import "gdk_pixbuf_get_height" gdk_pixbuf_get_height
+importx "_gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
+importx "_gdk_pixbuf_get_width" gdk_pixbuf_get_width
+importx "_gdk_pixbuf_get_height" gdk_pixbuf_get_height
 
 import "stage_file_options_fps" stage_file_options_fps
 
@@ -1079,7 +1079,7 @@ function mkv_simpleblock(sd file,sd size,sd filepos)
                 setcall err file_write(rgb_pixels,rgb_sz,file)
                 #
                 if capture_flag==0
-                    import "g_object_unref" g_object_unref
+                    importx "_g_object_unref" g_object_unref
                     call g_object_unref(reverse_pixbuf)
                 endif
 
@@ -1620,7 +1620,7 @@ function mkv_readentry(sd frames,sd newtime,sd p_resultedframes)
     endif
 
     #add make pixbuf from data
-    import "gdk_pixbuf_new_from_data" gdk_pixbuf_new_from_data
+    importx "_gdk_pixbuf_new_from_data" gdk_pixbuf_new_from_data
     sd rowstride
     sd p_rowstride^rowstride
     call rgb_get_all_sizes(w,h,p_rowstride)

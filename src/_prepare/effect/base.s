@@ -161,14 +161,14 @@ function stage_effect_new(sd forward,sd data)
     endif
 
     #get dimensions
-    import "gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
-    import "gdk_pixbuf_get_width" gdk_pixbuf_get_width
+    importx "_gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
+    importx "_gdk_pixbuf_get_width" gdk_pixbuf_get_width
     sd w
     setcall w gdk_pixbuf_get_width(pixbuf)
-    import "gdk_pixbuf_get_height" gdk_pixbuf_get_height
+    importx "_gdk_pixbuf_get_height" gdk_pixbuf_get_height
     sd h
     setcall h gdk_pixbuf_get_height(pixbuf)
-    import "gdk_pixbuf_get_rowstride" gdk_pixbuf_get_rowstride
+    importx "_gdk_pixbuf_get_rowstride" gdk_pixbuf_get_rowstride
     sd rowstride
     setcall rowstride gdk_pixbuf_get_rowstride(pixbuf)
 
@@ -181,7 +181,7 @@ function stage_effect_new(sd forward,sd data)
     setcall uint_color color_widget_get_color_to_rgb(colors_entry)
     #animation pixbuf from new image or the selected frame
     sd animpixbuf
-    import "g_object_unref" g_object_unref
+    importx "_g_object_unref" g_object_unref
 
     sd newimage_entry
     setcall newimage_entry stage_effect_get_image_button()
@@ -205,7 +205,7 @@ function stage_effect_new(sd forward,sd data)
         import "stage_pixbuf_in_container_pixbuf" stage_pixbuf_in_container_pixbuf
         call stage_pixbuf_in_container_pixbuf(filepixbuf,animpixbuf)
         call g_object_unref(filepixbuf)
-        import "g_free" g_free
+        importx "_g_free" g_free
         call g_free(filename)
     endelse
 

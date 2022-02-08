@@ -243,7 +243,7 @@ function stage_element(sd *bus,sd message,sd ptrpipeline)
             str text="Received frames: "
             call stage_new_pix(pixbuf,text)
         else
-            import "g_object_unref" g_object_unref
+            importx "_g_object_unref" g_object_unref
             call g_object_unref(pixbuf)
             if skip==1
                 call strdworddisp("Skipped frame: ",pos#)

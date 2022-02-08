@@ -371,7 +371,7 @@ function avc_enc_frame(sd pixbuf)
     #get pixbuf to input i420
     sd input
     setcall input avc_pre_input((value_get))
-    import "gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
+    importx "_gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
     sd bytes
     setcall bytes gdk_pixbuf_get_pixels(pixbuf)
     import "rgb_to_yuvi420" rgb_to_yuvi420

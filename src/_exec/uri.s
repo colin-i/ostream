@@ -19,10 +19,10 @@ endfunction
 
 #void gtkwidget::realize
 importx "_gtk_widget_get_window" gtk_widget_get_window
-import "gdk_window_ensure_native" gdk_window_ensure_native
-import "gst_x_overlay_set_window_handle" gst_x_overlay_set_window_handle
-import "gst_x_overlay_get_type" gst_x_overlay_get_type
-import "gst_implements_interface_cast" gst_implements_interface_cast
+importx "_gdk_window_ensure_native" gdk_window_ensure_native
+importx "_gst_x_overlay_set_window_handle" gst_x_overlay_set_window_handle
+importx "_gst_x_overlay_get_type" gst_x_overlay_get_type
+importx "_gst_implements_interface_cast" gst_implements_interface_cast
 
 import "gdkGetdrawable" gdkGetdrawable
 
@@ -63,7 +63,7 @@ function gstset()
     call unset_playbool()
 endfunction
 
-import "gst_element_set_state" gst_element_set_state
+importx "_gst_element_set_state" gst_element_set_state
 function set_pipe_null(data pipe)
     call gst_element_set_state(pipe,(GST_STATE_NULL))
 endfunction
@@ -114,7 +114,7 @@ function addSignals(data bus,sd *callbackdata)
     call connect_signal(bus,state_changed,state)
 endfunction
 
-import "gst_element_factory_make" gst_element_factory_make
+importx "_gst_element_factory_make" gst_element_factory_make
 #void/err
 function gstplayinit(data videowidget)
     data null=0

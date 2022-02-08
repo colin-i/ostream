@@ -1104,7 +1104,7 @@ function avi_write_frame(sd file)
     sd bool
     setcall encoder stage_write_avi_encoder((value_get))
     if encoder==(format_avi_i420)
-        import "gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
+        importx "_gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
         import "pixbuf_get_wh" pixbuf_get_wh
         sd width
         sd height
@@ -1286,7 +1286,7 @@ function avi_read_entries(sd file,sd *file_pos,ss chunk_id,sd chunk_size)
         call av_display_info((value_write),file,-1,chunk_size)
 
         #make pixbuf
-        import "gdk_pixbuf_new_from_data" gdk_pixbuf_new_from_data
+        importx "_gdk_pixbuf_new_from_data" gdk_pixbuf_new_from_data
         import "rgb_get_rowstride" rgb_get_rowstride
         data free_pixbuf^free
         sd rowstride
