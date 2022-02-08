@@ -41,7 +41,7 @@ endfunction
 const start_from_image=0
 #const end_with_image=1
 
-import "gtk_toggle_button_get_active" gtk_toggle_button_get_active
+importx "_gtk_toggle_button_get_active" gtk_toggle_button_get_active
 
 function stage_effect_scale_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd rowstride,sd *animpixels,sd animpixbuf,sd in_out)
     data orientation_left_mult#1

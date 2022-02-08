@@ -11,7 +11,7 @@ function getsubject()
 endfunction
 
 function search_photo_set_scaled(sd pixbuf,sd img)
-    import "gtk_image_set_from_pixbuf" gtk_image_set_from_pixbuf
+    importx "_gtk_image_set_from_pixbuf" gtk_image_set_from_pixbuf
     call gtk_image_set_from_pixbuf(img,pixbuf)
 endfunction
 

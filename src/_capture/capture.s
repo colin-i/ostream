@@ -49,7 +49,7 @@ function capture_init(sd vbox,sd *dialog)
     sd size_entry
     sd string
 
-    import "gtk_entry_set_text" gtk_entry_set_text
+    importx "_gtk_entry_set_text" gtk_entry_set_text
     ss l="Left"
     ss t="Top"
     ss w="Width"
@@ -89,11 +89,11 @@ function capture_init(sd vbox,sd *dialog)
     call capture_rect((value_set),(height_coord),height_entry)
     call capture_split((value_set),size_entry)
 
-    import "gtk_toggle_button_set_active" gtk_toggle_button_set_active
+    importx "_gtk_toggle_button_set_active" gtk_toggle_button_set_active
     import "packstart_default" packstart_default
 
     #cursor
-    import "gtk_check_button_new_with_label" gtk_check_button_new_with_label
+    importx "_gtk_check_button_new_with_label" gtk_check_button_new_with_label
     ss txt="Capture the cursor"
     sd cursor
     setcall cursor gtk_check_button_new_with_label(txt)
@@ -107,7 +107,7 @@ function capture_init(sd vbox,sd *dialog)
     ss temp_txt="Temporary file first"
     sd temp
     setcall temp gtk_check_button_new_with_label(temp_txt)
-    import "gtk_widget_set_tooltip_markup" gtk_widget_set_tooltip_markup
+    importx "_gtk_widget_set_tooltip_markup" gtk_widget_set_tooltip_markup
     ss temp_info="Ignored if Raw file(s) selected"
     call gtk_widget_set_tooltip_markup(temp,temp_info)
     sd temp_flag
@@ -389,7 +389,7 @@ function capture_rect(sd action,sd index,sd value)
             return 0
         endif
         #cursor
-        import "gtk_toggle_button_get_active" gtk_toggle_button_get_active
+        importx "_gtk_toggle_button_get_active" gtk_toggle_button_get_active
         add values 4
         setcall values# gtk_toggle_button_get_active(cursor)
         #temporary
@@ -441,7 +441,7 @@ function capture_settings_set_write(sd capture_fl)
     sd bool
     sd string
     setcall entries capture_rect((value_get))
-    import "gtk_entry_get_text" gtk_entry_get_text
+    importx "_gtk_entry_get_text" gtk_entry_get_text
 
     setcall string gtk_entry_get_text(entries#)
     setcall bool file_write_string(string,capture_fl)

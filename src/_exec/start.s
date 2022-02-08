@@ -4,9 +4,9 @@
 
 format elfobj
 
-import "gtk_window_new" gtk_window_new
-import "gtk_window_set_title" gtk_window_set_title
-import "gtk_window_set_default_size" gtk_window_set_default_size
+importx "_gtk_window_new" gtk_window_new
+importx "_gtk_window_set_title" gtk_window_set_title
+importx "_gtk_window_set_default_size" gtk_window_set_default_size
 importx "_gtk_main_quit" gtk_main_quit
 importx "_gtk_widget_show_all" gtk_widget_show_all
 
@@ -233,7 +233,7 @@ function initfn()
     call movetoScriptfolder(ptrcallback)
 
     call gtk_widget_show_all(window)
-    #import "gtk_widget_hide_all" gtk_widget_hide_all
+    #importx "_gtk_widget_hide_all" gtk_widget_hide_all
     #call gtk_widget_hide_all(edits)
 endfunction
 #void

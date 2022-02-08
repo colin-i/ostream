@@ -177,7 +177,7 @@ endfunction
 #
 
 #default err and eos pipe and modal
-import "gtk_dialog_response" gtk_dialog_response
+importx "_gtk_dialog_response" gtk_dialog_response
 function default_err_modal(sd *bus,sd message,sd dialog)
     call def_error(message)
     call gtk_dialog_response(dialog,(GTK_RESPONSE_CANCEL))

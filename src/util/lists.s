@@ -22,7 +22,7 @@ endfunction
 #returns what forward returns
 function widget_forward_children_data(sd widget,sd forward,sd data)
     sd GList
-    import "gtk_container_get_children" gtk_container_get_children
+    importx "_gtk_container_get_children" gtk_container_get_children
     setcall GList gtk_container_get_children(widget)
     sd ret
     setcall ret forward(GList,data)

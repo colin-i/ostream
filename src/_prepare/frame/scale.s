@@ -13,7 +13,7 @@ function stage_scale_set()
     const ptr_entryw^entryw
     const ptr_entryh^entryh
 
-    import "gtk_entry_get_text" gtk_entry_get_text
+    importx "_gtk_entry_get_text" gtk_entry_get_text
 
     import "strtoint" strtoint
     sd bool
@@ -109,7 +109,7 @@ function stage_scale_init(sd vbox,sd *dialog)
     str format="%u"
 
     importx "_sprintf" sprintf
-    import "gtk_entry_set_text" gtk_entry_set_text
+    importx "_gtk_entry_set_text" gtk_entry_set_text
 
     call sprintf(strconv,format,width)
     call gtk_entry_set_text(entryw,strconv)
@@ -128,7 +128,7 @@ function stage_scale_init(sd vbox,sd *dialog)
 
     #toggle button
     sd ch_button
-    import "gtk_check_button_new_with_label" gtk_check_button_new_with_label
+    importx "_gtk_check_button_new_with_label" gtk_check_button_new_with_label
     ss txt="Preserve aspect ratio"
     setcall ch_button gtk_check_button_new_with_label(txt)
     import "packstart_default" packstart_default
@@ -136,7 +136,7 @@ function stage_scale_init(sd vbox,sd *dialog)
     call packstart_default(vbox,ch_button)
 
     #set to preserve aspect ratio
-    import "gtk_toggle_button_set_active" gtk_toggle_button_set_active
+    importx "_gtk_toggle_button_set_active" gtk_toggle_button_set_active
     call gtk_toggle_button_set_active(ch_button,1)
 
     #connect the on change signal to edit entries
@@ -192,7 +192,7 @@ endfunction
 
 
 function scale_signal_changed(sd widget,sd data)
-    import "gtk_toggle_button_get_active" gtk_toggle_button_get_active
+    importx "_gtk_toggle_button_get_active" gtk_toggle_button_get_active
     sd ch_button
     setcall ch_button scale_toggle_entry((value_get))
     sd toggled

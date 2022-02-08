@@ -223,10 +223,10 @@ function setdisplay_setfile_search(sd method,sd argument,sd text)
         endif
     else
         if selection==setdisplay
-            import "gtk_entry_set_text" gtk_entry_set_text
+            importx "_gtk_entry_set_text" gtk_entry_set_text
             call gtk_entry_set_text(argument,text)
         else
-            import "gtk_entry_get_text" gtk_entry_get_text
+            importx "_gtk_entry_get_text" gtk_entry_get_text
             import "slen" slen
             ss buffer
             setcall buffer gtk_entry_get_text(argument)

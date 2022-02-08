@@ -75,7 +75,7 @@ endfunction
 
 
 
-import "gtk_file_chooser_get_filename_utf8" gtk_file_chooser_get_filename_utf8
+importx "_gtk_file_chooser_get_filename_utf8" gtk_file_chooser_get_filename_utf8
 function file_chooser_get_fname(sd dialog)
     sd file
     setcall file gtk_file_chooser_get_filename_utf8(dialog)
@@ -153,8 +153,8 @@ function gdi_toggle(sd action,sd value)
 endfunction
 
 function capture_alternative_init(sd vbox)
-    import "gtk_check_button_new_with_label" gtk_check_button_new_with_label
-    import "gtk_toggle_button_set_active" gtk_toggle_button_set_active
+    importx "_gtk_check_button_new_with_label" gtk_check_button_new_with_label
+    importx "_gtk_toggle_button_set_active" gtk_toggle_button_set_active
     importx "_gtk_container_add" gtk_container_add
     ss gdi_txt="Use GDI"
     sd gdi_entry
@@ -167,11 +167,11 @@ function capture_alternative_init(sd vbox)
     import "hseparatorfield" hseparatorfield
     call hseparatorfield(vbox)
 
-    import "gtk_table_new" gtk_table_new
+    importx "_gtk_table_new" gtk_table_new
     importx "_gtk_table_attach" gtk_table_attach
     import "buttonfield_prepare_with_label" buttonfield_prepare_with_label
     import "connect_clicked" connect_clicked
-    import "gtk_widget_set_tooltip_markup" gtk_widget_set_tooltip_markup
+    importx "_gtk_widget_set_tooltip_markup" gtk_widget_set_tooltip_markup
     sd table
     setcall table gtk_table_new(4,1,0)
 
@@ -215,7 +215,7 @@ endfunction
 function capture_alternative_set(sd p_no_alternative)
     sd gdi_entry
     setcall gdi_entry gdi_toggle((value_get))
-    import "gtk_toggle_button_get_active" gtk_toggle_button_get_active
+    importx "_gtk_toggle_button_get_active" gtk_toggle_button_get_active
     setcall p_no_alternative# gtk_toggle_button_get_active(gdi_entry)
     xor p_no_alternative# 1
 endfunction

@@ -3,10 +3,10 @@ format elfobj
 
 include "../_include/include.h"
 
-import "gtk_init" gtk_init
+importx "_gtk_init" gtk_init
 import "gst_init" gst_init
 import "initfn" initfn
-import "gtk_main" gtk_main
+importx "_gtk_main" gtk_main
 importx "_exit" exit
 
 entry _start()

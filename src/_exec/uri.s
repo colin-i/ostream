@@ -18,7 +18,7 @@ function getplaybin2ptr()
 endfunction
 
 #void gtkwidget::realize
-import "gtk_widget_get_window" gtk_widget_get_window
+importx "_gtk_widget_get_window" gtk_widget_get_window
 import "gdk_window_ensure_native" gdk_window_ensure_native
 import "gst_x_overlay_set_window_handle" gst_x_overlay_set_window_handle
 import "gst_x_overlay_get_type" gst_x_overlay_get_type

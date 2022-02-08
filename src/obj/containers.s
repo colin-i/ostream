@@ -5,7 +5,7 @@ format elfobj
 
 include "../_include/include.h"
 
-import "gtk_box_pack_start" gtk_box_pack_start
+importx "_gtk_box_pack_start" gtk_box_pack_start
 
 #########box
 function boxpackstart(data box,data subwidget,data space,data padding)
@@ -21,7 +21,7 @@ function packstart_default(sd box,sd widget)
 endfunction
 
 
-import "gtk_alignment_new" gtk_alignment_new
+importx "_gtk_alignment_new" gtk_alignment_new
 ##########alignment
 function alignmentfield(data container)
     data gtkwidget#1
@@ -48,7 +48,7 @@ endfunction
 
 #dialog
 function dialogfield_size_button_core(ss title,sd modal_flag,sd forward_init,sd width,sd height,sd button,sd bresponse)
-    import "gtk_dialog_new_with_buttons" gtk_dialog_new_with_buttons
+    importx "_gtk_dialog_new_with_buttons" gtk_dialog_new_with_buttons
     sd window
     setcall window mainwidget()
 
@@ -59,10 +59,10 @@ function dialogfield_size_button_core(ss title,sd modal_flag,sd forward_init,sd 
     or flags modal_flag
     setcall dialog gtk_dialog_new_with_buttons(title,window,flags,button,bresponse,end)
 
-    import "gtk_window_set_default_size" gtk_window_set_default_size
+    importx "_gtk_window_set_default_size" gtk_window_set_default_size
     call gtk_window_set_default_size(dialog,width,height)
 
-    import "gtk_dialog_get_content_area" gtk_dialog_get_content_area
+    importx "_gtk_dialog_get_content_area" gtk_dialog_get_content_area
     sd vbox
     setcall vbox gtk_dialog_get_content_area(dialog)
     call forward_init(vbox,dialog)
@@ -90,7 +90,7 @@ function dialogfield_size_button(ss title,sd modal_flag,sd forward1,sd forward2,
 
     if modal_flag==(GTK_DIALOG_MODAL)
     #modal dialog
-        import "gtk_dialog_run" gtk_dialog_run
+        importx "_gtk_dialog_run" gtk_dialog_run
         sd response
         setcall response gtk_dialog_run(dialog)
 
@@ -210,7 +210,7 @@ function dialog_modal_texter_draw_main_thread(sd *data)
     setcall widget dialog_modal_texter_drawwidget((value_get))
     if widget!=0
         import "widget_redraw" widget_redraw
-        import "gtk_widget_get_window" gtk_widget_get_window
+        importx "_gtk_widget_get_window" gtk_widget_get_window
         call widget_redraw(widget)
         sd window
         setcall window gtk_widget_get_window(widget)
@@ -255,7 +255,7 @@ endfunction
 importx "_gtk_container_add" gtk_container_add
 import "container_add" container_add
 
-import "gtk_event_box_new" gtk_event_box_new
+importx "_gtk_event_box_new" gtk_event_box_new
 function eventboxfield(sd box)
     sd wid
     setcall wid gtk_event_box_new()
@@ -295,7 +295,7 @@ function filechooserfield_core()
     data responsecancel=GTK_RESPONSE_CANCEL
     str GTK_STOCK_OPEN="gtk-open"
     data null=0
-    import "gtk_file_chooser_dialog_new" gtk_file_chooser_dialog_new
+    importx "_gtk_file_chooser_dialog_new" gtk_file_chooser_dialog_new
     sd dialog
     setcall dialog gtk_file_chooser_dialog_new(open_file,main,open,GTK_STOCK_CANCEL,responsecancel,GTK_STOCK_OPEN,(GTK_RESPONSE_ACCEPT),null)
     return dialog
@@ -358,7 +358,7 @@ endfunction
 
 #fchooserbuttonfield
 function fchooserbuttonfield_open(sd container,ss dialogtext)
-    import "gtk_file_chooser_button_new" gtk_file_chooser_button_new
+    importx "_gtk_file_chooser_button_new" gtk_file_chooser_button_new
     sd fchooser
     setcall fchooser gtk_file_chooser_button_new(dialogtext,(GTK_FILE_CHOOSER_ACTION_OPEN))
     call packstart(container,fchooser,(TRUE))
@@ -385,7 +385,7 @@ function framefield(sd box,ss text)
     return frame
 endfunction
 
-import "gtk_hbox_new" gtk_hbox_new
+importx "_gtk_hbox_new" gtk_hbox_new
 ##########hbox
 function hboxfield_prepare()
     data gtkwidget#1
@@ -419,7 +419,7 @@ endfunction
 
 ##############scroll
 function scrollfield(sd container)
-    import "gtk_scrolled_window_new" gtk_scrolled_window_new
+    importx "_gtk_scrolled_window_new" gtk_scrolled_window_new
     data null=0
     sd scroll
     setcall scroll gtk_scrolled_window_new(null,null)
@@ -431,7 +431,7 @@ endfunction
 
 
 
-import "gtk_table_new" gtk_table_new
+importx "_gtk_table_new" gtk_table_new
 ##########table
 function tablefield(sd bag,sd row,sd col)
     sd widget
@@ -451,8 +451,8 @@ function table_attach(sd table,sd cell,sd x,sd y)
     call gtk_table_attach_defaults(table,cell,x,next_x,y,next_y)
 endfunction
 
-import "gtk_table_resize" gtk_table_resize
-import "gtk_table_get_size" gtk_table_get_size
+importx "_gtk_table_resize" gtk_table_resize
+importx "_gtk_table_get_size" gtk_table_get_size
 
 #returns the row pointer for use at the next row, allCol false case use only
 function table_add_row_allCol(sd table,sd row,sd allCol)
@@ -535,7 +535,7 @@ endfunction
 
 
 #############vbox
-import "gtk_vbox_new" gtk_vbox_new
+importx "_gtk_vbox_new" gtk_vbox_new
 #gtkwidget
 function vboxfield(data container)
     data gtkwidget#1

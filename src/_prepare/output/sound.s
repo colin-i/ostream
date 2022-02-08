@@ -73,7 +73,7 @@ function stage_sound()
     call stage_sound_file_path((value_set),0)
 
     #dialog
-    import "gtk_dialog_new_with_buttons" gtk_dialog_new_with_buttons
+    importx "_gtk_dialog_new_with_buttons" gtk_dialog_new_with_buttons
     import "mainwidget" mainwidget
     sd window
     setcall window mainwidget()
@@ -85,12 +85,12 @@ function stage_sound()
     sd dialog
     setcall dialog gtk_dialog_new_with_buttons(title,window,(GTK_DIALOG_DESTROY_WITH_PARENT|GTK_DIALOG_MODAL),GTK_STOCK_OK,(GTK_RESPONSE_OK),GTK_STOCK_CLOSE,(GTK_RESPONSE_CANCEL),0)
 
-    import "gtk_dialog_get_content_area" gtk_dialog_get_content_area
+    importx "_gtk_dialog_get_content_area" gtk_dialog_get_content_area
     sd vbox
     setcall vbox gtk_dialog_get_content_area(dialog)
     call stage_sound_init(vbox)
 
-    import "gtk_window_set_default_size" gtk_window_set_default_size
+    importx "_gtk_window_set_default_size" gtk_window_set_default_size
     call gtk_window_set_default_size(dialog,500,-1)
 
     importx "_gtk_widget_show_all" gtk_widget_show_all
@@ -101,7 +101,7 @@ function stage_sound()
     setcall stop_flag sound_stop_flag()
     set stop_flag# 0
 
-    import "gtk_dialog_run" gtk_dialog_run
+    importx "_gtk_dialog_run" gtk_dialog_run
     sd response
     setcall response gtk_dialog_run(dialog)
 
@@ -249,7 +249,7 @@ endfunction
 function stage_sound_closedialog()
     sd dialog
     setcall dialog stage_sound_dialog((value_get))
-    import "gtk_dialog_response" gtk_dialog_response
+    importx "_gtk_dialog_response" gtk_dialog_response
     call gtk_dialog_response(dialog,(GTK_RESPONSE_OK))
     call sound_global_flag_set(0)
 endfunction
@@ -268,7 +268,7 @@ function stage_sound_init(sd vbox)
     call stage_sound_file_entry((value_set),file)
 
     import "buttonfield_prepare_with_label" buttonfield_prepare_with_label
-    import "gtk_table_new" gtk_table_new
+    importx "_gtk_table_new" gtk_table_new
     importx "_gtk_table_attach" gtk_table_attach
     sd table
     setcall table gtk_table_new(6,2,0)
@@ -306,7 +306,7 @@ function stage_sound_init(sd vbox)
     ss cpy="Copy sound"
     sd copy
     setcall copy buttonfield_prepare_with_label(cpy)
-    import "gtk_widget_set_tooltip_markup" gtk_widget_set_tooltip_markup
+    importx "_gtk_widget_set_tooltip_markup" gtk_widget_set_tooltip_markup
     ss cpy_inf="Copy sound from a wav file with a RIFF,fmt ,data chunks (ex: created with the program Sound Recorder)"
     call gtk_widget_set_tooltip_markup(copy,cpy_inf)
     call gtk_table_attach(table,copy,0,1,3,4,(GTK_FILL),0,0,0)

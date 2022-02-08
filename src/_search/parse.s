@@ -10,7 +10,7 @@ import "edit_info_prepare_green" edit_info_prepare_green
 function search_parse_URIs_launch(ss str,sd table)
     import "table_add_row" table_add_row
 
-    import "gtk_hseparator_new" gtk_hseparator_new
+    importx "_gtk_hseparator_new" gtk_hseparator_new
     sd hseparator
     setcall hseparator gtk_hseparator_new()
     data w=-1
@@ -23,7 +23,7 @@ function search_parse_URIs_launch(ss str,sd table)
     setcall newedit edit_info_prepare_green(str)
     call table_add_row(table,newedit)
 
-    import "gtk_image_new" gtk_image_new
+    importx "_gtk_image_new" gtk_image_new
     sd img
     setcall img gtk_image_new()
     call table_add_row(table,img)
@@ -95,7 +95,7 @@ function search_parse_got_body(ss body,sd size,sd data)
     ss nr^number
     str dw_str="%u"
     call sprintf(nr,dw_str,totalentries)
-    import "gtk_entry_set_text" gtk_entry_set_text
+    importx "_gtk_entry_set_text" gtk_entry_set_text
     call gtk_entry_set_text(data#,nr)
 
     sd entries^search_parse_URIs

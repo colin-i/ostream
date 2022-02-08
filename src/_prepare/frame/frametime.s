@@ -49,14 +49,14 @@ function stage_frame_time_init(sd vbox,sd *dialog)
     importx "_sprintf" sprintf
     ss dw="%u"
     call sprintf(ptr_nr,dw,length)
-    import "gtk_entry_set_text" gtk_entry_set_text
+    importx "_gtk_entry_set_text" gtk_entry_set_text
     call gtk_entry_set_text(number,ptr_nr)
 endfunction
 import "stage_frame_index" stage_frame_index
 import "stage_sel_img_set" stage_sel_img_set
 function stage_frame_time_set()
     data edit%ptr_number
-    import "gtk_entry_get_text" gtk_entry_get_text
+    importx "_gtk_entry_get_text" gtk_entry_get_text
     ss text
     setcall text gtk_entry_get_text(edit#)
 
@@ -331,7 +331,7 @@ function stage_split_frame()
     #frame objects
     sd ebox
     setcall ebox stage_new_click_area()
-    import "gtk_box_reorder_child" gtk_box_reorder_child
+    importx "_gtk_box_reorder_child" gtk_box_reorder_child
     call gtk_box_reorder_child(box,ebox,pos)
     #pixbuf to previous
     import "stage_get_sel_pixbuf" stage_get_sel_pixbuf

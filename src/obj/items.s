@@ -11,9 +11,9 @@ import "packstart" packstart
 import "packstart_default" packstart_default
 import "container_add" container_add
 
-import "gtk_button_new" gtk_button_new
+importx "_gtk_button_new" gtk_button_new
 ##########button
-import "gtk_button_set_label" gtk_button_set_label
+importx "_gtk_button_set_label" gtk_button_set_label
 
 function buttonfield_prepare_with_label(ss text)
     sd button
@@ -30,9 +30,9 @@ function buttonfield(data container)
     return gtkwidget
 endfunction
 
-import "gtk_image_new_from_pixbuf" gtk_image_new_from_pixbuf
+importx "_gtk_image_new_from_pixbuf" gtk_image_new_from_pixbuf
 
-import "gtk_button_set_image" gtk_button_set_image
+importx "_gtk_button_set_image" gtk_button_set_image
 #void
 function buttonfield_setimage_call(data gdkpixbuf,data button)
     data gtkimage#1
@@ -63,7 +63,7 @@ function color_widget_get_color_to_rgb(sd color_entry)
     add value_colors 4
 
     #the color
-    import "gtk_color_button_get_color" gtk_color_button_get_color
+    importx "_gtk_color_button_get_color" gtk_color_button_get_color
     call gtk_color_button_get_color(color_entry,ptr_g_color)
 
     sd red_const
@@ -131,7 +131,7 @@ function colorbuttonfield_leftlabel(ss text,sd box)
     sd hbox
     setcall hbox hboxfield_cnt(box)
     call labelfield_left_default(text,hbox)
-    import "gtk_color_button_new" gtk_color_button_new
+    importx "_gtk_color_button_new" gtk_color_button_new
     sd color
     setcall color gtk_color_button_new()
     call packstart_default(hbox,color)
@@ -139,7 +139,7 @@ function colorbuttonfield_leftlabel(ss text,sd box)
 endfunction
 
 ##########draw
-import "gtk_drawing_area_new" gtk_drawing_area_new
+importx "_gtk_drawing_area_new" gtk_drawing_area_new
 #draw
 function drawfield(data container)
     data GtkWidget#1
@@ -157,9 +157,9 @@ function drawfield_cnt(sd container)
 endfunction
 
 ############edit
-import "gtk_entry_buffer_new" gtk_entry_buffer_new
-import "gtk_entry_buffer_set_max_length" gtk_entry_buffer_set_max_length
-import "gtk_entry_new_with_buffer" gtk_entry_new_with_buffer
+importx "_gtk_entry_buffer_new" gtk_entry_buffer_new
+importx "_gtk_entry_buffer_set_max_length" gtk_entry_buffer_set_max_length
+importx "_gtk_entry_new_with_buffer" gtk_entry_new_with_buffer
 import "g_signal_connect_data" g_signal_connect_data
 #GtkWidget
 function editfield(data container,data length)
@@ -194,10 +194,10 @@ function editfieldEnter(data container,data length,data forward)
     return GtkWidget
 endfunction
 
-import "gtk_entry_get_text" gtk_entry_get_text
+importx "_gtk_entry_get_text" gtk_entry_get_text
 
 #void
-import "gtk_entry_set_text" gtk_entry_set_text
+importx "_gtk_entry_set_text" gtk_entry_set_text
 #edit texter
 import "get_current_texter_pointer" get_current_texter_pointer
 function texter(str text)
@@ -252,7 +252,7 @@ endfunction
 
 #field
 function edit_info_prepare(sd ptrcolors,ss text)
-    import "gtk_editable_set_editable" gtk_editable_set_editable
+    importx "_gtk_editable_set_editable" gtk_editable_set_editable
     import "setWidgetBase" setWidgetBase
     sd info
     setcall info gtk_entry_new()
@@ -361,7 +361,7 @@ endfunction
 function hscalefield_main(sd box,sd min,sd max,sd step,sd pos,sd packexpand)
     import "int_to_double" int_to_double
 
-    import "gtk_hscale_new_with_range" gtk_hscale_new_with_range
+    importx "_gtk_hscale_new_with_range" gtk_hscale_new_with_range
     sd min_d_low
     sd min_d_high
     sd max_d_low
@@ -378,7 +378,7 @@ function hscalefield_main(sd box,sd min,sd max,sd step,sd pos,sd packexpand)
     sd hscale
     setcall hscale gtk_hscale_new_with_range(min_d_low,min_d_high,max_d_low,max_d_high,step_d_low,step_d_high)
 
-    import "gtk_range_set_value" gtk_range_set_value
+    importx "_gtk_range_set_value" gtk_range_set_value
     sd doublepos_low
     sd doublepos_high
     sd p_doublepos^doublepos_low
@@ -398,7 +398,7 @@ endfunction
 
 #int pos
 function hscale_get(sd hscale)
-    import "gtk_range_get_value" gtk_range_get_value
+    importx "_gtk_range_get_value" gtk_range_get_value
     sd value
     sd p_value^value
     import "fistp" fistp
@@ -408,7 +408,7 @@ function hscale_get(sd hscale)
 endfunction
 
 ##############hseparator
-import "gtk_hseparator_new" gtk_hseparator_new
+importx "_gtk_hseparator_new" gtk_hseparator_new
 function hseparatorfield(sd box)
     sd hsep
     setcall hsep gtk_hseparator_new()
@@ -433,7 +433,7 @@ function hseparatorfield_table(sd table)
 endfunction
 
 ##############icon
-import "gtk_window_set_icon" gtk_window_set_icon
+importx "_gtk_window_set_icon" gtk_window_set_icon
 function window_set_icon(sd pixbuf,sd window)
     call gtk_window_set_icon(window,pixbuf)
 endfunction
@@ -444,8 +444,8 @@ endfunction
 
 
 
-import "gtk_widget_new" gtk_widget_new
-import "gtk_label_get_type" gtk_label_get_type
+importx "_gtk_widget_new" gtk_widget_new
+importx "_gtk_label_get_type" gtk_label_get_type
 ##############label
 function labelfield_left_prepare(ss text)
     sd widget
@@ -484,8 +484,8 @@ function message_dialog(sd print)
     import "mainwidget" mainwidget
     sd main
     setcall main mainwidget()
-    import "gtk_message_dialog_new" gtk_message_dialog_new
-    import "gtk_dialog_run" gtk_dialog_run
+    importx "_gtk_message_dialog_new" gtk_message_dialog_new
+    importx "_gtk_dialog_run" gtk_dialog_run
     importx "_gtk_widget_destroy" gtk_widget_destroy
     sd dialog
     setcall dialog gtk_message_dialog_new(main,(GTK_DIALOG_DESTROY_WITH_PARENT),(GTK_MESSAGE_INFO),(GTK_BUTTONS_OK),print)
@@ -934,11 +934,11 @@ function pixbuf_from_pixbuf_reverse(sd pixbuf_reverse)
 endfunction
 
 ##############progressbar
-import "gtk_progress_bar_new" gtk_progress_bar_new
+importx "_gtk_progress_bar_new" gtk_progress_bar_new
 function progressfield(sd container)
     sd wid
     setcall wid gtk_progress_bar_new()
-    import "gtk_box_pack_start" gtk_box_pack_start
+    importx "_gtk_box_pack_start" gtk_box_pack_start
     data true=1
     data false=0
     call gtk_box_pack_start(container,wid,true,false,false)
@@ -947,8 +947,8 @@ endfunction
 
 ##############radio
 #function radiofield_prepare(sd previousbutton,ss text)
-#    import "gtk_radio_button_new_with_label" gtk_radio_button_new_with_label
-#    import "gtk_radio_button_get_group" gtk_radio_button_get_group
+#    importx "_gtk_radio_button_new_with_label" gtk_radio_button_new_with_label
+#    importx "_gtk_radio_button_get_group" gtk_radio_button_get_group
 
 #    sd radiogroup
 #    setcall radiogroup gtk_radio_button_get_group(previousbutton)
@@ -968,7 +968,7 @@ endfunction
 ##############widget
 #ancestor
 function widget_get_ancestor(sd widget,sd ancestor_parent)
-    import "gtk_widget_get_parent" gtk_widget_get_parent
+    importx "_gtk_widget_get_parent" gtk_widget_get_parent
     sd ancestor
     while widget!=ancestor_parent
         set ancestor widget
@@ -978,7 +978,7 @@ function widget_get_ancestor(sd widget,sd ancestor_parent)
 endfunction
 
 function widget_draw_pixbuf(sd widget,sd pixbuf)
-    import "gtk_widget_get_window" gtk_widget_get_window
+    importx "_gtk_widget_get_window" gtk_widget_get_window
     sd drawable
     setcall drawable gtk_widget_get_window(widget)
     data fn^pixbuf_draw_onwindow

@@ -2,7 +2,7 @@
 
 format elfobj
 
-import "gtk_window_list_toplevels" gtk_window_list_toplevels
+importx "_gtk_window_list_toplevels" gtk_window_list_toplevels
 import "g_list_free" g_list_free
 
 include "../_include/include.h"
@@ -46,7 +46,7 @@ function editWidget()
     return widget
 endfunction
 #buffer, forward
-import "gtk_entry_get_text" gtk_entry_get_text
+importx "_gtk_entry_get_text" gtk_entry_get_text
 function editWidgetBufferForwardData(data forward,data forwarddata)
     data widget#1
     setcall widget editWidget()

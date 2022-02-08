@@ -232,11 +232,11 @@ function stage_effect_corner(sd part,sd vbox)
             sd c_x
             set c_x 0
             while c_x!=2
-                import "gtk_radio_button_get_group" gtk_radio_button_get_group
+                importx "_gtk_radio_button_get_group" gtk_radio_button_get_group
                 if radio!=0
                     setcall radio gtk_radio_button_get_group(radio)
                 endif
-                import "gtk_radio_button_new_with_label" gtk_radio_button_new_with_label
+                importx "_gtk_radio_button_new_with_label" gtk_radio_button_new_with_label
                 setcall radio gtk_radio_button_new_with_label(radio,p_text_corner#)
 
                 call table_attach(framechild,radio,c_x,c_y)
@@ -248,11 +248,11 @@ function stage_effect_corner(sd part,sd vbox)
             endwhile
             inc c_y
         endwhile
-        import "gtk_toggle_button_set_active" gtk_toggle_button_set_active
+        importx "_gtk_toggle_button_set_active" gtk_toggle_button_set_active
         call gtk_toggle_button_set_active(c_top_left,1)
         return 0
     else
-        import "gtk_toggle_button_get_active" gtk_toggle_button_get_active
+        importx "_gtk_toggle_button_get_active" gtk_toggle_button_get_active
 
         sd bool
 

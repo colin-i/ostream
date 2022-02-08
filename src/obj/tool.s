@@ -5,7 +5,7 @@ format elfobj
 include "../_include/include.h"
 
 #color(base) to a widget
-import "gtk_widget_modify_base" gtk_widget_modify_base
+importx "_gtk_widget_modify_base" gtk_widget_modify_base
 #void
 function setWidgetBase(data widget,data in_colors)
     data guint32_pixel=0
@@ -60,14 +60,14 @@ function viewport_test(sd container,sd widget)
     endif
 
     str signal="set_scroll_adjustments_signal"
-    import "gtk_widget_class_find_style_property" gtk_widget_class_find_style_property
+    importx "_gtk_widget_class_find_style_property" gtk_widget_class_find_style_property
     setcall ret gtk_widget_class_find_style_property(widget,signal)
     if ret!=null
         return container
     endif
 
     importx "_gtk_container_add" gtk_container_add
-    import "gtk_viewport_new" gtk_viewport_new
+    importx "_gtk_viewport_new" gtk_viewport_new
     sd viewport
     setcall viewport gtk_viewport_new(null,null)
     call gtk_container_add(container,viewport)

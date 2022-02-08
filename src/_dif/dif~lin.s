@@ -215,7 +215,7 @@ endfunction
 
 
 
-import "gtk_file_chooser_get_filename" gtk_file_chooser_get_filename
+importx "_gtk_file_chooser_get_filename" gtk_file_chooser_get_filename
 function file_chooser_get_fname(sd dialog)
     sd file
     setcall file gtk_file_chooser_get_filename(dialog)
@@ -288,9 +288,9 @@ function term_toggle(sd action,sd value)
 endfunction
 
 function capture_alternative_init(sd vbox)
-    import "gtk_check_button_new_with_label" gtk_check_button_new_with_label
+    importx "_gtk_check_button_new_with_label" gtk_check_button_new_with_label
     importx "_gtk_container_add" gtk_container_add
-    import "gtk_widget_set_tooltip_markup" gtk_widget_set_tooltip_markup
+    importx "_gtk_widget_set_tooltip_markup" gtk_widget_set_tooltip_markup
     ss term_txt="Terminal(if exists)"
     sd term_entry
     setcall term_entry gtk_check_button_new_with_label(term_txt)
@@ -302,12 +302,12 @@ endfunction
 function capture_alternative_set(sd *p_cairoflag,sd p_term)
     sd t_entry
     setcall t_entry term_toggle((value_get))
-    import "gtk_toggle_button_get_active" gtk_toggle_button_get_active
+    importx "_gtk_toggle_button_get_active" gtk_toggle_button_get_active
     setcall p_term# gtk_toggle_button_get_active(t_entry)
 endfunction
 #bool
 function capture_alternative_prepare()
-    import "gtk_widget_hide_all" gtk_widget_hide_all
+    importx "_gtk_widget_hide_all" gtk_widget_hide_all
     import "mainwidget" mainwidget
     import "dialog_handle" dialog_handle
     sd win

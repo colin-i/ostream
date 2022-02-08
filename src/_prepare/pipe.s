@@ -175,7 +175,7 @@ function stage_pixbuf_to_container(sd pixbuf,sd eventbox)
     str pressed="button-press-event"
     data f^stage_frame_clicked
     call connect_signal(eventbox,pressed,f)
-    import "gtk_widget_add_events" gtk_widget_add_events
+    importx "_gtk_widget_add_events" gtk_widget_add_events
     sd events=GDK_BUTTON_PRESS_MASK
     call gtk_widget_add_events(eventbox,events)
 

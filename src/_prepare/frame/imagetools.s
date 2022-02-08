@@ -52,7 +52,7 @@ function headline_dialog()
 
     ss title="Headlines"
 
-    import "gtk_dialog_new_with_buttons" gtk_dialog_new_with_buttons
+    importx "_gtk_dialog_new_with_buttons" gtk_dialog_new_with_buttons
     import "mainwidget" mainwidget
     sd window
     setcall window mainwidget()
@@ -62,7 +62,7 @@ function headline_dialog()
     sd dialog
     setcall dialog gtk_dialog_new_with_buttons(title,window,(GTK_DIALOG_MODAL|GTK_DIALOG_DESTROY_WITH_PARENT),ok_button,(GTK_RESPONSE_OK),close_button,(GTK_RESPONSE_CANCEL),0)
 
-    import "gtk_dialog_get_content_area" gtk_dialog_get_content_area
+    importx "_gtk_dialog_get_content_area" gtk_dialog_get_content_area
     sd vbox
     setcall vbox gtk_dialog_get_content_area(dialog)
 
@@ -73,7 +73,7 @@ function headline_dialog()
 
     sd loop=1
     while loop==1
-        import "gtk_dialog_run" gtk_dialog_run
+        importx "_gtk_dialog_run" gtk_dialog_run
         sd resp
         setcall resp gtk_dialog_run(dialog)
         set loop 0
@@ -121,7 +121,7 @@ function headline_dlg(sd action,sd vbox)
         data frames_txt#1
         data frames_entry#1
 
-        import "gtk_table_new" gtk_table_new
+        importx "_gtk_table_new" gtk_table_new
         importx "_gtk_table_attach" gtk_table_attach
         const hl_rows=5
         const hl_cols=2
@@ -130,7 +130,7 @@ function headline_dlg(sd action,sd vbox)
 
         import "labelfield_left_prepare" labelfield_left_prepare
         importx "_gtk_entry_new" gtk_entry_new
-        import "gtk_hbox_new" gtk_hbox_new
+        importx "_gtk_hbox_new" gtk_hbox_new
         import "packstart_default" packstart_default
 
         sd j=0
@@ -144,14 +144,14 @@ function headline_dlg(sd action,sd vbox)
         call gtk_table_attach(table,headline_entry,1,2,j,j_next,(GTK_FILL),0,0,0)
 
         #hsep1
-        import "gtk_hseparator_new" gtk_hseparator_new
+        importx "_gtk_hseparator_new" gtk_hseparator_new
         setcall hsep1 gtk_hseparator_new()
         inc j
         inc j_next
         call gtk_table_attach(table,hsep1,0,2,j,j_next,(GTK_FILL|GTK_EXPAND),0,0,10)
 
         #coord or zone
-        import "gtk_check_button_new_with_label" gtk_check_button_new_with_label
+        importx "_gtk_check_button_new_with_label" gtk_check_button_new_with_label
         ss pos_chbox_txt="Use Coordinates"
         setcall pos_chbox gtk_check_button_new_with_label(pos_chbox_txt)
         inc j
@@ -199,7 +199,7 @@ function headline_dlg(sd action,sd vbox)
         #size
         ss sz="Size"
         setcall size_txt labelfield_left_prepare(sz)
-        import "gtk_combo_box_text_new" gtk_combo_box_text_new
+        importx "_gtk_combo_box_text_new" gtk_combo_box_text_new
         setcall size_x gtk_hbox_new(0,0)
         setcall size_entry gtk_combo_box_text_new()
         call packstart_default(size_x,size_entry)
@@ -210,11 +210,11 @@ function headline_dlg(sd action,sd vbox)
         importx "_sprintf" sprintf
         while nr!=51
             call sprintf(nr_ascii,format,nr)
-            import "gtk_combo_box_text_append_text" gtk_combo_box_text_append_text
+            importx "_gtk_combo_box_text_append_text" gtk_combo_box_text_append_text
             call gtk_combo_box_text_append_text(size_entry,nr_ascii)
             inc nr
         endwhile
-        import "gtk_combo_box_set_active" gtk_combo_box_set_active
+        importx "_gtk_combo_box_set_active" gtk_combo_box_set_active
         call gtk_combo_box_set_active(size_entry,10)
         inc j
         inc j_next
@@ -224,7 +224,7 @@ function headline_dlg(sd action,sd vbox)
         #color
         ss cl="Color"
         setcall color_txt labelfield_left_prepare(cl)
-        import "gtk_color_button_new" gtk_color_button_new
+        importx "_gtk_color_button_new" gtk_color_button_new
         setcall color_x gtk_hbox_new(0,0)
         setcall color_entry gtk_color_button_new()
         call packstart_default(color_x,color_entry)
@@ -249,12 +249,12 @@ function headline_dlg(sd action,sd vbox)
         setcall px stage_get_selection_pixbuf()
 
         #headlight
-        import "gtk_entry_get_text" gtk_entry_get_text
+        importx "_gtk_entry_get_text" gtk_entry_get_text
         sd headline
         setcall headline gtk_entry_get_text(headline_entry)
 
         #coord or location
-        import "gtk_toggle_button_get_active" gtk_toggle_button_get_active
+        importx "_gtk_toggle_button_get_active" gtk_toggle_button_get_active
         sd coordinates_flag
         setcall coordinates_flag gtk_toggle_button_get_active(pos_chbox)
 
@@ -306,7 +306,7 @@ function headline_dlg(sd action,sd vbox)
         endelse
 
         #size
-        import "gtk_combo_box_text_get_active_text" gtk_combo_box_text_get_active_text
+        importx "_gtk_combo_box_text_get_active_text" gtk_combo_box_text_get_active_text
         sd sz_text
         setcall sz_text gtk_combo_box_text_get_active_text(size_entry)
         sd fontsize
@@ -395,11 +395,11 @@ function stage_lines_init(sd vbox)
     setcall entry stage_line_entry()
     setcall entry# label_and_edit(vbox,frames)
     str default="1"
-    import "gtk_entry_set_text" gtk_entry_set_text
+    importx "_gtk_entry_set_text" gtk_entry_set_text
     call gtk_entry_set_text(entry#,default)
     #
-    import "gtk_radio_button_new_with_label" gtk_radio_button_new_with_label
-    import "gtk_radio_button_get_group" gtk_radio_button_get_group
+    importx "_gtk_radio_button_new_with_label" gtk_radio_button_new_with_label
+    importx "_gtk_radio_button_get_group" gtk_radio_button_get_group
     ss add_text="Add"
     sd add
     setcall add gtk_radio_button_new_with_label(0,add_text)

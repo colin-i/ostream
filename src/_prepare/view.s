@@ -174,14 +174,14 @@ function stage_container_destroy(sd object,sd *data)
         call default_unref(pipe)
     endif
 
-    import "gtk_container_foreach" gtk_container_foreach
+    importx "_gtk_container_foreach" gtk_container_foreach
     data f^unref_pixbuf_frame
     data n=0
     call gtk_container_foreach(object,f,n)
 endfunction
 
 
-import "gtk_widget_set_sensitive" gtk_widget_set_sensitive
+importx "_gtk_widget_set_sensitive" gtk_widget_set_sensitive
 
 import "stage_frame_time_numbers" stage_frame_time_numbers
 
@@ -245,7 +245,7 @@ function stage_prepare()
     #visual for frames and sound
     sd min_size
     setcall min_size stage_trace_min_size_get()
-    import "gtk_vbox_new" gtk_vbox_new
+    importx "_gtk_vbox_new" gtk_vbox_new
     import "container_add" container_add
     sd ptr_scroll
     setcall ptr_scroll stage_scroll()
@@ -282,7 +282,7 @@ function stage_prepare()
     setcall pulseWidget# eventboxfield(vbox)
     set ebox pulseWidget#
     call gtk_widget_set_size_request(ebox,-1,min_size)
-    import "gtk_widget_set_tooltip_markup" gtk_widget_set_tooltip_markup
+    importx "_gtk_widget_set_tooltip_markup" gtk_widget_set_tooltip_markup
     str move_info="Hold the left mouse button and drag up to increase the size of the sound pulse or drag down to decrease the size"
     call gtk_widget_set_tooltip_markup(ebox,move_info)
         #on click is the pencil color point
@@ -349,7 +349,7 @@ function stage_prepare_uri_start()
     call stage_frame_dialog_solo(stage_prepare_uri_init,stage_prepare_uri_set,"Media from uri")
 endfunction
 function stage_prepare_uri_init(sd vbox)
-    import "gtk_table_new" gtk_table_new
+    importx "_gtk_table_new" gtk_table_new
     importx "_gtk_table_attach" gtk_table_attach
     sd table
     setcall table gtk_table_new(2,2,(FALSE))
@@ -391,7 +391,7 @@ function stage_prepare_uri_set()
     setcall first stage_prepare_uri_first()
     setcall last stage_prepare_uri_last()
 
-    import "gtk_entry_get_text" gtk_entry_get_text
+    importx "_gtk_entry_get_text" gtk_entry_get_text
     import "strtoint_positive" strtoint_positive
     import "slen" slen
     sd bool
@@ -469,7 +469,7 @@ function stage_buttons_close(sd *button)
 
     sd vbox
     setcall vbox stagewidget()
-    import "gtk_widget_hide_all" gtk_widget_hide_all
+    importx "_gtk_widget_hide_all" gtk_widget_hide_all
     call gtk_widget_hide_all(vbox)
 
     data b%stage_button_const
@@ -585,7 +585,7 @@ function stage_new_panel(sd lots,sd trigbutton,sd callbackfunc,sd callbackdata,s
     sd pos
     setcall pos widget_position_in_container(ancestor,vbox)
 
-    import "gtk_box_reorder_child" gtk_box_reorder_child
+    importx "_gtk_box_reorder_child" gtk_box_reorder_child
     call gtk_box_reorder_child(vbox,newpanel,pos)
 
     return newpanel
@@ -662,7 +662,7 @@ endfunction
 #free size
 function sound_widget_free_size()
     import "drawwidget" drawwidget
-    import "gtk_widget_get_window" gtk_widget_get_window
+    importx "_gtk_widget_get_window" gtk_widget_get_window
     sd drawW
     setcall drawW drawwidget()
     #get size
@@ -700,7 +700,7 @@ function sound_widget_onclick(sd *ebox,sd event,sd *data)
     return (TRUE)
 endfunction
 
-import "gtk_widget_size_request" gtk_widget_size_request
+importx "_gtk_widget_size_request" gtk_widget_size_request
 #bool false to continue
 function sound_widget_motion(sd *widget,sd EventMotion,sd *data)
     sd state

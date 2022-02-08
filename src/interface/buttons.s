@@ -40,7 +40,7 @@ function buttons_group_ex(sd ptr,sd container,sd match,sd forward)
     sd hbox
     import "hboxfield_pack_pad" hboxfield_pack_pad
     import "buttonfield" buttonfield
-    import "gtk_widget_set_tooltip_markup" gtk_widget_set_tooltip_markup
+    importx "_gtk_widget_set_tooltip_markup" gtk_widget_set_tooltip_markup
     setcall hbox hboxfield_pack_pad(container,padgroups)
     while ptr#!=z
         sd button

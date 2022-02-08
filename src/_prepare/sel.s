@@ -33,7 +33,7 @@ endfunction
 function stage_sel_img_set(sd newparent)
     sd img
     setcall img stage_sel_img(newparent)
-    import "gtk_widget_show" gtk_widget_show
+    importx "_gtk_widget_show" gtk_widget_show
     call gtk_widget_show(img)
     return img
 endfunction
@@ -44,7 +44,7 @@ import "gdk_pixbuf_get_height" gdk_pixbuf_get_height
 #returns the new img with the length set and added to the parent
 function stage_img_with_length(ss file,sd parent)
     sd img
-    import "gtk_image_new" gtk_image_new
+    importx "_gtk_image_new" gtk_image_new
     setcall img gtk_image_new()
 
     import "pixbuf_from_file" pixbuf_from_file
@@ -130,7 +130,7 @@ function stage_img_with_length_fn(sd pixb,sd img)
         inc j
     endwhile
 
-    import "gtk_image_set_from_pixbuf" gtk_image_set_from_pixbuf
+    importx "_gtk_image_set_from_pixbuf" gtk_image_set_from_pixbuf
     call gtk_image_set_from_pixbuf(img,pixb)
 endfunction
 
@@ -153,7 +153,7 @@ function stage_sel_img_listen(sd newparent)
     return img
 endfunction
 
-import "gtk_widget_get_parent" gtk_widget_get_parent
+importx "_gtk_widget_get_parent" gtk_widget_get_parent
 
 #deletes the old selection frame and creates the new
 function stage_sel_reparent(sd newparent)
@@ -187,7 +187,7 @@ function stage_sel_framebar_pixbuf()
     if img==0
         return 0
     endif
-    import "gtk_image_get_pixbuf" gtk_image_get_pixbuf
+    importx "_gtk_image_get_pixbuf" gtk_image_get_pixbuf
     sd pixbuf
     setcall pixbuf gtk_image_get_pixbuf(img)
     return pixbuf

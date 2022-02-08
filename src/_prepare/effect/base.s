@@ -29,9 +29,9 @@ function stage_effect_nr_frames(sd vbox)
     setcall p_edit# editfield_pack(hbox)
 endfunction
 
-import "gtk_entry_get_text" gtk_entry_get_text
-import "gtk_radio_button_new_with_label" gtk_radio_button_new_with_label
-import "gtk_radio_button_get_group" gtk_radio_button_get_group
+importx "_gtk_entry_get_text" gtk_entry_get_text
+importx "_gtk_radio_button_new_with_label" gtk_radio_button_new_with_label
+importx "_gtk_radio_button_get_group" gtk_radio_button_get_group
 
 ##in or out
 
@@ -212,7 +212,7 @@ function stage_effect_new(sd forward,sd data)
     #get the in/out value
     sd in_out_entry
     setcall in_out_entry stage_effect_inout(1)
-    import "gtk_toggle_button_get_active" gtk_toggle_button_get_active
+    importx "_gtk_toggle_button_get_active" gtk_toggle_button_get_active
     sd in_out
     setcall in_out gtk_toggle_button_get_active(in_out_entry)
 
@@ -229,7 +229,7 @@ function stage_effect_new(sd forward,sd data)
             setcall ebox stage_new_click_area()
             if pos!=total_pos
                 #insert the frame
-                import "gtk_box_reorder_child" gtk_box_reorder_child
+                importx "_gtk_box_reorder_child" gtk_box_reorder_child
                 call gtk_box_reorder_child(box,ebox,newframepos)
             endif
         endelse
@@ -368,7 +368,7 @@ function stage_effect_orientation(sd part,sd argument,sd use_center_bool,sd text
             endwhile
             inc o_y
         endwhile
-        import "gtk_toggle_button_set_active" gtk_toggle_button_set_active
+        importx "_gtk_toggle_button_set_active" gtk_toggle_button_set_active
         call gtk_toggle_button_set_active(o_center,1)
         return frame
     else

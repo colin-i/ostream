@@ -26,7 +26,7 @@ function stage_crop_init(sd vbox,sd dialog)
     setcall dlg stage_crop_dialog()
     set dlg# dialog
     call stage_crop_tool((stage_crop_tool_init),vbox)
-    import "gtk_dialog_get_action_area" gtk_dialog_get_action_area
+    importx "_gtk_dialog_get_action_area" gtk_dialog_get_action_area
     sd abox
     setcall abox gtk_dialog_get_action_area(dialog)
     call gtk_widget_set_size_request(abox,-1,(action_height))
@@ -83,7 +83,7 @@ function stage_crop_tool(sd action,sd vbox)
         ss w="Original Width"
         ss h="Original Height"
 
-        import "gtk_vbox_new" gtk_vbox_new
+        importx "_gtk_vbox_new" gtk_vbox_new
         sd origs
         setcall origs gtk_vbox_new(0,0)
         import "boxpackstart" boxpackstart
@@ -109,7 +109,7 @@ function stage_crop_tool(sd action,sd vbox)
 
         import "buttonfield" buttonfield
         import "connect_clicked" connect_clicked
-        import "gtk_button_set_label" gtk_button_set_label
+        importx "_gtk_button_set_label" gtk_button_set_label
 
         sd button
         setcall button buttonfield(dimensions)
@@ -205,13 +205,13 @@ function stage_crop_dialog()
 endfunction
 
 function stage_crop_maximize()
-    import "gtk_window_maximize" gtk_window_maximize
+    importx "_gtk_window_maximize" gtk_window_maximize
     sd dlg
     setcall dlg stage_crop_dialog()
     sd dialog
     set dialog dlg#
     #
-    import "gtk_widget_get_window" gtk_widget_get_window
+    importx "_gtk_widget_get_window" gtk_widget_get_window
     sd wind
     import "gdk_window_get_width" gdk_window_get_width
     import "gdk_window_get_height" gdk_window_get_height
@@ -223,6 +223,6 @@ function stage_crop_maximize()
     setcall h gdk_window_get_height(wind)
     sub h (action_height)
     #
-    import "gtk_window_resize" gtk_window_resize
+    importx "_gtk_window_resize" gtk_window_resize
     call gtk_window_resize(dialog,w,h)
 endfunction

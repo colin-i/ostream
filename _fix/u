@@ -1,4 +1,6 @@
 
-if [ -n "$1" ];then
-find -name "*.s" | xargs sed -i "0,/import \"${1}\"/s/import \"${1}\"/importx \"_${1}\"/w /dev/stdout"
-fi
+for var in "$@"
+do
+	find -name "*.s" | xargs sed -i "0,/import \"${var}\"/s/import \"${var}\"/importx \"_${var}\"/w /dev/stdout"
+done
+

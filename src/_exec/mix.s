@@ -23,7 +23,7 @@ function mix_timeout_verify(sd file)
         call texter(timeexpired)
         data dialog#1
         const ptr_dlg_for_time^dialog
-        import "gtk_dialog_response" gtk_dialog_response
+        importx "_gtk_dialog_response" gtk_dialog_response
         call gtk_dialog_response(dialog,(GTK_RESPONSE_CANCEL))
         return timeexpired
     endif
@@ -31,7 +31,7 @@ function mix_timeout_verify(sd file)
     return (noerror)
 endfunction
 
-import "gtk_entry_get_text" gtk_entry_get_text
+importx "_gtk_entry_get_text" gtk_entry_get_text
 
 #timeout function 0 stop
 function mix_timeout(sd *data)
@@ -70,7 +70,7 @@ function mix_timeout(sd *data)
         call texter(onedot)
         return 1
     endif
-    import "gtk_editable_insert_text" gtk_editable_insert_text
+    importx "_gtk_editable_insert_text" gtk_editable_insert_text
     sd pos
     sd ptr_pos^pos
     import "slen" slen
@@ -273,7 +273,7 @@ function mix_init(sd vbox,sd *dialog)
     sd tm%ptr_tm
     set tm# entryt
 
-    import "gtk_entry_set_text" gtk_entry_set_text
+    importx "_gtk_entry_set_text" gtk_entry_set_text
     str defaulttimeout="5"
     call gtk_entry_set_text(entryt,defaulttimeout)
 

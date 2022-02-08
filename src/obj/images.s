@@ -629,7 +629,7 @@ endfunction
 ##draw
 function draw_expose_text(sd widget,ss text)
     #get the gdk window
-    import "gtk_widget_get_window" gtk_widget_get_window
+    importx "_gtk_widget_get_window" gtk_widget_get_window
     sd wind
     setcall wind gtk_widget_get_window(widget)
 
@@ -685,12 +685,12 @@ function pixbuf_draw_text(sd pixbuf,ss text,sd x,sd y,sd size,sd color,sd coordi
     import "gdk_draw_pixbuf" gdk_draw_pixbuf
     call gdk_draw_pixbuf(pixmap,gc,pixbuf,0,0,0,0,width,height,(GDK_RGB_DITHER_NONE),0,0)
 
-    import "gtk_window_new" gtk_window_new
+    importx "_gtk_window_new" gtk_window_new
     sd scratch
     setcall scratch gtk_window_new((GTK_WINDOW_TOPLEVEL))
-    import "gtk_widget_realize" gtk_widget_realize
+    importx "_gtk_widget_realize" gtk_widget_realize
     call gtk_widget_realize(scratch)
-    import "gtk_widget_create_pango_layout" gtk_widget_create_pango_layout
+    importx "_gtk_widget_create_pango_layout" gtk_widget_create_pango_layout
     sd pangolayout
     setcall pangolayout gtk_widget_create_pango_layout(scratch,0)
     importx "_gtk_widget_destroy" gtk_widget_destroy

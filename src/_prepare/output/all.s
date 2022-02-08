@@ -37,7 +37,7 @@ function stage_progress_dialog_inc(sd frame)
     str doubleformat="%lf"
     importx "_sscanf" sscanf
     call sscanf(doublestring,doubleformat,double)
-    import "gtk_progress_bar_set_fraction" gtk_progress_bar_set_fraction
+    importx "_gtk_progress_bar_set_fraction" gtk_progress_bar_set_fraction
     data pbar#1
     const progressbar^pbar
     call gtk_progress_bar_set_fraction(pbar,doublelow,doublehigh)
@@ -51,7 +51,7 @@ function stage_file_dialog_inits(sd vbox,sd dialog)
     sd widget
     setcall widget progressfield(vbox)
 
-    import "gtk_progress_bar_set_text" gtk_progress_bar_set_text
+    importx "_gtk_progress_bar_set_text" gtk_progress_bar_set_text
     str save="Save to file"
     call gtk_progress_bar_set_text(widget,save)
 
@@ -63,7 +63,7 @@ function stage_file_dialog_inits(sd vbox,sd dialog)
     call new_texter_modal(vbox,dialog)
 endfunction
 function stage_file_close()
-    import "gtk_dialog_response" gtk_dialog_response
+    importx "_gtk_dialog_response" gtk_dialog_response
     sd d%stage_file_dialog
     data z=0
     if d#!=z

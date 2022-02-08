@@ -170,7 +170,7 @@ function stage_new_frame_form_set()
 endfunction
 
 function stage_frame_form_data_init(sd vbox,sd pixbuf)
-    import "gtk_table_new" gtk_table_new
+    importx "_gtk_table_new" gtk_table_new
     importx "_gtk_table_attach_defaults" gtk_table_attach_defaults
     import "labelfield_left_prepare" labelfield_left_prepare
     importx "_gtk_entry_new" gtk_entry_new

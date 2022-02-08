@@ -202,7 +202,7 @@ function stage_file_options_structure(sd start,sd arg1)
         #output format
         str outformat_label_text="Output format"
         setcall outformat_label gtk_label_new(outformat_label_text)
-        import "gtk_combo_box_text_new" gtk_combo_box_text_new
+        importx "_gtk_combo_box_text_new" gtk_combo_box_text_new
         setcall outformat_list gtk_combo_box_text_new()
 
         #connect changed signal for storing the index
@@ -211,7 +211,7 @@ function stage_file_options_structure(sd start,sd arg1)
         data ch_fn^stage_oformat_changed
         call connect_signal_data(outformat_list,change,ch_fn,ptr_out)
 
-        import "gtk_combo_box_text_append_text" gtk_combo_box_text_append_text
+        importx "_gtk_combo_box_text_append_text" gtk_combo_box_text_append_text
 
         str entry1="AVI yuv"
         call gtk_combo_box_text_append_text(outformat_list,entry1)
@@ -237,7 +237,7 @@ function stage_file_options_structure(sd start,sd arg1)
         str entry4_1="MP4/MPG4-AVC\\MP3"
         call gtk_combo_box_text_append_text(outformat_list,entry4_1)
 
-        import "gtk_combo_box_set_active" gtk_combo_box_set_active
+        importx "_gtk_combo_box_set_active" gtk_combo_box_set_active
         call gtk_combo_box_set_active(outformat_list,ptr_out#)
 
         #configurations
@@ -278,8 +278,8 @@ function stage_file_options_structure(sd start,sd arg1)
         #
         call tablefield_cells(a_frame,3,2,a_cells)
 #
-        import "gtk_check_button_new_with_label" gtk_check_button_new_with_label
-        import "gtk_toggle_button_set_active" gtk_toggle_button_set_active
+        importx "_gtk_check_button_new_with_label" gtk_check_button_new_with_label
+        importx "_gtk_toggle_button_set_active" gtk_toggle_button_set_active
         import "packstart_default" packstart_default
         #results message
         ss txt="Show results message(if available)"
@@ -301,7 +301,7 @@ function stage_file_options_structure(sd start,sd arg1)
         call packstart_default(vbox,update_toggle)
     else
         import "file_write" file_write
-        import "gtk_entry_get_text" gtk_entry_get_text
+        importx "_gtk_entry_get_text" gtk_entry_get_text
 #
         ss currentframestext
         setcall currentframestext gtk_entry_get_text(fps_edit)
@@ -348,7 +348,7 @@ function stage_file_options_structure(sd start,sd arg1)
         importx "_fclose" fclose
         call fclose(audio_file)
 #
-        import "gtk_toggle_button_get_active" gtk_toggle_button_get_active
+        importx "_gtk_toggle_button_get_active" gtk_toggle_button_get_active
         #
         sd toggle_flag
         sd p_toggle_flag^toggle_flag
@@ -366,7 +366,7 @@ function stage_file_options_structure(sd start,sd arg1)
     endelse
 endfunction
 function stage_oformat_changed(sd combo,sd p_loc)
-    import "gtk_combo_box_get_active" gtk_combo_box_get_active
+    importx "_gtk_combo_box_get_active" gtk_combo_box_get_active
     setcall p_loc# gtk_combo_box_get_active(combo)
 endfunction
 

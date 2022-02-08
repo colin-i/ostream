@@ -5,7 +5,7 @@ format elfobj
 
 include "../../_include/include.h"
 
-import "gtk_widget_get_window" gtk_widget_get_window
+importx "_gtk_widget_get_window" gtk_widget_get_window
 
 const stage_pencil_pixbuf_set=0
 const stage_pencil_pixbuf_get=1
@@ -133,7 +133,7 @@ function stage_pencil_init(sd vbox,sd *dialog)
     sd hbox
     setcall hbox hboxfield_cnt(vbox)
     #
-    import "gtk_hbox_new" gtk_hbox_new
+    importx "_gtk_hbox_new" gtk_hbox_new
     import "labelfield_l" labelfield_l
     import "packstart_default" packstart_default
     ss color="Pencil Color: "
@@ -141,13 +141,13 @@ function stage_pencil_init(sd vbox,sd *dialog)
     sd color_hbox
     setcall color_hbox gtk_hbox_new(0,0)
     call labelfield_l(color,color_hbox)
-    import "gtk_color_button_new" gtk_color_button_new
+    importx "_gtk_color_button_new" gtk_color_button_new
     setcall colorwidget gtk_color_button_new()
     call packstart_default(color_hbox,colorwidget)
     call stage_pencil_color((value_set),colorwidget)
     call packstart_default(hbox,color_hbox)
     #
-    import "gtk_vseparator_new" gtk_vseparator_new
+    importx "_gtk_vseparator_new" gtk_vseparator_new
     sd sep
     setcall sep gtk_vseparator_new()
     call packstart_default(hbox,sep)
@@ -215,7 +215,7 @@ function stage_pencil_init(sd vbox,sd *dialog)
     data motionfunction^stage_pencil_motion
     call connect_signal(ebox,motion,motionfunction)
 
-    import "gtk_widget_add_events" gtk_widget_add_events
+    importx "_gtk_widget_add_events" gtk_widget_add_events
     call gtk_widget_add_events(ebox,(GDK_BUTTON_PRESS_MASK|GDK_POINTER_MOTION_MASK))
 endfunction
 
@@ -280,7 +280,7 @@ function stage_pencil_setpixel(sd *ebox,sd event,sd *data)
     sd sz_en
     setcall sz_en stage_pencil_size_entry()
     import "memtoint" memtoint
-    import "gtk_entry_get_text" gtk_entry_get_text
+    importx "_gtk_entry_get_text" gtk_entry_get_text
     import "slen" slen
     sd pixel_value
     ss txt

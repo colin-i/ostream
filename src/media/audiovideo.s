@@ -213,7 +213,7 @@ function av_dialog_run(sd forward,sd data)
     else
         if term==0
             #dialog run
-            import "gtk_dialog_run" gtk_dialog_run
+            importx "_gtk_dialog_run" gtk_dialog_run
             sd response=GTK_RESPONSE_OK+1
             sd stop_click=0
             while response!=(GTK_RESPONSE_OK)
@@ -232,7 +232,7 @@ function av_dialog_run(sd forward,sd data)
                     import "stage_file_options_info_message" stage_file_options_info_message
                     sd toggle_button
                     setcall toggle_button av_results_toggle_button((value_get))
-                    import "gtk_toggle_button_get_active" gtk_toggle_button_get_active
+                    importx "_gtk_toggle_button_get_active" gtk_toggle_button_get_active
                     setcall toggle gtk_toggle_button_get_active(toggle_button)
                     if toggle==1
                         call stage_file_options_info_message((value_set),0)
@@ -269,7 +269,7 @@ function av_dialog_close()
     setcall dialog av_dialog_handle()
     if dialog!=0
     #close the dialog
-        import "gtk_dialog_response" gtk_dialog_response
+        importx "_gtk_dialog_response" gtk_dialog_response
         call gtk_dialog_response(dialog,(GTK_RESPONSE_OK))
     else
     #signal the terminal
@@ -299,13 +299,13 @@ function av_dialog_multiline_info(sd action,sd arg)
         if view==0
             return 0
         endif
-        import "gtk_text_view_get_buffer" gtk_text_view_get_buffer
+        importx "_gtk_text_view_get_buffer" gtk_text_view_get_buffer
         sd text
         set text arg
         setcall buffer gtk_text_view_get_buffer(view)
         sd len
         setcall len slen(text)
-        import "gtk_text_buffer_insert_at_cursor" gtk_text_buffer_insert_at_cursor
+        importx "_gtk_text_buffer_insert_at_cursor" gtk_text_buffer_insert_at_cursor
         call gtk_text_buffer_insert_at_cursor(buffer,text,len)
     endelse
 endfunction
@@ -314,19 +314,19 @@ function av_dialog_init(sd vbox,sd *dialog)
     #init for read
     call av_display_info((value_set))
     #info widgets
-    import "gtk_scrolled_window_new" gtk_scrolled_window_new
+    importx "_gtk_scrolled_window_new" gtk_scrolled_window_new
     sd scroll
     setcall scroll gtk_scrolled_window_new(0,0)
     call av_results((value_set),scroll,vbox)
     importx "_gtk_widget_set_size_request" gtk_widget_set_size_request
     call gtk_widget_set_size_request(scroll,-1,200)
-    import "gtk_text_view_new" gtk_text_view_new
+    importx "_gtk_text_view_new" gtk_text_view_new
     sd view
     setcall view gtk_text_view_new()
     import "container_add" container_add
     call container_add(scroll,view)
     call av_dialog_multiline_info((value_set),view)
-    import "gtk_text_view_set_editable" gtk_text_view_set_editable
+    importx "_gtk_text_view_set_editable" gtk_text_view_set_editable
     call gtk_text_view_set_editable(view,(FALSE))
 endfunction
 
@@ -349,14 +349,14 @@ function av_results(sd action,sd scroll,sd vbox)
         if toggle==0
             return 0
         endif
-        import "gtk_check_button_new_with_label" gtk_check_button_new_with_label
+        importx "_gtk_check_button_new_with_label" gtk_check_button_new_with_label
         ss txt="Disable results message(set from Stage Options to disable permanently)"
         sd results_toggle
         setcall results_toggle gtk_check_button_new_with_label(txt)
         import "packstart_default" packstart_default
         call packstart_default(vbox_entry,results_toggle)
         call av_results_toggle_button((value_set),results_toggle)
-        import "gtk_widget_show" gtk_widget_show
+        importx "_gtk_widget_show" gtk_widget_show
         call gtk_widget_show(results_toggle)
         return 1
     endelse

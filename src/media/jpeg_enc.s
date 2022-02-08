@@ -1796,7 +1796,7 @@ function jpeg_settings_init(sd vbox,sd *dialog)
     import "labelfield_left_default" labelfield_left_default
     call labelfield_left_default(q,hbox)
     #
-    import "gtk_hscale_new_with_range" gtk_hscale_new_with_range
+    importx "_gtk_hscale_new_with_range" gtk_hscale_new_with_range
     sd min_d_low
     sd min_d_high
     sd max_d_low
@@ -1813,7 +1813,7 @@ function jpeg_settings_init(sd vbox,sd *dialog)
     data hscale#1
     setcall hscale gtk_hscale_new_with_range(min_d_low,min_d_high,max_d_low,max_d_high,step_d_low,step_d_high)
 
-    import "gtk_range_set_value" gtk_range_set_value
+    importx "_gtk_range_set_value" gtk_range_set_value
     sd currentpos
     setcall currentpos jpeg_quality((value_get))
     sd doublepos_low

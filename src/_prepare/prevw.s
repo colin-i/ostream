@@ -109,14 +109,14 @@ function stage_preview_timeout(sd key)
         sd x
         sd y
         sd wind
-        import "gtk_widget_get_window" gtk_widget_get_window
+        importx "_gtk_widget_get_window" gtk_widget_get_window
         setcall wind gtk_widget_get_window(ebox)
         import "gdk_window_get_position" gdk_window_get_position
         call gdk_window_get_position(wind,#x,#y)
         import "stage_scroll" stage_scroll
         sd scrl
         setcall scrl stage_scroll()
-        import "gtk_scrolled_window_get_hadjustment" gtk_scrolled_window_get_hadjustment
+        importx "_gtk_scrolled_window_get_hadjustment" gtk_scrolled_window_get_hadjustment
         sd adj
         setcall adj gtk_scrolled_window_get_hadjustment(scrl#)
         sd value#2
@@ -144,7 +144,7 @@ function stage_preview_timeout(sd key)
                 sd double_low
                 sd double_high
                 call int_to_double(x,#double_low)
-                import "gtk_adjustment_set_value" gtk_adjustment_set_value
+                importx "_gtk_adjustment_set_value" gtk_adjustment_set_value
                 call gtk_adjustment_set_value(adj,double_low,double_high)
             endif
         endif
