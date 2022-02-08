@@ -289,7 +289,7 @@ endfunction
 
 function capture_alternative_init(sd vbox)
     import "gtk_check_button_new_with_label" gtk_check_button_new_with_label
-    import "gtk_container_add" gtk_container_add
+    importx "_gtk_container_add" gtk_container_add
     import "gtk_widget_set_tooltip_markup" gtk_widget_set_tooltip_markup
     ss term_txt="Terminal(if exists)"
     sd term_entry
@@ -352,7 +352,7 @@ function capture_alternative_free()
 endfunction
 
 function capture_alt_showback()
-	import "gtk_widget_show_all" gtk_widget_show_all
+	importx "_gtk_widget_show_all" gtk_widget_show_all
     sd win
     setcall win mainwidget()
     call gtk_widget_show_all(win)

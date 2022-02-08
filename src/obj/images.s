@@ -693,7 +693,7 @@ function pixbuf_draw_text(sd pixbuf,ss text,sd x,sd y,sd size,sd color,sd coordi
     import "gtk_widget_create_pango_layout" gtk_widget_create_pango_layout
     sd pangolayout
     setcall pangolayout gtk_widget_create_pango_layout(scratch,0)
-    import "gtk_widget_destroy" gtk_widget_destroy
+    importx "_gtk_widget_destroy" gtk_widget_destroy
     call gtk_widget_destroy(scratch)
 
     import "g_strdup_printf" g_strdup_printf

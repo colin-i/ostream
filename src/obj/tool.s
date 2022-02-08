@@ -66,7 +66,7 @@ function viewport_test(sd container,sd widget)
         return container
     endif
 
-    import "gtk_container_add" gtk_container_add
+    importx "_gtk_container_add" gtk_container_add
     import "gtk_viewport_new" gtk_viewport_new
     sd viewport
     setcall viewport gtk_viewport_new(null,null)
@@ -85,7 +85,7 @@ function container_child(sd container,sd widget)
     setcall old firstwidgetFromcontainer(container)
     data z=0
     if old!=z
-        import "gtk_widget_destroy" gtk_widget_destroy
+        importx "_gtk_widget_destroy" gtk_widget_destroy
         call gtk_widget_destroy(old)
     endif
     call gtk_container_add(container,widget)

@@ -252,7 +252,7 @@ function av_dialog_run(sd forward,sd data)
         #for text draw callbacks
         call dialog_modal_texter_drawwidget((value_set),0)
         #free dialog
-        import "gtk_widget_destroy" gtk_widget_destroy
+        importx "_gtk_widget_destroy" gtk_widget_destroy
         call gtk_widget_destroy(dialog)
     endif
 
@@ -318,7 +318,7 @@ function av_dialog_init(sd vbox,sd *dialog)
     sd scroll
     setcall scroll gtk_scrolled_window_new(0,0)
     call av_results((value_set),scroll,vbox)
-    import "gtk_widget_set_size_request" gtk_widget_set_size_request
+    importx "_gtk_widget_set_size_request" gtk_widget_set_size_request
     call gtk_widget_set_size_request(scroll,-1,200)
     import "gtk_text_view_new" gtk_text_view_new
     sd view
@@ -338,9 +338,9 @@ function av_results(sd action,sd scroll,sd vbox)
         set vbox_entry vbox
     else
     #returns toggle flag status (1/0)
-        import "gtk_container_add" gtk_container_add
+        importx "_gtk_container_add" gtk_container_add
         call gtk_container_add(vbox_entry,scroll_entry)
-        import "gtk_widget_show_all" gtk_widget_show_all
+        importx "_gtk_widget_show_all" gtk_widget_show_all
         call gtk_widget_show_all(scroll_entry)
 
         #info message flag

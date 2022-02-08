@@ -165,7 +165,7 @@ function stage_sel_reparent(sd newparent)
         sd parent
         setcall parent gtk_widget_get_parent(img)
         call stage_unselected_frame(parent)
-        import "gtk_widget_show_all" gtk_widget_show_all
+        importx "_gtk_widget_show_all" gtk_widget_show_all
         call gtk_widget_show_all(parent)
     endif
     call stage_sel_img_set(newparent)

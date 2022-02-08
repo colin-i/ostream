@@ -68,7 +68,7 @@ function headline_dialog()
 
     call headline_dlg((value_set),vbox)
 
-    import "gtk_widget_show_all" gtk_widget_show_all
+    importx "_gtk_widget_show_all" gtk_widget_show_all
     call gtk_widget_show_all(dialog)
 
     sd loop=1
@@ -88,7 +88,7 @@ function headline_dialog()
         endif
     endwhile
 
-    import "gtk_widget_destroy" gtk_widget_destroy
+    importx "_gtk_widget_destroy" gtk_widget_destroy
     call gtk_widget_destroy(dialog)
 endfunction
 
@@ -122,14 +122,14 @@ function headline_dlg(sd action,sd vbox)
         data frames_entry#1
 
         import "gtk_table_new" gtk_table_new
-        import "gtk_table_attach" gtk_table_attach
+        importx "_gtk_table_attach" gtk_table_attach
         const hl_rows=5
         const hl_cols=2
         sd table
         setcall table gtk_table_new((hl_rows),(hl_cols),(FALSE))
 
         import "labelfield_left_prepare" labelfield_left_prepare
-        import "gtk_entry_new" gtk_entry_new
+        importx "_gtk_entry_new" gtk_entry_new
         import "gtk_hbox_new" gtk_hbox_new
         import "packstart_default" packstart_default
 
@@ -410,7 +410,7 @@ function stage_lines_init(sd vbox)
     setcall rem gtk_radio_button_new_with_label(add_rem_radiogroup,rem_text)
     sd add_remove_entry
     setcall add_remove_entry stage_lines_add_remove_entry()
-    import "gtk_container_add" gtk_container_add
+    importx "_gtk_container_add" gtk_container_add
     sd add_rem_hbox
     setcall add_rem_hbox gtk_hbox_new(0,0)
     call gtk_container_add(add_rem_hbox,add)

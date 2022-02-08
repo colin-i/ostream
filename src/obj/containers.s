@@ -37,7 +37,7 @@ endfunction
 import "mainwidget" mainwidget
 
 ##########dialog
-import "gtk_widget_destroy" gtk_widget_destroy
+importx "_gtk_widget_destroy" gtk_widget_destroy
 
 function non_modal_destroy(sd dialog,sd response_id,sd forward)
     if forward!=0
@@ -67,7 +67,7 @@ function dialogfield_size_button_core(ss title,sd modal_flag,sd forward_init,sd 
     setcall vbox gtk_dialog_get_content_area(dialog)
     call forward_init(vbox,dialog)
 
-    import "gtk_widget_show_all" gtk_widget_show_all
+    importx "_gtk_widget_show_all" gtk_widget_show_all
     call gtk_widget_show_all(dialog)
 
     return dialog
@@ -170,7 +170,7 @@ function dialogfield_modal_texter_init(sd vbox,sd dialog)
     data exp^dialogfield_modal_texter_expose
     call connect_signal(draw,expose,exp)
     #
-    import "gtk_widget_set_size_request" gtk_widget_set_size_request
+    importx "_gtk_widget_set_size_request" gtk_widget_set_size_request
     call gtk_widget_set_size_request(draw,(modal_texter_parentdialog_width-20),40)
 
     #call the main init
@@ -252,7 +252,7 @@ endfunction
 
 ##########eventbox
 
-import "gtk_container_add" gtk_container_add
+importx "_gtk_container_add" gtk_container_add
 import "container_add" container_add
 
 import "gtk_event_box_new" gtk_event_box_new
@@ -376,7 +376,7 @@ endfunction
 
 ##########frame
 function framefield(sd box,ss text)
-    import "gtk_frame_new" gtk_frame_new
+    importx "_gtk_frame_new" gtk_frame_new
     sd frame
     setcall frame gtk_frame_new(text)
     if box!=0
@@ -440,7 +440,7 @@ function tablefield(sd bag,sd row,sd col)
     call container_add(bag,widget)
     return widget
 endfunction
-import "gtk_table_attach_defaults" gtk_table_attach_defaults
+importx "_gtk_table_attach_defaults" gtk_table_attach_defaults
 function table_attach(sd table,sd cell,sd x,sd y)
     sd next_x
     sd next_y

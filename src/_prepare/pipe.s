@@ -180,7 +180,7 @@ function stage_pixbuf_to_container(sd pixbuf,sd eventbox)
     call gtk_widget_add_events(eventbox,events)
 
     #display the widget
-    import "gtk_widget_show_all" gtk_widget_show_all
+    importx "_gtk_widget_show_all" gtk_widget_show_all
     call gtk_widget_show_all(eventbox)
 endfunction
 

@@ -151,7 +151,7 @@ endfunction
 
 import "stagewidget" stagewidget
 
-import "gtk_widget_destroy" gtk_widget_destroy
+importx "_gtk_widget_destroy" gtk_widget_destroy
 
 #free pixbufs
 function unref_pixbuf_frame(sd widget,sd *data)
@@ -221,9 +221,9 @@ endfunction
 
 import "hboxfield_cnt" hboxfield_cnt
 import "vboxfield_pack" vboxfield_pack
-import "gtk_widget_show_all" gtk_widget_show_all
+importx "_gtk_widget_show_all" gtk_widget_show_all
 import "hseparatorfield" hseparatorfield
-import "gtk_widget_set_size_request" gtk_widget_set_size_request
+importx "_gtk_widget_set_size_request" gtk_widget_set_size_request
 
 #prepare the stage
 function stage_prepare()
@@ -350,12 +350,12 @@ function stage_prepare_uri_start()
 endfunction
 function stage_prepare_uri_init(sd vbox)
     import "gtk_table_new" gtk_table_new
-    import "gtk_table_attach" gtk_table_attach
+    importx "_gtk_table_attach" gtk_table_attach
     sd table
     setcall table gtk_table_new(2,2,(FALSE))
 
     import "labelfield_left_prepare" labelfield_left_prepare
-    import "gtk_entry_new" gtk_entry_new
+    importx "_gtk_entry_new" gtk_entry_new
     sd entry
     sd store
 
@@ -373,7 +373,7 @@ function stage_prepare_uri_init(sd vbox)
     setcall store stage_prepare_uri_last_entry()
     set store# entry
 
-    import "gtk_container_add" gtk_container_add
+    importx "_gtk_container_add" gtk_container_add
     call gtk_container_add(vbox,table)
 
     import "labelfield_l" labelfield_l
@@ -541,7 +541,7 @@ function stage_init()
     sd scroll
     setcall scroll stage_scroll()
     setcall scroll# scrollfield(vbox)
-    import "gtk_scrolled_window_set_policy" gtk_scrolled_window_set_policy
+    importx "_gtk_scrolled_window_set_policy" gtk_scrolled_window_set_policy
     data always=GTK_POLICY_ALWAYS
     data auto=GTK_POLICY_AUTOMATIC
 

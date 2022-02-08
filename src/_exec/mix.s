@@ -253,7 +253,7 @@ function mix_init(sd vbox,sd *dialog)
     data rows=3
     data cols=2
 
-    import "gtk_entry_new" gtk_entry_new
+    importx "_gtk_entry_new" gtk_entry_new
 
     import "labelfield_left_prepare" labelfield_left_prepare
 

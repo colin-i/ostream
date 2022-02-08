@@ -181,7 +181,7 @@ function stage_file_options_structure(sd start,sd arg1)
     if start==true
         sd vbox
         set vbox arg1
-        import "gtk_frame_new" gtk_frame_new
+        importx "_gtk_frame_new" gtk_frame_new
         import "packstart" packstart
         import "tablefield_cells" tablefield_cells
 #video
@@ -191,7 +191,7 @@ function stage_file_options_structure(sd start,sd arg1)
         call packstart(vbox,v_frame,(TRUE))
 
         #fps
-        import "gtk_label_new" gtk_label_new
+        importx "_gtk_label_new" gtk_label_new
         str fps_label_text="Frames-per-second"
         setcall fps_label gtk_label_new(fps_label_text)
         import "editfield_with_int" editfield_with_int

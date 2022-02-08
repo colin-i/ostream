@@ -91,7 +91,7 @@ function linked_instance(sd destcontainer,sd lots,sd trigbutton,sd callbackfunc,
     data close_connect^connect
     call buttons_group(close_connect,buttonscontainer)
 
-    import "gtk_widget_show_all" gtk_widget_show_all
+    importx "_gtk_widget_show_all" gtk_widget_show_all
     call gtk_widget_show_all(alignment)
 
     return alignment

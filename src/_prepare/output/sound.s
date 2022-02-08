@@ -93,7 +93,7 @@ function stage_sound()
     import "gtk_window_set_default_size" gtk_window_set_default_size
     call gtk_window_set_default_size(dialog,500,-1)
 
-    import "gtk_widget_show_all" gtk_widget_show_all
+    importx "_gtk_widget_show_all" gtk_widget_show_all
     call gtk_widget_show_all(dialog)
 
     #stop flag for imported sound, but is used at print threads environment
@@ -105,7 +105,7 @@ function stage_sound()
     sd response
     setcall response gtk_dialog_run(dialog)
 
-    import "gtk_widget_destroy" gtk_widget_destroy
+    importx "_gtk_widget_destroy" gtk_widget_destroy
 
     if response==(GTK_RESPONSE_OK)
         call stage_sound_set()
@@ -269,7 +269,7 @@ function stage_sound_init(sd vbox)
 
     import "buttonfield_prepare_with_label" buttonfield_prepare_with_label
     import "gtk_table_new" gtk_table_new
-    import "gtk_table_attach" gtk_table_attach
+    importx "_gtk_table_attach" gtk_table_attach
     sd table
     setcall table gtk_table_new(6,2,0)
 
@@ -329,7 +329,7 @@ function stage_sound_init(sd vbox)
     setcall amplify_button buttonfield_prepare_with_label(amplify)
     call gtk_table_attach(table,amplify_button,0,1,5,6,(GTK_FILL),0,0,0)
     #number
-    import "gtk_entry_new" gtk_entry_new
+    importx "_gtk_entry_new" gtk_entry_new
     sd entry
     setcall entry gtk_entry_new()
     call gtk_table_attach(table,entry,1,2,5,6,0,0,0,0)

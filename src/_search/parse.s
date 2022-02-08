@@ -15,7 +15,7 @@ function search_parse_URIs_launch(ss str,sd table)
     setcall hseparator gtk_hseparator_new()
     data w=-1
     data h=20
-    import "gtk_widget_set_size_request" gtk_widget_set_size_request
+    importx "_gtk_widget_set_size_request" gtk_widget_set_size_request
     call gtk_widget_set_size_request(hseparator,w,h)
     call table_add_row(table,hseparator)
 
@@ -117,7 +117,7 @@ function search_parse_got_uri(ss uri,sd vbox)
     sd widgets^urilabel
 
     #row1
-    import "gtk_label_new" gtk_label_new
+    importx "_gtk_label_new" gtk_label_new
     str uristr="URI: "
 
     setcall urilabel gtk_label_new(uristr)
@@ -136,7 +136,7 @@ function search_parse_got_uri(ss uri,sd vbox)
     import "scrollfield" scrollfield
     sd scroll
     setcall scroll scrollfield(vbox)
-    import "gtk_scrolled_window_set_policy" gtk_scrolled_window_set_policy
+    importx "_gtk_scrolled_window_set_policy" gtk_scrolled_window_set_policy
     data always=GTK_POLICY_ALWAYS
     data auto=GTK_POLICY_AUTOMATIC
     call gtk_scrolled_window_set_policy(scroll,auto,always)

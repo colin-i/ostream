@@ -17,7 +17,7 @@ function stage_frame_panel(sd action,sd button,sd backfn,sd panel)
         set backfunction backfn
     else
     #if action==(buttons_panel_close)
-        import "gtk_widget_destroy" gtk_widget_destroy
+        importx "_gtk_widget_destroy" gtk_widget_destroy
         call gtk_widget_destroy(panelwidget)
         import "connect_signal" connect_signal
         str click="clicked"

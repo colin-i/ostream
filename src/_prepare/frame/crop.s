@@ -18,7 +18,7 @@ const stage_crop_tool_input=1
 const stage_crop_tool_preview=2
 const stage_crop_tool_set=3
 
-import "gtk_widget_set_size_request" gtk_widget_set_size_request
+importx "_gtk_widget_set_size_request" gtk_widget_set_size_request
 const action_height=50
 
 function stage_crop_init(sd vbox,sd dialog)

@@ -59,7 +59,7 @@ function stage_remove_frame(sd pos)
     #remove the pixbuf and destroy the frame(total frames changed)
     import "unref_pixbuf_frame" unref_pixbuf_frame
     call unref_pixbuf_frame(ebox)
-    import "gtk_widget_destroy" gtk_widget_destroy
+    importx "_gtk_widget_destroy" gtk_widget_destroy
     call gtk_widget_destroy(ebox)
 endfunction
 
@@ -204,7 +204,7 @@ function mass_remove_init(sd vbox,sd *dialog)
     ss e="End"
 
     import "labelfield_left_prepare" labelfield_left_prepare
-    import "gtk_entry_new" gtk_entry_new
+    importx "_gtk_entry_new" gtk_entry_new
     setcall start_txt labelfield_left_prepare(s)
     setcall start_entry gtk_entry_new()
     setcall end_txt labelfield_left_prepare(e)

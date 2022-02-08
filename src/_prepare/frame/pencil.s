@@ -123,7 +123,7 @@ function stage_pencil()
     endif
 endfunction
 
-import "gtk_widget_set_size_request" gtk_widget_set_size_request
+importx "_gtk_widget_set_size_request" gtk_widget_set_size_request
 
 const visible_area_width=640
 const visible_area_height=480

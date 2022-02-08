@@ -171,9 +171,9 @@ endfunction
 
 function stage_frame_form_data_init(sd vbox,sd pixbuf)
     import "gtk_table_new" gtk_table_new
-    import "gtk_table_attach_defaults" gtk_table_attach_defaults
+    importx "_gtk_table_attach_defaults" gtk_table_attach_defaults
     import "labelfield_left_prepare" labelfield_left_prepare
-    import "gtk_entry_new" gtk_entry_new
+    importx "_gtk_entry_new" gtk_entry_new
     import "int_to_entry" int_to_entry
 
     sd value
@@ -207,7 +207,7 @@ function stage_frame_form_data_init(sd vbox,sd pixbuf)
     call stage_frame_form_data((stage_frame_form_data_height),value)
     call gtk_table_attach_defaults(table,value,1,2,1,2)
 
-    import "gtk_container_add" gtk_container_add
+    importx "_gtk_container_add" gtk_container_add
     call gtk_container_add(vbox,table)
 
     import "colorbuttonfield_leftlabel" colorbuttonfield_leftlabel

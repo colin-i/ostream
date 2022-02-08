@@ -72,8 +72,8 @@ function stage_scale_init(sd vbox,sd *dialog)
     data rows=2
     data cols=2
 
-    import "gtk_label_new" gtk_label_new
-    import "gtk_entry_new" gtk_entry_new
+    importx "_gtk_label_new" gtk_label_new
+    importx "_gtk_entry_new" gtk_entry_new
 
     import "connect_signal_data" connect_signal_data
     str signal_set="changed"

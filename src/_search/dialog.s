@@ -10,7 +10,7 @@ function show_preferences_set_windows(sd vbox)
 
     data true=1
 
-    import "gtk_frame_new" gtk_frame_new
+    importx "_gtk_frame_new" gtk_frame_new
     str body="Body"
     sd frame#1
     setcall frame gtk_frame_new(body)
@@ -18,8 +18,8 @@ function show_preferences_set_windows(sd vbox)
 
     import "tablefield_row" tablefield_row
 
-    import "gtk_entry_new" gtk_entry_new
-    import "gtk_label_new" gtk_label_new
+    importx "_gtk_entry_new" gtk_entry_new
+    importx "_gtk_label_new" gtk_label_new
 
     import "labelfield_left_prepare" labelfield_left_prepare
     import "edit_info_prepare_blue" edit_info_prepare_blue

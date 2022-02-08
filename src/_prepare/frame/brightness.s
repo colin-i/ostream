@@ -28,7 +28,7 @@ function stage_brightness_init(sd vbox,sd *dialog)
     import "hscalefield" hscalefield
     sd hscale
     setcall hscale hscalefield(hbox,0,(brightness_max),1,(brightness_half))
-    import "gtk_widget_set_size_request" gtk_widget_set_size_request
+    importx "_gtk_widget_set_size_request" gtk_widget_set_size_request
     call gtk_widget_set_size_request(hscale,400,-1)
     call hscale_entry((value_set),hscale)
 

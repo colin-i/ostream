@@ -36,7 +36,7 @@ function capture_init(sd vbox,sd *dialog)
     call labelfield_l(text,vbox)
     import "tablefield_cells" tablefield_cells
     import "labelfield_left_prepare" labelfield_left_prepare
-    import "gtk_entry_new" gtk_entry_new
+    importx "_gtk_entry_new" gtk_entry_new
     sd left_text
     sd left_entry
     sd top_text

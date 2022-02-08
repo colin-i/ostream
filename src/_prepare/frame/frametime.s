@@ -526,6 +526,6 @@ function set_frame_length_and_redraw(sd pos,sd nr)
         import "stage_unselected_frame" stage_unselected_frame
         call stage_unselected_frame(ebox)
     endelse
-    import "gtk_widget_show_all" gtk_widget_show_all
+    importx "_gtk_widget_show_all" gtk_widget_show_all
     call gtk_widget_show_all(ebox)
 endfunction

@@ -155,7 +155,7 @@ endfunction
 function capture_alternative_init(sd vbox)
     import "gtk_check_button_new_with_label" gtk_check_button_new_with_label
     import "gtk_toggle_button_set_active" gtk_toggle_button_set_active
-    import "gtk_container_add" gtk_container_add
+    importx "_gtk_container_add" gtk_container_add
     ss gdi_txt="Use GDI"
     sd gdi_entry
     setcall gdi_entry gtk_check_button_new_with_label(gdi_txt)
@@ -168,7 +168,7 @@ function capture_alternative_init(sd vbox)
     call hseparatorfield(vbox)
 
     import "gtk_table_new" gtk_table_new
-    import "gtk_table_attach" gtk_table_attach
+    importx "_gtk_table_attach" gtk_table_attach
     import "buttonfield_prepare_with_label" buttonfield_prepare_with_label
     import "connect_clicked" connect_clicked
     import "gtk_widget_set_tooltip_markup" gtk_widget_set_tooltip_markup

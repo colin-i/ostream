@@ -241,7 +241,7 @@ function new_texter_modal(sd container,sd dialog)
 endfunction
 #
 
-import "gtk_entry_new" gtk_entry_new
+importx "_gtk_entry_new" gtk_entry_new
 
 function editfield_pack(sd container)
     sd edit
@@ -486,7 +486,7 @@ function message_dialog(sd print)
     setcall main mainwidget()
     import "gtk_message_dialog_new" gtk_message_dialog_new
     import "gtk_dialog_run" gtk_dialog_run
-    import "gtk_widget_destroy" gtk_widget_destroy
+    importx "_gtk_widget_destroy" gtk_widget_destroy
     sd dialog
     setcall dialog gtk_message_dialog_new(main,(GTK_DIALOG_DESTROY_WITH_PARENT),(GTK_MESSAGE_INFO),(GTK_BUTTONS_OK),print)
     call gtk_dialog_run(dialog)
