@@ -9,8 +9,8 @@ Const X_OK=1
 Const FORWARD=1
 
 import "getpid" getpid
-importx "_fopen" fopen
-importx "_sprintf" sprintf
+importx "fopen" fopen
+importx "sprintf" sprintf
 import "getenv" getenv
 import "access" access
 
@@ -20,7 +20,7 @@ import "strerrno" strerrno
 import "getdelim" getdelim
 import "slen" slen
 import "memoryalloc" memoryalloc
-importx "_free" free
+importx "free" free
 import "cpymem" cpymem
 
 #err
