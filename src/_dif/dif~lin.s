@@ -3,6 +3,8 @@
 
 format elfobj
 
+override underscore_pref 0
+
 include "../_include/include.h"
 
 Const X_OK=1
@@ -172,7 +174,7 @@ endfunction
 
 
 
-import "__errno_location" errno
+importx "__errno_location" errno
 #errno
 function geterrno()
         data err#1
