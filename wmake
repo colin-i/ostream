@@ -1,3 +1,28 @@
 
+if [ -z "$1" ]
+then
 cd src
-make platform=win
+./wmake
+cd ..
+f=ovideo
+else
+f=$1
+fi
+
+mkdir $f
+cp src/ovideo.exe $f
+
+mkdir $f/html
+cp html/html/use.html $f/html
+
+mkdir $f/sys
+cp version.txt $f/sys
+cp build/sys/* $f/sys
+
+cp -r build/img $f
+
+mkdir $f/captures
+
+#wine regedit
+#HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment
+#;C:\gstreamer-sdk\0.10\x86\bin

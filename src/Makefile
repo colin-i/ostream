@@ -13,7 +13,7 @@ cap = _capture/capture
 err = err/err
 eve = event/event
 e=_exec/
-exe = ${e}capture/save ${e}help ${e}mainhandles ${e}mediainfo ${e}mix ${e}ostream ${e}start ${e}uri ${e}uristream
+exe = ${e}capture/save ${e}help ${e}init ${e}mainhandles ${e}mediainfo ${e}mix ${e}ostream ${e}start ${e}uri ${e}uristream
 f=file-folder/
 ffl = ${f}file-base ${f}folder-base
 gnu = gnu/gst
@@ -78,7 +78,7 @@ lnk:
 	if [ "${platform}" = "lin" ]; then \
 		$(CC) -nostdlib ${syms} ${obs} -o ${projname} `pkg-config --libs gtk+-2.0 gstreamer-pbutils-0.10 gstreamer-interfaces-0.10 gstreamer-app-0.10` -lsoup-2.4 -ljpeg -lasound -lm -lpthread -lc; \
 	else \
-		i686-w64-mingw32-ld --large-address-aware ${syms} ${obs} -o ${wprojname} --start-group \
+		i686-w64-mingw32-ld --large-address-aware ${syms} ${obs} -o ${wprojname} -entry _start --start-group \
 		`dpkg -L mingw-w64-i686-dev | grep '\.a' | sed 's/..$$//' | grep -o '[^\/]*$$' | sed 's/lib/-l/' | xargs echo` \
 		--end-group -L`echo ~`/.wine/drive_c/gstreamer-sdk/0.10/x86/lib/ \
 		-lgtk-win32-2.0 -lgdk-win32-2.0 -lgdk_pixbuf-2.0 -lglib-2.0 -lgobject-2.0 -lgio-2.0 -lgthread-2.0 \

@@ -5,11 +5,21 @@ include "../_include/include.h"
 
 importx "_gtk_init" gtk_init
 importx "_gst_init" gst_init
-import "initfn" initfn
 importx "_gtk_main" gtk_main
 importx "_exit" exit
+importx "_printf" printf
+
+import "init_user" init_user
+import "initfn" initfn
 
 entry _start()
+
+sd err
+setcall err init_user()
+if err!=0
+	call printf(err)
+	call exit(-1)
+endif
 
 call gtk_init(0,0)
 call gst_init(0,0)
@@ -42,5 +52,5 @@ call gstunset()
 call search_clear_memory()
 
 #gtk_main reaction
-call exit((TRUE))
+call exit(0)
 #return (TRUE) i don't remember why i set this but ostream main part doesn't have linux exit in code
