@@ -90,6 +90,7 @@ fast:
 link: fast lnk
 #snprintf with circular unresolved requirements
 #cos is in -lmingwex that will work with -lmingw32 -lmsvcrt
+#on win msvcr100 is old and at here is from old java-i586
 
 %: %.s
 	${OCOMP} $< ${OFLAGS}

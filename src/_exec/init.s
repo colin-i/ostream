@@ -11,6 +11,10 @@ importx "_access" access
 importx "_mkdir" mkdir
 importx "_getcwd" getcwd
 importx "_free" free
+importx "_open" open
+importx "_write" write
+importx "_close" close
+importx "_sprintf" sprintf
 
 import "capture_location" capture_location
 import "sys_folder" sys_folder
@@ -52,7 +56,8 @@ endfunction
 #e
 function init_user_sys()
 	const start=!
-	chars a="capture" #biggest
+	chars a="capture"
+	const biggest_string=7
 	const d1=!
 	chars *={0x00,0x00,0x00,0x00,0x00,0x01,0x00,0x00,0x00,0x01,0x00,0x00,0x00,0x01,0x00,0x00,0x00}
 	const d11=!-d1
@@ -96,17 +101,20 @@ function init_user_sys()
 	return (noerror)
 endfunction
 
-function init_sys(sd c,sd sz,sd *perr)
+function init_sys(sd c,sd sz,sd perr)
 	sd len
 	setcall len strlen(c)
+	sd f
+	set f c
 	add c len
 	inc c
+	call init_sys_file(f,c,sz,perr)
 	add c sz
 	return c
 endfunction
 
 #er
-function init_dir(ss f)
+function init_dir(sd f)
 	sd is
 	setcall is access(f,(F_OK))
 	#this looks useless check but we want mkdir to return success, then, it is ok, ignoring mkdir by others between these calls
@@ -117,4 +125,25 @@ function init_dir(ss f)
 		endif
 	endif
 	return (noerror)
+endfunction
+
+function init_sys_file(sd f,sd data,sd sz,sv perr)
+	sd is
+	setcall is access(f,(F_OK))
+	if is==-1
+		#open
+		const O_WRONLY=0x0001
+		sd fd
+		chars buf#biggest_string+1+4+1
+		call sprintf(#buf,"%s.data",f)
+		setcall fd open(#buf,(O_WRONLY|flag_O_BINARY|flag_O_CREAT),(flag_fmode))
+		#write
+		sd len
+		setcall len write(fd,data,sz)
+		#close
+		call close(fd)
+		if len!=sz
+			set perr# "write error at init user"
+		endif
+	endif
 endfunction
