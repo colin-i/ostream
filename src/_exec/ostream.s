@@ -16,7 +16,7 @@ entry _start()
 
 sd err
 setcall err init_user()
-if err!=0
+if err!=(noerror)
 	call printf(err)
 	call exit(-1)
 endif

@@ -146,6 +146,8 @@ function sys_folder_enterleave(sd forward)
     call folder_enterleave(system,forward)
 endfunction
 
+importx "_free" free
+import "file_get_content" file_get_content
 #v
 function callbackprocessfolder()
     #set stage trace sizes
@@ -154,11 +156,38 @@ function callbackprocessfolder()
     #move to imgs
     data imgforward^setimages
     call img_folder_enterleave(imgforward)
+
+    str localversion="version.txt"
+    data err#1
+    data noerr=noerror
+    vstr mem#1
+    data size#1
+    sd ptrmem^mem
+    sd ptrsize^size
+    setcall err file_get_content(localversion,ptrsize,ptrmem)
+    if err!=noerr
+        return (void)
+    endif
+    call update_mem_version((NULL),mem,size)
+
     #move to settings
     data sysforward^setsystems
     call sys_folder_enterleave(sysforward)
-endfunction
 
+    call free(mem)
+endfunction
+function update_mem_version(sd p,sd m,sd s)
+	vstr mem#1
+	data size#1
+	if p==(NULL)
+		set mem m
+		set size s
+		return (void)
+	endif
+	set p# mem
+	incst p
+	set p# size
+endfunction
 
 ######main
 #void

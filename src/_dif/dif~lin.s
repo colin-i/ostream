@@ -10,11 +10,12 @@ include "../_include/include.h"
 Const X_OK=1
 Const FORWARD=1
 
-import "getpid" getpid
+importx "getpid" getpid
 importx "fopen" fopen
 importx "sprintf" sprintf
-import "getenv" getenv
-import "access" access
+importx "getenv" getenv
+importx "access" access
+importx "free" free
 
 
 import "setmemzero" setmemzero
@@ -22,7 +23,6 @@ import "strerrno" strerrno
 import "getdelim" getdelim
 import "slen" slen
 import "memoryalloc" memoryalloc
-importx "free" free
 import "cpymem" cpymem
 
 #err

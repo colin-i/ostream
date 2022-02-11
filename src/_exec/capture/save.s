@@ -63,11 +63,16 @@ function recSignals(data bus,data dest)
     call connect_signal(bus,error,errorfn)
 endfunction
 
+function capture_location()
+	str folder="captures/"
+	return folder
+endfunction
 
 function capture_path(ss format,sd extrabool,sd extranumber)
     chars capture_data#100
     str capture_str^capture_data
-    str folder="captures/"
+    ss folder
+    setcall folder capture_location()
     sd tm
     setcall tm time(0)
     ss fmt="%s%s%u.%s"

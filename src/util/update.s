@@ -6,10 +6,8 @@ format elfobj
 
 include "../_include/include.h"
 
-importx "_free" free
 importx "_g_object_unref" g_object_unref
 
-import "file_get_content" file_get_content
 import "uri_get_content" uri_get_content
 
 
@@ -57,6 +55,8 @@ function update_got_localversion(data mem,data size)
     call g_object_unref(msg)
 endfunction
 
+import "update_mem_version" update_mem_version
+
 function update()
     sd up
     setcall up update_get()
@@ -64,21 +64,10 @@ function update()
         return (void)
     endif
 
-    str localversion="version.txt"
-
-    data err#1
-    data noerr=noerror
-
+    vstr mem#1
     data size#1
-    data ptrsize^size
-    str mem#1
-    data ptrmem^mem
-    setcall err file_get_content(localversion,ptrsize,ptrmem)
-    if err!=noerr
-        return (void)
-    endif
+    call update_mem_version(#mem)
     call update_got_localversion(mem,size)
-    call free(mem)
 endfunction
 
 function update_path()
