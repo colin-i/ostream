@@ -12,14 +12,15 @@ fi
 mkdir $f
 cp src/ovideo.exe $f
 
+cp -r build/img $f
+
 mkdir $f/html
 cp html/html/use.html $f/html
 
-mkdir $f/sys
-cp build/sys/* $f/sys
 cp version.txt $f
 
-cp -r build/img $f
+mkdir $f/sys
+cp build/sys/* $f/sys
 
 mkdir $f/captures
 

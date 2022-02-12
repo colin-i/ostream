@@ -47,6 +47,7 @@ wprojname=ovideo.exe
 lshare=_dif/share.txt
 logs :=
 obs :=
+sharefolder=$(DESTDIR)$(prefix)/share/ovideo
 
 all: compile lnk
 
@@ -57,7 +58,7 @@ ounused:
 
 share:
 	if [ "${platform}" = "lin" ]; then \
-		echo return \"$(DESTDIR)$(prefix)/share/ovideo\" > ${lshare}; \
+		echo return \"${sharefolder}\" > ${lshare}; \
 	fi
 
 #at jammy
@@ -117,14 +118,20 @@ distclean: clean
 test:
 	echo "Nothing"
 
-install-lib:
-	install -D ${name} \
+install-proc:
+	install -D ${projname} \
 		$(DESTDIR)$(prefix)/bin/${projname}
+	install -d ${sharefolder}/img
+	cp -r ../build/img ${sharefolder}
+	install -d ${sharefolder}/html
+	cp ../html/html/use.html ${sharefolder}/html
+	cp ../version.txt ${sharefolder}
 
-install: all install-lib
+install: all install-proc
 
 uninstall:
 	-rm -f $(DESTDIR)$(prefix)/bin/${projname}
+	-rm -r ${sharefolder}
 
 .PHONY: all install clean distclean uninstall test
 
