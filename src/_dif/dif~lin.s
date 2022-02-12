@@ -760,7 +760,7 @@ endfunction
 function move_to_home()
 	sd f
 	sd er
-	setcall er home_folder(#f)
+	setcall er home_folder(#f,(NULL))
 	if er==(noerror)
 		setcall er init_dir(f)
 		if er==(noerror)
@@ -770,53 +770,67 @@ function move_to_home()
 	return er
 endfunction
 function move_to_home_v()
-	call move_to_home_core((NULL))
-endfunction
-function move_to_home_core(sv p)
 	sd f
-	setcall f home_folder_r()
+	setcall f home_folder_r((NULL))
 	if f!=(NULL)
-		if p!=(NULL)
-			call cat_absolute(home_folder_function,p)
-			return (void)
-		endif
 		call dirch(f)
 	endif
 endfunction
-function move_to_share_v()
-	call move_to_share_core((NULL))
+function move_to_home_core(sv p)
+	sv mem
+	setcall mem home_folder_function()
+	set mem mem#
+	if mem!=(NULL)
+		sd f
+		sd h
+		setcall f home_folder_r(#h)
+		if f!=(NULL)
+			call cat_absolute_verif(mem,h,f,p#)
+		endif
+	endif
 endfunction
-function move_to_share_core(sv p)
+function move_to_share_v()
 	sd f
 	setcall f share_folder()
-	if p!=(NULL)
-		call cat_absolute(share_folder_function,p)
-		return (void)
-	endif
 	call dirch(f)
+endfunction
+function move_to_share_core(sv p)
+	sv mem
+	setcall mem share_folder_function()
+	set mem mem#
+	if mem!=(NULL)
+		sd f
+		setcall f share_folder()
+		call cat_absolute_verif(mem,f,p#,(NULL))
+	endif
 endfunction
 
 #e
-function home_folder(sv pf)
-	sd err
+function home_folder(sv pf,sv ph)
 	ss envpath
 	setcall envpath getenv("PATH")
 	if envpath!=(NULL)
-		setcall err move_to_folder(envpath)
-		if err!=(noerror)
-			set pf# "ovideo"
-			return (noerror)
-		endif
-	else
-		set err "Getenv error at init."
-	endelse
-	return err
+		vstr a="ovideo"
+		if ph==(NULL)
+			sd err
+			setcall err move_to_folder(envpath)
+			if err!=(noerror)
+				return err
+			endif
+			set pf# a
+		else
+			set ph# envpath
+			set pf# a
+		endelse
+		return (noerror)
+	endif
+	return "Getenv error at home folder."
 endfunction
 #string/0
-function home_folder_r()
+function home_folder_r(sd p)
 	sd er
 	sd f
-	setcall er home_folder(#f)
+	setcall er home_folder(#f,p)
 	if er==(noerror)
 		return f
 	endif
@@ -875,32 +889,24 @@ function share_folder_function()
 	return #p
 endfunction
 
-function cat_absolute(sd fn,sv pv)
-	sv mem
-	setcall mem fn()
-	set mem mem#
-	if mem!=(NULL)
-		sd v
-		if fn==home_folder_function
-			setcall v home_folder_r()
-			if v!=(NULL)
-				call cat_absolute_verif(mem,v,pv)
-			endif
-			return (void)
-		endif
-		setcall v share_folder()
-		call cat_absolute_verif(mem,v,pv)
-	endif
-endfunction
-
-function cat_absolute_verif(sd mem,sd v,sd pv)
+function cat_absolute_verif(sd mem,sd v,sd v2,sd v3)
 	sd s
 	setcall s strlen(v)
-	addcall s strlen(pv#)
-	if s<(PATH_MAX-1)
-		call sprintf(mem,"%s/%s",v,pv#)
-		set pv# mem
-		return (void)
+	inc s
+	addcall s strlen(v2)
+	if v3!=(NULL)
+		inc s
+		addcall s strlen(v3)
+	endif
+	if s<(PATH_MAX)
+		sd n
+		setcall n sprintf(mem,"%s/%s",v,v2)
+		if v3!=(NULL)
+			add mem n
+			call sprintf(mem,"/%s",v3)
+		endif
+		return (TRUE)
 	endif
 	call texter("path max error.")
+	return (FALSE)
 endfunction
