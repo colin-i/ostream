@@ -121,11 +121,13 @@ test:
 install-proc:
 	install -D ${projname} \
 		$(DESTDIR)$(prefix)/bin/${projname}
-	install -d ${sharefolder}/img
-	cp -r ../build/img ${sharefolder}
+	cd ../build; \
+	find ./img -type f -exec install -Dm 664 {} ${sharefolder}/{} \;
 	install -d ${sharefolder}/html
-	cp ../html/html/use.html ${sharefolder}/html
-	cp ../version.txt ${sharefolder}
+	cd ../html; \
+	install -Dm 664 html/use.html ${sharefolder}/html/
+	cd ..; \
+	install -m 664 ./version.txt ${sharefolder}/
 
 install: all install-proc
 
