@@ -39,8 +39,10 @@ call gtk_main()
 
 import "gstunset" gstunset
 import "search_clear_memory" search_clear_memory
+import "prog_free" prog_free
 call gstunset()
 call search_clear_memory()
+call prog_free()
 
 #gtk_main reaction
 call exit(0)

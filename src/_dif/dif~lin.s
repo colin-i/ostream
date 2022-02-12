@@ -14,9 +14,18 @@ import "setmemzero" setmemzero
 import "texter" texter
 
 function movetoScriptfolder(data forward)
-#on lin no, Script is alone in bin folder, move from share(img/html/version.txt) to userhome(sys/captures)
+#on lin no, Script is alone in bin folder
 #at this first call img/version and then sys
-	call forward()
+	call prog_init()
+	sd f
+	setcall f share_folder()
+	sd err
+	setcall err move_to_folder(f)
+	if err==(noerror)
+		call forward()
+		return (void)
+	endif
+	call texter(err)
 endfunction
 
 
@@ -714,6 +723,7 @@ endfunction
 #	stage get image 1   at frames,selectframe B
 #version 1    A
 #
+#
 #captures
 #	init 1    A
 #	1         B
@@ -721,10 +731,176 @@ endfunction
 #	init 1    A
 #	sys enter leave 4(init 1 A ,dialog 1 B,stage 2 B)
 #
-#1 at A in home from img to inside init_user, next at sys
 #
-#captures changes to home
-#sys 2 changes to home
-#html changes to share
-#img cover/frame to share
-#img frames to share
+#1 at A to share from img to version, next to home: init_user, at sys
+#
+#this was with er, rest are with texter
+#
+#captures changes to home  return
+#sys 3 changes to home     enterleave
+#html changes to share     enterleave
+#img cover/frame to share  enterleave
+#img frames to share       return
+
+importx "getenv" getenv
+
+import "init_dir" init_dir
+import "dirch" dirch
+
+#e
+function move_to_folder(sd f)
+	sd change
+	setcall change chd(f)
+	if change!=0
+		return "Change dir error at init."
+	endif
+	return (noerror)
+endfunction
+#e
+function move_to_home()
+	sd f
+	sd er
+	setcall er home_folder(#f)
+	if er==(noerror)
+		setcall er init_dir(f)
+		if er==(noerror)
+			setcall er move_to_folder(f)
+		endif
+	endif
+	return er
+endfunction
+function move_to_home_v()
+	call move_to_home_core((NULL))
+endfunction
+function move_to_home_core(sv p)
+	sd f
+	setcall f home_folder_r()
+	if f!=(NULL)
+		if p!=(NULL)
+			call cat_absolute(home_folder_function,p)
+			return (void)
+		endif
+		call dirch(f)
+	endif
+endfunction
+function move_to_share_v()
+	call move_to_share_core((NULL))
+endfunction
+function move_to_share_core(sv p)
+	sd f
+	setcall f share_folder()
+	if p!=(NULL)
+		call cat_absolute(share_folder_function,p)
+		return (void)
+	endif
+	call dirch(f)
+endfunction
+
+#e
+function home_folder(sv pf)
+	sd err
+	ss envpath
+	setcall envpath getenv("PATH")
+	if envpath!=(NULL)
+		setcall err move_to_folder(envpath)
+		if err!=(noerror)
+			set pf# "ovideo"
+			return (noerror)
+		endif
+	else
+		set err "Getenv error at init."
+	endelse
+	return err
+endfunction
+#string/0
+function home_folder_r()
+	sd er
+	sd f
+	setcall er home_folder(#f)
+	if er==(noerror)
+		return f
+	endif
+	call texter(er)
+	return (NULL)
+endfunction
+#string
+function share_folder()
+	include "share.txt"
+endfunction
+
+const PATH_MAX=4096
+importx "malloc" malloc
+importx "free" free
+importx "strlen" strlen
+importx "sprintf" sprintf
+
+function prog_init()
+	sv a
+	setcall a home_folder_function()
+	set a# (NULL)
+	sv b
+	setcall b share_folder_function()
+	set b# (NULL)
+	vstr s="malloc error."
+	sd c
+	setcall c malloc((PATH_MAX))
+	if a!=(NULL)
+		set a# c
+		setcall c malloc((PATH_MAX))
+		if b!=(NULL)
+			set b# c
+			return (void)
+		endif
+	endif
+	call texter(s)
+endfunction
+function prog_free()
+	sv a
+	setcall a home_folder_function()
+	if a#!=(NULL)
+		call free(a#)
+		setcall a share_folder_function()
+		if a#!=(NULL)
+			call free(a#)
+		endif
+	endif
+endfunction
+
+function home_folder_function()
+	value p#1
+	return #p
+endfunction
+function share_folder_function()
+	value p#1
+	return #p
+endfunction
+
+function cat_absolute(sd fn,sv pv)
+	sv mem
+	setcall mem fn()
+	set mem mem#
+	if mem!=(NULL)
+		sd v
+		if fn==home_folder_function
+			setcall v home_folder_r()
+			if v!=(NULL)
+				call cat_absolute_verif(mem,v,pv)
+			endif
+			return (void)
+		endif
+		setcall v share_folder()
+		call cat_absolute_verif(mem,v,pv)
+	endif
+endfunction
+
+function cat_absolute_verif(sd mem,sd v,sd pv)
+	sd s
+	setcall s strlen(v)
+	addcall s strlen(pv#)
+	if s<(PATH_MAX-1)
+		call sprintf(mem,"%s/%s",v,pv#)
+		set pv# mem
+		return (void)
+	endif
+	call texter("path max error.")
+endfunction

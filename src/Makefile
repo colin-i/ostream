@@ -44,16 +44,21 @@ items = _dif/dif~${platform} ${cap} ${err} ${eve} ${exe} ${ffl} ${gnu} ${int} ${
 
 projname=ovideo
 wprojname=ovideo.exe
+lshare=_dif/share.txt
 logs :=
 obs :=
 
-all: ${items} ounused lnk
+all: compile lnk
 
-#cannot put compile at all, is not launching lnk
-compile: ${items} ounused
+compile: share ${items} ounused
 
 ounused:
 	ounused ${logs}
+
+share:
+	if [ "${platform}" = "lin" ]; then \
+		echo return \"$(DESTDIR)$(prefix)/share/ovideo\" > ${lshare}; \
+	fi
 
 #at jammy
 #libgtk2.0-dev:i386	libgtk2.0-0:i386
@@ -104,6 +109,7 @@ clean:
 	-printf ' %s.s.log' ${items} | xargs rm -f
 	-printf ' %s.o' ${items} | xargs rm -f
 	-rm -f ${projname}
+	-rm -f ${lshare}
 	-rm -f ${wprojname}
 
 distclean: clean

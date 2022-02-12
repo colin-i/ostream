@@ -441,6 +441,8 @@ function stage_file_options_dialog_init(sd vbox,sd *dialog)
     call stage_file_options_structure((TRUE),vbox)
 endfunction
 
+import "move_to_home_v" move_to_home_v
+
 #write if ok
 function stage_file_options_dialog_got_file(sd file)
     data notstart=0
@@ -454,18 +456,20 @@ function stage_file_options_dialog_sysenter()
     call file_write_forward(stagedata,f)
 endfunction
 function stage_file_options_dialog_continuation()
-    data f^stage_file_options_dialog_sysenter
-    import "sys_folder_enterleave" sys_folder_enterleave
-    call sys_folder_enterleave(f)
-    #redraw the visual sound pulse
-    import "sound_pixbuf_redraw" sound_pixbuf_redraw
-    call sound_pixbuf_redraw()
+	call move_to_home_v()
+	data f^stage_file_options_dialog_sysenter
+	import "sys_folder_enterleave" sys_folder_enterleave
+	call sys_folder_enterleave(f)
+	#redraw the visual sound pulse
+	import "sound_pixbuf_redraw" sound_pixbuf_redraw
+	call sound_pixbuf_redraw()
 endfunction
 
 function file_write_forward_sys_folder_enter_leave(ss filename,sd forward)
-    call forward_in_sys_folder((value_set),filename,forward)
-    data sys_forward^forward_file_sys_folder
-    call sys_folder_enterleave(sys_forward)
+	call move_to_home_v()
+	call forward_in_sys_folder((value_set),filename,forward)
+	data sys_forward^forward_file_sys_folder
+	call sys_folder_enterleave(sys_forward)
 endfunction
 function forward_file_sys_folder()
     sd values

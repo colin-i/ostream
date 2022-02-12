@@ -55,9 +55,11 @@ function move_to_html()
     call g_object_unref(file)
 endfunction
 
+import "move_to_share_v" move_to_share_v
 function view_use_file()
-    import "folder_enterleave" folder_enterleave
-    ss loc="html"
-    data f^move_to_html
-    call folder_enterleave(loc,f)
+	call move_to_share_v()
+	import "folder_enterleave" folder_enterleave
+	ss loc="html"
+	data f^move_to_html
+	call folder_enterleave(loc,f)
 endfunction

@@ -900,3 +900,18 @@ function filechooserfield_folder()
     setcall filename filechooserfield_dialog(dialog)
     return filename
 endfunction
+
+#e
+function move_to_home()
+	return (noerror)
+endfunction
+function move_to_home_v()
+endfunction
+function move_to_share_v()
+endfunction
+function move_to_home_core()
+endfunction
+function move_to_share_core()
+endfunction
+function prog_free()
+endfunction

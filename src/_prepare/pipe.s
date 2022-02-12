@@ -117,19 +117,21 @@ function stage_display_pixbuf(sd widget)
     call stage_redraw()
 endfunction
 
+import "move_to_share_core" move_to_share_core
 #name of the img/edit+(image)
 function stage_get_image(ss image)
-    ss i
-    ss e
-    import "img_folder" img_folder
-    import "edit_folder" edit_folder
-    setcall i img_folder()
-    setcall e edit_folder()
-    chars bytes#60
-    str file^bytes
-    str form="%s/%s/%s"
-    call sprintf(file,form,i,e,image)
-    return file
+	ss i
+	ss e
+	import "img_folder" img_folder
+	import "edit_folder" edit_folder
+	setcall i img_folder()
+	setcall e edit_folder()
+	chars bytes#60
+	ss file^bytes
+	str form="%s/%s/%s"
+	call sprintf(file,form,i,e,image)
+	call move_to_share_core(#file)
+	return file
 endfunction
 
 function unselectedframe()
@@ -331,4 +333,3 @@ function stage_set_pipeline(sd value)
     data s%stage_pipeline
     set s# value
 endfunction
-

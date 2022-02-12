@@ -19,36 +19,40 @@ importx "_sprintf" sprintf
 import "capture_location" capture_location
 import "sys_folder" sys_folder
 import "chdr" chdr
+import "move_to_home" move_to_home
 
 #err
 function init_user()
-	sd d
-	setcall d capture_location()
 	sd err
-	setcall err init_dir(d)
+	setcall err move_to_home()
 	if err==(noerror)
-		setcall d sys_folder()
+		sd d
+		setcall d capture_location()
 		setcall err init_dir(d)
 		if err==(noerror)
-			sd p
-			setcall p getcwd((NULL),0)
-			if p!=(NULL)
-				vstr cerr="chdir error at init user"
-				sd x
-				setcall x chdr(d)
-				if x==0
-					setcall err init_user_sys()
-					setcall x chdr(p)
-					if x!=0
+			setcall d sys_folder()
+			setcall err init_dir(d)
+			if err==(noerror)
+				sd p
+				setcall p getcwd((NULL),0)
+				if p!=(NULL)
+					vstr cerr="chdir error at init user"
+					sd x
+					setcall x chdr(d)
+					if x==0
+						setcall err init_user_sys()
+						setcall x chdr(p)
+						if x!=0
+							set err cerr
+						endif
+					else
 						set err cerr
-					endif
+					endelse
+					call free(p)
 				else
-					set err cerr
+					set err "getcwd error at init user"
 				endelse
-				call free(p)
-			else
-				set err "getcwd error at init user"
-			endelse
+			endif
 		endif
 	endif
 	return err

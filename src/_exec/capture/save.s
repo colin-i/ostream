@@ -68,27 +68,29 @@ function capture_location()
 	return folder
 endfunction
 
+import "move_to_home_core" move_to_home_core
 function capture_path(ss format,sd extrabool,sd extranumber)
-    chars capture_data#100
-    str capture_str^capture_data
-    ss folder
-    setcall folder capture_location()
-    sd tm
-    setcall tm time(0)
-    ss fmt="%s%s%u.%s"
-    ss extra
-    if extrabool==0
-        ss null=""
-        set extra null
-    else
-        chars extra_data#20
-        str extra_str^extra_data
-        str f_extra="%u."
-        call sprintf(extra_str,f_extra,extranumber)
-        set extra extra_str
-    endelse
-    call sprintf(capture_str,fmt,folder,extra,tm,format)
-    return capture_str
+	chars capture_data#100
+	ss capture_str^capture_data
+	ss folder
+	setcall folder capture_location()
+	sd tm
+	setcall tm time(0)
+	ss fmt="%s%s%u.%s"
+	ss extra
+	if extrabool==0
+		ss null=""
+		set extra null
+	else
+		sd extra_data#5
+		ss extra_str^extra_data
+		str f_extra="%u."
+		call sprintf(extra_str,f_extra,extranumber)
+		set extra extra_str
+	endelse
+	call sprintf(capture_str,fmt,folder,extra,tm,format)
+	call move_to_home_core(#capture_str)
+	return capture_str
 endfunction
 
 function save_destination(ss format)

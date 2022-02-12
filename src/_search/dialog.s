@@ -103,11 +103,13 @@ function show_preferences_set_windows(sd vbox)
     call set_field_pack()
 endfunction
 
+import "move_to_home_v" move_to_home_v
 function show_preferences_continuation()
-    import "sys_folder_enterleave" sys_folder_enterleave
-    import "write_free_read" write_free_read
-    data fn^write_free_read
-    call sys_folder_enterleave(fn)
+	call move_to_home_v()
+	import "sys_folder_enterleave" sys_folder_enterleave
+	import "write_free_read" write_free_read
+	data fn^write_free_read
+	call sys_folder_enterleave(fn)
 endfunction
 
 #v

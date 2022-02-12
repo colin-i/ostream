@@ -487,23 +487,25 @@ function edit_folder()
     return e
 endfunction
 
+import "move_to_share_v" move_to_share_v
 function img_edit_folder_enterleave_data(sd forward,sd data)
-    chars folder_data#20
-    str folder^folder_data
+	call move_to_share_v()
+	sd folder_data#5
+	ss folder^folder_data
 
-    sd img
-    ss *separator="/"
-    sd edit
-    sd *=0
-    sd src^img
+	sd img
+	ss *separator="/"
+	sd edit
+	sd *=0
+	sd src^img
 
-    setcall img img_folder()
-    setcall edit edit_folder()
+	setcall img img_folder()
+	setcall edit edit_folder()
 
-    import "catstrings" catstrings
-    call catstrings(src,folder)
+	import "catstrings" catstrings
+	call catstrings(src,folder)
 
-    call folder_enterleave_data(folder,forward,data)
+	call folder_enterleave_data(folder,forward,data)
 endfunction
 
 #inits
