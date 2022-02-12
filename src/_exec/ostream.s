@@ -7,19 +7,10 @@ importx "_gtk_init" gtk_init
 importx "_gst_init" gst_init
 importx "_gtk_main" gtk_main
 importx "_exit" exit
-importx "_printf" printf
 
-import "init_user" init_user
 import "initfn" initfn
 
 entry _start()
-
-sd err
-setcall err init_user()
-if err!=(noerror)
-	call printf(err)
-	call exit(-1)
-endif
 
 call gtk_init(0,0)
 call gst_init(0,0)

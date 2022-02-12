@@ -49,6 +49,9 @@ obs :=
 
 all: ${items} ounused lnk
 
+#cannot put compile at all, is not launching lnk
+compile: ${items} ounused
+
 ounused:
 	ounused ${logs}
 

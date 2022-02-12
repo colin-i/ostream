@@ -7,29 +7,75 @@ include "../_include/include.h"
 Const GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER=2
 
 importx "_GetModuleFileNameA@12" GetModuleFileName
+importx "_free" free
 
 import "memoryalloc" memoryalloc
 import "texter" texter
 
 #err
-function Scriptfullpath(data ptrfullpath)
-    data MAX_PATH=260
-    data null=0
-    data err#1
-    data noerr#1
-    setcall err memoryalloc(MAX_PATH,ptrfullpath)
-    if err!=noerr
-        return err
-    endif
-    data size#1
-    setcall size GetModuleFileName(null,ptrfullpath#,MAX_PATH)
-    if size==null
-        str e="Error."
-        call texter(e)
-        return e
-    endif
-    return noerr
+function Scriptfullpath(sv ptrfullpath)
+	data MAX_PATH=260
+	sd err
+	setcall err memoryalloc(MAX_PATH,ptrfullpath)
+	if err==(noerror)
+		data size#1
+		setcall size GetModuleFileName((NULL),ptrfullpath#,MAX_PATH)
+		if size!=(NULL)
+			return (noerror)
+		endif
+		call free(ptrfullpath#)
+		set err "Error."
+		call texter(err)
+	endif
+	return err
 endfunction
+
+import "dirch" dirch
+
+#void/err
+function movetoScriptfolder(data forward)
+	data path#1
+	data ptrpath^path
+	data err#1
+	data noerr=noerror
+	setcall err Scriptfullpath(ptrpath)
+	if err==noerr
+		data pointer#1
+		chars z=0
+		setcall pointer endoffolders(path)
+		set pointer# z
+		setcall err dirch(path)
+		if err==noerr
+			call forward()
+		endif
+		call free(path)
+	endif
+	return err
+endfunction
+
+import "slen" slen
+import "filepathdelims" filepathdelims
+
+#folders ('c:\folder\file.txt' will be pointer starting at 'file.txt')
+Function endoffolders(ss path)
+    sd sz
+    setcall sz slen(path)
+    ss cursor
+    set cursor path
+    add cursor sz
+    sd i=0
+    while i<sz
+        dec cursor
+        sd bool
+        setcall bool filepathdelims(cursor#)
+        if bool==(TRUE)
+            inc cursor
+            return cursor
+        endif
+        inc i
+    endwhile
+    return path
+EndFunction
 
 importx "__get_errno" get_errno
 #errno
@@ -325,7 +371,6 @@ function mass_foldername(ss foldername)
     setcall info stage_file_options_info_message((value_get))
     call stage_file_options_info_message((value_set),0)
 
-    import "slen" slen
     ss spec="*.mkv"
     data forwrd^mass_folder_file
     sd counter=0
@@ -336,8 +381,6 @@ function mass_foldername(ss foldername)
 
     call stage_file_options_info_message((value_set),info)
 endfunction
-
-importx "_free" free
 
 function fileiterate(ss foldername,ss spec,sd forward,sd data)
     if foldername==0

@@ -87,27 +87,6 @@ Function filepathdelims(chars chr)
         Return false
 EndFunction
 
-#folders ('c:\folder\file.txt' will be pointer starting at 'file.txt')
-Function endoffolders(ss path)
-    sd sz
-    setcall sz slen(path)
-    ss cursor
-    set cursor path
-    add cursor sz
-    sd i=0
-    while i<sz
-        dec cursor
-        sd bool
-        setcall bool filepathdelims(cursor#)
-        if bool==(TRUE)
-            inc cursor
-            return cursor
-        endif
-        inc i
-    endwhile
-    return path
-EndFunction
-
 function path_extension(ss path)
     sd len
     ss cursor

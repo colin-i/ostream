@@ -21,37 +21,6 @@ function dirch(str value)
     return noerr
 endfunction
 
-importx "_free" free
-
-import "Scriptfullpath" Scriptfullpath
-import "endoffolders" endoffolders
-
-#void/err
-function movetoScriptfolder(data forward)
-    data path#1
-    data ptrpath^path
-    data err#1
-    data noerr=noerror
-    setcall err Scriptfullpath(ptrpath)
-    if err!=noerr
-        return err
-    endif
-
-    data pointer#1
-    chars z=0
-    setcall pointer endoffolders(path)
-    set pointer# z
-
-    setcall err dirch(path)
-    if err!=noerr
-        return err
-    endif
-
-    call free(path)
-
-    call forward()
-endfunction
-
 #e
 function folder_enterleave_data(ss folder,sd forward,sd data)
     sd err
@@ -91,7 +60,3 @@ function folder_enterleave(ss folder,data forward)
     data n=0
     call folder_enterleave_data(folder,forward,n)
 endfunction
-
-
-
-

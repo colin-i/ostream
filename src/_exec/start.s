@@ -147,34 +147,41 @@ function sys_folder_enterleave(sd forward)
 endfunction
 
 importx "_free" free
+
 import "file_get_content" file_get_content
+import "init_user" init_user
+import "texter" texter
+
 #v
 function callbackprocessfolder()
-    #set stage trace sizes
-    import "stage_trace_min_size_set" stage_trace_min_size_set
-    call stage_trace_min_size_set()
-    #move to imgs
-    data imgforward^setimages
-    call img_folder_enterleave(imgforward)
+	#set stage trace sizes
+	import "stage_trace_min_size_set" stage_trace_min_size_set
+	call stage_trace_min_size_set()
 
-    str localversion="version.txt"
-    data err#1
-    data noerr=noerror
-    vstr mem#1
-    data size#1
-    sd ptrmem^mem
-    sd ptrsize^size
-    setcall err file_get_content(localversion,ptrsize,ptrmem)
-    if err!=noerr
-        return (void)
-    endif
-    call update_mem_version((NULL),mem,size)
+	#move to imgs
+	data imgforward^setimages
+	call img_folder_enterleave(imgforward)
 
-    #move to settings
-    data sysforward^setsystems
-    call sys_folder_enterleave(sysforward)
+	sd err
 
-    call free(mem)
+	str localversion="version.txt"
+	vstr mem#1
+	data size#1
+	sd ptrmem^mem
+	sd ptrsize^size
+	setcall err file_get_content(localversion,ptrsize,ptrmem)
+	if err==(noerror)
+		call update_mem_version((NULL),mem,size)
+		setcall err init_user()
+		if err==(noerror)
+			#move to settings
+			data sysforward^setsystems
+			call sys_folder_enterleave(sysforward)
+		else
+			call texter(err)
+		endelse
+		call free(mem)
+	endif
 endfunction
 function update_mem_version(sd p,sd m,sd s)
 	vstr mem#1

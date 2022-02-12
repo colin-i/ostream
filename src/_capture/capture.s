@@ -1202,7 +1202,7 @@ function capture_raw_read_file(sd file,sd path)
     set filepath path
     add filepath sz
     chars delim="."
-    setcall sz valinmemsens(filepath,sz,delim,(BACKWARD))
+    setcall sz valinmemsens(filepath,sz,delim) #,(BACKWARD)
     sub filepath sz
     set filepath# 0
 

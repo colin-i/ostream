@@ -7,171 +7,17 @@ override underscore_pref 0
 
 include "../_include/include.h"
 
-Const X_OK=1
-Const FORWARD=1
-
-importx "getpid" getpid
-importx "fopen" fopen
-importx "sprintf" sprintf
-importx "getenv" getenv
-importx "access" access
-importx "free" free
-
+#Const X_OK=1
+#Const FORWARD=1
 
 import "setmemzero" setmemzero
-import "strerrno" strerrno
-import "getdelim" getdelim
-import "slen" slen
-import "memoryalloc" memoryalloc
-import "cpymem" cpymem
-
-#err
-function procpathfind(str name,data ptrfullpath)
-    data err#1
-    data noerr=noerror
-    data null=0
-    chars slash="/"
-    str envpath#1
-    str pathstr="PATH"
-
-    setcall envpath getenv(pathstr)
-    if envpath==null
-        str enverr="Getenv error: "
-        call strerrno(enverr)
-        Return enverr
-    endif
-
-    data namesize#1
-    data sizeofpath#1
-    data zero=0
-
-    setcall namesize slen(name)
-    setcall sizeofpath slen(envpath)
-    while sizeofpath!=zero
-        chars pathdelim=":"
-        data sizeoffolder#1
-
-        setcall sizeoffolder valinmem(envpath,sizeofpath,pathdelim)
-        if sizeoffolder!=null
-            data pathtocreate#1
-            data sizetocreate#1
-            data ptrpathtocreate^pathtocreate
-
-            set sizetocreate sizeoffolder
-            #this one is if '/' needs to be added after the folder
-            inc sizetocreate
-            add sizetocreate namesize
-            inc sizetocreate
-            setcall err memoryalloc(sizetocreate,ptrpathtocreate)
-            if err!=noerr
-                return err
-            endif
-            str scrpointer#1
-            set scrpointer pathtocreate
-            call cpymem(scrpointer,envpath,sizeoffolder)
-            add scrpointer sizeoffolder
-            dec scrpointer
-
-            chars slashcompare#1
-            set slashcompare scrpointer#
-            inc scrpointer
-            if slashcompare!=slash
-                set scrpointer# slash
-                inc scrpointer
-            endif
-            call cpymem(scrpointer,name,namesize)
-            add scrpointer namesize
-            set scrpointer# null
-
-            data runaccess=X_OK
-            data accessresult#1
-
-            setcall accessresult access(pathtocreate,runaccess)
-            if accessresult==zero
-                #this is the path
-                set ptrfullpath# pathtocreate
-                return noerr
-            else
-                call free(pathtocreate)
-                add envpath sizeoffolder
-                sub sizeofpath sizeoffolder
-            endelse
-        endif
-        if envpath#==pathdelim
-            inc envpath
-            dec sizeofpath
-        endif
-    endwhile
 import "texter" texter
-    Str uncommonerr="The process path was not found."
-    call texter(uncommonerr)
-    return uncommonerr
+
+function movetoScriptfolder(data forward)
+#on lin no, Script is alone in bin folder, move from share(img/html/version.txt) to userhome(sys/captures)
+#at this first call img/version and then sys
+	call forward()
 endfunction
-
-function Scriptfullpath(data ptrfullpath)
-    Chars cmdfileformpathdata="/proc/%u/cmdline"
-    Str cmdfilepathform^cmdfileformpathdata
-    Chars cmdfilepathdata#32
-    Str cmdfilepath^cmdfilepathdata
-
-    Data pid#1
-    SetCall pid getpid()
-    Call sprintf(cmdfilepath,cmdfilepathform,pid)
-
-    Data cmdfile#1
-    Data openno=0
-    Chars fopenreaddata="rb"
-    Str fopenread^fopenreaddata
-    SetCall cmdfile fopen(cmdfilepath,fopenread)
-    If cmdfile==openno
-            str cmdopenerr="Fopen failed with error: "
-            call strerrno(cmdopenerr)
-            Return cmdopenerr
-    EndIf
-
-    Str script#1
-    Data argumentssize#1
-
-    Data ptrscript^script
-    Data ptrargumentssize^argumentssize
-
-    Data qwordsize=QWORD
-
-    Call setmemzero(ptrscript,qwordsize)
-
-    Data getdelimreturn#1
-    Data getdelimreturnerr=-1
-    data null=NULL
-
-    #returns the argument+nullbyte size
-    SetCall getdelimreturn getdelim(ptrscript,ptrargumentssize,null,cmdfile)
-    If getdelimreturn==getdelimreturnerr
-        str cmdscripterr="Getdelim failed with error: "
-        call strerrno(cmdscripterr)
-        Return cmdscripterr
-    EndIf
-
-    data err#1
-    data noerr=noerror
-
-    chars slash="/"
-    data slashtest#1
-
-    setcall slashtest valinmem(script,argumentssize,slash)
-    if slashtest!=argumentssize
-        set ptrfullpath# script
-        return noerr
-    endif
-
-    setcall err procpathfind(script,ptrfullpath)
-
-    call free(script)
-
-    return err
-endfunction
-
-
-
 
 
 importx "__errno_location" errno
@@ -860,11 +706,25 @@ function sound_preview_end_and_no_errors_continuation(sd handle,sd status)
     return (TRUE)
 endfunction
 
-import "valinmemsens" valinmemsens
-#return valueinmem
-Function valinmem(str content,data size,chars delim)
-        Data returnvalue#1
-        Data forward=FORWARD
-        SetCall returnvalue valinmemsens(content,size,delim,forward)
-        Return returnvalue
-Endfunction
+
+#html 1
+#	enter leave  B
+#img
+#	enter leave data    1 at img enter leave at init A(has recurse in edit)   1 img edit enter leave at cover/frame B
+#	stage get image 1   at frames,selectframe B
+#version 1    A
+#
+#captures
+#	init 1    A
+#	1         B
+#sys
+#	init 1    A
+#	sys enter leave 4(init 1 A ,dialog 1 B,stage 2 B)
+#
+#1 at A in home from img to inside init_user, next at sys
+#
+#captures changes to home
+#sys 2 changes to home
+#html changes to share
+#img cover/frame to share
+#img frames to share

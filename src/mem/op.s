@@ -165,7 +165,7 @@ endfunction
 ##valinmem
 
 #return the size of the value, if the delim is found the size counts until there
-Function valinmemsens(str content,data size,chars delim,data sens)
+Function valinmemsens(str content,data size,chars delim) #,data sens
         Data length#1
         Set length size
         Chars byte#1
@@ -174,17 +174,17 @@ Function valinmemsens(str content,data size,chars delim,data sens)
         If size==zero
                 Return size
         EndIf
-        Data backward=BACKWARD
-        If sens==backward
+        #Data backward=BACKWARD
+        #If sens==backward
                 Dec content
-        EndIf
+        #EndIf
         Set byte content#
         While byte!=delim
-                If sens!=backward
-                        Inc content
-                Else
+                #If sens!=backward
+                #        Inc content
+                #Else
                         Dec content
-                EndElse
+                #EndElse
                 Dec size
                 If size==zero
                         Set byte delim

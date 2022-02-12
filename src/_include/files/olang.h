@@ -3,7 +3,7 @@
 Const noerror=0
 Const error=-1
 
-Const BACKWARD=-1
+#Const BACKWARD=-1
 
 const void=0
 
