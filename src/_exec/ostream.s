@@ -45,10 +45,5 @@ call search_clear_memory()
 call prog_free()
 
 #gtk_main reaction
-importx "_exit" exit
-
-call exit(0)
-#don't know why this is not working anymore on linux
-
-exit 0
+include "../_dif/lin.s" "../_dif/win.s"
 
