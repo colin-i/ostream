@@ -77,7 +77,7 @@ share:
 
 #at xenial
 #dev gtk libgstreamer-plugins-base0.10-dev  soup jpeg asound
-#gtk plugins
+#gtk gstreamer0.10-plugins-good
 
 #		export PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig/:${PKG_CONFIG_PATH}; \
 #		$(LD) ${syms} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 ${obs} -o ${projname} -lc -lm `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lgthread-2.0; \

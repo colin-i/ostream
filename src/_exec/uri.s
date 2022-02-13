@@ -38,19 +38,17 @@ function video_realize(data widget)
         call texter(noNative)
     endif
 
-    data drawablehandle#1
-
-    setcall drawablehandle gdkGetdrawable(window)
-
     #Pass it to playbin2, which implements XOverlay and will forward it to the video sink
-    data overlaytype#1
-    setcall overlaytype gst_x_overlay_get_type()
     data playbin2ptr#1
     setcall playbin2ptr getplaybin2ptr()
 	if playbin2ptr#!=0
+i3
+		data overlaytype#1
+		setcall overlaytype gst_x_overlay_get_type()
 		data interfacecast#1
 		setcall interfacecast gst_implements_interface_cast(playbin2ptr#,overlaytype)
-
+		data drawablehandle#1
+		setcall drawablehandle gdkGetdrawable(window)
 		call gst_x_overlay_set_window_handle(interfacecast,drawablehandle)
 	endif
 endfunction
@@ -127,10 +125,11 @@ function gstplayinit(data videowidget)
     setcall playbin2ptr getplaybin2ptr()
 
     setcall playbin2ptr# gst_element_factory_make(playbin2str,playbin2str)
-    #don't know why this is not working anymore on linux
+    #needing gstreamer0.10-plugins-good
 
     data playbin2#1
     set playbin2 playbin2ptr#
+
     if playbin2==null
         str factoryerr="Not all elements could be created."
         call texter(factoryerr)
