@@ -125,7 +125,9 @@ function gstplayinit(data videowidget)
     data playbin2ptr#1
     str playbin2str="playbin2"
     setcall playbin2ptr getplaybin2ptr()
+
     setcall playbin2ptr# gst_element_factory_make(playbin2str,playbin2str)
+    #don't know why this is not working anymore on linux
 
     data playbin2#1
     set playbin2 playbin2ptr#

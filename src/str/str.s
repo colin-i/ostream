@@ -72,21 +72,6 @@ function slen(str str)
         return sz
 endfunction
 
-#true if match or false
-Function filepathdelims(chars chr)
-        Chars bslash="\\"
-        Chars slash="/"
-        Data true=TRUE
-        Data false=FALSE
-        If chr==bslash
-                Return true
-        EndIf
-        If chr==slash
-                Return true
-        EndIf
-        Return false
-EndFunction
-
 function path_extension(ss path)
     sd len
     ss cursor

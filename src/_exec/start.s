@@ -235,9 +235,6 @@ function initfn()
     setcall video drawfield(vbox)
     #gtk_widget_set_double_buffered(video_window,FALSE)
 
-    import "gstplayinit" gstplayinit
-    call gstplayinit(video)
-
     #to keep the stage frames
     import "stage_sel_prepare_img_space" stage_sel_prepare_img_space
     call stage_sel_prepare_img_space()
@@ -264,6 +261,9 @@ function initfn()
     data maintexter#1
     const ptr_maintexter^maintexter
     setcall maintexter editinfofield_green(vbox)
+
+    import "gstplayinit" gstplayinit
+    call gstplayinit(video)
 
     #get the process folder to load the images
     data ptrcallback^callbackprocessfolder

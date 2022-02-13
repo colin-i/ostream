@@ -785,7 +785,11 @@ function move_to_home_core(sv p)
 		sd h
 		setcall f home_folder_r(#h)
 		if f!=(NULL)
-			call cat_absolute_verif(mem,h,f,p#)
+			sd b
+			setcall b cat_absolute_verif(mem,h,f,p#)
+			if b==(TRUE)
+				set p# mem
+			endif
 		endif
 	endif
 endfunction
@@ -801,14 +805,18 @@ function move_to_share_core(sv p)
 	if mem!=(NULL)
 		sd f
 		setcall f share_folder()
-		call cat_absolute_verif(mem,f,p#,(NULL))
+		sd b
+		setcall b cat_absolute_verif(mem,f,p#,(NULL))
+		if b==(TRUE)
+			set p# mem
+		endif
 	endif
 endfunction
 
 #e
 function home_folder(sv pf,sv ph)
 	ss envpath
-	setcall envpath getenv("PATH")
+	setcall envpath getenv("HOME")
 	if envpath!=(NULL)
 		vstr a="ovideo"
 		if ph==(NULL)

@@ -54,7 +54,22 @@ function movetoScriptfolder(data forward)
 endfunction
 
 import "slen" slen
-import "filepathdelims" filepathdelims
+
+
+#true if match or false
+Function filepathdelims(chars chr)
+        Chars bslash="\\"
+        Chars slash="/"
+        Data true=TRUE
+        Data false=FALSE
+        If chr==bslash
+                Return true
+        EndIf
+        If chr==slash
+                Return true
+        EndIf
+        Return false
+EndFunction
 
 #folders ('c:\folder\file.txt' will be pointer starting at 'file.txt')
 Function endoffolders(ss path)

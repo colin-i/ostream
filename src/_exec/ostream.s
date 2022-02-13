@@ -6,7 +6,7 @@ include "../_include/include.h"
 importx "_gtk_init" gtk_init
 importx "_gst_init" gst_init
 importx "_gtk_main" gtk_main
-importx "_exit" exit
+#importx "_exit" exit
 
 import "initfn" initfn
 
@@ -45,5 +45,10 @@ call search_clear_memory()
 call prog_free()
 
 #gtk_main reaction
+importx "_exit" exit
+
 call exit(0)
-#return (TRUE) i don't remember why i set this but ostream main part doesn't have linux exit in code
+#don't know why this is not working anymore on linux
+
+exit 0
+
