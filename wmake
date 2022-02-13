@@ -36,7 +36,7 @@ exit
 fi
 cd ..
 fi
- 
+
 cp soundrecorder/src/soundrecorder.exe $f
 cp soundrecorder/options.txt $f
 
