@@ -42,7 +42,7 @@ function video_realize(data widget)
     data playbin2ptr#1
     setcall playbin2ptr getplaybin2ptr()
 	if playbin2ptr#!=0
-i3
+#i3
 		data overlaytype#1
 		setcall overlaytype gst_x_overlay_get_type()
 		data interfacecast#1
