@@ -36,30 +36,6 @@ import "_CloseHandle@4" CloseHandle
 import "_fopen" fopen
 import "_fclose" fclose
 
-#main thread
-#entry
-function record()
-    str options="options.txt"
-    str r="rb"
-    sd file
-    setcall file fopen(options,r)
-    if file==0
-        str err="Cannot open options file."
-        call errors(err)
-        return 0
-    endif
-
-    sd bool
-    setcall bool record_options(file)
-    if bool!=1
-        return 0
-    endif
-
-    call record_sound()
-
-    call fclose(file)
-endfunction
-
 #bool
 function record_options(sd file)
     import "_fseek" fseek
@@ -584,3 +560,29 @@ function record_newbuffer(sd waveinheader)
 
     call file_write(buffer,length,file)
 endfunction
+
+#main thread
+#entry
+entry record()
+
+str options="options.txt"
+str r="rb"
+sd file
+setcall file fopen(options,r)
+if file==0
+    str err="Cannot open options file."
+    call errors(err)
+    return 0
+endif
+
+sd bool
+setcall bool record_options(file)
+if bool!=1
+    return 0
+endif
+
+call record_sound()
+
+call fclose(file)
+
+return 0

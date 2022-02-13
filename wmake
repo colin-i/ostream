@@ -24,6 +24,9 @@ cp build/sys/* $f/sys
 
 mkdir $f/captures
 
+cp soundrecorder/src/soundrecorder.exe $f
+cp soundrecorder/options.txt $f
+
 #wine regedit
 #HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment
 #;C:\gstreamer-sdk\0.10\x86\bin

@@ -1,4 +1,6 @@
 
+#exit() do segmentation nowadays (in this context)
+
 importx "getpid" getpid
 importx "kill" kill
 sd pid

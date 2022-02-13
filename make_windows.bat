@@ -1,4 +1,6 @@
 
+::use Makefile
+exit
 
 copy html\readme-win.html build\readme.html
 mkdir build\html

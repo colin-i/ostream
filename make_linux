@@ -1,4 +1,7 @@
 
+#use Makefile
+exit
+
 cp ./html/readme-lin.html ./build/readme.html
 cp -r ./html/html ./build/
 cp ./version.txt ./build/sys/

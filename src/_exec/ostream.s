@@ -44,6 +44,5 @@ call gstunset()
 call search_clear_memory()
 call prog_free()
 
-#gtk_main reaction
+#normal return no, gtk_main problems (in this context)
 include "../_dif/lin.s" "../_dif/win.s"
-

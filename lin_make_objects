@@ -1,3 +1,7 @@
+
+#use Makefile
+exit
+
 o "_dif/dif~lin.s"
 o "_exec/ostream.s"
 o "_exec/start.s"

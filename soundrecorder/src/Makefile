@@ -16,10 +16,9 @@ compile: ${projname} ounused
 ounused:
 	ounused ${logname}
 
-lnk:
-	i686-w64-mingw32-ld ${syms} ${objname} -o ${wprojname} -entry record --start-group \
-		`dpkg -L mingw-w64-i686-dev | grep '\.a' | sed 's/..$$//' | grep -o '[^\/]*$$' | sed 's/lib/-l/' | xargs echo` \
-		--end-group; \
+link:
+	i686-w64-mingw32-ld ${syms} ${objname} -o ${wprojname} -entry record \
+		 -lmsvcrt -lkernel32 -lwinmm -luser32
 
 %: %.s
 	${OCOMP} $< ${OFLAGS}

@@ -1,3 +1,7 @@
+
+::use Makefile
+exit
+
 o.exe "_dif/dif~win.s"
 o.exe "_exec/ostream.s"
 o.exe "_exec/start.s"
