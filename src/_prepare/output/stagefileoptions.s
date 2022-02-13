@@ -374,6 +374,7 @@ import "get_string_at_index" get_string_at_index
 #type/extension
 function stage_file_get_format()
     sd ptr_index%ptr_output
+#these formats are related to format_max
     #Audio Video Interleaved
     chars entry1="avi"
     #Audio Video Interleaved / I420
@@ -405,7 +406,7 @@ endfunction
 function stage_file_get_format_name()
     ss format
     setcall format stage_file_get_format()
-    chars dest_data#7
+    chars dest_data#format_max+1
     data dest^dest_data
     import "strcpy" strcpy
     import "slen" slen

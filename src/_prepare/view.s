@@ -479,33 +479,24 @@ endfunction
 
 
 
+import "img_folder_enterleave_data" img_folder_enterleave_data
 import "folder_enterleave_data" folder_enterleave_data
-import "img_folder" img_folder
-
-function edit_folder()
-    str e="edit"
-    return e
-endfunction
+import "edit_folder" edit_folder
 
 import "move_to_share_v" move_to_share_v
 function img_edit_folder_enterleave_data(sd forward,sd data)
 	call move_to_share_v()
-	sd folder_data#5
-	ss folder^folder_data
-
-	sd img
-	ss *separator="/"
-	sd edit
-	sd *=0
-	sd src^img
-
-	setcall img img_folder()
-	setcall edit edit_folder()
-
-	import "catstrings" catstrings
-	call catstrings(src,folder)
-
-	call folder_enterleave_data(folder,forward,data)
+	sd df
+	sd df2
+	set df forward
+	set df2 data
+	call img_folder_enterleave_data(edit_folder_enterleave_data_forward,#df)
+endfunction
+function edit_folder_enterleave_data_forward(sv data)
+	sd forward
+	set forward data#
+	add data :
+	call edit_folder_enterleave_data(forward,data#)
 endfunction
 
 #inits

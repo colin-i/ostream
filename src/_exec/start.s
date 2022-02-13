@@ -123,16 +123,18 @@ function stagebutton_forward(sd widget,sd function)
 endfunction
 
 import "folder_enterleave" folder_enterleave
-
-function img_folder()
-    str images="img"
-    return images
-endfunction
+import "folder_enterleave_data" folder_enterleave_data
+import "img_folder" img_folder
 
 function img_folder_enterleave(sd forward)
     ss img
     setcall img img_folder()
     call folder_enterleave(img,forward)
+endfunction
+function img_folder_enterleave_data(sd forward,sd data)
+    ss img
+    setcall img img_folder()
+    call folder_enterleave_data(img,forward,data)
 endfunction
 
 function sys_folder()

@@ -64,13 +64,25 @@ function recSignals(data bus,data dest)
 endfunction
 
 function capture_location()
-	str folder="captures/"
-	return folder
+const capture_chars_start=!
+	chars folder="captures/"
+const capture_chars=!-capture_chars_start-1
+	return #folder
 endfunction
+#ogg
+#temp
+#raw
+#jpeg
+
+#avi
+#mxf
+#mkv
+#mp4
+#   mux
 
 import "move_to_home_core" move_to_home_core
 function capture_path(ss format,sd extrabool,sd extranumber)
-	chars capture_data#100
+	chars capture_data#capture_chars+dword_max+1+dword_max+1+format_max+1
 	ss capture_str^capture_data
 	ss folder
 	setcall folder capture_location()
@@ -123,6 +135,7 @@ function save_get_audio_format()
     return audio
 endfunction
 function save_get_ogg_dest()
+#these formats are related to format_max
     str format="ogg"
     sd dest
     setcall dest save_destination(format)

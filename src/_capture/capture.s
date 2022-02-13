@@ -877,6 +877,7 @@ function capture_direct_start(sd *data)
     sd raw_flag
     setcall raw_flag capture_raw_option((value_get))
     if raw_flag==0
+#these formats are related to format_max
         ss temp_format="temp"
         ss temp_method="w+Db"
         set format temp_format
@@ -905,6 +906,7 @@ function capture_direct_start(sd *data)
 endfunction
 
 function capture_raw_extension()
+#these formats are related to format_max
     str raw_format="raw"
     return raw_format
 endfunction

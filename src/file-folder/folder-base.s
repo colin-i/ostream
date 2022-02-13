@@ -30,29 +30,7 @@ function folder_enterleave_data(ss folder,sd forward,sd data)
         return err
     endif
     call forward(data)
-
-    ss cursor
-    set cursor folder
-    sd sz
-    import "slen" slen
-    setcall sz slen(folder)
-    add cursor sz
-
-    import "filepathdelims" filepathdelims
-
-    str back="../"
-    while folder!=cursor
-        sd bool
-        SetCall bool filepathdelims(cursor#)
-        If bool==(TRUE)
-            setcall err dirch(back)
-            if err!=(noerror)
-                return err
-            endif
-        EndIf
-        dec cursor
-    endwhile
-    setcall err dirch(back)
+    setcall err dirch("../")
     return err
 endfunction
 

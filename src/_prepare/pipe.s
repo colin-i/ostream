@@ -117,28 +117,46 @@ function stage_display_pixbuf(sd widget)
     call stage_redraw()
 endfunction
 
+function img_folder()
+const img_folder_start=!
+	chars img="img"
+const img_folder_size=!-img_folder_start-1
+	return #img
+endfunction
+function edit_folder()
+const edit_folder_start=!
+	chars edit="edit"
+const edit_folder_size=!-edit_folder_start-1
+	return #edit
+endfunction
+function unselectedframe()
+const unselected_bmp_start=!
+    vstr frame="frame.bmp"
+const unselected_bmp_size=!-unselected_bmp_start-1
+    ss file
+    setcall file stage_get_image(frame)
+    return file
+endfunction
+function selectedframe()
+    vstr frame="sel.bmp"
+    ss file
+    setcall file stage_get_image(frame)
+    return file
+endfunction
+
 import "move_to_share_core" move_to_share_core
 #name of the img/edit+(image)
 function stage_get_image(ss image)
 	ss i
 	ss e
-	import "img_folder" img_folder
-	import "edit_folder" edit_folder
 	setcall i img_folder()
 	setcall e edit_folder()
-	chars bytes#60
+	chars bytes#img_folder_size+1+edit_folder_size+1+unselected_bmp_size+1
 	ss file^bytes
 	str form="%s/%s/%s"
 	call sprintf(file,form,i,e,image)
 	call move_to_share_core(#file)
 	return file
-endfunction
-
-function unselectedframe()
-    str frame="frame.bmp"
-    ss file
-    setcall file stage_get_image(frame)
-    return file
 endfunction
 
 #eventbox

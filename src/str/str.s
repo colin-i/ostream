@@ -203,25 +203,25 @@ function get_string_at_index(ss iter,sd index)
     return iter
 endfunction
 
-function catstrings(sd strings,ss dest)
-    sd src
-    while strings#!=0
-        #take every string
-        set src strings#
-        sd srcsz
-        #get src size
-        setcall srcsz slen(src)
-        #add null term
-        inc srcsz
-        #copy
-        call cpymem(dest,src,srcsz)
-        #dest cursor at null term
-        add dest srcsz
-        dec dest
-        #advance iterators
-        add strings 4
-    endwhile
-endfunction
+#function catstrings(sd strings,ss dest)
+#    sd src
+#    while strings#!=0
+#        #take every string
+#        set src strings#
+#        sd srcsz
+#        #get src size
+#        setcall srcsz slen(src)
+#        #add null term
+#        inc srcsz
+#        #copy
+#        call cpymem(dest,src,srcsz)
+#        #dest cursor at null term
+#        add dest srcsz
+#        dec dest
+#        #advance iterators
+#        add strings 4
+#    endwhile
+#endfunction
 
 #0/alloc
 function string_alloc_escaped(ss unescaped)

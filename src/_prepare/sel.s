@@ -19,12 +19,11 @@ endfunction
 #creates selection image with pixbuf
 #img returned
 function stage_sel_img(sd parent)
+    import "selectedframe" selectedframe
+    ss file
+    setcall file selectedframe()
     data img#1
     const ptr_img^img
-    ss str="sel.bmp"
-    ss file
-    import "stage_get_image" stage_get_image
-    setcall file stage_get_image(str)
     setcall img stage_img_with_length(file,parent)
     return img
 endfunction
