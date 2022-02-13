@@ -3,6 +3,9 @@ if [ -z "$1" ]
 then
 cd src
 ./wmake
+if [ "$?" != 0 ]; then
+exit
+fi
 cd ..
 f=ovideo
 else
@@ -24,8 +27,30 @@ cp build/sys/* $f/sys
 
 mkdir $f/captures
 
+if [ -z "$1" ]
+then
+cd soundrecorder
+make
+if [ "$?" != 0 ]; then
+exit
+fi
+cd ..
+fi
+ 
 cp soundrecorder/src/soundrecorder.exe $f
 cp soundrecorder/options.txt $f
+
+if [ -z "$1" ]
+then
+cd src
+./wmake clean
+cd ../soundrecorder
+make clean
+cd ..
+zip -r ovideo.zip ovideo && \
+rm -r ./ovideo && \
+unzip -l ovideo.zip
+fi
 
 #wine regedit
 #HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment

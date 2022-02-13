@@ -1,0 +1,8 @@
+TOPTARGETS := all clean distclean test
+
+SUBDIRS := src
+
+$(TOPTARGETS): $(SUBDIRS)
+$(SUBDIRS):
+	$(MAKE) -C $@ $(MAKECMDGOALS)
+.PHONY: $(TOPTARGETS) $(SUBDIRS)
