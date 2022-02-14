@@ -23,34 +23,39 @@ importx "_gdk_window_ensure_native" gdk_window_ensure_native
 importx "_gst_x_overlay_set_window_handle" gst_x_overlay_set_window_handle
 importx "_gst_x_overlay_get_type" gst_x_overlay_get_type
 importx "_gst_implements_interface_cast" gst_implements_interface_cast
+importx "_gst_element_implements_interface" gst_element_implements_interface
 
 import "gdkGetdrawable" gdkGetdrawable
 
 function video_realize(data widget)
-    data window#1
-    setcall window gtk_widget_get_window(widget)
+	data window#1
+	setcall window gtk_widget_get_window(widget)
 
-    data false=0
-    data bool#1
-    setcall bool gdk_window_ensure_native(window)
-    if bool==false
-        str noNative="Couldn't create native window needed for GstXOverlay!"
-        call texter(noNative)
-    endif
+	data false=0
+	sd bool
+	setcall bool gdk_window_ensure_native(window)
+	if bool==false
+		str noNative="Couldn't create native window needed for GstXOverlay!"
+		call texter(noNative)
+	endif
 
-    #Pass it to playbin2, which implements XOverlay and will forward it to the video sink
-    data playbin2ptr#1
-    setcall playbin2ptr getplaybin2ptr()
-	if playbin2ptr#!=0
-#i3
-		data overlaytype#1
-		setcall overlaytype gst_x_overlay_get_type()
-		data interfacecast#1
-		setcall interfacecast gst_implements_interface_cast(playbin2ptr#,overlaytype)
-		data drawablehandle#1
+	#Pass it to playbin2, which implements XOverlay and will forward it to the video sink
+	#on ubuntu 12 with debs from 2012.11 this is a not
+	sv playbin2
+	setcall playbin2 getplaybin2ptr()
+	set playbin2 playbin2#
+	sd overlaytype
+	setcall overlaytype gst_x_overlay_get_type()
+	setcall bool gst_element_implements_interface(playbin2,overlaytype)
+	if bool==(TRUE)
+		sd interfacecast
+		setcall interfacecast gst_implements_interface_cast(playbin2,overlaytype)
+		sd drawablehandle
 		setcall drawablehandle gdkGetdrawable(window)
 		call gst_x_overlay_set_window_handle(interfacecast,drawablehandle)
+		return (void)
 	endif
+	call texter("gst_element_implements_interface false.")
 endfunction
 
 import "unset_playbool" unset_playbool
