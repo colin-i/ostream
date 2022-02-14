@@ -11,7 +11,7 @@ Install:
 sudo apt-get install ovideo
 ```
 On Windows the program is at this [link](https://github.com/colin-i/ostream/releases).
-The requirement is the program <i>gstreamer sdk x86</i>.
+The requirement is the program <i>gstreamer sdk x86 (0.10)</i>.
 
 ## From source
 Compile with [O Compiler](https://github.com/colin-i/o) and link with
