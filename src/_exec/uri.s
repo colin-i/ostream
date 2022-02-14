@@ -40,7 +40,7 @@ function video_realize(data widget)
 	endif
 
 	#Pass it to playbin2, which implements XOverlay and will forward it to the video sink
-	#on ubuntu 12 with debs from 2012.11 this is a not
+	#on >= ubuntu 12 with debs from 2012.11(almost same place with 2012.11 msi file) this is a not
 	sv playbin2
 	setcall playbin2 getplaybin2ptr()
 	set playbin2 playbin2#
