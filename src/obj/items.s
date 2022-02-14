@@ -200,10 +200,13 @@ importx "_gtk_entry_get_text" gtk_entry_get_text
 importx "_gtk_entry_set_text" gtk_entry_set_text
 #edit texter
 import "get_current_texter_pointer" get_current_texter_pointer
-function texter(str text)
-    sd info#1
-    setcall info get_current_texter_pointer()
-    call gtk_entry_set_text(info#,text)
+function texter(ss text)
+	sd info#1
+	setcall info get_current_texter_pointer()
+	call gtk_entry_set_text(info#,text)
+	call printer(text)
+endfunction
+function printer(ss text)
     importx "_printf" printf
     call printf(text)
     chars nl={0xa,0}

@@ -55,7 +55,8 @@ function video_realize(data widget)
 		call gst_x_overlay_set_window_handle(interfacecast,drawablehandle)
 		return (void)
 	endif
-	call texter("gst_element_implements_interface false.")
+	import "printer" printer
+	call printer("gst_element_implements_interface false.")
 endfunction
 
 import "unset_playbool" unset_playbool
