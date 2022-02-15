@@ -17,6 +17,9 @@ The requirement is the program <i>gstreamer sdk x86 (0.10)</i>.
 Compile with [O Compiler](https://github.com/colin-i/o) and link with
 <i>binutils</i> and see the <i>Makefile</i> for requirements.
 
+## Info
+[Video tutorials](https://www.youtube.com/channel/UC7I-BgCSgKI9uxvNsdkE-wg).
+
 ## Donations
 The *donations* section is here
 *https://gist.github.com/colin-i/e324e85e0438ed71219673fbcc661da6*
