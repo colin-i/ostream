@@ -23,7 +23,7 @@ endfunction
 function update_got_localversion(data mem,data size)
     data msg#1
     data ptrmsg^msg
-    str uri="https://gist.githubusercontent.com/colin-i/1c06e597689e204793a7e89fbcf2a481/raw/db1cd1b0a2bd0240c8bf2c47e8e1b9da11c5df24/gistfile1.txt"
+    str uri="https://gist.githubusercontent.com/colin-i/1c06e597689e204793a7e89fbcf2a481/raw/6bfda0d30efa811b459369ddd790523b3b303114/gistfile1.txt"
     str msgmem#1
     data msgsize#1
     data ptrmsgmem^msgmem
