@@ -1,7 +1,7 @@
 # O Video
 
 ## Install
-On Ubuntu, but other distros may have the same tree and dependencies.
+On Ubuntu from PPA.
 ```sh
 sudo add-apt-repository ppa:colin-i/ppa
 ```
@@ -10,6 +10,7 @@ Install:
 ```sh
 sudo apt-get install ovideo
 ```
+\
 On Windows the program is at this [link](https://github.com/colin-i/ostream/releases).
 The requirement is the program <i>gstreamer sdk x86 (0.10)</i>.
 
