@@ -35,7 +35,7 @@ function ldiv_lowdivisor(sd p,sd dividendlow,sd dividendhigh,sd divisor)
 	sd n
 	#20 and a null
 	chars input#21
-	vstr instr^input
+	sv instr^input
 	call sprintf(instr,"%llu",dividendlow,dividendhigh)
 	sd size
 	setcall size strlen(instr)
