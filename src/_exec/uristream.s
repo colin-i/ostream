@@ -31,13 +31,53 @@ function streamerror(data *bus,data message)
     call stream_error(message)
 endfunction
 
-function ldiv_lowdivisor(sd p,sd dividendlow,sd dividendhigh,sd divisor)
-	sd n
+function ldiv_lowdivisor(sv p,sd dividendlow,sd dividendhigh,sd divisor)
 	#20 and a null
+	#sd input#(4/:*3)+3
 	chars input#21
 	ss instr^input
-	call sprintf(instr,"%llu",dividendlow,dividendhigh) #_ui64toa(), ulltoa(), %I64u, there is also at scanf below
+
+	#%llu linux ok
+	#windows? %I64u this is not working
+	#call sprintf(instr,"%llu",dividendlow,dividendhigh)
 	#call texter(instr)
+	importx "_ulltoa" ulltoa
+	call ulltoa(dividendlow,dividendhigh,instr,10)
+
+	# As result can be very large store it in string
+	#sd quotient#(4/:*3)+3
+	chars quotient#21
+	sd rem
+	sd b
+	setcall b ldiv_lowdivisor_s(#quotient,instr,divisor,#rem)
+	if b==(TRUE)
+		# set quotient and remainder
+
+		call sscanf(#quotient,"%llu",p) #same as above but _strtoull is problematic at libmingwex.a
+
+		#sd h#(4/:*2)+3
+		#ss hex^h
+		#set hex# 0
+		#sd q#(4/:*3)+3
+		#sd b=TRUE
+		#while b==(TRUE)
+		#	setcall b ldiv_lowdivisor_s(#q,#quotient,16)
+		#copy q -> quotient ... ... ...
+		#endwhile
+
+		add p (2*:)
+		set p# rem
+	else
+		# If divisor is greater than number
+		set p# 0
+		add p :
+		set p# 0
+		add p :
+		set p# dividendlow
+	endelse
+endfunction
+function ldiv_lowdivisor_s(ss outstr,ss instr,sd divisor,sd p_rem)
+	sd n
 	sd size
 	setcall size strlen(instr)
 	# Find prefix of number that is larger than divisor.
@@ -53,41 +93,29 @@ function ldiv_lowdivisor(sd p,sd dividendlow,sd dividendhigh,sd divisor)
 		mult temp 10
 		add temp n
 	endwhile
-	# As result can be very large store it in string
-	chars quotient#21
-	vstr outstr^quotient
-	# Repeatedly divide divisor with temp. After every division, update temp to include one more digit.
-	set outstr# 0
-	while size>idx
-		# Store result in answer i.e. temp / divisor
-		set n temp
-		div n divisor
-		add n (_0)
-		set outstr# n
-		inc outstr
+	if size>idx
+		# Repeatedly divide divisor with temp. After every division, update temp to include one more digit.
 		set outstr# 0
-		# Take next digit of number
-		rem temp divisor
-		mult temp 10
-		inc instr
-		inc idx
-		add temp instr#
-		sub temp (_0)
-	endwhile
-	# If divisor is greater than number
-	setcall size strlen(#quotient)
-	if size==0
-		set p# 0
-		add p (DWORD)
-		set p# 0
-		add p (DWORD)
-		set p# dividendlow
-		return (void)
+		while size>idx
+			# Store result in answer i.e. temp / divisor
+			set n temp
+			div n divisor
+			add n (_0)
+			set outstr# n
+			inc outstr
+			# Take next digit of number
+			rem temp divisor
+			mult temp 10
+			inc instr
+			inc idx
+			add temp instr#
+			sub temp (_0)
+		endwhile
+		set outstr# 0
+		set p_rem# temp
+		return (TRUE)
 	endif
-	# set quotient and remainder
-	call sscanf(#quotient,"%llu",p)
-	add p (2*DWORD)
-	set p# temp
+	return (FALSE)
 endfunction
 function splitGstClockTime(data ptrclock,data ptrtime)
     data dword=4
@@ -108,11 +136,11 @@ function splitGstClockTime(data ptrclock,data ptrtime)
 
     data nomLow#1
     #data nomHigh=0
-    data resLow#1
-    data resHigh#1
-    data remLow#1
+    sd resLow
+    sd resHigh
+    sd remLow
     #data *remHigh#1
-    data ptrresult^resLow
+    sd ptrresult^resLow
 
     data gstsec=GST_SECOND
     set nomLow gstsec
@@ -164,7 +192,7 @@ function streamtimer(data *data)
 			str poserr="Could not query current position."
 			call texter(poserr)
 		else
-			chars printduration#10+1+10+1+10+3+10+1+10+1+10+1
+			chars printduration#10+1+2+1+2+3+10+1+2+1+2+1
 			str print^printduration
 
 			data durH#1
@@ -278,5 +306,3 @@ function play_click()
     data forward^streamuri
     call editWidgetBufferForward(forward)
 endfunction
-
-
