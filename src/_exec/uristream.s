@@ -35,8 +35,9 @@ function ldiv_lowdivisor(sd p,sd dividendlow,sd dividendhigh,sd divisor)
 	sd n
 	#20 and a null
 	chars input#21
-	sv instr^input
-	call sprintf(instr,"%llu",dividendlow,dividendhigh)
+	ss instr^input
+	call sprintf(instr,"%llu",dividendlow,dividendhigh) #_ui64toa(), ulltoa(), %I64u, there is also at scanf below
+	#call texter(instr)
 	sd size
 	setcall size strlen(instr)
 	# Find prefix of number that is larger than divisor.
@@ -137,60 +138,58 @@ endfunction
 importx "_gst_element_query_position" gst_element_query_position
 #false=stop timer,true=displayed
 function streamtimer(data *data)
-    data playbool#1
-    const globalplaybool^playbool
-    data true=1
-    data false=0
+	data playbool#1
+	const globalplaybool^playbool
+	data true=1
+	data false=0
 
-    if playbool==true
-        data duration64low#1
-        data duration64high#1
-        data ptrduration^duration64low
-        const ptrduration^duration64low
+	if playbool==true
+		data duration64low#1
+		data *duration64high#1
+		data ptrduration^duration64low
+		const ptrduration^duration64low
 
-        data current64low#1
-        data *current64high#1
-        data ptrcurrent^current64low
+		data current64low#1
+		data *current64high#1
+		data ptrcurrent^current64low
 
-        data CLOCK_NONE=GST_CLOCK_TIME_NONE_lowhigh
-        if duration64low!=CLOCK_NONE
-            if duration64high!=CLOCK_NONE
-                data bool#1
-                data ptrplaybin#1
-                data format=GST_FORMAT_TIME
-                data ptrformat^format
+		data bool#1
+		data ptrplaybin#1
+		data format=GST_FORMAT_TIME
+		data ptrformat^format
 
-                setcall ptrplaybin getplaybin2ptr()
-                setcall bool gst_element_query_position(ptrplaybin#,ptrformat,ptrcurrent)
-                if bool==false
-                    str poserr="Could not query current position."
-                    call texter(poserr)
-                else
-                    chars printduration#200
-                    str print^printduration
+		setcall ptrplaybin getplaybin2ptr()
+		setcall bool gst_element_query_position(ptrplaybin#,ptrformat,ptrcurrent)
+		if bool==false
+			str poserr="Could not query current position."
+			call texter(poserr)
+		else
+			chars printduration#10+1+10+1+10+3+10+1+10+1+10+1
+			str print^printduration
 
-                    data durH#1
-                    data durM#1
-                    data durS#1
-                    data posH#1
-                    data posM#1
-                    data posS#1
+			data durH#1
+			data durM#1
+			data durS#1
+			data posH#1
+			data posM#1
+			data posS#1
 
-                    data ptrdur^durH
-                    data ptrpos^posH
+			data ptrdur^durH
+			data ptrpos^posH
 
-                    call splitGstClockTime(ptrduration,ptrdur)
-                    call splitGstClockTime(ptrcurrent,ptrpos)
+			call splitGstClockTime(ptrduration,ptrdur)
+			call splitGstClockTime(ptrcurrent,ptrpos)
 
-                    str timeformat="%u:%02u:%02u / %u:%02u:%02u"
-                    call sprintf(print,timeformat,posH,posM,posS,durH,durM,durS)
-                    call texter(print)
-                    return true
-                endelse
-            endif
-        endif
-    endif
-    return false
+			str timeformat="%u:%02u:%02u / %u:%02u:%02u"
+			call sprintf(print,timeformat,posH,posM,posS,durH,durM,durS)
+			call texter(print)
+			return true
+		endelse
+	endif
+	data threadID=-1
+	const p_threadID^threadID
+	set threadID -1
+	return false
 endfunction
 
 function unset_playbool()
@@ -206,37 +205,47 @@ endfunction
 importx "_gst_message_parse_state_changed" gst_message_parse_state_changed
 importx "_gdk_threads_add_timeout" gdk_threads_add_timeout
 function statechanged(data *bus,data message)
-    data newstate#1
-    data ptrnewstate^newstate
-    data null=0
-    data true=1
-    data ptrplaybool%globalplaybool
+	data newstate#1
+	data ptrnewstate^newstate
+	data null=0
+	call gst_message_parse_state_changed(message,null,ptrnewstate,null)
 
-    call gst_message_parse_state_changed(message,null,ptrnewstate,null)
+	data GST_STATE_PLAYING=GST_STATE_PLAYING
+	if newstate==GST_STATE_PLAYING
+		data quadword=8
 
-    data GST_STATE_PLAYING=GST_STATE_PLAYING
-    data duration%ptrduration
-    data clock_none=GST_CLOCK_TIME_NONE_lowhigh
-    data quadword=8
-    if newstate==GST_STATE_PLAYING
-        set ptrplaybool# true
-        data msec=1000
-        data tm^streamtimer
-        call gdk_threads_add_timeout(msec,tm,null)
+		sd duration%ptrduration
 
-        str playing="Playing..."
-        call texter(playing)
+		import "setmem" setmem
+		call setmem(duration,quadword,(GST_CLOCK_TIME_NONE_lowhigh))
 
-        import "setmem" setmem
-        call setmem(duration,quadword,clock_none)
+		importx "_gst_element_query_duration" gst_element_query_duration
+		data format=GST_FORMAT_TIME
+		data ptrformat^format
+		data ptrplaybin#1
+		setcall ptrplaybin getplaybin2ptr()
+		call gst_element_query_duration(ptrplaybin#,ptrformat,duration)
 
-        importx "_gst_element_query_duration" gst_element_query_duration
-        data format=GST_FORMAT_TIME
-        data ptrformat^format
-        data ptrplaybin#1
-        setcall ptrplaybin getplaybin2ptr()
-        call gst_element_query_duration(ptrplaybin#,ptrformat,duration)
-    endif
+		if duration#!=(GST_CLOCK_TIME_NONE_lowhigh)
+			add duration (DWORD)
+			if duration#!=(GST_CLOCK_TIME_NONE_lowhigh)
+				vdata p_threadID%p_threadID
+				if p_threadID#<0
+
+					data ptrplaybool%globalplaybool
+					data true=1
+
+					set ptrplaybool# true
+					data msec=1000
+					data tm^streamtimer
+					setcall p_threadID# gdk_threads_add_timeout(msec,tm,null)
+
+					str playing="Playing..."
+					call texter(playing)
+				endif
+			endif
+		endif
+	endif
 endfunction
 
 import "rec_unset" rec_unset
