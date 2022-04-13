@@ -31,8 +31,10 @@ function streamerror(data *bus,data message)
     call stream_error(message)
 endfunction
 
+importx "_ulltoa" ulltoa
+#import "cpymem" memcpy
+
 function ldiv_lowdivisor(sv p,sd dividendlow,sd dividendhigh,sd divisor)
-	#20 and a null
 	#sd input#(4/:*3)+3
 	chars input#21
 	ss instr^input
@@ -41,29 +43,19 @@ function ldiv_lowdivisor(sv p,sd dividendlow,sd dividendhigh,sd divisor)
 	#windows? %I64u this is not working
 	#call sprintf(instr,"%llu",dividendlow,dividendhigh)
 	#call texter(instr)
-	importx "_ulltoa" ulltoa
 	call ulltoa(dividendlow,dividendhigh,instr,10)
 
 	# As result can be very large store it in string
 	#sd quotient#(4/:*3)+3
 	chars quotient#21
 	sd rem
-	sd b
-	setcall b ldiv_lowdivisor_s(#quotient,instr,divisor,#rem)
-	if b==(TRUE)
+	sd sz
+	setcall sz ldiv_lowdivisor_s(#quotient,instr,divisor,#rem)
+	if sz>0
 		# set quotient and remainder
 
 		call sscanf(#quotient,"%llu",p) #same as above but _strtoull is problematic at libmingwex.a
-
-		#sd h#(4/:*2)+3
-		#ss hex^h
-		#set hex# 0
-		#sd q#(4/:*3)+3
-		#sd b=TRUE
-		#while b==(TRUE)
-		#	setcall b ldiv_lowdivisor_s(#q,#quotient,16)
-		#copy q -> quotient ... ... ...
-		#endwhile
+		#call strto64(#quotient,p)
 
 		add p (2*:)
 		set p# rem
@@ -93,6 +85,7 @@ function ldiv_lowdivisor_s(ss outstr,ss instr,sd divisor,sd p_rem)
 		mult temp 10
 		add temp n
 	endwhile
+	sd outsize=0
 	if size>idx
 		# Repeatedly divide divisor with temp. After every division, update temp to include one more digit.
 		set outstr# 0
@@ -103,6 +96,7 @@ function ldiv_lowdivisor_s(ss outstr,ss instr,sd divisor,sd p_rem)
 			add n (_0)
 			set outstr# n
 			inc outstr
+			inc outsize
 			# Take next digit of number
 			rem temp divisor
 			mult temp 10
@@ -113,10 +107,37 @@ function ldiv_lowdivisor_s(ss outstr,ss instr,sd divisor,sd p_rem)
 		endwhile
 		set outstr# 0
 		set p_rem# temp
-		return (TRUE)
 	endif
-	return (FALSE)
+	return outsize
 endfunction
+#function strto64(ss in,sd out)
+	#const hconv64=16+1
+	#chars h#hconv64
+	#sd h#(4/:*2)+3
+	#ss hex^h
+	#add hex (hconv64-1)
+	#set hex# 0
+	#sd len=0
+	#chars quotient#21
+	#sd rem
+	#ss sz=-1
+	#setcall sz ldiv_lowdivisor_s(#quotient,in,16,#rem)
+	#while sz!=0
+	#	dec hex
+	#	inc len
+	#	if rem<10
+	#		add rem (_0)
+	#	else
+	#		add rem (A-10)
+	#	endelse
+	#	set hex# rem
+	#	call memcpy(in,#quotient,sz)
+	#	add sz in
+	#	set sz# 0
+	#	setcall sz ldiv_lowdivisor_s(#quotient,in,16,#rem)
+	#endwhile
+#endfunction
+
 function splitGstClockTime(data ptrclock,data ptrtime)
     data dword=4
 
