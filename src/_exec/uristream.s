@@ -32,7 +32,6 @@ function streamerror(data *bus,data message)
 endfunction
 
 importx "_ulltoa" ulltoa
-#import "cpymem" memcpy
 
 function ldiv_lowdivisor(sv p,sd dividendlow,sd dividendhigh,sd divisor)
 	#sd input#(4/:*3)+3
