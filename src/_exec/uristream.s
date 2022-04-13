@@ -49,13 +49,14 @@ function ldiv_lowdivisor(sv p,sd dividendlow,sd dividendhigh,sd divisor)
 	#sd quotient#(4/:*3)+3
 	chars quotient#21
 	sd rem
-	sd sz
-	setcall sz ldiv_lowdivisor_s(#quotient,instr,divisor,#rem)
-	if sz>0
+	ss dest;set dest instr
+	addcall dest strlen(instr)
+	setcall dest ldiv_lowdivisor_s(#quotient,instr,dest,divisor,#rem)
+	if instr!=dest
 		# set quotient and remainder
 
-		call sscanf(#quotient,"%llu",p) #same as above but _strtoull is problematic at libmingwex.a
-		#call strto64(#quotient,p)
+		set dest# 0;call sscanf(#quotient,"%llu",p) #same as above but _strtoull is problematic at libmingwex.a
+		#call memto64(#quotient,dest,p)
 
 		add p (2*:)
 		set p# rem
@@ -68,49 +69,42 @@ function ldiv_lowdivisor(sv p,sd dividendlow,sd dividendhigh,sd divisor)
 		set p# dividendlow
 	endelse
 endfunction
-function ldiv_lowdivisor_s(ss outstr,ss instr,sd divisor,sd p_rem)
+function ldiv_lowdivisor_s(ss outstr,ss instr,sd dest,sd divisor,sd p_rem)
 	sd n
-	sd size
-	setcall size strlen(instr)
+	sd start;set start instr
 	# Find prefix of number that is larger than divisor.
-	sd idx=0
 	sd temp
 	set temp instr#
 	sub temp (_0)
 	while temp<divisor
 		inc instr
-		inc idx
+		if instr==dest
+			return start
+		endif
 		set n instr#
 		sub n (_0)
 		mult temp 10
 		add temp n
 	endwhile
-	sd outsize=0
-	if size>idx
-		# Repeatedly divide divisor with temp. After every division, update temp to include one more digit.
-		set outstr# 0
-		while size>idx
-			# Store result in answer i.e. temp / divisor
-			set n temp
-			div n divisor
-			add n (_0)
-			set outstr# n
-			inc outstr
-			inc outsize
-			# Take next digit of number
-			rem temp divisor
-			mult temp 10
-			inc instr
-			inc idx
-			add temp instr#
-			sub temp (_0)
-		endwhile
-		set outstr# 0
-		set p_rem# temp
-	endif
-	return outsize
+	# Repeatedly divide divisor with temp. After every division, update temp to include one more digit.
+	while instr!=dest
+		# Store result in answer i.e. temp / divisor
+		set n temp
+		div n divisor
+		add n (_0)
+		set outstr# n
+		inc outstr
+		# Take next digit of number
+		rem temp divisor
+		mult temp 10
+		inc instr
+		add temp instr#
+		sub temp (_0)
+	endwhile
+	set p_rem# temp
+	return outstr
 endfunction
-#function strto64(ss in,sd out)
+#function strto64(ss in,sd dest,sd out)
 	#const hconv64=16+1
 	#chars h#hconv64
 	#sd h#(4/:*2)+3
@@ -119,10 +113,10 @@ endfunction
 	#set hex# 0
 	#sd len=0
 	#chars quotient#21
+	#sd in2;set in2 #quotient
 	#sd rem
-	#ss sz=-1
-	#setcall sz ldiv_lowdivisor_s(#quotient,in,16,#rem)
-	#while sz!=0
+	#setcall dest ldiv_lowdivisor_s(in2,in,dest,16,#rem)
+	#while in!=dest
 	#	dec hex
 	#	inc len
 	#	if rem<10
@@ -131,10 +125,9 @@ endfunction
 	#		add rem (A-10)
 	#	endelse
 	#	set hex# rem
-	#	call memcpy(in,#quotient,sz)
-	#	add sz in
-	#	set sz# 0
-	#	setcall sz ldiv_lowdivisor_s(#quotient,in,16,#rem)
+	#	sd aux;set aux in2
+	#	set in2 in;set in aux
+	#	setcall sz ldiv_lowdivisor_s(in2,in,16,#rem)
 	#endwhile
 #endfunction
 
