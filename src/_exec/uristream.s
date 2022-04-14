@@ -106,7 +106,7 @@ endfunction
 #function memto64(sd in,ss dest,sd out)
 	#const hconv64=16+1
 	#chars h#hconv64
-	#sd h#(4/:*2)+3
+	##sd h#(4/:*2)+3
 	#ss hex^h
 	#add hex (hconv64-1)
 	#sd sz;set sz hex
@@ -129,9 +129,24 @@ endfunction
 	#endwhile
 	#set dest# 0;call sscanf(in,"%u",#rem)
 	#dec hex;set hex# rem
+	#
+	#sd high
 	#sub sz hex
 	#if sz>8
+	#	set high hex
 	#	sub sz 8
+	#	add hex sz
+	#else
+	#	set high (NULL)
+	#endelse
+	#call sscanf(hex,"%x",out)
+	#add out :
+	#if high!=(NULL)
+	#	set hex# 0
+	#	call sscanf(high,"%x",out)
+	#	return (void)
+	#endif
+	#set out# 0
 #endfunction
 
 function splitGstClockTime(data ptrclock,data ptrtime)
