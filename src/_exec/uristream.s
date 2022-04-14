@@ -33,9 +33,12 @@ endfunction
 
 importx "_ulltoa" ulltoa
 
+const u64bytes=20
+#18,446,744,073,684,385,791
+
 function ldiv_lowdivisor(sv p,sd dividendlow,sd dividendhigh,sd divisor)
 	#sd input#(4/:*3)+3
-	chars input#20
+	chars input#u64bytes
 	ss instr^input
 
 	#%llu linux ok
@@ -111,7 +114,7 @@ endfunction
 	#add hex (hconv64-1)
 	#sd sz;set sz hex
 	#set hex# 0
-	#chars quotient#20
+	#chars quotient#u64bytes
 	#sd in2;set in2 #quotient
 	#sd rem
 	#setcall dest ldiv_lowdivisor_s(in2,in,dest,16,#rem)
