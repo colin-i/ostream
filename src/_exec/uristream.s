@@ -35,7 +35,7 @@ importx "_ulltoa" ulltoa
 
 function ldiv_lowdivisor(sv p,sd dividendlow,sd dividendhigh,sd divisor)
 	#sd input#(4/:*3)+3
-	chars input#21
+	chars input#20
 	ss instr^input
 
 	#%llu linux ok
@@ -103,21 +103,20 @@ function ldiv_lowdivisor_s(ss outstr,ss instr,sd dest,sd divisor,sd p_rem)
 	set p_rem# temp
 	return outstr
 endfunction
-#function strto64(ss in,sd dest,sd out)
+#function memto64(sd in,ss dest,sd out)
 	#const hconv64=16+1
 	#chars h#hconv64
 	#sd h#(4/:*2)+3
 	#ss hex^h
 	#add hex (hconv64-1)
+	#sd sz;set sz hex
 	#set hex# 0
-	#sd len=0
-	#chars quotient#21
+	#chars quotient#20
 	#sd in2;set in2 #quotient
 	#sd rem
 	#setcall dest ldiv_lowdivisor_s(in2,in,dest,16,#rem)
-	#while in!=dest
+	#while in2!=dest
 	#	dec hex
-	#	inc len
 	#	if rem<10
 	#		add rem (_0)
 	#	else
@@ -126,8 +125,13 @@ endfunction
 	#	set hex# rem
 	#	sd aux;set aux in2
 	#	set in2 in;set in aux
-	#	setcall sz ldiv_lowdivisor_s(in2,in,16,#rem)
+	#	setcall dest ldiv_lowdivisor_s(in2,in,dest,16,#rem)
 	#endwhile
+	#set dest# 0;call sscanf(in,"%u",#rem)
+	#dec hex;set hex# rem
+	#sub sz hex
+	#if sz>8
+	#	sub sz 8
 #endfunction
 
 function splitGstClockTime(data ptrclock,data ptrtime)
