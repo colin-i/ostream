@@ -120,18 +120,13 @@ endfunction
 	#setcall dest ldiv_lowdivisor_s(in2,in,dest,16,#rem)
 	#while in2!=dest
 	#	dec hex
-	#	if rem<10
-	#		add rem (_0)
-	#	else
-	#		add rem (A-10)
-	#	endelse
-	#	set hex# rem
+	#	setcall hex# inttohchar(rem)
 	#	sd aux;set aux in2
 	#	set in2 in;set in aux
 	#	setcall dest ldiv_lowdivisor_s(in2,in,dest,16,#rem)
 	#endwhile
 	#set dest# 0;call sscanf(in,"%u",#rem)
-	#dec hex;set hex# rem
+	#dec hex;setall hex# inttohchar(rem)
 	#
 	#sd high
 	#sub sz hex
@@ -150,6 +145,14 @@ endfunction
 	#	return (void)
 	#endif
 	#set out# 0
+#endfunction
+#function inttohchar(sd a)
+	#if a<10
+	#	add a (_0)
+	#else
+	#	add a (A-10)
+	#endelse
+	#return a
 #endfunction
 
 function splitGstClockTime(data ptrclock,data ptrtime)
