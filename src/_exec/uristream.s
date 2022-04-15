@@ -47,14 +47,6 @@ function ldiv_lowdivisor(sv p,sd dividendlow,sd dividendhigh,sd divisor)
 	#call texter(instr)
 	call ulltoa(dividendlow,dividendhigh,instr,10)
 
-#if instr#==31
-#inc instr
-#if instr#==33
-#hex 144
-#i3
-#endif
-#endif
-
 	# As result can be very large store it in string
 	#sd quotient#(4/:*3)+3
 	chars quotient#u64bytes
@@ -80,9 +72,18 @@ function ldiv_lowdivisor(sv p,sd dividendlow,sd dividendhigh,sd divisor)
 	endelse
 endfunction
 function ldiv_lowdivisor_s(ss outstr,ss instr,ss dest,sd divisor,sd p_rem)
-	sd n
 	sd start;set start instr
+	if divisor>(0xcCCccCB) #this*10+10=0x7f...F8
+		#there will be troubles in two places without this
+		dec dest
+		if instr==dest
+			return start
+		endif
+		set dest# 0
+		div divisor 10
+	endif
 	# Find prefix of number that is larger than divisor.
+	sd n
 	sd temp
 	set temp instr#
 	sub temp (_0)
@@ -93,16 +94,12 @@ function ldiv_lowdivisor_s(ss outstr,ss instr,ss dest,sd divisor,sd p_rem)
 		endif
 		set n instr#
 		sub n (_0)
-		sd test;set test n;add test (0x7fFFffFF/10)
-		if temp>test #overflow, force the numbers
-			div divisor 10
-			dec dest
-			set dest# 0
-			dec instr
-		else
-			mult temp 10
-			add temp n
-		endelse
+		#sd test
+		#...
+		#dec instr
+		#else
+		mult temp 10
+		add temp n
 	endwhile
 	# Repeatedly divide divisor with temp. After every division, update temp to include one more digit.
 	while instr!=dest
