@@ -38,7 +38,7 @@ const u64bytes=20
 
 function ldiv_lowdivisor(sv p,sd dividendlow,sd dividendhigh,sd divisor)
 	#sd input#(4/:*3)+3
-	chars input#u64bytes
+	chars input#u64bytes+1
 	ss instr^input
 
 	#%llu linux ok
@@ -47,9 +47,17 @@ function ldiv_lowdivisor(sv p,sd dividendlow,sd dividendhigh,sd divisor)
 	#call texter(instr)
 	call ulltoa(dividendlow,dividendhigh,instr,10)
 
+#if instr#==31
+#inc instr
+#if instr#==33
+#hex 144
+#i3
+#endif
+#endif
+
 	# As result can be very large store it in string
 	#sd quotient#(4/:*3)+3
-	chars quotient#21
+	chars quotient#u64bytes
 	sd rem
 	ss dest;set dest instr
 	addcall dest strlen(instr)
@@ -57,8 +65,8 @@ function ldiv_lowdivisor(sv p,sd dividendlow,sd dividendhigh,sd divisor)
 	if instr!=dest
 		# set quotient and remainder
 
-		set dest# 0;call sscanf(#quotient,"%llu",p) #same as above but _strtoull is problematic at libmingwex.a
-		#call memto64(#quotient,dest,p)
+		#set dest# 0;call sscanf(#quotient,"%llu",p) #same as above but _strtoull is problematic at libmingwex.a
+		call memto64(#quotient,dest,p)
 
 		add p (2*:)
 		set p# rem
@@ -71,7 +79,7 @@ function ldiv_lowdivisor(sv p,sd dividendlow,sd dividendhigh,sd divisor)
 		set p# dividendlow
 	endelse
 endfunction
-function ldiv_lowdivisor_s(ss outstr,ss instr,sd dest,sd divisor,sd p_rem)
+function ldiv_lowdivisor_s(ss outstr,ss instr,ss dest,sd divisor,sd p_rem)
 	sd n
 	sd start;set start instr
 	# Find prefix of number that is larger than divisor.
@@ -85,8 +93,16 @@ function ldiv_lowdivisor_s(ss outstr,ss instr,sd dest,sd divisor,sd p_rem)
 		endif
 		set n instr#
 		sub n (_0)
-		mult temp 10
-		add temp n
+		sd test;set test n;add test (0x7fFFffFF/10)
+		if temp>test #overflow, force the numbers
+			div divisor 10
+			dec dest
+			set dest# 0
+			dec instr
+		else
+			mult temp 10
+			add temp n
+		endelse
 	endwhile
 	# Repeatedly divide divisor with temp. After every division, update temp to include one more digit.
 	while instr!=dest
@@ -98,62 +114,68 @@ function ldiv_lowdivisor_s(ss outstr,ss instr,sd dest,sd divisor,sd p_rem)
 		inc outstr
 		# Take next digit of number
 		rem temp divisor
-		mult temp 10
 		inc instr
-		add temp instr#
-		sub temp (_0)
+		if instr!=dest
+			mult temp 10
+			add temp instr#
+			sub temp (_0)
+		endif
 	endwhile
 	set p_rem# temp
 	return outstr
 endfunction
-#function memto64(sd in,ss dest,sd out)
-	#const hconv64=16+1
-	#chars h#hconv64
-	##sd h#(4/:*2)+3
-	#ss hex^h
-	#add hex (hconv64-1)
-	#sd sz;set sz hex
-	#set hex# 0
-	#chars quotient#u64bytes
-	#sd in2;set in2 #quotient
-	#sd rem
-	#setcall dest ldiv_lowdivisor_s(in2,in,dest,16,#rem)
-	#while in2!=dest
-	#	dec hex
-	#	setcall hex# inttohchar(rem)
-	#	sd aux;set aux in2
-	#	set in2 in;set in aux
-	#	setcall dest ldiv_lowdivisor_s(in2,in,dest,16,#rem)
-	#endwhile
-	#set dest# 0;call sscanf(in,"%u",#rem)
-	#dec hex;setall hex# inttohchar(rem)
-	#
-	#sd high
-	#sub sz hex
-	#if sz>8
-	#	set high hex
-	#	sub sz 8
-	#	add hex sz
-	#else
-	#	set high (NULL)
-	#endelse
-	#call sscanf(hex,"%x",out)
-	#add out :
-	#if high!=(NULL)
-	#	set hex# 0
-	#	call sscanf(high,"%x",out)
-	#	return (void)
-	#endif
-	#set out# 0
-#endfunction
-#function inttohchar(sd a)
-	#if a<10
-	#	add a (_0)
-	#else
-	#	add a (A-10)
-	#endelse
-	#return a
-#endfunction
+function memto64(sd in,ss dest,sd out)
+	const hconv64=16+1
+	chars h#hconv64
+	#sd h#(4/:*2)+3
+	ss hex^h
+	add hex (hconv64-1)
+	sd sz;set sz hex
+	set hex# 0
+	chars quotient#u64bytes
+	sd in2;set in2 #quotient
+	sd rem
+
+	sd prev
+	set prev dest
+	setcall dest ldiv_lowdivisor_s(in2,in,dest,16,#rem)
+	while in!=dest
+		dec hex
+		setcall hex# inttohchar(rem)
+		sd aux;set aux in2
+		set in2 in;set in aux
+		set prev dest
+		setcall dest ldiv_lowdivisor_s(in2,in,dest,16,#rem)
+	endwhile
+	set prev# 0;call sscanf(in,"%u",#rem)
+	dec hex;setcall hex# inttohchar(rem)
+
+	sd high
+	sub sz hex
+	if sz>8
+		set high hex
+		sub sz 8
+		add hex sz
+	else
+		set high (NULL)
+	endelse
+	call sscanf(hex,"%x",out)
+	add out :
+	if high!=(NULL)
+		set hex# 0
+		call sscanf(high,"%x",out)
+		return (void)
+	endif
+	set out# 0
+endfunction
+function inttohchar(sd a)
+	if a<10
+		add a (_0)
+	else
+		add a (A-10)
+	endelse
+	return a
+endfunction
 
 function splitGstClockTime(data ptrclock,data ptrtime)
     data dword=4
