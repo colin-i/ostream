@@ -73,7 +73,7 @@ function ldiv_lowdivisor(sv p,sd dividendlow,sd dividendhigh,sd divisor)
 endfunction
 function ldiv_lowdivisor_s(ss outstr,ss instr,ss dest,sd divisor,sd p_rem)
 	sd start;set start instr
-	if divisor>(0xcCCccCB) #this*10+9=0x7f...F7+0xa=0x8...1
+	if divisor>(0xcCCccCC) #(this-1)*10+9=0x7f...F7 +0xa=0x8...1
 		#there will be troubles in two places without this
 		dec dest
 		if instr==dest
