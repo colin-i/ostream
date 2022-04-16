@@ -930,3 +930,10 @@ function move_to_share_core()
 endfunction
 function prog_free()
 endfunction
+
+importx "_ulltoa" ulltoa_extern
+
+function ulltoa(sd low,sd high,sd instr)
+	call ulltoa_extern(low,high,instr,10)
+endfunction
+

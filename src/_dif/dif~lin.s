@@ -918,3 +918,8 @@ function cat_absolute_verif(sd mem,sd v,sd v2,sd v3)
 	call texter("path max error.")
 	return (FALSE)
 endfunction
+
+function ulltoa(sd low,sd high,sd str)
+	call sprintf(str,"%llu",low,high)
+endfunction
+

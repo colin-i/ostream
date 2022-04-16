@@ -31,7 +31,7 @@ function streamerror(data *bus,data message)
     call stream_error(message)
 endfunction
 
-importx "_ulltoa" ulltoa
+import "ulltoa" ulltoa
 
 const u64bytes=20
 #18,446,744,073,684,385,791
@@ -45,7 +45,7 @@ function ldiv_lowdivisor(sv p,sd dividendlow,sd dividendhigh,sd divisor)
 	#windows? %I64u this is not working
 	#call sprintf(instr,"%llu",dividendlow,dividendhigh)
 	#call texter(instr)
-	call ulltoa(dividendlow,dividendhigh,instr,10)
+	call ulltoa(dividendlow,dividendhigh,instr)
 
 	# As result can be very large store it in string
 	#sd quotient#(4/:*3)+3
