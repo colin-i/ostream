@@ -248,6 +248,7 @@ function stage_file_need_fn(sd appsrc)
         data free_fn^free
         sd buffer
         setcall buffer gst_app_buffer_new(mem,framesize,free_fn,mem)
+        #gst_buffer_new_wrapped(mem,framesize) #The memory will be freed with g_free and will be marked writable.
 
         ss capsformat="video/x-raw-rgb,width=%u,height=%u,bpp=%u,endianness=4321,red_mask=0xFF000000,green_mask=0xFF0000,blue_mask=0xFF00,framerate=%u/1"
         chars capsdata#200
@@ -264,6 +265,8 @@ function stage_file_need_fn(sd appsrc)
 
         importx "_gst_buffer_set_caps" gst_buffer_set_caps
         call gst_buffer_set_caps(buffer,caps)
+        #set them on appsrc, or more precisely send a caps event downstream
+        #or examples with gst_buffer_new_wrapped
 
         importx "_gst_caps_unref" gst_caps_unref
         call gst_caps_unref(caps)

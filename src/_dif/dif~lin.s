@@ -39,13 +39,6 @@ endfunction
 
 
 
-importx "gdk_x11_drawable_get_xid" gdk_x11_drawable_get_xid
-function gdkGetdrawable(data window)
-    data windraw#1
-    setcall windraw gdk_x11_drawable_get_xid(window)
-    return windraw
-endfunction
-
 function system_variables_alignment_pad(data *value,data *greatest)
     data noalignment=0
     return noalignment
@@ -923,3 +916,30 @@ function ulltoa(sd low,sd high,sd str)
 	call sprintf(str,"%llu",low,high)
 endfunction
 
+
+importx "gdk_x11_drawable_get_xid" gdk_x11_drawable_get_xid
+importx "ggst_video_overlay_get_type" gst_video_overlay_get_type
+
+import "getplaybin2ptr" getplaybin2ptr
+import "widget_gdk_window_native_get" widget_gdk_window_native_get
+
+function video_realize(sd widget)
+	sd window
+	setcall window widget_gdk_window_native_get(widget)
+	if window!=(NULL)
+		sd windraw
+		setcall windraw gdk_x11_drawable_get_xid(window)
+
+		sd g_type
+		setcall g_type gst_video_overlay_get_type()
+
+		sv playbin2
+		setcall playbin2 getplaybin2ptr()
+		set playbin2 playbin2#
+
+		sd c_type
+		setcall c_type g_type_check_instance_cast(playbin,g_type)
+
+		call gst_video_overlay_set_window_handle(c_type,windraw)
+	endif
+#endfunction

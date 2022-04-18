@@ -17,48 +17,6 @@ function getplaybin2ptr()
     return propagateplaybin2
 endfunction
 
-#void gtkwidget::realize
-importx "_gtk_widget_get_window" gtk_widget_get_window
-importx "_gdk_window_ensure_native" gdk_window_ensure_native
-importx "_gst_x_overlay_set_window_handle" gst_x_overlay_set_window_handle
-importx "_gst_x_overlay_get_type" gst_x_overlay_get_type
-importx "_gst_implements_interface_cast" gst_implements_interface_cast
-importx "_gst_element_implements_interface" gst_element_implements_interface
-
-import "gdkGetdrawable" gdkGetdrawable
-
-function video_realize(data widget)
-	data window#1
-	setcall window gtk_widget_get_window(widget)
-
-	data false=0
-	sd bool
-	setcall bool gdk_window_ensure_native(window)
-	if bool==false
-		str noNative="Couldn't create native window needed for GstXOverlay!"
-		call texter(noNative)
-	endif
-
-	#Pass it to playbin2, which implements XOverlay and will forward it to the video sink
-	#on >= ubuntu 12 with debs from 2012.11(almost same place with 2012.11 msi file) this is a not
-	sv playbin2
-	setcall playbin2 getplaybin2ptr()
-	set playbin2 playbin2#
-	sd overlaytype
-	setcall overlaytype gst_x_overlay_get_type()
-	setcall bool gst_element_implements_interface(playbin2,overlaytype)
-	if bool==(TRUE)
-		sd interfacecast
-		setcall interfacecast gst_implements_interface_cast(playbin2,overlaytype)
-		sd drawablehandle
-		setcall drawablehandle gdkGetdrawable(window)
-		call gst_x_overlay_set_window_handle(interfacecast,drawablehandle)
-		return (void)
-	endif
-	import "printer" printer
-	call printer("gst_element_implements_interface false.")
-endfunction
-
 import "unset_playbool" unset_playbool
 
 function gstset()
@@ -119,6 +77,9 @@ function addSignals(data bus,sd *callbackdata)
 endfunction
 
 importx "_gst_element_factory_make" gst_element_factory_make
+
+import "video_realize" video_realize
+
 #void/err
 function gstplayinit(data videowidget)
     data null=0
@@ -155,3 +116,19 @@ function gstplayinit(data videowidget)
     call bus_signals(playbin2,add_signals)
 endfunction
 
+importx "_gtk_widget_get_window" gtk_widget_get_window
+importx "_gdk_window_ensure_native" gdk_window_ensure_native
+
+#wind
+function widget_gdk_window_native_get(sd widget)
+	sd window
+	setcall window gtk_widget_get_window(widget)
+	sd bool
+	setcall bool gdk_window_ensure_native(window)
+	if bool==(TRUE)
+		return window
+	endif
+	str noNative="Couldn't create native window needed for GstXOverlay!"
+	call texter(noNative)
+	return (NULL)
+endfunction

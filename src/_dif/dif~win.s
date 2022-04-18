@@ -101,13 +101,6 @@ function geterrno()
 endfunction
 
 
-importx "_gdk_win32_drawable_get_handle" gdk_win32_drawable_get_handle
-function gdkGetdrawable(data window)
-    data windraw#1
-    setcall windraw gdk_win32_drawable_get_handle(window)
-    return windraw
-endfunction
-
 function system_variables_alignment_pad(data value,data greatest)
     sub greatest value
     return greatest
@@ -937,3 +930,39 @@ function ulltoa(sd low,sd high,sd instr)
 	call ulltoa_extern(low,high,instr,10)
 endfunction
 
+
+#void gtkwidget::realize
+importx "_gst_x_overlay_set_window_handle" gst_x_overlay_set_window_handle
+importx "_gst_x_overlay_get_type" gst_x_overlay_get_type
+importx "_gst_implements_interface_cast" gst_implements_interface_cast
+importx "_gst_element_implements_interface" gst_element_implements_interface
+importx "_gdk_win32_drawable_get_handle" gdk_win32_drawable_get_handle
+
+import "getplaybin2ptr" getplaybin2ptr
+import "widget_gdk_window_native_get" widget_gdk_window_native_get
+
+function video_realize(data widget)
+	sd window
+	setcall window widget_gdk_window_native_get(widget)
+	if window!=(NULL)
+		#Pass it to playbin2, which implements XOverlay and will forward it to the video sink
+		#on >= ubuntu 12 with debs from 2012.11(almost same place with 2012.11 msi file) this is a not
+		sv playbin2
+		setcall playbin2 getplaybin2ptr()
+		set playbin2 playbin2#
+		sd overlaytype
+		setcall overlaytype gst_x_overlay_get_type()
+		sd bool
+		setcall bool gst_element_implements_interface(playbin2,overlaytype)
+		if bool==(TRUE)
+			sd interfacecast
+			setcall interfacecast gst_implements_interface_cast(playbin2,overlaytype)
+			sd drawablehandle
+			setcall drawablehandle gdk_win32_drawable_get_handle(window)
+			call gst_x_overlay_set_window_handle(interfacecast,drawablehandle)
+			return (void)
+		endif
+		import "printer" printer
+		call printer("gst_element_implements_interface false.")
+	endif
+endfunction
