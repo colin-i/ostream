@@ -918,7 +918,9 @@ endfunction
 
 
 importx "gdk_x11_drawable_get_xid" gdk_x11_drawable_get_xid
-importx "ggst_video_overlay_get_type" gst_video_overlay_get_type
+importx "gst_video_overlay_get_type" gst_video_overlay_get_type
+importx "g_type_check_instance_cast" g_type_check_instance_cast
+importx "gst_video_overlay_set_window_handle" gst_video_overlay_set_window_handle
 
 import "getplaybin2ptr" getplaybin2ptr
 import "widget_gdk_window_native_get" widget_gdk_window_native_get
@@ -938,8 +940,34 @@ function video_realize(sd widget)
 		set playbin2 playbin2#
 
 		sd c_type
-		setcall c_type g_type_check_instance_cast(playbin,g_type)
+		setcall c_type g_type_check_instance_cast(playbin2,g_type)
 
 		call gst_video_overlay_set_window_handle(c_type,windraw)
 	endif
-#endfunction
+endfunction
+
+
+#1.0 function
+function get_new_buffer(sd mem,sd framesize)
+	importx "gst_buffer_new_wrapped" gst_buffer_new_wrapped
+	sd buffer
+	setcall buffer gst_buffer_new_wrapped(mem,framesize) #The memory will be freed with g_free and will be marked writable.
+	return buffer
+endfunction
+function set_appsrc_caps(sd appsrc,sd w,sd h)
+	ss capsformat="video/x-raw-rgb,width=%u,height=%u,bpp=%u,endianness=4321,red_mask=0xFF000000,green_mask=0xFF0000,blue_mask=0xFF00,framerate=%u/1"
+	chars capsdata#4*10+130+1-4-4
+	str gstcaps^capsdata
+	sd bpp=stage_bpp
+	sd fps
+	import "stage_file_options_fps" stage_file_options_fps
+	setcall fps stage_file_options_fps()
+	call sprintf(gstcaps,capsformat,w,h,bpp,fps)
+	importx "gst_caps_from_string" gst_caps_from_string
+	sd caps
+	setcall caps gst_caps_from_string(gstcaps)
+	importx "gst_app_src_set_caps" gst_app_src_set_caps
+	call gst_app_src_set_caps(appsrc,caps)
+	importx "gst_caps_unref" gst_caps_unref
+	call gst_caps_unref(caps)
+endfunction

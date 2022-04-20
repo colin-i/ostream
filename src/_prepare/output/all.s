@@ -244,32 +244,10 @@ function stage_file_need_fn(sd appsrc)
 
         call stage_prepare_pixbuf(pixbuf,mem,w,h)
 
-        importx "_gst_app_buffer_new" gst_app_buffer_new
-        data free_fn^free
         sd buffer
-        setcall buffer gst_app_buffer_new(mem,framesize,free_fn,mem)
-        #gst_buffer_new_wrapped(mem,framesize) #The memory will be freed with g_free and will be marked writable.
 
-        ss capsformat="video/x-raw-rgb,width=%u,height=%u,bpp=%u,endianness=4321,red_mask=0xFF000000,green_mask=0xFF0000,blue_mask=0xFF00,framerate=%u/1"
-        chars capsdata#200
-        str gstcaps^capsdata
-        sd bpp=stage_bpp
-        sd fps
-        import "stage_file_options_fps" stage_file_options_fps
-        setcall fps stage_file_options_fps()
-        call sprintf(gstcaps,capsformat,w,h,bpp,fps)
-
-        importx "_gst_caps_from_string" gst_caps_from_string
-        sd caps
-        setcall caps gst_caps_from_string(gstcaps)
-
-        importx "_gst_buffer_set_caps" gst_buffer_set_caps
-        call gst_buffer_set_caps(buffer,caps)
-        #set them on appsrc, or more precisely send a caps event downstream
-        #or examples with gst_buffer_new_wrapped
-
-        importx "_gst_caps_unref" gst_caps_unref
-        call gst_caps_unref(caps)
+	import "get_new_buffer" get_new_buffer
+	setcall buffer get_new_buffer(mem,framesize,w,h)
 
         sd flow
         sd ptr_flow^flow
@@ -358,6 +336,9 @@ function stage_file_command(ss command)
     mult queue queueframes
     importx "_gst_app_src_set_max_bytes" gst_app_src_set_max_bytes
     call gst_app_src_set_max_bytes(appsrc,queue)
+
+	import "set_appsrc_caps" set_appsrc_caps
+	call set_appsrc_caps(appsrc,w,h)
 
     #launch a modal progress bar
     data inits^stage_file_dialog_inits
@@ -631,6 +612,3 @@ function stage_files_read()
 
     call free(filename)
 endfunction
-
-
-

@@ -78,3 +78,6 @@ fi
 #;C:\gstreamer-sdk\0.10\x86\bin
 #file:///d:/some/path/to/repos/on/d/drive
 #file:///var/www/html/s.webm
+
+#gstreamer1.0-plugins-bad
+#gst-launch-1.0 -v playbin uri=file:///home/bc/v/b/captures/1650430132.mxf

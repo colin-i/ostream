@@ -132,14 +132,14 @@ function init_dir(sd f)
 endfunction
 
 function init_sys_file(sd f,sd data,sd sz,sv perr)
+	chars buf#biggest_string+1+4+1
+	call sprintf(#buf,"%s.data",f)
 	sd is
-	setcall is access(f,(F_OK))
+	setcall is access(#buf,(F_OK))
 	if is==-1
 		#open
 		const O_WRONLY=0x0001
 		sd fd
-		chars buf#biggest_string+1+4+1
-		call sprintf(#buf,"%s.data",f)
 		setcall fd open(#buf,(O_WRONLY|flag_O_BINARY|flag_O_CREAT),(flag_fmode))
 		#write
 		sd len

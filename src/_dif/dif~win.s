@@ -966,3 +966,32 @@ function video_realize(data widget)
 		call printer("gst_element_implements_interface false.")
 	endif
 endfunction
+
+#0.10 function
+function get_new_buffer(sd mem,sd framesize,sd w,sd h)
+	importx "_gst_app_buffer_new" gst_app_buffer_new
+	vdata free_fn^free
+	sd buffer
+	setcall buffer gst_app_buffer_new(mem,framesize,free_fn,mem)
+	#
+	ss capsformat="video/x-raw-rgb,width=%u,height=%u,bpp=%u,endianness=4321,red_mask=0xFF000000,green_mask=0xFF0000,blue_mask=0xFF00,framerate=%u/1"
+	chars capsdata#4*10+130+1-4-4
+	str gstcaps^capsdata
+	sd bpp=stage_bpp
+	sd fps
+	import "stage_file_options_fps" stage_file_options_fps
+	setcall fps stage_file_options_fps()
+	importx "_sprintf" sprintf
+	call sprintf(gstcaps,capsformat,w,h,bpp,fps)
+	importx "_gst_caps_from_string" gst_caps_from_string
+	sd caps
+	setcall caps gst_caps_from_string(gstcaps)
+	importx "_gst_buffer_set_caps" gst_buffer_set_caps
+	call gst_buffer_set_caps(buffer,caps)
+	importx "_gst_caps_unref" gst_caps_unref
+	call gst_caps_unref(caps)
+	#
+	return buffer
+endfunction
+function set_appsrc_caps(sd *appsrc)
+endfunction

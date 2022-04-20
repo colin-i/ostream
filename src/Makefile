@@ -63,29 +63,31 @@ share:
 
 #at jammy
 #libgtk2.0-dev:i386	libgtk2.0-0:i386
-#libjpeg8-dev:i386 is already	libjpeg8:i386 is already
-#libgstreamer1.0-dev:i386	libgstreamer1.0-0:i386 is already
-#	gst_implements_interface_cast	video_realize
-#	gst_buffer_set_caps	stage_file_need_fn
 #libgstreamer-plugins-base1.0-dev:i386	libgstreamer-plugins-base1.0-0:i386 is already
 #	gst_app_buffer_new	stage_file_need_fn
 #no apt-file search libgstinterfaces 0.10 in xenial
 #	gst_x_overlay_get_type	video_realize
 #	gst_x_overlay_set_window_handle	video_realize
-#libsoup2.4-1:i386 is already
+#libsoup2.4-dev:i386      libsoup2.4-1:i386 is already
 #libasound2-dev:i386	libasound2:i386 is already
+#libjpeg8-dev:i386 is already	libjpeg8:i386 is already
+#libgstreamer1.0-dev:i386 is already	libgstreamer1.0-0:i386 is already
+#	gst_implements_interface_cast	video_realize
+#	gst_buffer_set_caps	stage_file_need_fn
 
 #at xenial
 #dev gtk libgstreamer-plugins-base0.10-dev  soup jpeg asound
 #gtk gstreamer0.10-plugins-good
 
-#		export PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig/:${PKG_CONFIG_PATH}; \
-#		$(LD) ${syms} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 ${obs} -o ${projname} -lc -lm `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lgthread-2.0; \
+
 #cc because -pthread not for ld
 #nostdlib because is complaining about main
+#		$(CC) -nostdlib ${syms} ${obs} -o ${projname} `pkg-config --libs gtk+-2.0 gstreamer-pbutils-0.10 gstreamer-interfaces-0.10 gstreamer-app-0.10` -lsoup-2.4 -ljpeg -lasound -lm -lpthread -lc; \
+
 lnk:
 	if [ "${platform}" = "lin" ]; then \
-		$(CC) -nostdlib ${syms} ${obs} -o ${projname} `pkg-config --libs gtk+-2.0 gstreamer-pbutils-0.10 gstreamer-interfaces-0.10 gstreamer-app-0.10` -lsoup-2.4 -ljpeg -lasound -lm -lpthread -lc; \
+		export PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig/:${PKG_CONFIG_PATH}; \
+		$(LD) ${syms} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 ${obs} -o ${projname} -lc -lm `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lgthread-2.0; \
 	else \
 		i686-w64-mingw32-ld --large-address-aware ${syms} ${obs} -o ${wprojname} -entry _start --start-group \
 		`dpkg -L mingw-w64-i686-dev | grep '\.a' | sed 's/..$$//' | grep -o '[^\/]*$$' | sed 's/^lib/-l/' | xargs echo` \
