@@ -993,9 +993,15 @@ function get_new_buffer(sd mem,sd framesize,sd w,sd h)
 	#
 	return buffer
 endfunction
-function set_appsrc_caps(sd *appsrc)
-endfunction
 
 function get_playbin_str()
 	return "playbin2"
+endfunction
+
+function get_mxf_caps()
+	return ""
+endfunction
+
+function get_mxf_inputformat()
+	return "ffmpegcolorspace"
 endfunction

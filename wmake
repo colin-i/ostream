@@ -81,3 +81,4 @@ fi
 
 #gstreamer1.0-plugins-bad
 #gst-launch-1.0 -v playbin uri=file:///home/bc/v/b/captures/1650430132.mxf
+#./e && GST_DEBUG=3 ./a.out #7 is max

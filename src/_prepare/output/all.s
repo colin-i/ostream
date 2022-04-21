@@ -337,9 +337,6 @@ function stage_file_command(ss command)
     importx "_gst_app_src_set_max_bytes" gst_app_src_set_max_bytes
     call gst_app_src_set_max_bytes(appsrc,queue)
 
-	import "set_appsrc_caps" set_appsrc_caps
-	call set_appsrc_caps(appsrc,w,h)
-
     #launch a modal progress bar
     data inits^stage_file_dialog_inits
     call stage_progress_dialog(inits)
@@ -399,14 +396,20 @@ function stage_save_all()
     set file_frames_portions 0
 
 	#mxf wants plugins-bad
-    ss pipeformat="appsrc is-live=true name=%s ! ffmpegcolorspace ! %s ! filesink location=\"%s\""
+    ss pipeformat="appsrc is-live=true name=%s %s ! %s ! %s ! filesink location=\"%s\""
     ss srcname
+	ss extra
+	ss informat
     ss outformat
     ss location
     sd *=0
     sd strings^pipeformat
 
     setcall srcname stage_get_src_name()
+	import "get_mxf_caps" get_mxf_caps
+	setcall extra get_mxf_caps()
+	import "get_mxf_inputformat" get_mxf_inputformat
+	setcall informat get_mxf_inputformat()
     import "stage_file_get_format_name" stage_file_get_format_name
     setcall outformat stage_file_get_format_name()
 
@@ -425,7 +428,7 @@ function stage_save_all()
         return err
     endif
 
-    call sprintf(mem,pipeformat,srcname,outformat,location)
+    call sprintf(mem,pipeformat,srcname,extra,informat,outformat,location)
 
     call stage_file_command(mem)
 

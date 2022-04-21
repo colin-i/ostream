@@ -955,7 +955,21 @@ function get_new_buffer(sd mem,sd framesize)
 	setcall buffer gst_buffer_new_wrapped_full(0,mem,framesize,0,framesize,(NULL),(NULL)) #The memory will be freed with g_free and will be marked writable.
 	return buffer
 endfunction
-function set_appsrc_caps(sd appsrc,sd w,sd h)
+
+function get_playbin_str()
+	return "playbin"
+endfunction
+
+function get_mxf_caps()
+	import "stage_nthwidgetFromcontainer" stage_nthwidgetFromcontainer
+	import "stage_file_frame_main_set" stage_file_frame_main_set
+    sd firstframe
+    setcall firstframe stage_nthwidgetFromcontainer(0)
+    sd pixbuf
+    sd w
+    sd h
+    sd ptr_pack^pixbuf
+    call stage_file_frame_main_set(ptr_pack,firstframe)
 	ss capsformat="video/x-raw,format=(string)RGB,width=%u,height=%u,bpp=%u,endianness=4321,red_mask=0xFF000000,green_mask=0xFF0000,blue_mask=0xFF00,framerate=%u/1"
 	chars capsdata#4*10+144+1-4-4
 	str gstcaps^capsdata
@@ -964,15 +978,9 @@ function set_appsrc_caps(sd appsrc,sd w,sd h)
 	import "stage_file_options_fps" stage_file_options_fps
 	setcall fps stage_file_options_fps()
 	call sprintf(gstcaps,capsformat,w,h,bpp,fps)
-	importx "gst_caps_from_string" gst_caps_from_string
-	sd caps
-	setcall caps gst_caps_from_string(gstcaps)
-	importx "gst_app_src_set_caps" gst_app_src_set_caps
-	call gst_app_src_set_caps(appsrc,caps)
-	importx "gst_mini_object_unref" gst_mini_object_unref
-	call gst_mini_object_unref(caps)
+	return gstcaps
 endfunction
 
-function get_playbin_str()
-	return "playbin"
+function get_mxf_inputformat()
+	return "videoconvert"
 endfunction
