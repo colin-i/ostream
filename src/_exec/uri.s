@@ -88,8 +88,10 @@ function gstplayinit(data videowidget)
     call rec_set(null)
 
     data playbin2ptr#1
-    str playbin2str="playbin"
     setcall playbin2ptr getplaybin2ptr()
+	import "get_playbin_str" get_playbin_str
+	ss playbin2str
+	setcall playbin2str get_playbin_str()
 
     setcall playbin2ptr# gst_element_factory_make(playbin2str,playbin2str)
     #needing gstreamer0.10-plugins-good

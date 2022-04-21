@@ -972,3 +972,7 @@ function set_appsrc_caps(sd appsrc,sd w,sd h)
 	importx "gst_mini_object_unref" gst_mini_object_unref
 	call gst_mini_object_unref(caps)
 endfunction
+
+function get_playbin_str()
+	return "playbin"
+endfunction

@@ -995,3 +995,7 @@ function get_new_buffer(sd mem,sd framesize,sd w,sd h)
 endfunction
 function set_appsrc_caps(sd *appsrc)
 endfunction
+
+function get_playbin_str()
+	return "playbin2"
+endfunction
