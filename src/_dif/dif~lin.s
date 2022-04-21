@@ -950,14 +950,14 @@ endfunction
 #1.0 function
 function get_new_buffer(sd mem,sd framesize)
 	importx "gst_buffer_new_wrapped_full" gst_buffer_new_wrapped_full
-	const GST_MEMORY_FLAG_READONLY=2
+	#const GST_MEMORY_FLAG_READONLY=2
 	sd buffer
-	setcall buffer gst_buffer_new_wrapped_full((GST_MEMORY_FLAG_READONLY),mem,framesize,0,framesize,(NULL),(NULL)) #The memory will be freed with g_free and will be marked writable.
+	setcall buffer gst_buffer_new_wrapped_full(0,mem,framesize,0,framesize,(NULL),(NULL)) #The memory will be freed with g_free and will be marked writable.
 	return buffer
 endfunction
 function set_appsrc_caps(sd appsrc,sd w,sd h)
-	ss capsformat="video/x-raw,format=RGB,width=%u,height=%u,bpp=%u,endianness=4321,red_mask=0xFF000000,green_mask=0xFF0000,blue_mask=0xFF00,framerate=%u/1"
-	chars capsdata#4*10+136+1-4-4
+	ss capsformat="video/x-raw,format=(string)RGB,width=%u,height=%u,bpp=%u,endianness=4321,red_mask=0xFF000000,green_mask=0xFF0000,blue_mask=0xFF00,framerate=%u/1"
+	chars capsdata#4*10+144+1-4-4
 	str gstcaps^capsdata
 	sd bpp=stage_bpp
 	sd fps

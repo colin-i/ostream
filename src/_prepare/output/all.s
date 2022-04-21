@@ -398,6 +398,7 @@ function stage_save_all()
     data file_frames_portions%stage_file_frames_portions
     set file_frames_portions 0
 
+	#mxf wants plugins-bad
     ss pipeformat="appsrc is-live=true name=%s ! ffmpegcolorspace ! %s ! filesink location=\"%s\""
     ss srcname
     ss outformat
