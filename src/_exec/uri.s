@@ -88,7 +88,7 @@ function gstplayinit(data videowidget)
     call rec_set(null)
 
     data playbin2ptr#1
-    str playbin2str="playbin2"
+    str playbin2str="playbin"
     setcall playbin2ptr getplaybin2ptr()
 
     setcall playbin2ptr# gst_element_factory_make(playbin2str,playbin2str)
