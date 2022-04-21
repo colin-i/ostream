@@ -970,8 +970,8 @@ function get_mxf_caps()
     sd h
     sd ptr_pack^pixbuf
     call stage_file_frame_main_set(ptr_pack,firstframe)
-	ss capsformat="video/x-raw,format=(string)RGB,width=%u,height=%u,bpp=%u,endianness=4321,red_mask=0xFF000000,green_mask=0xFF0000,blue_mask=0xFF00,framerate=%u/1"
-	chars capsdata#4*10+144+1-4-4
+	ss capsformat="caps=video/x-raw,format=(string)RGBA,width=%u,height=%u,bpp=%u,endianness=4321,red_mask=0xFF000000,green_mask=0xFF0000,blue_mask=0xFF00,framerate=%u/1"
+	chars capsdata#4*10+150+1-4-4
 	str gstcaps^capsdata
 	sd bpp=stage_bpp
 	sd fps

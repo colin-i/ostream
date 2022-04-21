@@ -118,7 +118,7 @@ endfunction
 
 import "texter" texter
 
-function stage_prepare_pixbuf(sd pixbuf,sd mem,sd w,sd h)
+function stage_prepare_pixbuf(sd pixbuf,ss mem,sd w,sd h)
     sd px_pixels
     importx "_gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
     setcall px_pixels gdk_pixbuf_get_pixels(pixbuf)
@@ -157,8 +157,9 @@ function stage_prepare_pixbuf(sd pixbuf,sd mem,sd w,sd h)
         set x rowstart
         while x!=w
             call rgb_get_set(mem,px_pixels,x,y,px_bps,px_nchan,px_rowstride,(get_rgb))
-            data a=4
-            add mem a
+            add mem 3
+			set mem# 0
+			inc mem
             inc x
         endwhile
         inc y
