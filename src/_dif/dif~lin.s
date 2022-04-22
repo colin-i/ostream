@@ -949,10 +949,15 @@ endfunction
 
 #1.0 function
 function get_new_buffer(sd mem,sd framesize)
-	importx "gst_buffer_new_wrapped_full" gst_buffer_new_wrapped_full
+	importx "gst_buffer_new_wrapped" gst_buffer_new_wrapped
 	#const GST_MEMORY_FLAG_READONLY=2
 	sd buffer
-	setcall buffer gst_buffer_new_wrapped_full(0,mem,framesize,0,framesize,(NULL),(NULL)) #The memory will be freed with g_free and will be marked writable.
+	#setcall buffer gst_buffer_new_wrapped_full(0,mem,framesize,0,framesize,(NULL),(NULL)) #The memory will be freed with g_free and will be marked writable.
+	setcall buffer gst_buffer_new_wrapped(mem,framesize)
+	sd timestamp;set timestamp buffer
+	#go to pts member from GstBuffer
+	#cannot be GST_CLOCK_TIME_NONE_lowhigh
+	add timestamp 40;set timestamp# 0;add timestamp (DWORD);set timestamp# 0
 	return buffer
 endfunction
 
