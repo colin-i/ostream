@@ -238,7 +238,7 @@ endfunction
 importx "_gst_iterator_next" gst_iterator_next
 #e
 function iterate_next_forward_data_free(sd iter,sd forward,sd data)
-    sd elem
+    sd elem=0 #elem must have been initialized to the type of the iterator or initialized to zeroes
     sd ptr_elem^elem
     sd ret
     setcall ret gst_iterator_next(iter,ptr_elem)
