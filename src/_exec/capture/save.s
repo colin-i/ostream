@@ -123,16 +123,20 @@ function save_get_main_format()
     return mediaform
 endfunction
 function save_get_sec_format()
-    str mediasecform=" %s ! queue ! %s ! mux."
-    return mediasecform
+const save_get_sec_format_a=!
+    chars mediasecform=" %s ! queue ! %s ! mux."
+const save_get_sec_format_sz=!-save_get_sec_format_a-2-2-1
+    return #mediasecform
 endfunction
 function save_get_video_format()
-    str video="theoraenc"
+    vstr video="theoraenc"
     return video
 endfunction
 function save_get_audio_format()
-    str audio="vorbisenc"
-    return audio
+const save_get_audio_format_a=!
+    chars audio="vorbisenc"
+const save_get_audio_format_sz=!-save_get_audio_format_a-1
+    return #audio
 endfunction
 function save_get_ogg_dest()
 #these formats are related to format_max
@@ -157,13 +161,14 @@ function save_stream_dest_ready(str dest)
     setcall audio save_get_audio_format()
 
     str srcname="src"
+const srcname_sz=3
 
     str nullstr=""
 
     data flagA=audio
     data flagVA=audiovideo
 
-    chars src_prop_data#20
+    chars src_prop_data#5+srcname_sz+1
 
     str format#1
     str sr#1
@@ -183,10 +188,11 @@ function save_stream_dest_ready(str dest)
     set m1 video
     if streams==flagVA
         str makename="%s."
-        chars save_secname_data#15
+const makename_sz=srcname_sz+1
+        chars save_secname_data#makename_sz+1
         str save_src_name^save_secname_data
         call sprintf(save_src_name,makename,srcname)
-        chars save_va_data#40
+        chars save_va_data#save_get_sec_format_sz+makename_sz+save_get_audio_format_sz+1
         str save_va^save_va_data
         ss secformat
         setcall secformat save_get_sec_format()
