@@ -83,12 +83,15 @@ endfunction
 importx "_sprintf" sprintf
 
 function search_get_image(ss uri,sd handle)
-    ss launcher="uridecodebin uri=\"%s\" ! ffmpegcolorspace ! gdkpixbufsink %s=%u"
+    ss launcher="uridecodebin uri=\"%s\" ! %s ! gdkpixbufsink %s=%u"
     ss src
+	ss inter
     ss nm
     sd *term=0
 
+	import "get_mxf_inputformat" get_inputformat
     set src uri
+	setcall inter get_inputformat()
     setcall nm getsubject()
 
     sd strs^launcher
@@ -105,7 +108,7 @@ function search_get_image(ss uri,sd handle)
     if err!=noerr
         return err
     endif
-    call sprintf(mem,launcher,uri,nm,handle)
+    call sprintf(mem,launcher,uri,inter,nm,handle)
 
     import "launch_pipe" launch_pipe
     sd pipeline

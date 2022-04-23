@@ -119,6 +119,7 @@ const ptr_chain_uri^chain_uri
 const ptr_chain_streams^chain_streams
 
 function save_get_main_format()
+#plugins base
     str mediaform="uridecodebin uri=\"%s\" %s ! queue ! %s ! oggmux name=mux ! filesink location=\"%s\"%s"
     return mediaform
 endfunction
@@ -129,11 +130,13 @@ const save_get_sec_format_sz=!-save_get_sec_format_a-2-2-1
     return #mediasecform
 endfunction
 function save_get_video_format()
+#plugins base
     vstr video="theoraenc"
     return video
 endfunction
 function save_get_audio_format()
 const save_get_audio_format_a=!
+#plugins base
     chars audio="vorbisenc"
 const save_get_audio_format_sz=!-save_get_audio_format_a-1
     return #audio
