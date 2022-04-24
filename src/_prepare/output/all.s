@@ -157,9 +157,7 @@ function stage_prepare_pixbuf(sd pixbuf,ss mem,sd w,sd h)
         set x rowstart
         while x!=w
             call rgb_get_set(mem,px_pixels,x,y,px_bps,px_nchan,px_rowstride,(get_rgb))
-            add mem 3
-			set mem# 0
-			inc mem
+            add mem 4 #there is already alpha set inside
             inc x
         endwhile
         inc y
