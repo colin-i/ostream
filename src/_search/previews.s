@@ -40,75 +40,74 @@ function search_photo_set(sd pixbuf,sd img)
     call pixbuf_scale_forward_data(pixbuf,scale_w,scale_h,fn,img)
 endfunction
 
-function search_photo_prepare(sd elem,sd msg)
-    import "object_get_dword_name" object_get_dword_name
-    sd img
-    setcall img object_get_dword_name(elem)
-
+function search_photo_prepare(sd *elem,sv combo)
+	sd msg
+	set msg combo#
+	add combo :
     data fn^search_photo_set
     import "msgelement_pixbuf_forward_data" msgelement_pixbuf_forward_data
-    call msgelement_pixbuf_forward_data(msg,fn,img)
+    call msgelement_pixbuf_forward_data(msg,fn,combo#)
 endfunction
 
 
-function search_photo_get(sd iter,sd msg)
+function search_photo_get(sd iter,sd combo)
     import "iterate_next_forward_data_free" iterate_next_forward_data_free
     data f^search_photo_prepare
-    call iterate_next_forward_data_free(iter,f,msg)
+    call iterate_next_forward_data_free(iter,f,combo)
 endfunction
 
 
-function search_photo_received(sd *bus,sd msg,sd pipe)
+function search_photo_received(sd *bus,sd msg,sv combo)
+	sd pipe
+	set pipe combo#
+
     import "set_pipe_null" set_pipe_null
     call set_pipe_null(pipe)
 
     import "iterate_sinks_data" iterate_sinks_data
     data f^search_photo_get
-
-    call iterate_sinks_data(pipe,f,msg)
+	set combo# msg
+    call iterate_sinks_data(pipe,f,combo)
 
     import "unset_pipe_and_watch" unset_pipe_and_watch
     call unset_pipe_and_watch(pipe)
 endfunction
 
 
+importx "_sprintf" sprintf
+importx "_free" free
 
-function search_connect_pixbuf(sd bus,sd pipe)
-    str px="message::element"
-    import "connect_signal_data" connect_signal_data
-    data fn^search_photo_received
-    call connect_signal_data(bus,px,fn,pipe)
+function search_connect_pixbuf(sd bus,sd combo)
+	#add_watch(and maybe not here, it is not spec a subelement) is not posting, maybe gtk_main isn't GMainLoop
+	importx "_g_signal_connect_data" g_signal_connect_data
+	call g_signal_connect_data(bus,"message::element",search_photo_received,combo,free,0)
 endfunction
 
-importx "_sprintf" sprintf
-
+#void
 function search_get_image(ss uri,sd handle)
-    ss launcher="uridecodebin uri=\"%s\" ! %s ! gdkpixbufsink %s=%u"
+    ss launcher="uridecodebin uri=\"%s\" ! %s ! gdkpixbufsink"
     ss src
 	ss inter
-    ss nm
     sd *term=0
 
 	import "get_mxf_inputformat" get_inputformat
     set src uri
 	setcall inter get_inputformat()
-    setcall nm getsubject()
 
     sd strs^launcher
-    sd nrs=1
 
     sd mem
     sd ptrmem^mem
 
-    import "allocsum_numbers_null" allocsum_numbers_null
+    import "allocsum_null" allocsum_null
     sd err
     data noerr=noerror
 
-    setcall err allocsum_numbers_null(strs,nrs,ptrmem)
+    setcall err allocsum_null(strs,ptrmem)
     if err!=noerr
         return err
     endif
-    call sprintf(mem,launcher,uri,inter,nm,handle)
+    call sprintf(mem,launcher,uri,inter)
 
     import "launch_pipe" launch_pipe
     sd pipeline
@@ -116,7 +115,6 @@ function search_get_image(ss uri,sd handle)
 
     setcall pipeline launch_pipe(mem)
 
-    importx "_free" free
     call free(mem)
     if pipeline==n
         return n
@@ -131,7 +129,16 @@ function search_get_image(ss uri,sd handle)
     import "bus_default_signals" bus_default_signals
     call bus_default_signals(pipeline)
 
-    import "bus_signals_bin" bus_signals_bin
-    data fn^search_connect_pixbuf
-    call bus_signals_bin(pipeline,fn)
+	import "memalloc" memalloc
+	sv data
+	setcall data memalloc((2*:))
+	if data!=(NULL)
+		set data# pipeline
+		sv img=:
+		add img data
+		set img# handle
+		import "bus_signals_data" bus_signals_data
+		data fn^search_connect_pixbuf
+		call bus_signals_data(pipeline,fn,data)
+	endif
 endfunction
