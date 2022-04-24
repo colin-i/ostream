@@ -40,37 +40,20 @@ function search_photo_set(sd pixbuf,sd img)
     call pixbuf_scale_forward_data(pixbuf,scale_w,scale_h,fn,img)
 endfunction
 
-function search_photo_prepare(sd *elem,sv combo)
-	sd msg
-	set msg combo#
-	add combo :
-    data fn^search_photo_set
-    import "msgelement_pixbuf_forward_data" msgelement_pixbuf_forward_data
-    call msgelement_pixbuf_forward_data(msg,fn,combo#)
-endfunction
-
-
-function search_photo_get(sd iter,sd combo)
-    import "iterate_next_forward_data_free" iterate_next_forward_data_free
-    data f^search_photo_prepare
-    call iterate_next_forward_data_free(iter,f,combo)
-endfunction
-
 
 function search_photo_received(sd *bus,sd msg,sv combo)
 	sd pipe
 	set pipe combo#
 
-    import "set_pipe_null" set_pipe_null
-    call set_pipe_null(pipe)
+	import "set_pipe_null" set_pipe_null
+	call set_pipe_null(pipe)
 
-    import "iterate_sinks_data" iterate_sinks_data
-    data f^search_photo_get
-	set combo# msg
-    call iterate_sinks_data(pipe,f,combo)
+	add combo :
+	import "msgelement_pixbuf_forward_data" msgelement_pixbuf_forward_data
+	call msgelement_pixbuf_forward_data(msg,search_photo_set,combo#)
 
-    import "unset_pipe_and_watch" unset_pipe_and_watch
-    call unset_pipe_and_watch(pipe)
+	import "unset_pipe_and_watch" unset_pipe_and_watch
+	call unset_pipe_and_watch(pipe)
 endfunction
 
 
