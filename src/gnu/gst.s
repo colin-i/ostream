@@ -236,7 +236,6 @@ function iterate_firstsink(sd pipe,sd forward)
 endfunction
 
 importx "_gst_iterator_next" gst_iterator_next
-#e
 function iterate_next_forward_data_free(sd iter,sd forward,sd data)
     sd elem
     sd ptr_elem^elem
@@ -250,11 +249,4 @@ function iterate_next_forward_data_free(sd iter,sd forward,sd data)
     endif
     call forward(elem,data)
     call gst_object_unref(elem)
-    data noe=noerror
-    return noe
 endfunction
-
-
-
-
-
