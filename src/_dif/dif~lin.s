@@ -994,8 +994,9 @@ function get_decodebin_str()
 	return "decodebin"
 endfunction
 
-importx "_g_value_unset" g_value_unset
-function iterate_next_forward_free(sd iter,sd forward,sd data)
+importx "gst_iterator_next" gst_iterator_next
+importx "g_value_unset" g_value_unset
+function iterate_next_forward_free(sd iter,sd forward)
 	#gvalue = one GType ul(QWORD) and two pointers
 	const gvalue_stacks=:&DWORD/DWORD*3+3
 	sd elem#gvalue_stacks
