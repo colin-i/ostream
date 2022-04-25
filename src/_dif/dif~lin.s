@@ -1057,7 +1057,7 @@ function stage_sound_buffer(sd gstappsink,sd *user_data)
 		set ret (GST_FLOW_ERROR)
 		call texter("Failed to map buffer")
 	endelse
-	importx "gst_sample_unref" gst_sample_unref
-	call gst_sample_unref(s)
+	importx "gst_mini_object_unref" gst_mini_object_unref
+	call gst_mini_object_unref(s)
 	return ret
 endfunction
