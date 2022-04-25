@@ -1005,3 +1005,22 @@ endfunction
 function get_mxf_inputformat()
 	return "ffmpegcolorspace"
 endfunction
+
+function get_decodebin_str()
+	return "decodebin2"
+endfunction
+
+importx "_gst_iterator_next" gst_iterator_next
+importx "_gst_object_unref" gst_object_unref
+function iterate_next_forward_free(sd iter,sd forward)
+	sd elem
+	sd ptr_elem^elem
+	sd ret
+	setcall ret gst_iterator_next(iter,ptr_elem)
+	if ret==(GST_ITERATOR_OK)
+		call forward(elem)
+		call gst_object_unref(elem)
+		return (void)
+	endif
+	call texter("Iterator error")
+endfunction

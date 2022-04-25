@@ -131,55 +131,50 @@ function stage_sound()
     call sound_pixbuf_redraw()
 endfunction
 
+importx "_free" free
 
 ##the pipe mechanism
 
 function stage_sound_init_appsink(sd filepath)
-    #the command for gst-launch
-    ss launchformat="filesrc location=\"%s\" ! decodebin2 ! audioconvert ! audioresample ! audio/x-raw-int,channels=%u,rate=%u,signed=(boolean)true,width=%u,depth=%u,endianness=%u ! appsink emit-signals=TRUE"
-    sd flocation
-    sd *=0
-    str sound_format^launchformat
+	#the command for gst-launch
+	ss launchformat="filesrc location=\"%s\" ! %s ! audioconvert ! audioresample ! audio/x-raw-int,channels=%u,rate=%u,signed=(boolean)true,width=%u,depth=%u,endianness=%u ! appsink emit-signals=TRUE"
+	sd flocation
+	sd bin
+	sd *=0
+	vstr sound_format^launchformat
 
-    #location
-    #escape path
-    import "string_alloc_escaped" string_alloc_escaped
-    ss escapedpath
-    setcall escapedpath string_alloc_escaped(filepath)
-    if escapedpath==0
-        return 0
-    endif
-    #set
-    set flocation escapedpath
+	#location
+	#escape path
+	import "string_alloc_escaped" string_alloc_escaped
+	setcall flocation string_alloc_escaped(filepath)
+	if flocation!=(NULL)
+		import "get_decodebin_str" get_decodebin_str
+		setcall bin get_decodebin_str()
 
-    import "allocsum_numbers_null" allocsum_numbers_null
-    sd command
-    sd p_command^command
+		import "allocsum_numbers_null" allocsum_numbers_null
+		sd command
+		sd p_command^command
 
-    sd err
-    setcall err allocsum_numbers_null(sound_format,5,p_command)
-    if err!=(noerror)
-        return err
-    endif
-
-    #concatenate the command
-    importx "_sprintf" sprintf
-    sd channels
-    setcall channels stage_sound_channels((value_get))
-    sd rate
-    setcall rate stage_sound_rate((value_get))
-    sd bps
-    setcall bps stage_sound_bps((value_get))
-    call sprintf(command,launchformat,flocation,channels,rate,bps,bps,(sound_endian_def))
-    sd com
-    setcall com stage_sound_comm()
-    set com# command
-    call stage_sound_command()
-
-    #clean
-    importx "_free" free
-    call free(escapedpath)
-    call free(command)
+		sd err
+		setcall err allocsum_numbers_null(sound_format,5,p_command)
+		if err==(noerror)
+			#concatenate the command
+			importx "_sprintf" sprintf
+			sd channels
+			setcall channels stage_sound_channels((value_get))
+			sd rate
+			setcall rate stage_sound_rate((value_get))
+			sd bps
+			setcall bps stage_sound_bps((value_get))
+			call sprintf(command,launchformat,flocation,bin,channels,rate,bps,bps,(sound_endian_def))
+			sd com
+			setcall com stage_sound_comm()
+			set com# command
+			call stage_sound_command()
+			call free(command)
+		endif
+		call free(flocation)
+	endif
 endfunction
 function stage_sound_command()
     #sync mem
@@ -213,24 +208,23 @@ function stage_sound_command_init(sd *vbox,sd dialog)
     import "launch_pipe_start" launch_pipe_start
     sd pipeline
     setcall pipeline launch_pipe_start(com#)
-    if pipeline==0
-        return 0
+    if pipeline!=(NULL)
+	    #put the pipeline to a static place
+	    call stage_sound_pipe((value_set),pipeline)
+
+	    #add error signal to pipe
+	    #sd pipe
+	    #setcall pipe stage_sound_pipe((value_get))
+	    import "err_signal_modal" err_signal_modal
+	    data f^stage_sound_closedialog
+	    call err_signal_modal(pipeline,f)
+
+	    import "iterate_firstsink" iterate_firstsink
+	    #new-buffer signal to appsink, and eos
+	    data f_newbuffer^stage_sound_connect_appsink
+
+	    call iterate_firstsink(pipeline,f_newbuffer)
     endif
-
-    #put the pipeline to a static place
-    call stage_sound_pipe((value_set),pipeline)
-
-    #add error signal to pipe
-    #sd pipe
-    #setcall pipe stage_sound_pipe((value_get))
-    import "err_signal_modal" err_signal_modal
-    data f^stage_sound_closedialog
-    call err_signal_modal(pipeline,f)
-
-    import "iterate_firstsink" iterate_firstsink
-    #new-buffer signal to appsink, and eos
-    data f_newbuffer^stage_sound_connect_appsink
-    call iterate_firstsink(pipeline,f_newbuffer)
 endfunction
 
 function stage_sound_connect_appsink(sd appsink)

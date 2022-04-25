@@ -231,23 +231,8 @@ function iterate_firstsink(sd pipe,sd forward)
     sd iter
     setcall iter gst_bin_iterate_sinks(pipe)
 
+	import "iterate_next_forward_free" iterate_next_forward_free
     call iterate_next_forward_free(iter,forward)
 
     call gst_iterator_free(iter)
-endfunction
-
-importx "_gst_iterator_next" gst_iterator_next
-function iterate_next_forward_free(sd iter,sd forward)
-    sd elem
-    sd ptr_elem^elem
-    sd ret
-    setcall ret gst_iterator_next(iter,ptr_elem)
-    data er=GST_ITERATOR_ERROR
-    if ret==er
-        str e="Iterator error"
-        call texter(e)
-        return e
-    endif
-    call forward(elem)
-    call gst_object_unref(elem)
 endfunction

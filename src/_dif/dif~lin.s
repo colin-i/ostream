@@ -990,23 +990,25 @@ function get_mxf_inputformat()
 	return "videoconvert"
 endfunction
 
-#importx "_g_value_unset" g_value_unset
-#function iterate_next_forward_free(sd iter,sd forward,sd data)
-#	#gvalue = one GType ul(QWORD) and two pointers
-#	const gvalue_stacks=:&DWORD/DWORD*3+3
-#	sd elem#gvalue_stacks
-#	sd ptr_elem^elem
-#	const gvalue_sz=gvalue_stacks*:
-#	call setmemzero(ptr_elem,(gvalue_sz))
-#	#elem must have been initialized to the type of the iterator or initialized to zeroes
-#	sd ret
-#	setcall ret gst_iterator_next(iter,ptr_elem)
-#	data er=GST_ITERATOR_ERROR
-#	if ret==er
-#		vstr e="Iterator error"
-#		call texter(e)
-#		return e
-#	endif
-#	call forward(ptr_elem)
-#	call g_value_unset(ptr_elem)
-#endfunction
+function get_decodebin_str()
+	return "decodebin"
+endfunction
+
+importx "_g_value_unset" g_value_unset
+function iterate_next_forward_free(sd iter,sd forward,sd data)
+	#gvalue = one GType ul(QWORD) and two pointers
+	const gvalue_stacks=:&DWORD/DWORD*3+3
+	sd elem#gvalue_stacks
+	sd ptr_elem^elem
+	const gvalue_sz=gvalue_stacks*:
+	call setmemzero(ptr_elem,(gvalue_sz))
+	#elem must have been initialized to the type of the iterator or initialized to zeroes
+	sd ret
+	setcall ret gst_iterator_next(iter,ptr_elem)
+	if ret==(GST_ITERATOR_OK)
+		call forward(ptr_elem)
+		call g_value_unset(ptr_elem)
+		return (void)
+	endif
+	call texter("Iterator error")
+endfunction
