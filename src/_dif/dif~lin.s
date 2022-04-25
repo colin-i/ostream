@@ -1013,3 +1013,14 @@ function iterate_next_forward_free(sd iter,sd forward)
 	endif
 	call texter("Iterator error")
 endfunction
+
+function stage_sound_caps()
+	chars out#65-2-2+(dword_max*2)+1
+	vstr format="audio/x-raw,format=S16LE,channels=%u,rate=%u,signed=(boolean)true"
+	sd channels
+	setcall channels stage_sound_channels((value_get))
+	sd rate
+	setcall rate stage_sound_rate((value_get))
+	call sprintf(#out,format,channels,rate)
+	return #out
+endfunction

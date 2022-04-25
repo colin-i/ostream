@@ -137,9 +137,10 @@ importx "_free" free
 
 function stage_sound_init_appsink(sd filepath)
 	#the command for gst-launch
-	ss launchformat="filesrc location=\"%s\" ! %s ! audioconvert ! audioresample ! audio/x-raw-int,channels=%u,rate=%u,signed=(boolean)true,width=%u,depth=%u,endianness=%u ! appsink emit-signals=TRUE"
+	ss launchformat="filesrc location=\"%s\" ! %s ! audioconvert ! audioresample ! %s ! appsink emit-signals=TRUE"
 	sd flocation
 	sd bin
+	sd caps
 	sd *=0
 	vstr sound_format^launchformat
 
@@ -151,22 +152,19 @@ function stage_sound_init_appsink(sd filepath)
 		import "get_decodebin_str" get_decodebin_str
 		setcall bin get_decodebin_str()
 
-		import "allocsum_numbers_null" allocsum_numbers_null
+		import "stage_sound_caps" stage_sound_caps
+		setcall caps stage_sound_caps()
+
+		import "allocsum_null" allocsum_null
 		sd command
 		sd p_command^command
 
 		sd err
-		setcall err allocsum_numbers_null(sound_format,5,p_command)
+		setcall err allocsum_null(sound_format,p_command)
 		if err==(noerror)
 			#concatenate the command
 			importx "_sprintf" sprintf
-			sd channels
-			setcall channels stage_sound_channels((value_get))
-			sd rate
-			setcall rate stage_sound_rate((value_get))
-			sd bps
-			setcall bps stage_sound_bps((value_get))
-			call sprintf(command,launchformat,flocation,bin,channels,rate,bps,bps,(sound_endian_def))
+			call sprintf(command,launchformat,flocation,bin,caps)
 			sd com
 			setcall com stage_sound_comm()
 			set com# command

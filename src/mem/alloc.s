@@ -56,7 +56,8 @@ endfunction
 import "slen" slen
 #e
 #s1+s1+\+...sn+1
-function allocsum_numbers_null(sd strings,sd numbers_total,sd ptrmem)
+function allocsum_null(sd strings,sd ptrmem)
+#function allocsum_numbers_null(sd strings,sd numbers_total,sd ptrmem)
     data sizetoalloc#1
     data z=0
     data dword=4
@@ -67,13 +68,13 @@ function allocsum_numbers_null(sd strings,sd numbers_total,sd ptrmem)
         add strings dword
     endwhile
 
-    if numbers_total!=z
-        data nr=sign_int_null
-        while numbers_total!=z
-            add sizetoalloc nr
-            dec numbers_total
-        endwhile
-    endif
+#    if numbers_total!=z
+#        data nr=sign_int_null
+#        while numbers_total!=z
+#            add sizetoalloc nr
+#            dec numbers_total
+#        endwhile
+#    endif
 
     inc sizetoalloc
 
@@ -83,12 +84,12 @@ function allocsum_numbers_null(sd strings,sd numbers_total,sd ptrmem)
 endfunction
 
 #e
-function allocsum_null(sd strings,sd ptrmem)
-    data null=0
-    sd err
-    setcall err allocsum_numbers_null(strings,null,ptrmem)
-    return err
-endfunction
+#function allocsum_null(sd strings,sd ptrmem)
+#    data null=0
+#    sd err
+#    setcall err allocsum_numbers_null(strings,null,ptrmem)
+#    return err
+#endfunction
 
 #################################################################
 
