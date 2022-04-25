@@ -197,41 +197,37 @@ function stage_sound_command()
 endfunction
 
 function stage_sound_command_init(sd *vbox,sd dialog)
-    #keep the dialog for eos at appsink or error at pipe
-    call stage_sound_dialog((value_set),dialog)
+	#keep the dialog for eos at appsink or error at pipe
+	call stage_sound_dialog((value_set),dialog)
 
-    #make the pipe
-    sd com
-    setcall com stage_sound_comm()
-    import "launch_pipe_start" launch_pipe_start
-    sd pipeline
-    setcall pipeline launch_pipe_start(com#)
-    if pipeline!=(NULL)
-	    #put the pipeline to a static place
-	    call stage_sound_pipe((value_set),pipeline)
+	#make the pipe
+	sd com
+	setcall com stage_sound_comm()
+	import "launch_pipe_start" launch_pipe_start
+	sd pipeline
+	setcall pipeline launch_pipe_start(com#)
+	if pipeline!=(NULL)
+		#put the pipeline to a static place
+		call stage_sound_pipe((value_set),pipeline)
 
-	    #add error signal to pipe
-	    #sd pipe
-	    #setcall pipe stage_sound_pipe((value_get))
-	    import "err_signal_modal" err_signal_modal
-	    data f^stage_sound_closedialog
-	    call err_signal_modal(pipeline,f)
+		#add error signal to pipe
+		#sd pipe
+		#setcall pipe stage_sound_pipe((value_get))
+		import "err_signal_modal" err_signal_modal
+		data f^stage_sound_closedialog
+		call err_signal_modal(pipeline,f)
 
-	    import "iterate_firstsink" iterate_firstsink
-	    #new-buffer signal to appsink, and eos
-	    data f_newbuffer^stage_sound_connect_appsink
-
-	    call iterate_firstsink(pipeline,f_newbuffer)
-    endif
+		#get appskink and add signals
+		import "iterate_firstsink" iterate_firstsink
+		call iterate_firstsink(pipeline,stage_sound_connect_appsink)
+	endif
 endfunction
 
 function stage_sound_connect_appsink(sd appsink)
-    #new buffer signal
-    import "connect_signal" connect_signal
-    ss buffer="new-buffer"
-    data f_nb^stage_sound_expand
-    call connect_signal(appsink,buffer,f_nb)
+	import "stage_sound_sample" stage_sound_sample
+	call stage_sound_sample(appsink)
 
+	import "connect_signal" connect_signal
     #add eos at appsink(sometimes eos comes only here)
     ss eos="eos"
     data f_eos^stage_sound_closedialog
@@ -710,37 +706,17 @@ function stage_sound_alloc(sd action,sd newblock,sd newblock_size)
     endelse
 endfunction
 
-function stage_sound_expand(sd gstappsink,sd *user_data)
-    importx "_g_signal_emit_by_name" g_signal_emit_by_name
-    ss method="pull-buffer"
-    sd buffer
-    sd p_buffer^buffer
-    call g_signal_emit_by_name(gstappsink,method,p_buffer)
-
-    import "structure_get_int" structure_get_int
-    sd data
-    sd size
-
-    #GstBuffer
-        #GstMiniObject
-            #GTypeInstance instance
-            #gint refcount
-            #guint flags
-        #guint8              *data
-        #guint               size
-
-    setcall data structure_get_int(buffer,0x10)
-    setcall size structure_get_int(buffer,0x14)
-
-    #append the new buffer at the sound memory
-    call stage_sound_alloc((stage_sound_alloc_expand),data,size)
-    #print time
-    call stage_sound_alloc((stage_sound_alloc_printtexter_time))
-
-    importx "_gst_mini_object_unref" gst_mini_object_unref
-    call gst_mini_object_unref(buffer)
+function stage_sound_expand(sd struct,sd a,sd b)
+	import "structure_get_int" structure_get_int
+	sd data
+	sd size
+	setcall data structure_get_int(struct,a)
+	setcall size structure_get_int(struct,b)
+	#append the new buffer at the sound memory
+	call stage_sound_alloc((stage_sound_alloc_expand),data,size)
+	#print time
+	call stage_sound_alloc((stage_sound_alloc_printtexter_time))
 endfunction
-
 
 function stage_sound_sizedone(sd action,sd value)
     data done#1

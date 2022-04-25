@@ -1037,3 +1037,30 @@ function stage_sound_caps()
 	call sprintf(#out,format,channels,rate,bps,bps,(sound_endian_def))
 	return #out
 endfunction
+
+function stage_sound_sample(sd appsink)
+	#new buffer signal
+	import "connect_signal" connect_signal
+	call connect_signal(appsink,"new-buffer",stage_sound_buffer)
+endfunction
+function stage_sound_buffer(sd gstappsink,sd *user_data)
+    importx "_g_signal_emit_by_name" g_signal_emit_by_name
+    ss method="pull-buffer"
+    sd buffer
+    sd p_buffer^buffer
+    call g_signal_emit_by_name(gstappsink,method,p_buffer)
+
+    #GstBuffer
+        #GstMiniObject
+            #GTypeInstance instance
+            #gint refcount
+            #guint flags
+        #guint8              *data
+        #guint               size
+
+	import "stage_sound_expand" stage_sound_expand
+	call stage_sound_expand(buffer,0x10,0x14)
+
+    importx "_gst_mini_object_unref" gst_mini_object_unref
+    call gst_mini_object_unref(buffer)
+endfunction

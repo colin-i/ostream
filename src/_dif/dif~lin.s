@@ -1026,3 +1026,38 @@ function stage_sound_caps()
 	call sprintf(#out,format,channels,rate)
 	return #out
 endfunction
+
+function stage_sound_sample(sd appsink)
+	#new buffer signal
+	import "connect_signal" connect_signal
+	call connect_signal(appsink,"new-sample",stage_sound_sample)
+endfunction
+#flow
+function stage_sound_buffer(sd gstappsink,sd *user_data)
+	sd ret
+	importx "gst_app_sink_pull_sample" gst_app_sink_pull_sample
+	sd s
+	setcall s gst_app_sink_pull_sample(gstappsink)
+	importx "gst_sample_get_buffer" gst_sample_get_buffer
+	sd b
+	setcall b gst_sample_get_buffer(s)
+	importx "gst_buffer_map" gst_buffer_map
+	sd map#13 #with sizeof
+	const GST_MAP_READ=1
+	sd bool
+	setcall bool gst_buffer_map(b,#map,(GST_MAP_READ)) #this is bool, but
+	if bool==(TRUE)
+		import "stage_sound_expand" stage_sound_expand
+		call stage_sound_expand(#map,(2*:),(3*:))
+		importx "gst_buffer_unmap" gst_buffer_unmap
+		call gst_buffer_unmap(b,#map)
+		set ret (GST_FLOW_OK)
+	else
+		const GST_FLOW_ERROR=-5
+		set ret (GST_FLOW_ERROR)
+		call texter("Failed to map buffer")
+	endelse
+	importx "gst_sample_unref" gst_sample_unref
+	call gst_sample_unref(s)
+	return ret
+endfunction
