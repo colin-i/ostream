@@ -137,7 +137,7 @@ importx "_free" free
 
 function stage_sound_init_appsink(sd filepath)
 	#the command for gst-launch
-	ss launchformat="filesrc location=\"%s\" ! %s ! audioconvert ! audioresample ! %s ! appsink" # emit-signals=TRUE
+	ss launchformat="filesrc location=\"%s\" ! %s ! audioconvert ! audioresample ! %s ! appsink emit-signals=true sync=false" #sync=false, trying to not block gst1, it's stuck
 	sd flocation
 	sd bin
 	sd caps
@@ -224,8 +224,8 @@ function stage_sound_command_init(sd *vbox,sd dialog)
 endfunction
 
 function stage_sound_connect_appsink(sd appsink)
-	importx "_gst_app_sink_set_emit_signals" gst_app_sink_set_emit_signals
-	call gst_app_sink_set_emit_signals(appsink,(TRUE))
+	#importx "_gst_app_sink_set_emit_signals" gst_app_sink_set_emit_signals
+	#call gst_app_sink_set_emit_signals(appsink,(TRUE))
 
 	import "stage_sound_sample" stage_sound_sample
 	call stage_sound_sample(appsink)
