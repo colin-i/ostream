@@ -995,6 +995,7 @@ function get_decodebin_str()
 endfunction
 
 importx "gst_iterator_next" gst_iterator_next
+importx "g_value_get_object" g_value_get_object
 importx "g_value_unset" g_value_unset
 function iterate_next_forward_free(sd iter,sd forward)
 	#gvalue = one GType ul(QWORD) and two pointers
@@ -1002,12 +1003,13 @@ function iterate_next_forward_free(sd iter,sd forward)
 	sd elem#gvalue_stacks
 	sd ptr_elem^elem
 	const gvalue_sz=gvalue_stacks*:
-	call setmemzero(ptr_elem,(gvalue_sz))
-	#elem must have been initialized to the type of the iterator or initialized to zeroes
+	call setmemzero(ptr_elem,(gvalue_sz)) #this is G_VALUE_INIT,elem must have been initialized to the type of the iterator or initialized to zeroes
 	sd ret
 	setcall ret gst_iterator_next(iter,ptr_elem)
 	if ret==(GST_ITERATOR_OK)
-		call forward(ptr_elem)
+		sd obj
+		setcall obj g_value_get_object(ptr_elem)
+		call forward(obj)
 		call g_value_unset(ptr_elem)
 		return (void)
 	endif
