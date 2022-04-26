@@ -114,8 +114,6 @@ test:
 	echo "Nothing"
 
 install-proc:
-	install -D ${projname} \
-		$(DESTDIR)$(prefix)/bin/${projname}
 	cd ../build; \
 	find ./img -type f -exec install -Dm 664 {} ${sharefolder}/{} \;
 	install -d ${sharefolder}/html
@@ -123,6 +121,8 @@ install-proc:
 	install -Dm 664 html/use.html ${sharefolder}/html/
 	cd ..; \
 	install -m 664 ./version.txt ${sharefolder}/
+	install -D ${projname} \
+		$(DESTDIR)$(prefix)/bin/${projname}
 
 install: all install-proc
 
