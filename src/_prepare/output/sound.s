@@ -137,7 +137,7 @@ importx "_free" free
 
 function stage_sound_init_appsink(sd filepath)
 	#the command for gst-launch
-	ss launchformat="filesrc location=\"%s\" ! %s ! audioconvert ! audioresample ! %s ! appsink emit-signals=true sync=false" #sync=false, trying to not block gst1, it's stuck
+	ss launchformat="filesrc location=\"%s\" ! %s ! audioconvert ! audioresample ! %s ! appsink emit-signals=true sync=false" #it's playing normal clock with sync
 	sd flocation
 	sd bin
 	sd caps
