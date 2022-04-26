@@ -915,25 +915,25 @@ endfunction
 
 #pixbuf/0
 function pixbuf_from_pixbuf_reverse(sd pixbuf_reverse)
-    #the new pixbuf
-    sd pixbuf
-    setcall pixbuf pixbuf_copy(pixbuf_reverse)
-    if pixbuf==0
-        return 0
-    endif
+	#the new pixbuf
+	sd pixbuf
+	setcall pixbuf pixbuf_copy(pixbuf_reverse)
+	if pixbuf==0
+		return 0
+	endif
 
-    #get width height
-    sd w
-    sd h
-    sd p_wh^w
-    call pixbuf_get_wh(pixbuf,p_wh)
-    #reverse bytes
-    sd bytes
-    setcall bytes gdk_pixbuf_get_pixels(pixbuf)
-    import "bytes_swap_reverse" bytes_swap_reverse
-    call bytes_swap_reverse(bytes,w,h)
+	#get width height
+	sd w
+	sd h
+	sd p_wh^w
+	call pixbuf_get_wh(pixbuf,p_wh)
+	#reverse bytes
+	sd bytes
+	setcall bytes gdk_pixbuf_get_pixels(pixbuf)
+	import "rgb_color_swap" rgb_color_swap
+	call rgb_color_swap(bytes,w,h)
 
-    return pixbuf
+	return pixbuf
 endfunction
 
 ##############progressbar
