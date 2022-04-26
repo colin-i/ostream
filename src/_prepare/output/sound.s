@@ -136,7 +136,7 @@ endfunction
 
 function stage_sound_init_appsink(sd filepath)
     #the command for gst-launch
-    ss launchformat="filesrc location=\"%s\" ! decodebin2 ! audioconvert ! audioresample ! audio/x-raw-int,channels=%u,rate=%u,signed=(boolean)true,width=%u,depth=%u,endianness=%u ! appsink emit-signals=TRUE"
+    ss launchformat="filesrc location=\"%s\" ! decodebin2 ! audioconvert ! audioresample ! audio/x-raw-int,channels=%u,rate=%u,signed=(boolean)true,width=%u,depth=%u,endianness=%u ! appsink emit-signals=TRUE sync=false"
     sd flocation
     sd *=0
     str sound_format^launchformat
