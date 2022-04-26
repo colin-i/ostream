@@ -1634,11 +1634,11 @@ function mkv_readentry(sd frames,sd newtime,sd p_resultedframes)
         return 0
     endif
     if encoder==(format_mkv_rgb24)
-        #bitmap is upsidedown from file
-        import "bytes_swap_reverse" bytes_swap_reverse
+        #bitmap is right to left from file
+        import "rgb_color_swap" rgb_color_swap
         sd newbytes
         setcall newbytes gdk_pixbuf_get_pixels(px)
-        call bytes_swap_reverse(newbytes,w,h)
+        call rgb_color_swap(newbytes,w,h)
     endif
     call g_object_unref(pixbuf)
 
