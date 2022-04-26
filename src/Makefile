@@ -47,7 +47,8 @@ wprojname=ovideo.exe
 lshare=_dif/share.txt
 logs :=
 obs :=
-sharefolder=$(DESTDIR)$(prefix)/share/ovideo
+sharefolderpackage=$(prefix)/share/ovideo
+sharefolder=$(DESTDIR)${sharefolderpackage}
 
 all: compile lnk
 
@@ -58,7 +59,7 @@ ounused:
 
 share:
 	if [ "${platform}" = "lin" ]; then \
-		echo return \"${sharefolder}\" > ${lshare}; \
+		echo return \"${sharefolderpackage}\" > ${lshare}; \
 	fi
 
 #at jammy
