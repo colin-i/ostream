@@ -1030,7 +1030,7 @@ endfunction
 function stage_sound_sample(sd appsink)
 	#new buffer signal
 	import "connect_signal" connect_signal
-	call connect_signal(appsink,"new-sample",stage_sound_sample)
+	call connect_signal(appsink,"new-sample",stage_sound_buffer)
 endfunction
 #flow
 function stage_sound_buffer(sd gstappsink,sd *user_data)
