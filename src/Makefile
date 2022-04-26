@@ -73,6 +73,7 @@ share:
 #at xenial
 #dev gtk libgstreamer-plugins-base0.10-dev  soup jpeg asound
 #gtk gstreamer0.10-plugins-good
+#for mxf, gstreamer0.10-plugins-bad was deleted at ubuntu
 #cc because -pthread not for ld
 #nostdlib because is complaining about main
 #		$(CC) -nostdlib ${syms} ${obs} -o ${projname} `pkg-config --libs gtk+-2.0 gstreamer-pbutils-0.10 gstreamer-interfaces-0.10 gstreamer-app-0.10` -lsoup-2.4 -ljpeg -lasound -lm -lpthread -lc; \
