@@ -1025,6 +1025,8 @@ function iterate_next_forward_free(sd iter,sd forward)
 	call texter("Iterator error")
 endfunction
 
+const sound_endian_def=1234
+
 function stage_sound_caps()
 	chars out#88-5-5+(dword_max*5)+1
 	vstr format="audio/x-raw-int,channels=%u,rate=%u,signed=(boolean)true,width=%u,depth=%u,endianness=%u"
