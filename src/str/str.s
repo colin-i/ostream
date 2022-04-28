@@ -20,7 +20,7 @@ import "cpymem" cpymem
 function memtostrFw_s(str mem,data size,str dest,data destsize,data forward)
     if size>destsize
         import "texter" texter
-        str memtostrconflict="Mem2Str: destination is too small."
+        vstr memtostrconflict="Mem2Str: destination is too small."
         call texter(memtostrconflict)
     endif
 

@@ -148,9 +148,6 @@ function sys_folder_enterleave(sd forward)
     call folder_enterleave(system,forward)
 endfunction
 
-importx "_free" free
-
-import "file_get_content" file_get_content
 import "init_user" init_user
 import "texter" texter
 
@@ -165,37 +162,14 @@ function callbackprocessfolder()
 	call img_folder_enterleave(imgforward)
 
 	sd err
-
-	str localversion="version.txt"
-	vstr mem#1
-	data size#1
-	sd ptrmem^mem
-	sd ptrsize^size
-	setcall err file_get_content(localversion,ptrsize,ptrmem)
+	setcall err init_user()
 	if err==(noerror)
-		call update_mem_version((NULL),mem,size)
-		setcall err init_user()
-		if err==(noerror)
-			#move to settings
-			data sysforward^setsystems
-			call sys_folder_enterleave(sysforward)
-		else
-			call texter(err)
-		endelse
-		call free(mem)
-	endif
-endfunction
-function update_mem_version(sd p,sd m,sd s)
-	vstr mem#1
-	data size#1
-	if p==(NULL)
-		set mem m
-		set size s
+		#move to settings
+		data sysforward^setsystems
+		call sys_folder_enterleave(sysforward)
 		return (void)
 	endif
-	set p# mem
-	incst p
-	set p# size
+	call texter(err)
 endfunction
 
 ######main
