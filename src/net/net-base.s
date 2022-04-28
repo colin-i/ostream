@@ -11,7 +11,7 @@ importx "_soup_message_new" soup_message_new
 importx "_soup_session_send_message" soup_session_send_message
 
 
-function getSessionMessageBody(data sessionMsg,data ptrmsgmem,data ptrmsgsize)
+function getSessionMessageBody(sv sessionMsg,sv ptrmsgmem,sv ptrmsgsize,sd async)
 #    GObject             parent
 #All the fields in the GObject structure are private to the GObject implementation and should never be accessed directly.
 #    const char         *method;
@@ -24,22 +24,51 @@ function getSessionMessageBody(data sessionMsg,data ptrmsgmem,data ptrmsgsize)
 
 #    SoupMessageBody    *response_body;
 #    SoupMessageHeaders *response_headers;
-    data offset=3+5*4
-    add sessionMsg offset
 
-    data response_body#1
-    set response_body sessionMsg#
+	add sessionMsg (3+:)
+	if async==(TRUE)
+		sd statuscod
+		set statuscod sessionMsg#d^
+		if statuscod!=(HTTP_STATUS_OK)
+			call uri_err(statuscod)
+			return (error)
+		endif
+	endif
+	add sessionMsg (3*:+DWORD)
 
+	sd response_body#1
+	set response_body sessionMsg#
 
 #        const char *data;
 #        goffset     length;  (gint64)
-    set ptrmsgmem# response_body#
-    data valuesize=4
-    data greatest=8
-    add response_body valuesize
-    import "system_variables_alignment_pad" system_variables_alignment_pad
-    addcall response_body system_variables_alignment_pad(valuesize,greatest)
-    set ptrmsgsize# response_body#
+	set ptrmsgmem# response_body#
+	data valuesize=4
+	data greatest=8
+	add response_body valuesize
+	import "system_variables_alignment_pad" system_variables_alignment_pad
+	addcall response_body system_variables_alignment_pad(valuesize,greatest)
+	set ptrmsgsize# response_body#
+	return (noerror)
+endfunction
+
+importx "_g_object_unref" g_object_unref
+importx "_soup_session_queue_message" soup_session_queue_message
+
+function uri_queue_content(ss uri,sd callback)
+	sd session#1
+	setcall session soup_session_sync_new()
+	sd msg
+	setcall msg soup_message_new("GET",uri)
+	call soup_session_queue_message(session,msg,callback) #,(NULL)
+	call g_object_unref(msg)
+	call g_object_unref(session)
+endfunction
+
+function uri_err(sd status)
+	vstr urierr="Error status code: "
+	import "strvaluedisp" strvaluedisp
+	data su=stringUinteger
+	call strvaluedisp(urierr,status,su)
 endfunction
 
 #err
@@ -54,17 +83,13 @@ function uri_get_content(str uri,data ptrmsg,data ptrmsgmem,data ptrmsgsize)
     data status#1
     setcall status soup_session_send_message(session,ptrmsg#)
     if status!=ok
-        str urierr="Error status code: "
-        import "strvaluedisp" strvaluedisp
-        data su=stringUinteger
-        call strvaluedisp(urierr,status,su)
-        return urierr
+	call uri_err(status)
+	return (error)
     endif
 
-    importx "_g_object_unref" g_object_unref
     call g_object_unref(session)
 
-    call getSessionMessageBody(ptrmsg#,ptrmsgmem,ptrmsgsize)
+    call getSessionMessageBody(ptrmsg#,ptrmsgmem,ptrmsgsize,(FALSE))
 
     data noerr=noerror
     return noerr

@@ -6,68 +6,68 @@ format elfobj
 
 include "../_include/include.h"
 
-importx "_g_object_unref" g_object_unref
-
-import "uri_get_content" uri_get_content
+import "uri_queue_content" uri_queue_content
 
 
 #v
-function update_got_new(str text)
-    str toupdate="Update available at site (to disable this notification uncheck 'Check for updates' from stage preferences). New version: "
+function update_got_new(ss text)
+    vstr toupdate="Update available at site (to disable this notification uncheck 'Check for updates' from stage preferences). New version: "
     data strtype=stringstring
     import "strvaluedisp" strvaluedisp
     call strvaluedisp(toupdate,text,strtype)
 endfunction
 
-#void/err
-function update_got_localversion(data mem,data size)
-    data msg#1
-    data ptrmsg^msg
-    str uri="https://gist.githubusercontent.com/colin-i/1c06e597689e204793a7e89fbcf2a481/raw/aa1c2e22f404aaa797ac24af20507a45e26178c6/gistfile1.txt"
-    str msgmem#1
-    data msgsize#1
-    data ptrmsgmem^msgmem
-    data ptrmsgsize^msgsize
-    data err#1
-    data noerr=noerror
-    setcall err uri_get_content(uri,ptrmsg,ptrmsgmem,ptrmsgsize)
-    if err!=noerr
-        return err
-    endif
+import "move_to_share_v" move_to_share_v
 
+#void
+function update_async_callback(sd *session,sd msg) #,sd *data
+	sd netmem
+	sd netsize
+	sd err
+	import "getSessionMessageBody" getSessionMessageBody
+	setcall err getSessionMessageBody(msg,#netmem,#netsize,(TRUE))
+	if err==(noerror)
+		call move_to_share_v()
+		sd mem
+		sd size
+		import "file_get_content" file_get_content
+		setcall err file_get_content("version.txt",#size,#mem)
+		if err==(noerror)
+			call update_got_netversion(mem,size,netmem,netsize)
+			importx "_free" free
+			call free(mem)
+		endif
+	endif
+endfunction
+
+#void
+function update_got_netversion(sd mem,sd size,sd netmem,sd netsize)
     #forward to view if it is a new version
     data compare#1
     import "cmpmem_s" cmpmem_s
-    setcall compare cmpmem_s(msgmem,msgsize,mem,size)
+    setcall compare cmpmem_s(netmem,netsize,mem,size)
 
     data different=differentCompare
     if compare==different
         import "memtostrFw_s" memtostrFw_s
-        const safeversion=20
+        const safeversion=1+1+3+1 #hard coded, hard to remember
         chars newvers#safeversion
-        str newv^newvers
+        vstr newv^newvers
         data sfsize=safeversion
-        data fw^update_got_new
-        call memtostrFw_s(msgmem,msgsize,newv,sfsize,fw)
+        vdata fw^update_got_new
+        call memtostrFw_s(netmem,netsize,newv,sfsize,fw)
     endif
-    #
-
-    call g_object_unref(msg)
 endfunction
 
-import "update_mem_version" update_mem_version
-
 function update()
-    sd up
-    setcall up update_get()
-    if up==(FALSE)
-        return (void)
-    endif
+	sd up
+	setcall up update_get()
+	if up==(FALSE)
+		return (void)
+	endif
 
-    vstr mem#1
-    data size#1
-    call update_mem_version(#mem)
-    call update_got_localversion(mem,size)
+	ss s="https://gist.githubusercontent.com/colin-i/1c06e597689e204793a7e89fbcf2a481/raw/aa1c2e22f404aaa797ac24af20507a45e26178c6/gistfile1.txt"
+	call uri_queue_content(s,update_async_callback)
 endfunction
 
 function update_path()
