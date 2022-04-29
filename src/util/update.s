@@ -6,7 +6,6 @@ format elfobj
 
 include "../_include/include.h"
 
-import "uri_queue_content" uri_queue_content
 
 
 #v
@@ -18,19 +17,22 @@ function update_got_new(ss text)
 endfunction
 
 import "move_to_share_v" move_to_share_v
+importx "_g_object_unref" g_object_unref
+importx "_g_idle_add" g_idle_add
 
 #void
-function update_async_callback(sd *session,sd msg) #,sd *data
+function update_async_callback(sd ses,sd msg) #,sd data
 	sd netmem
 	sd netsize
-	sd err
 	import "getSessionMessageBody" getSessionMessageBody
-	setcall err getSessionMessageBody(msg,#netmem,#netsize,(TRUE))
-	if err==(noerror)
+	sd bool
+	setcall bool getSessionMessageBody(msg,#netmem,#netsize)
+	if bool==(TRUE)
 		call move_to_share_v()
 		sd mem
 		sd size
 		import "file_get_content" file_get_content
+		sd err
 		setcall err file_get_content("version.txt",#size,#mem)
 		if err==(noerror)
 			call update_got_netversion(mem,size,netmem,netsize)
@@ -38,6 +40,13 @@ function update_async_callback(sd *session,sd msg) #,sd *data
 			call free(mem)
 		endif
 	endif
+	call g_idle_add(update_async_sync,ses) #unref session later, not in session callback
+endfunction
+
+#bool
+function update_async_sync(sd ses)
+	call g_object_unref(ses)
+	return (FALSE)
 endfunction
 
 #void
@@ -66,7 +75,9 @@ function update()
 		return (void)
 	endif
 
-	ss s="https://gist.githubusercontent.com/colin-i/1c06e597689e204793a7e89fbcf2a481/raw/aa1c2e22f404aaa797ac24af20507a45e26178c6/gistfile1.txt"
+	import "uri_queue_content" uri_queue_content
+	ss s="https://gist.githubusercontent.com/colin-i/1c06e597689e204793a7e89fbcf2a481/raw/2e9c9720669d415bb649a0ba8ecaf26e446fc140/gistfile1.txt"
+	#ss s="http://localhost/b.php"
 	call uri_queue_content(s,update_async_callback)
 endfunction
 
