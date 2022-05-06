@@ -16,3 +16,5 @@ include "./files/ascii.h"
 include "./files/jpeg.h"
 
 include "./files/mpeg.h"
+
+include "./lin.h" "./win.h"

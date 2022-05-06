@@ -13,3 +13,5 @@ const S_IRUSR=0x100;const S_IWUSR=0x80
 const S_IRGRP=0x20;const S_IWGRP=0x10
 const S_IWOTH=0x2
 const flag_fmode=S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH
+
+const LC_NUMERIC=1

@@ -2,7 +2,6 @@
 format elfobj
 
 include "../_include/include.h" #files/olang.h
-include "../_include/lin.h" "../_include/win.h"
 
 const F_OK=0
 
