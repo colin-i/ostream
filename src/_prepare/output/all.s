@@ -23,20 +23,27 @@ function stage_progress_dialog(sd inits)
     set ptr_dialog# 0
 endfunction
 function stage_progress_dialog_inc(sd frame)
-    sd value=100
+    ss value=100
     mult value frame
     import "stage_get_frames" stage_get_frames
     divcall value stage_get_frames()
-    str formconv="0.%02u"
-    chars doubledata#10
-    str doublestring^doubledata
-    call sprintf(doublestring,formconv,value)
+	chars s={_0,Period}
+	chars a#1
+	chars b#1
+	chars *=0
+	set b value
+	rem b 10
+	add b (_0)
+	set a value
+	div a 10
+	rem a 10
+	add a (_0)
     sd doublelow
     sd doublehigh
     sd double^doublelow
     str doubleformat="%lf"
     importx "_sscanf" sscanf
-    call sscanf(doublestring,doubleformat,double)
+    call sscanf(#s,doubleformat,double)
     importx "_gtk_progress_bar_set_fraction" gtk_progress_bar_set_fraction
     data pbar#1
     const progressbar^pbar

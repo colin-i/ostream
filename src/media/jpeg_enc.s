@@ -831,7 +831,7 @@ function jpeg_YCbCr_256color(sd action,sd red,sd green,sd blue,sd p_Y,sd p_Cb,sd
 
             inc color
         endwhile
-        return (value_set)
+        return (void)
     endif
 
     import "array_byte_setAtXY" array_byte_setAtXY
@@ -1052,7 +1052,7 @@ function jpeg_FDCT_Quantization_Tables(sd action,sd p_CbCr)
             endwhile
             inc tabs
         endwhile
-        return (value_set)
+        return (void)
     endif
     #get
     set p_CbCr# FDCT_CbCr
@@ -1530,7 +1530,7 @@ function jpeg_encode_Huffman(sd action,sd DCT_tab,sd lum_or_crom,sd prev_DC)
         call jpeg_bytenew((value_set),(bytenew_start))
         call jpeg_bytepos((value_set),(bytepos_start))
 
-        return (value_set)
+        return (void)
     endif
     #bool
     import "array_get_word" array_get_word
@@ -1711,7 +1711,7 @@ function jpeg_bytepos(sd action,sd value)
     endelse
 endfunction
 
-function jpeg_write_data(sd len,sd value)
+function jpeg_write_data(sd pos,sd data)
     #words style from chars
     chars m_data={1,   0,         2,   0,         4,    0,          8,    0}
     chars      *={16,  0,         32,  0,         64,   0,          128,  0}
@@ -1719,12 +1719,7 @@ function jpeg_write_data(sd len,sd value)
     chars      *={4096,4096/0x100,8192,8192/0x100,16384,16384/0x100,32768,32768/0x100}
     str mask^m_data
 
-    sd pos
-    sd data
-
-    set pos len
     dec pos
-    set data value
 
     sd bytenew
     sd bytepos

@@ -41,6 +41,7 @@ str = str/str
 u=util/
 uti = ${u}asm ${u}floating ${u}lists ${u}numbers ${u}update ${u}util
 items = _dif/dif~${platform} ${cap} ${err} ${eve} ${exe} ${ffl} ${gnu} ${int} ${med} ${mem} ${net} ${obj} ${pre} ${sea} ${str} ${uti}
+items_prefix=
 
 projname=ovideo
 wprojname=ovideo.exe
@@ -82,7 +83,7 @@ share:
 lnk:
 	if [ "${platform}" = "lin" ]; then \
 		export PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig/:${PKG_CONFIG_PATH}; \
-		$(LD) ${syms} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 ${obs} -o ${projname} -lc -lm `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lpthread -lgthread-2.0; \
+		$(LD) ${syms} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 ${obs} -o ${items_prefix}${projname} -lc -lm `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lpthread -lgthread-2.0; \
 	else \
 		i686-w64-mingw32-ld --large-address-aware ${syms} ${obs} -o ${wprojname} -entry _start --start-group \
 		`dpkg -L mingw-w64-i686-dev | grep '\.a' | sed 's/..$$//' | grep -o '[^\/]*$$' | sed 's/^lib/-l/' | xargs echo` \
@@ -92,7 +93,7 @@ lnk:
 		-lcairo -lpango-1.0 -lsoup-2.4 -ljpeg; \
 	fi
 fast:
-	$(eval obs = `printf ' %s.o' ${items}`)
+	$(eval obs = `printf ' ${items_prefix}%s.o' ${items}`)
 link: fast lnk
 #snprintf with circular unresolved requirements
 #cos is in -lmingwex that will work with -lmingw32 -lmsvcrt
@@ -135,3 +136,5 @@ uninstall:
 .PHONY: all install clean distclean uninstall test
 
 .NOTPARALLEL:
+
+#make compile && make link syms= LD=/home/bc/Desktop/out/LD-.glibc2.27-x86_64.AppImage items_prefix=/home/bc/v/ovideo-1/src/
