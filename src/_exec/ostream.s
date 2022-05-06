@@ -16,7 +16,7 @@ call gtk_init(0,0)
 call gst_init(0,0)
 
 importx "_setlocale" setlocale
-call setlocale((LC_NUMERIC),"C") #"English" can also be dot but not on this linux
+call setlocale((LC_NUMERIC),"C") #"English" was ok
 #there are 3 sscanf getting the '.'
 
 importx "_g_thread_init" g_thread_init
