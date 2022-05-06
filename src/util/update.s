@@ -76,7 +76,7 @@ function update()
 	endif
 
 	import "uri_queue_content" uri_queue_content
-	ss s="https://gist.githubusercontent.com/colin-i/1c06e597689e204793a7e89fbcf2a481/raw/2e9c9720669d415bb649a0ba8ecaf26e446fc140/gistfile1.txt"
+	ss s="https://gist.githubusercontent.com/colin-i/1c06e597689e204793a7e89fbcf2a481/raw/d01af2cae343893d08f25fe2690dd35af941b292/gistfile1.txt"
 	#ss s="http://localhost/b.php"
 	call uri_queue_content(s,update_async_callback)
 endfunction
