@@ -268,7 +268,7 @@ endfunction
 
 #field
 function edit_info_prepare_green(ss text)
-    chars infocolors={0xe0,0xff,0xe0}
+    chars infocolors={0x70,0x90,0x70} #system themes are making this hard
     data infoptrcolors^infocolors
     sd widget
     setcall widget edit_info_prepare(infoptrcolors,text)
@@ -277,7 +277,7 @@ endfunction
 
 #field
 function edit_info_prepare_blue(ss text)
-    chars infocolors={0xe0,0xe0,0xff}
+    chars infocolors={0x70,0x70,0x90}
     data infoptrcolors^infocolors
     sd widget
     setcall widget edit_info_prepare(infoptrcolors,text)
