@@ -137,4 +137,4 @@ uninstall:
 
 .NOTPARALLEL:
 
-#make compile && make link syms= LD=/home/bc/Desktop/out/LD-.glibc2.27-x86_64.AppImage items_prefix=/home/bc/v/ovideo-1/src/
+#make compile prefix=/usr && make link syms= LD=/home/bc/Desktop/out/LD-.glibc2.27-x86_64.AppImage items_prefix=/home/bc/v/ovideo-1/src/

@@ -5,8 +5,6 @@ format elfobj
 
 include "../_include/include.h"
 
-import "edit_info_prepare_green" edit_info_prepare_green
-
 function search_parse_URIs_launch(ss str,sd table)
     import "table_add_row" table_add_row
 
@@ -20,6 +18,7 @@ function search_parse_URIs_launch(ss str,sd table)
     call table_add_row(table,hseparator)
 
     sd newedit
+	import "edit_info_prepare_green" edit_info_prepare_green
     setcall newedit edit_info_prepare_green(str)
     call table_add_row(table,newedit)
 
@@ -118,19 +117,22 @@ function search_parse_got_uri(ss uri,sd vbox)
 
     #row1
     importx "_gtk_label_new" gtk_label_new
-    str uristr="URI: "
+    str uristr="URI:"
 
     setcall urilabel gtk_label_new(uristr)
 
     setcall uritext edit_info_prepare_green(uri)
 
     #row2
-    str itemsstr="Items: "
+    str itemsstr="Items:"
 
     setcall itemslabel gtk_label_new(itemsstr)
 
-    str init=""
-    setcall itemstext edit_info_prepare_green(init)
+    sd table
+    sd extradata
+
+	import "edit_info_prepare_texter_green" edit_info_prepare_texter_green
+    setcall itemstext edit_info_prepare_texter_green("",#extradata)
 
     #scroll panel
     import "scrollfield" scrollfield
@@ -143,14 +145,11 @@ function search_parse_got_uri(ss uri,sd vbox)
 
     import "tablefield_cells" tablefield_cells
     ##begin the table
-    sd table
-    sd extradata
     setcall table tablefield_cells(scroll,rows,cols,widgets)
 
     #entries
     data nextFn^search_parse_got_body
     sd pass^table
-    set extradata itemstext
     call uri_get_content_forward_data(uri,nextFn,pass)
 
     #lastrow

@@ -229,9 +229,8 @@ function new_texter_close(sd *dialog,sd previous_texter)
 endfunction
 
 function new_texter_modal(sd container,sd dialog)
-    import "editinfofield_green" editinfofield_green_
     sd newtexter
-    setcall newtexter editinfofield_green_(container)
+    setcall newtexter editinfofield_green(container)
 
     import "connect_signal_data" connect_signal_data
     str destr="destroy"
@@ -254,42 +253,58 @@ function editfield_pack(sd container)
 endfunction
 
 #field
-function edit_info_prepare(sd ptrcolors,ss text)
-    importx "_gtk_editable_set_editable" gtk_editable_set_editable
-    import "setWidgetBase" setWidgetBase
-    sd info
-    setcall info gtk_entry_new()
-    data false=0
-    call gtk_editable_set_editable(info,false)
-    call setWidgetBase(info,ptrcolors)
-    call gtk_entry_set_text(info,text)
-    return info
+function edit_info_prepare_texter(sd ptrcolors,ss text,sv p_texter)
+	importx "_gtk_editable_set_editable" gtk_editable_set_editable
+	import "setWidgetBase" setWidgetBase
+	sd info
+	setcall info gtk_entry_new() #this can be label but GtkEditable is used once and is ok for now. https://developer-old.gnome.org/gtk2/stable/GtkEditable.html
+	call gtk_editable_set_editable(info,(FALSE))
+	call gtk_entry_set_text(info,text)
+	if p_texter!=(NULL)
+		set p_texter# info
+	endif
+	importx "_gtk_frame_new" gtk_frame_new
+	sd f
+	setcall f gtk_frame_new((NULL))
+	call setWidgetBase(f,ptrcolors)
+	#importx "_gtk_container_set_border_width" gtk_container_set_border_width
+	#call gtk_container_set_border_width(f,10)
+	importx "_gtk_container_add" gtk_container_add
+	call gtk_container_add(f,info)
+	return f
 endfunction
 
 #field
 function edit_info_prepare_green(ss text)
-    chars infocolors={0x70,0x90,0x70} #system themes are making this hard
-    data infoptrcolors^infocolors
-    sd widget
-    setcall widget edit_info_prepare(infoptrcolors,text)
-    return widget
+	sd w
+	setcall w edit_info_prepare_texter_green(text,(NULL))
+	return w
 endfunction
 
 #field
 function edit_info_prepare_blue(ss text)
-    chars infocolors={0x70,0x70,0x90}
+    chars infocolors={0x00,0x00,0xff}
     data infoptrcolors^infocolors
     sd widget
-    setcall widget edit_info_prepare(infoptrcolors,text)
+    setcall widget edit_info_prepare_texter(infoptrcolors,text,(NULL))
+    return widget
+endfunction
+
+#field
+function edit_info_prepare_texter_green(ss text,sd p_texter)
+    chars infocolors={0x00,0xff,0x00}
+    data infoptrcolors^infocolors
+    sd widget
+    setcall widget edit_info_prepare_texter(infoptrcolors,text,p_texter)
     return widget
 endfunction
 
 function editinfofield_green(sd box)
-    str x=""
-    sd field
-    setcall field edit_info_prepare_green(x)
-    call packstart_default(box,field)
-    return field
+	sd wid
+	sd field
+	setcall field edit_info_prepare_texter_green("",#wid)
+	call packstart_default(box,field)
+	return wid
 endfunction
 
 function editfield_with_int(sd int)
