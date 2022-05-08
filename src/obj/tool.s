@@ -5,7 +5,11 @@ format elfobj
 include "../_include/include.h"
 
 #color(base) to a widget
-importx "_gtk_widget_modify_bg" gtk_widget_modify_base
+#importx "_gtk_widget_modify_base" gtk_widget_modify
+#importx "_gtk_widget_modify_text" gtk_widget_modify
+importx "_gtk_widget_modify_bg" gtk_widget_modify
+#importx "_gtk_widget_modify_fg" gtk_widget_modify
+
 #void
 function setWidgetBase(sd widget,ss in_colors)
 	data guint32_pixel=0
@@ -15,7 +19,7 @@ function setWidgetBase(sd widget,ss in_colors)
 	set guint16_red in_colors#
 	inc in_colors;set guint16_green in_colors#
 	inc in_colors;set guint16_blue in_colors#
-	call gtk_widget_modify_base(widget,(GTK_STATE_NORMAL),#guint32_pixel)
+	call gtk_widget_modify(widget,(GTK_STATE_NORMAL),#guint32_pixel)
 endfunction
 
 ###container preadd actions

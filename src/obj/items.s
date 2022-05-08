@@ -252,6 +252,8 @@ function editfield_pack(sd container)
     return edit
 endfunction
 
+importx "_gtk_box_pack_start" gtk_box_pack_start
+
 #field
 function edit_info_prepare_texter(sd ptrcolors,ss text,sv p_texter)
 	importx "_gtk_editable_set_editable" gtk_editable_set_editable
@@ -263,14 +265,35 @@ function edit_info_prepare_texter(sd ptrcolors,ss text,sv p_texter)
 	if p_texter!=(NULL)
 		set p_texter# info
 	endif
-	importx "_gtk_frame_new" gtk_frame_new
-	sd f
-	setcall f gtk_frame_new((NULL))
-	call setWidgetBase(f,ptrcolors)
 	#importx "_gtk_container_set_border_width" gtk_container_set_border_width
-	#call gtk_container_set_border_width(f,10)
+	#call gtk_container_set_border_width(info,10)
+
+	importx "_gtk_vbox_new" gtk_vbox_new
 	importx "_gtk_container_add" gtk_container_add
-	call gtk_container_add(f,info)
+	sd f
+	setcall f gtk_vbox_new((FALSE),0)
+	importx "_gtk_hseparator_new" gtk_hseparator_new
+	sd s
+	setcall s gtk_hseparator_new()
+	call setWidgetBase(s,ptrcolors)
+	call gtk_container_add(f,s)
+
+	importx "_gtk_hbox_new" gtk_hbox_new
+	importx "_gtk_vseparator_new" gtk_vseparator_new
+	sd h
+	setcall h gtk_hbox_new((FALSE),0)
+	setcall s gtk_vseparator_new()
+	call setWidgetBase(s,ptrcolors)
+	call gtk_box_pack_start(h,s,(FALSE),(FALSE),0)
+	call gtk_box_pack_start(h,info,(TRUE),(TRUE),0)
+	setcall s gtk_vseparator_new()
+	call setWidgetBase(s,ptrcolors)
+	call gtk_box_pack_start(h,s,(FALSE),(FALSE),0)
+	call gtk_container_add(f,h)
+
+	setcall s gtk_hseparator_new()
+	call setWidgetBase(s,ptrcolors)
+	call gtk_container_add(f,s)
 	return f
 endfunction
 
@@ -426,7 +449,6 @@ function hscale_get(sd hscale)
 endfunction
 
 ##############hseparator
-importx "_gtk_hseparator_new" gtk_hseparator_new
 function hseparatorfield(sd box)
     sd hsep
     setcall hsep gtk_hseparator_new()
@@ -956,7 +978,6 @@ importx "_gtk_progress_bar_new" gtk_progress_bar_new
 function progressfield(sd container)
     sd wid
     setcall wid gtk_progress_bar_new()
-    importx "_gtk_box_pack_start" gtk_box_pack_start
     data true=1
     data false=0
     call gtk_box_pack_start(container,wid,true,false,false)
