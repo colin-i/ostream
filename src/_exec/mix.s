@@ -53,30 +53,26 @@ function mix_timeout(sd *data)
         return 0
     endif
 
-    #append one dot or set one dot
-    str maxdots="........"
-    import "get_current_texter_pointer" get_current_texter_pointer
-    sd texter_ptr
-    setcall texter_ptr get_current_texter_pointer()
-    sd widget
-    set widget texter_ptr#
-    sd text
-    setcall text gtk_entry_get_text(widget)
-    import "cmpstr" cmpstr
-    sd cmpresult
-    setcall cmpresult cmpstr(text,maxdots)
-    str onedot="."
-    if cmpresult==0
-        call texter(onedot)
-        return 1
-    endif
-    importx "_gtk_editable_insert_text" gtk_editable_insert_text
-    sd pos
-    sd ptr_pos^pos
-    import "slen" slen
-    setcall pos slen(text)
-    call gtk_editable_insert_text(widget,onedot,1,ptr_pos)
-    return 1
+	#append one dot or set one dot
+	import "get_current_texter_pointer" get_current_texter_pointer
+	sd texter_ptr
+	setcall texter_ptr get_current_texter_pointer()
+	sd widget
+	set widget texter_ptr#
+	sd text
+	setcall text gtk_entry_get_text(widget)
+	sd pos
+	sd ptr_pos^pos
+	chars onedot={Period,0}
+	import "slen" slen
+	setcall pos slen(text)
+	if pos==3
+		call texter(#onedot)
+		return 1
+	endif
+	importx "_gtk_editable_insert_text" gtk_editable_insert_text
+	call gtk_editable_insert_text(widget,#onedot,1,ptr_pos)
+	return 1
 endfunction
 
 function mix_init_save(sd vbox,sd dialog)
@@ -274,7 +270,7 @@ function mix_init(sd vbox,sd *dialog)
     set tm# entryt
 
     importx "_gtk_entry_set_text" gtk_entry_set_text
-    str defaulttimeout="5"
+    str defaulttimeout="10"
     call gtk_entry_set_text(entryt,defaulttimeout)
 
     import "tablefield_cells" tablefield_cells
