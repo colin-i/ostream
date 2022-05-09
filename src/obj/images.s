@@ -506,10 +506,12 @@ function rgb_test(sd pixbuf)
 		importx "_gdk_pixbuf_get_height" gdk_pixbuf_get_height
 		sd h
 		setcall h gdk_pixbuf_get_height(pixbuf)
-		mult stride h
+		sd size
+		set size stride
+		mult size h
 		import "memalloc" memalloc
 		sd newmem
-		setcall newmem memalloc(stride)
+		setcall newmem memalloc(size)
 		if newmem!=(NULL)
 			ss bytes
 			setcall bytes gdk_pixbuf_get_pixels(pixbuf)
