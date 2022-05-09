@@ -259,21 +259,28 @@ function stage_element(sd *bus,sd message,sd ptrpipeline)
             endif
         endif
         #
-        if skip==0
-            str text="Received frames: "
-            call stage_new_pix(pixbuf,text)
-        else
-            importx "_g_object_unref" g_object_unref
-            call g_object_unref(pixbuf)
-            if skip==1
-                call strdworddisp("Skipped frame: ",pos#)
-            else
-                call stage_display_index("Total frames: ",1)
-            endelse
-        endelse
-        #
-        inc pos#
-    endif
+		if skip==0
+			import "rgb_test" rgb_test
+			setcall pixbuf rgb_test(pixbuf)
+			if pixbuf!=(NULL)
+				vstr text="Received frames: "
+				call stage_new_pix(pixbuf,text)
+			else
+				set skip 1
+			endelse
+		endif
+		if skip!=0
+			importx "_g_object_unref" g_object_unref
+			call g_object_unref(pixbuf)
+			if skip==1
+				call strdworddisp("Skipped frame: ",pos#)
+			else
+				call stage_display_index("Total frames: ",1)
+			endelse
+		endif
+		#
+		inc pos#
+	endif
 endfunction
 
 
@@ -306,12 +313,15 @@ endfunction
 
 function stage_start_pipe(ss uri)
 #gdkpixbufsink plugins-good
-    ss launcher="uridecodebin uri=\"%s\" ! ffmpegcolorspace ! gdkpixbufsink"
+    ss launcher="uridecodebin uri=\"%s\" ! %s ! gdkpixbufsink"
     ss str
+	ss medium
     sd *=0
     sd strs^launcher
 
     set str uri
+	import "get_mxf_inputformat" get_inputformat
+	setcall medium get_inputformat()
 
     sd err
 
@@ -324,7 +334,7 @@ function stage_start_pipe(ss uri)
         return err
     endif
 
-    call sprintf(mem,launcher,uri)
+    call sprintf(mem,launcher,uri,medium)
 
     import "launch_pipe_start" launch_pipe_start
     data pipe#1

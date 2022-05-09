@@ -752,18 +752,22 @@ import "gerrtoerr" gerrtoerr
 import "getptrgerr" getptrgerr
 #function pixbuf from file
 function pixbuf_from_file(ss filename)
-    sd pixbuf#1
-    data null=NULL
-    sd ptrgerror#1
+	sd pixbuf#1
+	sd ptrgerror#1
 
-    setcall ptrgerror getptrgerr()
+	setcall ptrgerror getptrgerr()
 
-    setcall pixbuf gdk_pixbuf_new_from_file(filename,ptrgerror)
-    if pixbuf==null
-            call gerrtoerr(ptrgerror)
-            return null
-    endif
-    return pixbuf
+	setcall pixbuf gdk_pixbuf_new_from_file(filename,ptrgerror)
+	if pixbuf!=(NULL)
+		import "rgb_test" rgb_test
+		setcall pixbuf rgb_test(pixbuf)
+		if pixbuf!=(NULL)
+			return pixbuf
+		endif
+		return (NULL)
+	endif
+	call gerrtoerr(ptrgerror)
+	return (NULL)
 endfunction
 #returns the forward or null
 function pixbuf_from_file_forward_data(ss filename,sd forward,sd data)

@@ -1023,73 +1023,73 @@ function mkv_simpleblock(sd file,sd size,sd filepos)
             return 0
         endif
 
-        import "rgb_test" rgb_test
-        setcall bool rgb_test(pixbuf)
-        if bool==0
-            return 0
-        else
-            #info prepare
-            import "av_display_info" av_display_info
-            call av_display_info((value_get),file)
-            if encoder==(format_mkv_i420)
-                sd pixels
-                sd width
-                sd height
-                setcall pixels gdk_pixbuf_get_pixels(pixbuf)
-                setcall width gdk_pixbuf_get_width(pixbuf)
-                setcall height gdk_pixbuf_get_height(pixbuf)
+		#import "rgb_test" rgb_test
+		#setcall bool rgb_test(pixbuf)
+		#if bool==0
+		#    return 0
+		#else
+		#info prepare
+		import "av_display_info" av_display_info
+		call av_display_info((value_get),file)
+		if encoder==(format_mkv_i420)
+		    sd pixels
+		    sd width
+		    sd height
+		    setcall pixels gdk_pixbuf_get_pixels(pixbuf)
+		    setcall width gdk_pixbuf_get_width(pixbuf)
+		    setcall height gdk_pixbuf_get_height(pixbuf)
 
-                import "rgb_to_yuvi420_write" rgb_to_yuvi420_write
-                setcall err rgb_to_yuvi420_write(pixels,width,height,file)
-                if err!=(noerror)
-                    return 0
-                endif
-            elseif encoder==(format_mkv_mjpg)
-                import "stage_jpeg_write" stage_jpeg_write
-                setcall bool stage_jpeg_write(file,pixbuf)
-                if bool!=1
-                    return 0
-                endif
-            elseif encoder==(format_mkv_xvid)
-                import "mpeg_file_mem" mpeg_file_mem
-                setcall bool mpeg_file_mem((value_filewrite))
-                if bool!=1
-                    return 0
-                endif
-            else
-            #if encoder==(format_avi_rgb24)
-                import "pixbuf_get_wh" pixbuf_get_wh
-                sd rgb_pixels
-                sd rgb_sz
-                setcall rgb_pixels gdk_pixbuf_get_pixels(pixbuf)
-                sd rgb_width
-                sd rgb_height
-                sd rgb_dim^rgb_width
-                call pixbuf_get_wh(pixbuf,rgb_dim)
-                setcall rgb_sz rgb_get_size(rgb_width,rgb_height)
+		    import "rgb_to_yuvi420_write" rgb_to_yuvi420_write
+		    setcall err rgb_to_yuvi420_write(pixels,width,height,file)
+		    if err!=(noerror)
+		        return 0
+		    endif
+		elseif encoder==(format_mkv_mjpg)
+		    import "stage_jpeg_write" stage_jpeg_write
+		    setcall bool stage_jpeg_write(file,pixbuf)
+		    if bool!=1
+		        return 0
+		    endif
+		elseif encoder==(format_mkv_xvid)
+		    import "mpeg_file_mem" mpeg_file_mem
+		    setcall bool mpeg_file_mem((value_filewrite))
+		    if bool!=1
+		        return 0
+		    endif
+		else
+		#if encoder==(format_avi_rgb24)
+		    import "pixbuf_get_wh" pixbuf_get_wh
+		    sd rgb_pixels
+		    sd rgb_sz
+		    setcall rgb_pixels gdk_pixbuf_get_pixels(pixbuf)
+		    sd rgb_width
+		    sd rgb_height
+		    sd rgb_dim^rgb_width
+		    call pixbuf_get_wh(pixbuf,rgb_dim)
+		    setcall rgb_sz rgb_get_size(rgb_width,rgb_height)
 
-                sd capture_flag
-                setcall capture_flag mkv_capture((value_get))
-                if capture_flag==0
-                    sd reverse_pixbuf
-                    setcall reverse_pixbuf pixbuf_from_pixbuf_reverse(pixbuf)
-                    setcall rgb_pixels gdk_pixbuf_get_pixels(reverse_pixbuf)
-                endif
-                #
-                setcall err file_write(rgb_pixels,rgb_sz,file)
-                #
-                if capture_flag==0
-                    importx "_g_object_unref" g_object_unref
-                    call g_object_unref(reverse_pixbuf)
-                endif
+		    sd capture_flag
+		    setcall capture_flag mkv_capture((value_get))
+		    if capture_flag==0
+		        sd reverse_pixbuf
+		        setcall reverse_pixbuf pixbuf_from_pixbuf_reverse(pixbuf)
+		        setcall rgb_pixels gdk_pixbuf_get_pixels(reverse_pixbuf)
+		    endif
+		    #
+		    setcall err file_write(rgb_pixels,rgb_sz,file)
+		    #
+		    if capture_flag==0
+		        importx "_g_object_unref" g_object_unref
+		        call g_object_unref(reverse_pixbuf)
+		    endif
 
-                if err!=(noerror)
-                    return 0
-                endif
-            endelse
-            #info display
-            call av_display_info((value_write),file,currentframe)
-        endelse
+		    if err!=(noerror)
+		        return 0
+		    endif
+		endelse
+		#info display
+		call av_display_info((value_write),file,currentframe)
+		#endelse
 
         setcall pixbuf mkv_frames(1,0,file)
 
