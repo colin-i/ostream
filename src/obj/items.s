@@ -764,6 +764,7 @@ function pixbuf_from_file(ss filename)
 		if pixbuf!=(NULL)
 			return pixbuf
 		endif
+		call g_object_unref(pixbuf)
 		return (NULL)
 	endif
 	call gerrtoerr(ptrgerror)

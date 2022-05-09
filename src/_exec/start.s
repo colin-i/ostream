@@ -98,7 +98,7 @@ import "buttons_lots_ex" buttons_lots_ex
 
 function setimages()
     #icon
-    str icon="1616.png"
+    str icon="1616.jpg"
     data widget#1
     setcall widget mainwidget()
     call setwndicon(widget,icon)
