@@ -154,11 +154,11 @@ function stage_effect_new(sd forward,sd data)
     call stage_get_sel_pixbuf(p_pixbuf)
 
     #test for not accessing invalid memory
-    import "rgb_test" rgb_test
-    setcall bool rgb_test(pixbuf)
-    if bool==0
-        return 0
-    endif
+    #import "rgb_test" rgb_test
+    #setcall bool rgb_test(pixbuf)
+    #if bool==0
+    #    return 0
+    #endif
 
     #get dimensions
     importx "_gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels

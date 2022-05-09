@@ -276,6 +276,8 @@ function rgb_to_yuvi420(ss bitmap_rgb,ss yuv,sd width,sd height)
 ###################################################
 endfunction
 
+importx "_free" free
+
 #e/forward
 function rgb_to_yuvi420_forward_data(sd rgb,sd width,sd height,sd forward,sd data)
     sd size
@@ -308,7 +310,6 @@ function rgb_to_yuvi420_forward_data(sd rgb,sd width,sd height,sd forward,sd dat
     call rgb_to_yuvi420(rgb,yuv,width,height)
 
     setcall err forward(yuv,size,data)
-    importx "_free" free
     call free(yuv)
     return err
 endfunction
@@ -480,35 +481,71 @@ function rgb_to_yuvi420_write(sd rgb,sd width,sd height,sd file)
 endfunction
 
 importx "_gdk_pixbuf_get_rowstride" gdk_pixbuf_get_rowstride
+importx "_gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
+importx "_g_object_unref" g_object_unref
+import "texter" texter
 
-#bool
+#pixbuf
 function rgb_test(sd pixbuf)
-    if pixbuf==0
-        return 0
-    endif
-
-    importx "_gdk_pixbuf_get_width" gdk_pixbuf_get_width
-    importx "_gdk_pixbuf_get_height" gdk_pixbuf_get_height
-    sd w
-    sd h
-    setcall w gdk_pixbuf_get_width(pixbuf)
-    setcall h gdk_pixbuf_get_height(pixbuf)
-
-    sd testsize
-    setcall testsize gdk_pixbuf_get_rowstride(pixbuf)
-    mult testsize h
-    sd guess_size
-    set guess_size w
-    mult guess_size 3
-    setcall guess_size multiple_of_nr(guess_size,4)
-    mult guess_size h
-    if guess_size<testsize
-        import "texter" texter
-        str sizelowrgb="RGB array expected"
-        call texter(sizelowrgb)
-        return 0
-    endif
-    return 1
+#    if pixbuf==0
+#        return 0
+#    endif
+	importx "_gdk_pixbuf_get_width" gdk_pixbuf_get_width
+	sd w
+	setcall w gdk_pixbuf_get_width(pixbuf)
+	sd teststride
+	setcall teststride gdk_pixbuf_get_rowstride(pixbuf)
+	sd stride
+	set stride w
+	mult stride 3
+	sd multiple_of_3
+	set multiple_of_3 stride
+	setcall stride multiple_of_nr(stride,4)
+	if stride!=teststride
+	#this is with alpha
+		importx "_gdk_pixbuf_get_height" gdk_pixbuf_get_height
+		sd h
+		setcall h gdk_pixbuf_get_height(pixbuf)
+		mult stride h
+		import "memalloc" memalloc
+		sd newmem
+		setcall newmem memalloc(stride)
+		if newmem!=(NULL)
+			ss bytes
+			setcall bytes gdk_pixbuf_get_pixels(pixbuf)
+			sd end
+			set end h
+			mult end teststride
+			add end bytes
+			ss pointer
+			set pointer newmem
+			while bytes!=end
+				sd row
+				set row bytes
+				add row teststride
+				while bytes!=row
+					set pointer# bytes#
+					inc pointer;inc bytes;set pointer# bytes#
+					inc pointer;inc bytes;set pointer# bytes#
+					inc pointer;add bytes 2
+				endwhile
+				if multiple_of_3!=stride
+					inc pointer
+				endif
+			endwhile
+			importx "_gdk_pixbuf_new_from_data" gdk_pixbuf_new_from_data
+			sd newpixbuf
+			setcall newpixbuf gdk_pixbuf_new_from_data(newmem,(GDK_COLORSPACE_RGB),(FALSE),8,w,h,stride,free,newmem)
+			if newpixbuf!=(NULL)
+				call g_object_unref(pixbuf)
+				return newpixbuf
+			endif
+			call texter("error at new pixbuf")
+			call free(newmem)
+		endif
+		return (NULL)
+	endif
+	return pixbuf
 endfunction
 
 #bool
@@ -586,8 +623,6 @@ function rgb_px_set(sd value,ss bytes,sd x,sd y,sd bps,sd n_chan,sd rowstride)
     sd p_value^value
     call rgb_get_set(p_value,bytes,x,y,bps,n_chan,rowstride,(set_rgb))
 endfunction
-
-importx "_gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
 
 function rgb_pixbuf_get_pixel(ss pixbuf,sd x,sd y,sd bps,sd n_chan)
     sd pixels
@@ -737,7 +772,6 @@ function pixbuf_draw_text(sd pixbuf,ss text,sd x,sd y,sd size,sd color,sd coordi
     sd pix_buf
     setcall pix_buf gdk_pixbuf_get_from_drawable((NULL),pixmap,(NULL),0,0,0,0,width,height)
 
-    importx "_g_object_unref" g_object_unref
     importx "_g_free" g_free
     call g_free(markup)
     call g_object_unref(pangolayout)

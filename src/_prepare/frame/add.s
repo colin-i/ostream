@@ -79,16 +79,16 @@ function stage_pixbuf_in_container_pixbuf(sd newpixbuf,sd containerpixbuf)
     setcall width rectangle_fit_container_rectangle(width,height,c_width,c_height,p_height)
 
     #test for not accessing invalid memory
-    import "rgb_test" rgb_test
-    sd bool
-    setcall bool rgb_test(containerpixbuf)
-    if bool==0
-        return 0
-    endif
-    setcall bool rgb_test(newpixbuf)
-    if bool==0
-        return 0
-    endif
+    #import "rgb_test" rgb_test
+    #sd bool
+    #setcall bool rgb_test(containerpixbuf)
+    #if bool==0
+    #    return 0
+    #endif
+    #setcall bool rgb_test(newpixbuf)
+    #if bool==0
+    #    return 0
+    #endif
 
     import "pixbuf_scale_forward_data" pixbuf_scale_forward_data
     data f^stage_pixbuf_in_container_pixbuf_set
