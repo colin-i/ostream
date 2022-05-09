@@ -495,12 +495,13 @@ function rgb_test(sd pixbuf)
 	setcall w gdk_pixbuf_get_width(pixbuf)
 	sd teststride
 	setcall teststride gdk_pixbuf_get_rowstride(pixbuf)
+	sd three_dif
+	set three_dif w
+	mult three_dif 3
 	sd stride
-	set stride w
-	mult stride 3
-	sd multiple_of_3
-	set multiple_of_3 stride
-	setcall stride multiple_of_nr(stride,4)
+	setcall stride multiple_of_nr(three_dif,4)
+	sub three_dif stride
+	neg three_dif
 	if stride!=teststride
 	#this is with alpha
 		importx "_gdk_pixbuf_get_height" gdk_pixbuf_get_height
@@ -531,8 +532,8 @@ function rgb_test(sd pixbuf)
 					inc pointer;inc bytes;set pointer# bytes#
 					inc pointer;add bytes 2
 				endwhile
-				if multiple_of_3!=stride
-					inc pointer
+				if three_dif!=0
+					add pointer three_dif
 				endif
 			endwhile
 			importx "_gdk_pixbuf_new_from_data" gdk_pixbuf_new_from_data
