@@ -313,12 +313,15 @@ endfunction
 
 function stage_start_pipe(ss uri)
 #gdkpixbufsink plugins-good
-    ss launcher="uridecodebin uri=\"%s\" ! ffmpegcolorspace ! gdkpixbufsink"
+    ss launcher="uridecodebin uri=\"%s\" ! %s ! gdkpixbufsink"
     ss str
+	ss medium
     sd *=0
     sd strs^launcher
 
     set str uri
+	import "get_mxf_inputformat" get_inputformat
+	setcall medium get_inputformat()
 
     sd err
 
@@ -331,7 +334,7 @@ function stage_start_pipe(ss uri)
         return err
     endif
 
-    call sprintf(mem,launcher,uri)
+    call sprintf(mem,launcher,uri,medium)
 
     import "launch_pipe_start" launch_pipe_start
     data pipe#1
