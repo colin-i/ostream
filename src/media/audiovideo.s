@@ -253,7 +253,7 @@ function av_dialog_run(sd forward,sd data)
         call dialog_modal_texter_drawwidget((value_set),0)
         #free dialog
         importx "_gtk_widget_destroy" gtk_widget_destroy
-        call gtk_widget_destroy(dialog)
+        call gtk_widget_destroy(dialog) #here is not saying critical at windows, but also on linux the dialog needs to be destroyed
     endif
 
     return bool
@@ -377,19 +377,20 @@ const av_info_simple=1
 #at write
 function av_display_progress(sd image_nr,sd flag_simple)
     #capture_flag and read info both goes in flag_simple
-    chars data#100
-    str string^data
-    str format_stage="Processed images: %u/%u"
-    str format_capture="Processed images: %u"
+	const procimgstrstart=!
+	chars format_stage="Processed images: %u/%u"
+	chars data#!-procimgstrstart-2-2+dword_max+dword_max
+	vstr string^data
+	chars format_capture="Processed images: %u"
     importx "_sprintf" sprintf
     if flag_simple==(av_info_all)
         import "stage_get_frames" stage_get_frames
         sd totalframes
         setcall totalframes stage_get_frames()
-        call sprintf(string,format_stage,image_nr,totalframes)
+        call sprintf(string,#format_stage,image_nr,totalframes)
     else
     #on
-        call sprintf(string,format_capture,image_nr)
+        call sprintf(string,#format_capture,image_nr)
     endelse
     call dialog_modal_texter_draw(string)
 endfunction

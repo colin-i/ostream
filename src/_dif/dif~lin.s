@@ -1034,6 +1034,7 @@ function stage_sound_sample(sd appsink)
 endfunction
 #flow
 function stage_sound_buffer(sd gstappsink,sd *user_data)
+	#call sleepMs(5000)
 	sd ret
 	importx "gst_app_sink_pull_sample" gst_app_sink_pull_sample
 	sd s

@@ -934,8 +934,7 @@ function capture_direct_run(sd output_file,sd method)
     setcall rgb_rect_size rgb_get_size(width,height)
     #draw a text
     import "dialog_modal_texter_draw" dialog_modal_texter_draw
-    ss text="Recording.."
-    call dialog_modal_texter_draw(text)
+    call dialog_modal_texter_draw("Recording..")
     #loop the screenshots
     while 1==1
         #take screenshot

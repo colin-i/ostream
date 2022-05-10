@@ -1603,10 +1603,11 @@ function mp4_mdat_sound(sd file)
             importx "_sprintf" sprintf
             sd bytesleft
             setcall bytesleft stage_sound_alloc_getremainingsize()
-            chars buffer#100
-            str buf^buffer
-            str format="Sound Bytes Left: %u"
-            call sprintf(buf,format,bytesleft)
+            const soundbufstart=!
+            chars format="Sound Bytes Left: %u"
+            chars buffer#!-soundbufstart-2+dword_max
+            vstr buf^buffer
+            call sprintf(buf,#format,bytesleft)
             call dialog_modal_texter_draw(buf)
             #
             import "mp3_encode_test" mp3_encode_test

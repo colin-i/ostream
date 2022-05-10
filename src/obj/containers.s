@@ -127,26 +127,29 @@ function dialogfield(ss title,sd modal_flag,sd forward1,sd forward2)
 endfunction
 #true to not propagate
 function dialogfield_modal_texter_expose(sd widget)
-    import "draw_expose_text" draw_expose_text
-    sd txt
-    setcall txt dialogfield_modal_texter_drawtext((value_get))
-    call draw_expose_text(widget,txt)
-    return (TRUE)
+	call dialogfield_modal_texter_drawtext((value_get),widget)
+	return (TRUE)
 endfunction
-const modal_texter_draw_data_size=100
 import "cpymem" cpymem
 import "slen" slen
+#const modal_texter_draw_data_size=100
 function dialogfield_modal_texter_drawtext(sd procedure,sd text)
-    chars text_data#modal_texter_draw_data_size
-    str strtext^text_data
-    if procedure==(value_set)
-        sd len
-        setcall len slen(text)
-        inc len
-        call cpymem(strtext,text,len)
-    else
-        return strtext
-    endelse
+	chars text_data#22+modal_texter_mark+1
+	vstr strtext^text_data
+	if procedure==(value_set)
+	#this is not main thread
+		sd len
+		setcall len slen(text)
+		inc len
+		call cpymem(strtext,text,len)
+	elseif procedure==(value_get)
+	#this is main thread
+		import "draw_expose_text" draw_expose_text
+		call draw_expose_text(text,strtext)
+	else
+	#value_unset
+		set strtext# 0
+	endelse
 endfunction
 #
 const modal_texter_parentdialog_width=500
@@ -159,11 +162,10 @@ function dialogfield_modal_texter_init(sd vbox,sd dialog)
     import "connect_signal" connect_signal
     sd draw
     setcall draw drawfield(vbox)
-    ss txt
-    setcall txt dialogfield_modal_texter_drawtext((value_get))
-    #it's not ok to access at the same time txt[modal_texter_draw_data_size] by threads but it's no problem
-    import "setmemzero" setmemzero
-    call setmemzero(txt,(modal_texter_draw_data_size))
+    call dialogfield_modal_texter_drawtext((value_unset))
+    #old remark: it's not ok to access at the same time txt[modal_texter_draw_data_size] by threads but it's no problem
+    #import "setmemzero" setmemzero
+    #call setmemzero(txt,(modal_texter_draw_data_size))
     call dialog_modal_texter_drawwidget((value_set),draw)
     #
     str expose="expose-event"
