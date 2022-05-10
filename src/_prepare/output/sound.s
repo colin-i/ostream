@@ -242,12 +242,14 @@ function stage_sound_closedialog()
 	importx "_g_idle_add" g_idle_add
 	call g_idle_add(stage_sound_realclosedialog,(void))
 endfunction
+#bool
 function stage_sound_realclosedialog()
-    sd dialog
-    setcall dialog stage_sound_dialog((value_get))
-    importx "_gtk_dialog_response" gtk_dialog_response
-    call gtk_dialog_response(dialog,(GTK_RESPONSE_OK))
-    call sound_global_flag_set(0)
+	sd dialog
+	setcall dialog stage_sound_dialog((value_get))
+	importx "_gtk_dialog_response" gtk_dialog_response
+	call gtk_dialog_response(dialog,(GTK_RESPONSE_OK))
+	call sound_global_flag_set(0)
+	return (FALSE) #to not call again
 endfunction
 
 
