@@ -148,3 +148,5 @@ const avi_expand=1
 #
 
 #const sound_preview_buffers=32
+
+const modal_texter_mark=dword_max+dword_max

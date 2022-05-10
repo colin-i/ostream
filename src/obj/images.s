@@ -680,8 +680,14 @@ function draw_expose_text(sd widget,ss text)
     sd cairo_double_high
     sd p_cairo_double^cairo_double_low
 
+	importx "_cairo_set_source_rgb" cairo_set_source_rgb
+
+	#set white, double 1
+	call cairo_set_source_rgb(cairo,0,0x3fF00000,0,0x3fF00000,0,0x3fF00000)
+	importx "_cairo_paint" cairo_paint
+	call cairo_paint(cairo)
+
     #set a black source
-    importx "_cairo_set_source_rgb" cairo_set_source_rgb
     call cairo_set_source_rgb(cairo,0,0,0,0,0,0)
 
     #set text size

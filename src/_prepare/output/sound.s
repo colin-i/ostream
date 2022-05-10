@@ -196,6 +196,8 @@ function stage_sound_command()
     ss button="Stop"
     call dialogfield_modal_texter_sync(title,f_init,button,global_flag,stop_flag)
 
+    import "dialog_modal_texter_drawwidget" dialog_modal_texter_drawwidget
+    call dialog_modal_texter_drawwidget((value_set),0) #there are more expose events unprocessed in main,but worker thread was done
     #stop and free the pipe
     sd pipe
     setcall pipe stage_sound_pipe((value_get))
@@ -247,6 +249,11 @@ function stage_sound_connect_appsink(sd appsink)
 endfunction
 #close the dialog when it is called
 function stage_sound_closedialog()
+	#not in main is here
+	importx "_g_idle_add" g_idle_add
+	call g_idle_add(stage_sound_realclosedialog,(void))
+endfunction
+function stage_sound_realclosedialog()
     sd dialog
     setcall dialog stage_sound_dialog((value_get))
     importx "_gtk_dialog_response" gtk_dialog_response
@@ -704,10 +711,11 @@ function stage_sound_alloc(sd action,sd newblock,sd newblock_size)
         setcall sec_rest rule3(bytesrest,bytespersec,(10$numbers-1))
 
         #print
-        chars datastring#dword_null+1+numbers+30
-        str print^datastring
-        str format="Prepared sound time: %u.%u"
-        call sprintf(print,format,seconds,sec_rest)
+        const sountformbufstart=!
+        chars format="Prepared sound time: %u.%u"
+        chars datastring#!-sountformbufstart-2-2+modal_texter_mark
+        vstr print^datastring
+        call sprintf(print,#format,seconds,sec_rest)
         if action==(stage_sound_alloc_printtexter_time)
             import "dialog_modal_texter_draw" dialog_modal_texter_draw
             call dialog_modal_texter_draw(print)
