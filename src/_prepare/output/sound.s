@@ -196,8 +196,6 @@ function stage_sound_command()
     ss button="Stop"
     call dialogfield_modal_texter_sync(title,f_init,button,global_flag,stop_flag)
 
-    import "dialog_modal_texter_drawwidget" dialog_modal_texter_drawwidget
-    call dialog_modal_texter_drawwidget((value_set),0) #there are more expose events unprocessed in main,but worker thread was done
     #stop and free the pipe
     sd pipe
     setcall pipe stage_sound_pipe((value_get))

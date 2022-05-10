@@ -1572,6 +1572,11 @@ function mp4_mdat_sound(sd file)
         sd samples=0
         sd loop=1
         while loop==1
+            sd stop_question
+            setcall stop_question av_dialog_stop((value_get))
+            if stop_question==1
+                return 0
+            endif
             setcall err file_tell(file,ptr_file_pos)
             if err!=(noerror)
                 return 0
