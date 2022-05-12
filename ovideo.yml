@@ -20,7 +20,7 @@ app:
 #gstreamer1.0-plugins-good, gstreamer1.0-plugins-bad
 
 script:
-  - cp ../ovideo.png .
+  - cp ../../ovideo.png .
   - cat > ovideo.desktop <<EOF
   - [Desktop Entry]
   - Type=Application

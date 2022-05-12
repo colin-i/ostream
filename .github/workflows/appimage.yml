@@ -54,9 +54,7 @@ jobs:
       #echo -n ${{ secrets.PASS }} > pas.txt
       #echo "tag=refs/tags/1.1" >> $GITHUB_ENV
       #echo $tag ${{ env.tag }}
-      cp ../ovideo.png .
-      cp ../ovideo.yml .
-      ARCH=i686 ${file} ./ovideo.yml
+      ARCH=i686 ${file} ../ovideo.yml
       cd ..
       sudo rm -r in
    #- name: Create Release
