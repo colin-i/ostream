@@ -19,7 +19,7 @@ jobs:
   # Steps represent a sequence of tasks that will be executed as part of the job
   steps:
    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-   - uses: actions/checkout@v3
+   #- uses: actions/checkout@v3
    #with:
    # repository: colin-i/irc
    # path: my-tools
@@ -36,6 +36,7 @@ jobs:
       if [ -n "${{ env.init }}" ]; then
        echo a
       fi
+      debfileversion=`cat ./debian/changelog | head -n 1 | cut -d '(' -f 2 | cut -d ')' -f 1`
       cd in
       file=/squashfs-root/AppRun
       if [ ! -e "${file}" ]; then
@@ -44,15 +45,20 @@ jobs:
        #chmod +x ./pkg2appimage-*.AppImage
        file=`echo ./${urlpart} | cut -d '/' -f 7`
        chmod +x ${file}
-       ./${file} --appimage-extract
-       #modprobe not found,fuse not found
+       ./${file} --appimage-extract #modprobe not found,fuse not found
        file=./squashfs-root/AppRun
       fi
+      wget_url=https://launchpad.net/~colin-i/+archive/ubuntu/ppa/+files/ovideo_${debfileversion}_i386.deb
+      wget ${wget_url} -O ovideo.deb
       #https://stackoverflow.com/questions/9981099/are-exported-private-keys-in-gpg-still-encrypted
       #echo -n ${{ secrets.PASS }} > pas.txt
       #echo "tag=refs/tags/1.1" >> $GITHUB_ENV
       #echo $tag ${{ env.tag }}
+      cp ../ovideo.png .
+      cp ../ovideo.yml .
       ARCH=i686 ${file} ./ovideo.yml
+      cd ..
+      sudo rm -r in
    #- name: Create Release
    #  id: create_release
    #  uses: actions/create-release@v1
