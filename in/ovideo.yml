@@ -12,8 +12,12 @@ ingredients:
 #    - ovideo
 #    - libgtk2.0-0
   script:
-    - file=`apt-cache show ovideo | grep Filename | cut -d ' ' -f 2 | cut -d '/' -f 5`
-    - wget 'https://launchpad.net/~colin-i/+archive/ubuntu/ppa/+files/${file}' -O ovideo.deb
+     - debfilename=`cat ../debian/changelog | head -n 1`;\
+         echo ${debfilename}
+     - echo ${debfilename}
+     - qw=`apt-cache show ovideo`
+     ` exit -1
+     - wget 'https://launchpad.net/~colin-i/+archive/ubuntu/ppa/+files/${debfilename}' -O ovideo.deb
 #https://launchpad.net/ubuntu/bionic/i386/libgtk2.0-0
 #click last version
 #    - wget 'http://launchpadlibrarian.net/361893712/libgtk2.0-0_2.24.32-1ubuntu1_i386.deb'

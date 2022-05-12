@@ -37,19 +37,22 @@ jobs:
        echo a
       fi
       cd in
-      file=/pkg2appimage-1807-x86_64.AppImage
+      file=/squashfs-root/AppRun
       if [ ! -e "${file}" ]; then
        urlpart=`wget -q https://github.com/AppImage/pkg2appimage/releases -O - | grep "pkg2appimage-.*-x86_64.AppImage" | head -n 1 | cut -d '"' -f 2`
        wget -c https://github.com/${urlpart}
        #chmod +x ./pkg2appimage-*.AppImage
        file=`echo ./${urlpart} | cut -d '/' -f 7`
        chmod +x ${file}
+       ./${file} --appimage-extract
+       #modprobe not found,fuse not found
+       file=./squashfs-root/AppRun
       fi
       #https://stackoverflow.com/questions/9981099/are-exported-private-keys-in-gpg-still-encrypted
       #echo -n ${{ secrets.PASS }} > pas.txt
       #echo "tag=refs/tags/1.1" >> $GITHUB_ENV
       #echo $tag ${{ env.tag }}
-      ARCH=i686 ${file} ovideo.yml
+      ARCH=i686 ${file} ./ovideo.yml
    #- name: Create Release
    #  id: create_release
    #  uses: actions/create-release@v1
