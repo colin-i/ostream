@@ -4,9 +4,9 @@
 on:
  # Triggers the workflow on push or pull request events but only for the main branch
  #push:
- #  branches: [ main ]
+ # branches: [ main ]
  #pull_request:
- #  branches: [ main ]
+ # branches: [ main ]
  # Allows you to run this workflow manually from the Actions tab
  workflow_dispatch:
 
@@ -33,38 +33,39 @@ jobs:
    #Runs a set of commands using the runners shell
    - name: Run a multi-line script
      run: |
+      if [ -n "${{ env.init }}" ]; then
+       echo a
+      fi
       cd in
-      file=pkg2appimage-1807-x86_64.AppImage
-      if [ ! -e "/home/bc/Desktop/out/${file}" ]; then
+      file=/pkg2appimage-1807-x86_64.AppImage
+      if [ ! -e "${file}" ]; then
        urlpart=`wget -q https://github.com/AppImage/pkg2appimage/releases -O - | grep "pkg2appimage-.*-x86_64.AppImage" | head -n 1 | cut -d '"' -f 2`
        wget -c https://github.com/${urlpart}
        #chmod +x ./pkg2appimage-*.AppImage
-       file=`echo ${urlpart} | cut -d '/' -f 7`
-       chmod +x ./${file}
-      else
-       ln -s /home/bc/Desktop/out/${file} ./${file}
+       file=`echo ./${urlpart} | cut -d '/' -f 7`
+       chmod +x ${file}
       fi
       #https://stackoverflow.com/questions/9981099/are-exported-private-keys-in-gpg-still-encrypted
       #echo -n ${{ secrets.PASS }} > pas.txt
       #echo "tag=refs/tags/1.1" >> $GITHUB_ENV
       #echo $tag ${{ env.tag }}
-      ARCH=i686 ./${file} ovideo.yml
+      ARCH=i686 ${file} ovideo.yml
    #- name: Create Release
-   #id: create_release
-   #uses: actions/create-release@v1
-   #env:
-   # GITHUB_TOKEN: ${{ secrets.PAT }}
-   #with:
-   # tag_name: ${{ env.tag }}
-   # release_name: Release ${{ env.tag }}
-   # draft: false
-   # rerelease: false
+   #  id: create_release
+   #  uses: actions/create-release@v1
+   #  env:
+   #   GITHUB_TOKEN: ${{ secrets.PAT }}
+   #  with:
+   #   tag_name: ${{ env.tag }}
+   #   release_name: Release ${{ env.tag }}
+   #   draft: false
+   #   rerelease: false
    #- name: Upload Release Asset
-   #uses: actions/upload-release-asset@v1
-   #env:
-   # GITHUB_TOKEN: ${{ secrets.PAT }}
-   #with:
-   # upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-   # asset_path: ./LD-.glibc2.27-x86_64.AppImage
-   # asset_name: LD-.glibc2.27-x86_64.AppImage
-   # asset_content_type: application/x-executable
+   #  uses: actions/upload-release-asset@v1
+   #  env:
+   #   GITHUB_TOKEN: ${{ secrets.PAT }}
+   #  with:
+   #   upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+   #   asset_path: ./LD-.glibc2.27-x86_64.AppImage
+   #   asset_name: LD-.glibc2.27-x86_64.AppImage
+   #   asset_content_type: application/x-executable
