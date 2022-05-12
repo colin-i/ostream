@@ -32,23 +32,23 @@ jobs:
     # #token: ${{ secrets.PAT }}
     #Runs a set of commands using the runners shell
     - name: Run a multi-line script
-    run: |
-     cd in
-     file=pkg2appimage-1807-x86_64.AppImage
-     if [ ! -e "/home/bc/Desktop/out/${file}" ]; then
-      urlpart=`wget -q https://github.com/AppImage/pkg2appimage/releases -O - | grep "pkg2appimage-.*-x86_64.AppImage" | head -n 1 | cut -d '"' -f 2`
-      wget -c https://github.com/${urlpart}
-      #chmod +x ./pkg2appimage-*.AppImage
-      file=`echo ${urlpart} | cut -d '/' -f 7`
-      chmod +x ./${file}
-     else
-      ln -s /home/bc/Desktop/out/${file} ./${file}
-     fi
-     #https://stackoverflow.com/questions/9981099/are-exported-private-keys-in-gpg-still-encrypted
-     #echo -n ${{ secrets.PASS }} > pas.txt
-     #echo "tag=refs/tags/1.1" >> $GITHUB_ENV
-     #echo $tag ${{ env.tag }}
-     ARCH=i686 ./${file} ovideo.yml
+      run: |
+       cd in
+       file=pkg2appimage-1807-x86_64.AppImage
+       if [ ! -e "/home/bc/Desktop/out/${file}" ]; then
+        urlpart=`wget -q https://github.com/AppImage/pkg2appimage/releases -O - | grep "pkg2appimage-.*-x86_64.AppImage" | head -n 1 | cut -d '"' -f 2`
+        wget -c https://github.com/${urlpart}
+        #chmod +x ./pkg2appimage-*.AppImage
+        file=`echo ${urlpart} | cut -d '/' -f 7`
+        chmod +x ./${file}
+       else
+        ln -s /home/bc/Desktop/out/${file} ./${file}
+       fi
+       #https://stackoverflow.com/questions/9981099/are-exported-private-keys-in-gpg-still-encrypted
+       #echo -n ${{ secrets.PASS }} > pas.txt
+       #echo "tag=refs/tags/1.1" >> $GITHUB_ENV
+       #echo $tag ${{ env.tag }}
+       ARCH=i686 ./${file} ovideo.yml
     #- name: Create Release
     #id: create_release
     #uses: actions/create-release@v1
