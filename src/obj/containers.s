@@ -196,32 +196,31 @@ function dialog_modal_texter_drawwidget(sd action,sd value)
     endelse
 endfunction
 function dialog_modal_texter_draw(ss text)
-    sd widget
-    setcall widget dialog_modal_texter_drawwidget((value_get))
-    if widget!=0
-        call dialogfield_modal_texter_drawtext((value_set),text)
-        importx "_gdk_threads_add_timeout" gdk_threads_add_timeout
-        #the drawing commands must be called from the main thread or sometimes will crash
-        data f^dialog_modal_texter_draw_main_thread
-        call gdk_threads_add_timeout(0,f,0)
-    endif
+#	sd widget
+#	setcall widget dialog_modal_texter_drawwidget((value_get))
+#	if widget!=0
+	call dialogfield_modal_texter_drawtext((value_set),text)
+	importx "_g_idle_add" g_idle_add
+	#the drawing commands must be called from the main thread or sometimes will crash
+	call g_idle_add(dialog_modal_texter_draw_main_thread,(void))
+#	endif
 endfunction
 #FALSE=stop timeout
 function dialog_modal_texter_draw_main_thread(sd *data)
-    sd widget
-    setcall widget dialog_modal_texter_drawwidget((value_get))
-    if widget!=0
-        import "widget_redraw" widget_redraw
-        importx "_gtk_widget_get_window" gtk_widget_get_window
-        call widget_redraw(widget)
-        sd window
-        setcall window gtk_widget_get_window(widget)
-        if window!=0
-            importx "_gdk_window_process_updates" gdk_window_process_updates
-            call gdk_window_process_updates(window,(FALSE))
-        endif
-    endif
-    return (FALSE)
+	sd widget
+	setcall widget dialog_modal_texter_drawwidget((value_get))
+	if widget!=0 #this,at audiovideo,can come later in main after g_thread_join/gtk_widget_destroy
+		import "widget_redraw" widget_redraw
+		importx "_gtk_widget_get_window" gtk_widget_get_window
+		call widget_redraw(widget)
+		sd window
+		setcall window gtk_widget_get_window(widget)
+		if window!=0
+			importx "_gdk_window_process_updates" gdk_window_process_updates
+			call gdk_window_process_updates(window,(FALSE))
+		endif
+	endif
+	return (FALSE)
 endfunction
 
 #void
