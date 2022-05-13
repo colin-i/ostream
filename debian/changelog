@@ -1,3 +1,9 @@
+ovideo (1-180b) bionic; urgency=medium
+
+  * extra off
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Fri, 13 May 2022 06:41:26 +0300
+
 ovideo (1-179b) bionic; urgency=medium
 
   * idle false

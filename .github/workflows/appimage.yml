@@ -24,20 +24,37 @@ jobs:
    # repository: colin-i/irc
    # path: my-tools
    #- uses: dsaltares/fetch-gh-release-asset@master
-   #with:
-   # repo: 'colin-i/test'
+   #this is locally: throw new Error("Parameter token or opts.auth is required");
+   #  with:
+   #   repo: 'colin-i/test'
+   #   file: 'ovideo.png'
+   #   target: 'in/' #plague-linux.zip'
    # #version: 'tags/1.1'
-   # file: 'gpg.gpg'
-   # #target: 'tmp/' #plague-linux.zip'
    # #token: ${{ secrets.PAT }}
    #Runs a set of commands using the runners shell
    - name: Run a multi-line script
      run: |
       if [ -n "${{ env.init }}" ]; then
-       echo a
+       exit
       fi
-      debfileversion=`cat ./debian/changelog | head -n 1 | cut -d '(' -f 2 | cut -d ')' -f 1`
+      mkdir -p in #p for multiple times
       cd in
+      wget https://github.com/colin-i/test/releases/download/1.1/ovideo.png -O ovideo.png #O for multiple times
+      cat > ovideo.desktop <<EOF
+      [Desktop Entry]
+      Type=Application
+      Name=OVideo
+      Exec=ovideo
+      Icon=ovideo
+      Categories=GNOME;GTK;
+      EOF
+      cat > ovideo.yml <<EOF
+      app:
+       ovideo
+      script:
+       - mv ../ovideo.png .
+       - mv ../ovideo.desktop .
+      EOF
       file=/squashfs-root/AppRun
       if [ ! -e "${file}" ]; then
        urlpart=`wget -q https://github.com/AppImage/pkg2appimage/releases -O - | grep "pkg2appimage-.*-x86_64.AppImage" | head -n 1 | cut -d '"' -f 2`
@@ -48,15 +65,18 @@ jobs:
        ./${file} --appimage-extract #modprobe not found,fuse not found
        file=./squashfs-root/AppRun
       fi
-      wget_url=https://launchpad.net/~colin-i/+archive/ubuntu/ppa/+files/ovideo_${debfileversion}_i386.deb
+      wget https://ppa.launchpadcontent.net/colin-i/ppa/ubuntu/dists/bionic/main/binary-i386/Packages.xz -O Packages.xz
+      xz -fd Packages.xz #f for multiple times
+      debfilename=`grep ovideo Packages | tail -1 | grep -o '[^/]*$'`
+      wget_url=https://ppa.launchpadcontent.net/colin-i/ppa/ubuntu/pool/main/o/ovideo/${debfilename}
+      #https://launchpad.net/~colin-i/+archive/ubuntu/ppa/+files/${debfilename}
       wget ${wget_url} -O ovideo.deb
+      #http://ro.archive.ubuntu.com/ubuntu/dists/bionic/main/binary-i386/Packages.xz
       #https://stackoverflow.com/questions/9981099/are-exported-private-keys-in-gpg-still-encrypted
       #echo -n ${{ secrets.PASS }} > pas.txt
       #echo "tag=refs/tags/1.1" >> $GITHUB_ENV
       #echo $tag ${{ env.tag }}
-      ARCH=i686 ${file} ../ovideo.yml
-      cd ..
-      sudo rm -r in
+      ARCH=i686 ${file} ./ovideo.yml
    #- name: Create Release
    #  id: create_release
    #  uses: actions/create-release@v1
