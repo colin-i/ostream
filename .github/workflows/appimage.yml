@@ -46,26 +46,30 @@ jobs:
        #"pkg2appimage-.*-x86_64.AppImage"
        wget -c https://github.com/${urlpart}
        mv ${archfile} ${file}
-       chmod +x ${file}
+       chmod a+x ${file}
        file2=AppRun
        archfile2=${file2}${arch}
        urlpart=${urlpart:0:`echo ${urlpart} | grep -ob '[^/]*$' | cut -d ':' -f 1`}${archfile2}
        wget -c https://github.com/${urlpart}
-       chmod +x ${archfile2}
+       chmod a+x ${archfile2}
        mv ${archfile2} AppDir/${file2}
       fi
-      maindeb=ovideo.deb
-      if [ ! -e "${maindeb}" ]; then
-       wget https://ppa.launchpadcontent.net/colin-i/ppa/ubuntu/dists/bionic/main/binary-i386/Packages.xz -O Packages.xz
-       xz -d Packages.xz #f for multiple times
-       debfilename=`grep ovideo Packages | tail -1 | grep -o '[^/]*$'`
-       wget_url=https://ppa.launchpadcontent.net/colin-i/ppa/ubuntu/pool/main/o/ovideo/${debfilename}
-       #https://launchpad.net/~colin-i/+archive/ubuntu/ppa/+files/${debfilename}
-       wget ${wget_url} -O ${maindeb}
-       ar x ovideo.deb data.tar.xz
-       xz -d data.tar.xz
-       tar -xf data.tar -C AppDir
-      fi
+      downdeb () {
+       maindeb=${2}.deb
+       if [ ! -e "${maindeb}" ]; then
+        wget http://${1}/ubuntu/dists/bionic/main/binary-${3}/Packages.xz -O Packages.xz
+        xz -fd Packages.xz #f for multiple times
+        debfilename=`grep "^Filename.*${2}" Packages | tail -1 | cut -d ' ' -f 2`
+        wget_url=http://${1}/ubuntu/${debfilename}
+        #https://launchpad.net/~colin-i/+archive/ubuntu/ppa/+files/${debfilename}	| grep -o '[^/]*$'
+        wget ${wget_url} -O ${maindeb}
+        ar x ${2}.deb data.tar.xz
+        xz -fd data.tar.xz
+        tar -xf data.tar -C AppDir
+       fi
+      }
+      downdeb "ppa.launchpadcontent.net/colin-i/ppa" ovideo i386
+      downdeb "ro.archive.ubuntu.com" libc6-i386 amd64
       cd AppDir
       pngfile=ovideo.png
       if [ ! -e "${pngfile}" ]; then
@@ -80,6 +84,18 @@ jobs:
       Icon=ovideo
       Categories=GNOME;GTK;
       EOF
+      if [ ! -e "usr/bin/ostream" ]; then
+      cd usr/bin
+       mv ovideo ostream
+       #live64 is not having /lib/ld-linux.so.2. without librarypath will wrong libc bionic to jammy
+       cat > ovideo <<EOF
+      #!/bin/bash
+      cd "\$(dirname "\$0")"
+      ../../lib32/ld-linux.so.2 --library-path ../../lib32 ./ostream
+      EOF
+       chmod 755 ovideo
+       cd ../../
+      fi
       cd ..
       mksquashfs AppDir ovideo.squashfs -root-owned -noappend
       cat runtime >> ovideo.AppImage
