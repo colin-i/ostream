@@ -37,8 +37,6 @@ jobs:
       if [ -n "${{ env.init }}" ]; then
        exit
       fi
-      mkdir -p in #p for multiple times
-      cd in
       mkdir -p AppDir
       file=runtime
       if [ ! -e "${file}" ]; then
@@ -83,7 +81,7 @@ jobs:
       Categories=GNOME;GTK;
       EOF
       cd ..
-      mksquashfs ovideo.AppDir ovideo.squashfs -root-owned -noappend
+      mksquashfs AppDir ovideo.squashfs -root-owned -noappend
       cat runtime >> ovideo.AppImage
       cat ovideo.squashfs >> ovideo.AppImage
       chmod a+x ovideo.AppImage
