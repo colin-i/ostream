@@ -39,7 +39,41 @@ jobs:
       fi
       mkdir -p in #p for multiple times
       cd in
-      wget https://github.com/colin-i/test/releases/download/1.1/ovideo.png -O ovideo.png #O for multiple times
+      mkdir -p AppDir
+      file=runtime
+      if [ ! -e "${file}" ]; then
+       arch=-x86_64
+       archfile=${file}${arch}
+       urlpart=`wget -q https://github.com/AppImage/AppImageKit/releases/latest -O - | grep "${archfile}" | head -n 1 | cut -d '"' -f 2`
+       #"pkg2appimage-.*-x86_64.AppImage"
+       wget -c https://github.com/${urlpart}
+       mv ${archfile} ${file}
+       chmod +x ${file}
+       file2=AppRun
+       archfile2=${file2}${arch}
+       urlpart=${urlpart:0:`echo ${urlpart} | grep -ob '[^/]*$' | cut -d ':' -f 1`}${archfile2}
+       wget -c https://github.com/${urlpart}
+       chmod +x ${archfile2}
+       mv ${archfile2} AppDir/${file2}
+      fi
+      maindeb=ovideo.deb
+      if [ ! -e "${maindeb}" ]; then
+       wget https://ppa.launchpadcontent.net/colin-i/ppa/ubuntu/dists/bionic/main/binary-i386/Packages.xz -O Packages.xz
+       xz -d Packages.xz #f for multiple times
+       debfilename=`grep ovideo Packages | tail -1 | grep -o '[^/]*$'`
+       wget_url=https://ppa.launchpadcontent.net/colin-i/ppa/ubuntu/pool/main/o/ovideo/${debfilename}
+       #https://launchpad.net/~colin-i/+archive/ubuntu/ppa/+files/${debfilename}
+       wget ${wget_url} -O ${maindeb}
+       ar x ovideo.deb data.tar.xz
+       xz -d data.tar.xz
+       tar -xf data.tar -C AppDir
+      fi
+      cd AppDir
+      pngfile=ovideo.png
+      if [ ! -e "${pngfile}" ]; then
+       wget https://github.com/colin-i/test/releases/download/1.1/ovideo.png -O ${pngfile} #O for multiple times
+       ln -s ${pngfile} .DirIcon #f for multiple times
+      fi
       cat > ovideo.desktop <<EOF
       [Desktop Entry]
       Type=Application
@@ -48,35 +82,17 @@ jobs:
       Icon=ovideo
       Categories=GNOME;GTK;
       EOF
-      cat > ovideo.yml <<EOF
-      app:
-       ovideo
-      script:
-       - mv ../ovideo.png .
-       - mv ../ovideo.desktop .
-      EOF
-      file=/squashfs-root/AppRun
-      if [ ! -e "${file}" ]; then
-       urlpart=`wget -q https://github.com/AppImage/pkg2appimage/releases -O - | grep "pkg2appimage-.*-x86_64.AppImage" | head -n 1 | cut -d '"' -f 2`
-       wget -c https://github.com/${urlpart}
-       #chmod +x ./pkg2appimage-*.AppImage
-       file=`echo ./${urlpart} | cut -d '/' -f 7`
-       chmod +x ${file}
-       ./${file} --appimage-extract #modprobe not found,fuse not found
-       file=./squashfs-root/AppRun
-      fi
-      wget https://ppa.launchpadcontent.net/colin-i/ppa/ubuntu/dists/bionic/main/binary-i386/Packages.xz -O Packages.xz
-      xz -fd Packages.xz #f for multiple times
-      debfilename=`grep ovideo Packages | tail -1 | grep -o '[^/]*$'`
-      wget_url=https://ppa.launchpadcontent.net/colin-i/ppa/ubuntu/pool/main/o/ovideo/${debfilename}
-      #https://launchpad.net/~colin-i/+archive/ubuntu/ppa/+files/${debfilename}
-      wget ${wget_url} -O ovideo.deb
+      cd ..
+      mksquashfs ovideo.AppDir ovideo.squashfs -root-owned -noappend
+      cat runtime >> ovideo.AppImage
+      cat ovideo.squashfs >> ovideo.AppImage
+      chmod a+x ovideo.AppImage
       #http://ro.archive.ubuntu.com/ubuntu/dists/bionic/main/binary-i386/Packages.xz
       #https://stackoverflow.com/questions/9981099/are-exported-private-keys-in-gpg-still-encrypted
       #echo -n ${{ secrets.PASS }} > pas.txt
       #echo "tag=refs/tags/1.1" >> $GITHUB_ENV
       #echo $tag ${{ env.tag }}
-      ARCH=i686 ${file} ./ovideo.yml
+      #ARCH=i686 ${file} ./ovideo.yml
    #- name: Create Release
    #  id: create_release
    #  uses: actions/create-release@v1
