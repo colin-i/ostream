@@ -52,28 +52,32 @@ jobs:
        chmod a+x ${file}
       fi
       downdeb () {
-       maindeb=${2}.deb
+       maindeb=${4}.deb
        if [ ! -e "${maindeb}" ]; then
-        inter=Packages${3}${4}
+        inter=Packages${2}${3}
         if [ ! -e "${inter}" ]; then
-         wget http://${1}/ubuntu/dists/bionic/main/binary-${3}/Packages.xz -O ${inter}.xz
+         wget http://${1}/ubuntu/dists/bionic/main/binary-${2}/Packages.xz -O ${inter}.xz
          xz -d ${inter}.xz #f for multiple times
         fi
-        debfilename=`grep "^Filename.*${2}" ${inter} | tail -1 | cut -d ' ' -f 2`
+        debfilename=`grep "^Filename.*${4}[^-]" ${inter} | tail -1 | cut -d ' ' -f 2`
         wget_url=http://${1}/ubuntu/${debfilename}
         #https://launchpad.net/~colin-i/+archive/ubuntu/ppa/+files/${debfilename}	| grep -o '[^/]*$'
         wget ${wget_url} -O ${maindeb}
-        ar x ${2}.deb data.tar.xz
-        xz -fd data.tar.xz
-        tar -xf data.tar -C AppDir
+        dpkg -x ${maindeb} AppDir
+        #ar x ${maindeb} data.tar.xz
+        #xz -fd data.tar.xz
+        #tar -xf data.tar -C AppDir
        fi
       }
-      downdeb "ppa.launchpadcontent.net/colin-i/ppa" ovideo i386 1
-      downdeb "ro.archive.ubuntu.com" libc6-i386 amd64
-      array=( libgtk2.0-0 libpangocairo-1.0-0 )
+      downdeb "ppa.launchpadcontent.net/colin-i/ppa" i386 1 ovideo
+      downdeb "ro.archive.ubuntu.com" amd64 1 libc6-i386
+      array=( libgtk2.0-0 libpangocairo-1.0-0 libatk1.0-0 libcairo2 libgdk-pixbuf2.0-0 \
+              libglib2.0-0 libpangoft2-1.0-0 libpango-1.0-0 libfontconfig1 libfreetype6 \
+              libgstreamer-plugins-base1.0-0 libgstreamer1.0-0 libjpeg-turbo8 libsoup2.4-1 libasound2 )
       for var in "${array[@]}"
       do
-       downdeb "ro.archive.ubuntu.com" ${var} i386 2
+       #var=`echo $var | tr 'Q' '\n' | xargs echo `
+       downdeb "ro.archive.ubuntu.com" i386 2 ${var}
       done
       cd AppDir
       file2=AppRun
@@ -90,7 +94,6 @@ jobs:
       pngfile=ovideo.png
       if [ ! -e "${pngfile}" ]; then
        wget https://github.com/colin-i/test/releases/download/1.1/ovideo.png -O ${pngfile} #O for multiple times
-       ln -s ${pngfile} .DirIcon #f for multiple times
        cat > ovideo.desktop <<EOF
       [Desktop Entry]
       Type=Application
@@ -99,6 +102,7 @@ jobs:
       Icon=ovideo
       Categories=GNOME;GTK;
       EOF
+       ln -s ${pngfile} .DirIcon #f for multiple times
       fi
       if [ ! -e "usr/bin/ostream" ]; then
       cd usr/bin
