@@ -75,11 +75,18 @@ jobs:
               libglib2.0-0 libpangoft2-1.0-0 libpango-1.0-0 libfontconfig1 libfreetype6 \
               libgstreamer-plugins-base1.0-0 libgstreamer1.0-0 libjpeg-turbo8 libsoup2.4-1 libasound2 \
               libx11-6 libxfixes3 libxrender1 libxinerama1 libxi6 libxrandr2 libxcursor1 libxcomposite1 libxdamage1 libxext6 \
-              libpixman-1-0 libpng16-16 \
-              libxcb-shm0 libxcb1 libxcb-render0 zlib1g libselinux1 libmount1 \
-              libharfbuzz0b libthai0 libexpat1 liborc-0.4-0 libffi6 libpcre3 libxml2 libsqlite3-0 libgssapi-krb5-2 libxau6 libxdmcp6 libblkid1 \
-              libgraphite2-3 libdatrie1 libicu60 liblzma5 libkrb5-3 libk5crypto3 libcom-err2 libkrb5support0 libbsd0 libuuid1 \
-              libstdc++6 )
+              libpixman-1-0 libpng16-16 libxcb-shm0 libxcb1 libxcb-render0 \
+              zlib1g libselinux1 libmount1   libharfbuzz0b libthai0   libexpat1 liborc-0.4-0 libffi6   libpcre3 \
+              libxml2 libsqlite3-0 libgssapi-krb5-2 libxau6 libxdmcp6   libblkid1   libgraphite2-3 libdatrie1 libicu60   liblzma5 \
+              libkrb5-3 libk5crypto3   libcom-err2   libkrb5support0   libbsd0 libuuid1   libstdc++6   libgcc1 libkeyutils1 )
+      #libgtk-x11-2.0.so.0 libpangocairo-1.0.so.0 libatk-1.0.so.0 libcairo.so.2 libgdk_pixbuf-2.0.so.0
+      #libglib-2.0.so.0 libpangoft2-1.0.so.0 libpango-1.0.so.0 libfontconfig.so.1 libfreetype.so.6
+      #libgstpbutils-1.0.so.0 libgstreamer-1.0.so.0 libjpeg.so.8 libsoup-2.4.so.1 libasound.so.2
+      #libX11.so.6 libXfixes.so.3 libXrender.so.1 libXinerama.so.1 libXi.so.6 libXrandr.so.2 libXcursor.so.1 libXcomposite.so.1 libXdamage.so.1 libXext.so.6
+      #libpixman-1.so.0 libpng16.so.16 libxcb-shm.so.0 libxcb.so.1 libxcb-render.so.0
+      #libz.so.1 libselinux.so.1 libmount.so.1   libharfbuzz.so.0 libthai.so.0   libexpat.so.1 liborc-0.4.so.0 libffi.so.6   libpcre.so.3
+      #libxml2.so.2 libsqlite3.so.0 libgssapi_krb5.so.2 libXau.so.6 libXdmcp.so.6   libblkid.so.1   libgraphite2.so.3 libdatrie.so.1 libicuuc.so.60   liblzma.so.5
+      #libkrb5.so.3 libk5crypto.so.3   libcom_err.so.2   libkrb5support.so.0   libbsd.so.0 libuuid.so.1   libstdc++.so.6   libgcc_s.so.1 libkeyutils.so.1
       for var in "${array[@]}"
       do
        #var=`echo $var | tr 'Q' '\n' | xargs echo `
