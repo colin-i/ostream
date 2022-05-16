@@ -59,7 +59,7 @@ jobs:
          wget http://${1}/ubuntu/dists/bionic/main/binary-${2}/Packages.xz -O ${inter}.xz
          xz -d ${inter}.xz #f for multiple times
         fi
-        debfilename=`grep "^Filename.*${4}[^-]" ${inter} | tail -1 | cut -d ' ' -f 2`
+        debfilename=`grep "^Filename.*/${4}_" ${inter} | tail -1 | cut -d ' ' -f 2`
         wget_url=http://${1}/ubuntu/${debfilename}
         #https://launchpad.net/~colin-i/+archive/ubuntu/ppa/+files/${debfilename}	| grep -o '[^/]*$'
         wget ${wget_url} -O ${maindeb}
@@ -73,7 +73,13 @@ jobs:
       downdeb "ro.archive.ubuntu.com" amd64 1 libc6-i386
       array=( libgtk2.0-0 libpangocairo-1.0-0 libatk1.0-0 libcairo2 libgdk-pixbuf2.0-0 \
               libglib2.0-0 libpangoft2-1.0-0 libpango-1.0-0 libfontconfig1 libfreetype6 \
-              libgstreamer-plugins-base1.0-0 libgstreamer1.0-0 libjpeg-turbo8 libsoup2.4-1 libasound2 )
+              libgstreamer-plugins-base1.0-0 libgstreamer1.0-0 libjpeg-turbo8 libsoup2.4-1 libasound2 \
+              libx11-6 libxfixes3 libxrender1 libxinerama1 libxi6 libxrandr2 libxcursor1 libxcomposite1 libxdamage1 libxext6 \
+              libpixman-1-0 libpng16-16 \
+              libxcb-shm0 libxcb1 libxcb-render0 zlib1g libselinux1 libmount1 \
+              libharfbuzz0b libthai0 libexpat1 liborc-0.4-0 libffi6 libpcre3 libxml2 libsqlite3-0 libgssapi-krb5-2 libxau6 libxdmcp6 libblkid1 \
+              libgraphite2-3 libdatrie1 libicu60 liblzma5 libkrb5-3 libk5crypto3 libcom-err2 libkrb5support0 libbsd0 libuuid1 \
+              libstdc++6 )
       for var in "${array[@]}"
       do
        #var=`echo $var | tr 'Q' '\n' | xargs echo `
@@ -108,10 +114,11 @@ jobs:
       cd usr/bin
        mv ovideo ostream
        #live64 is not having /lib/ld-linux.so.2. without librarypath will wrong libc bionic to jammy
+       #../lib since zlib1g
        cat > ovideo <<EOF
       #!/bin/bash
       cd "\$(dirname "\$0")"
-      ../../lib32/ld-linux.so.2 --library-path ../../lib32:../../usr/lib/i386-linux-gnu ./ostream
+      ../../lib32/ld-linux.so.2 --library-path ../../lib32:../../usr/lib/i386-linux-gnu:../../lib/i386-linux-gnu ./ostream
       EOF
        chmod 755 ovideo
        cd ../../
