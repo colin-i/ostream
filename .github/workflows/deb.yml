@@ -33,8 +33,7 @@ jobs:
         sudo dpkg -i ${maindeb}
        fi
       }
-      #dpkg --add-architecture i386
-      #remote:    dpkg: error: unable to create new file '/var/lib/dpkg/arch-new': Permission denied
+      sudo dpkg --add-architecture i386
       #array=( libc6 )
       #for var in "${array[@]}"
       #do
