@@ -30,33 +30,44 @@ jobs:
         debfilename=`grep "^Filename.*/${4}_" ${inter} | tail -1 | cut -d ' ' -f 2`
         wget_url=http://${1}/ubuntu/${debfilename}
         wget ${wget_url} -O ${maindeb}
+        dpkgs1=x
        fi
       }
       sudo dpkg --add-architecture i386
       dpkgs=
+      dpkgs1=
       array=( gcc-8-base libgcc1 libc6 )
       for var in "${array[@]}"
       do
        downdeb "ro.archive.ubuntu.com" i386 1 ${var} bionic-updates main
        dpkgs+=" ${var}.deb"
       done
-      echo ${dpkgs}
-      sudo dpkg -i ${dpkgs}
-      downdeb "ppa.launchpadcontent.net/colin-i/ppa" i386 2 ocompiler xenial main
-      #downdeb "ro.archive.ubuntu.com" i386 3 libgstreamer-plugins-base0.10-dev xenial universe
+      if [ -n "${dpkgs1}" ]; then
+       sudo dpkg -i ${dpkgs}
+      fi
+      downdeb "ppa.launchpadcontent.net/colin-i/ppa" i386 2 ocompiler bionic main
       #array=( debhelper )
       #for var in "${array[@]}"
       #do
       # downdeb "ro.archive.ubuntu.com" amd64 1 ${var} bionic main
       #done
+      #downdeb "ro.archive.ubuntu.com" i386 3 libgstreamer-plugins-base0.10-dev xenial universe
+      origf=ovideo-1.tar.gz
+      if [ ! -e "${origf}" ]; then
+       wget https://github.com/colin-i/test/releases/download/1.1/${origf} -O ${origf}
+       ln -s ${origf} ovideo_1.orig.tar.gz
+      fi
       cd in
-      sudo apt install devscripts
-      #devscripts libfile-homedir-perl libfile-which-perl
+      if [ -z "`dpkg -s devscripts>/dev/null 2>&1 && echo x`" ]; then
+       sudo apt install devscripts
+       #dch:    devscripts libfile-homedir-perl libfile-which-perl
+       #debuild: fakeroot libfakeroot
+      fi
       #dch -v 1-181 --distribution=xenial "script build"
       # --create --package "pkgpkg" --newversion 0.0.0.0-0.test
-      #fakeroot libfakeroot
-      #cd ..
+      #
       debuild -S
+      cd ..
    #- name: Create Release
    #  id: create_release
    #  uses: actions/create-release@v1
