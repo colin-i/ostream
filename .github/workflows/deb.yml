@@ -19,12 +19,6 @@ jobs:
    #Runs a set of commands using the runners shell
    - name: Run a multi-line script
      run: |
-      #cd in
-      #devscripts libfile-homedir-perl libfile-which-perl
-      #dch -v 1-181 --distribution=xenial "script build"
-      # --create --package "pkgpkg" --newversion 0.0.0.0-0.test
-      #fakeroot libfakeroot
-      #cd ..
       downdeb () {
        maindeb=${4}.deb
        if [ ! -e "${maindeb}" ]; then
@@ -40,18 +34,24 @@ jobs:
        fi
       }
       dpkg --add-architecture i386
-      array=( libc6 )
-      for var in "${array[@]}"
-      do
-       downdeb "ro.archive.ubuntu.com" i386 1 ${var} bionic main
-      done
-      array=( debhelper )
-      for var in "${array[@]}"
-      do
-       downdeb "ro.archive.ubuntu.com" amd64 1 ${var} bionic main
-      done
-      downdeb "ro.archive.ubuntu.com" i386 2 libgstreamer-plugins-base0.10-dev xenial universe
+      #array=( libc6 )
+      #for var in "${array[@]}"
+      #do
+      # downdeb "ro.archive.ubuntu.com" i386 1 ${var} bionic main
+      #done
+      #downdeb "ro.archive.ubuntu.com" i386 2 libgstreamer-plugins-base0.10-dev xenial universe
       downdeb "ppa.launchpadcontent.net/colin-i/ppa" i386 3 ocompiler xenial main
+      #array=( debhelper )
+      #for var in "${array[@]}"
+      #do
+      # downdeb "ro.archive.ubuntu.com" amd64 1 ${var} bionic main
+      #done
+      cd in
+      #devscripts libfile-homedir-perl libfile-which-perl
+      #dch -v 1-181 --distribution=xenial "script build"
+      # --create --package "pkgpkg" --newversion 0.0.0.0-0.test
+      #fakeroot libfakeroot
+      #cd ..
       debuild -S
    #- name: Create Release
    #  id: create_release
