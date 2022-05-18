@@ -13,9 +13,9 @@ jobs:
   # Steps represent a sequence of tasks that will be executed as part of the job
   steps:
    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-   - uses: actions/checkout@v3
-     with:
-      path: in
+   #- uses: actions/checkout@v3
+   #  with:
+   #   path: in
    #Runs a set of commands using the runners shell
    - name: Run a multi-line script
      run: |
@@ -31,7 +31,6 @@ jobs:
         wget_url=http://${1}/ubuntu/${debfilename}
         wget ${wget_url} -O ${maindeb}
        fi
-       dpkgs+=" ${maindeb}"
       }
       sudo dpkg --add-architecture i386
       dpkgs=
@@ -39,7 +38,9 @@ jobs:
       for var in "${array[@]}"
       do
        downdeb "ro.archive.ubuntu.com" i386 1 ${var} bionic-updates main
+       dpkgs+=" ${var}.deb"
       done
+      echo ${dpkgs}
       sudo dpkg -i ${dpkgs}
       downdeb "ppa.launchpadcontent.net/colin-i/ppa" i386 2 ocompiler xenial main
       #downdeb "ro.archive.ubuntu.com" i386 3 libgstreamer-plugins-base0.10-dev xenial universe
@@ -49,6 +50,7 @@ jobs:
       # downdeb "ro.archive.ubuntu.com" amd64 1 ${var} bionic main
       #done
       cd in
+      sudo apt install devscripts
       #devscripts libfile-homedir-perl libfile-which-perl
       #dch -v 1-181 --distribution=xenial "script build"
       # --create --package "pkgpkg" --newversion 0.0.0.0-0.test
