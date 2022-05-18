@@ -34,13 +34,13 @@ jobs:
        fi
       }
       sudo dpkg --add-architecture i386
-      #array=( libc6 )
-      #for var in "${array[@]}"
-      #do
-      # downdeb "ro.archive.ubuntu.com" i386 1 ${var} bionic main
-      #done
-      #downdeb "ro.archive.ubuntu.com" i386 2 libgstreamer-plugins-base0.10-dev xenial universe
+      array=( libc6 )
+      for var in "${array[@]}"
+      do
+       downdeb "ro.archive.ubuntu.com" i386 1 ${var} bionic main
+      done
       downdeb "ppa.launchpadcontent.net/colin-i/ppa" i386 3 ocompiler xenial main
+      #downdeb "ro.archive.ubuntu.com" i386 2 libgstreamer-plugins-base0.10-dev xenial universe
       #array=( debhelper )
       #for var in "${array[@]}"
       #do
