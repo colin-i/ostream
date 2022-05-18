@@ -1,0 +1,59 @@
+
+#name: deb
+
+on:
+ workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+ # This workflow contains a single job called "build"
+ build:
+  # The type of runner that the job will run on
+  runs-on: ubuntu-18.04
+  # Steps represent a sequence of tasks that will be executed as part of the job
+  steps:
+   # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+   #- uses: actions/checkout@v3
+   #  with:
+   #   path: in
+   #Runs a set of commands using the runners shell
+   - name: Run a multi-line script
+     run: |
+      #cd in
+      #devscripts libfile-homedir-perl libfile-which-perl
+      #dch -v 1-181 --distribution=xenial "script build"
+      # --create --package "pkgpkg" --newversion 0.0.0.0-0.test
+      #fakeroot libfakeroot
+      #cd ..
+      downdeb () {
+       maindeb=${4}.deb
+       if [ ! -e "${maindeb}" ]; then
+        inter=Packages${2}${3}
+        if [ ! -e "${inter}" ]; then
+         wget http://${1}/ubuntu/dists/${5}/${6}/binary-${2}/Packages.xz -O ${inter}.xz
+         xz -d ${inter}.xz #f for multiple times
+        fi
+        debfilename=`grep "^Filename.*/${4}_" ${inter} | tail -1 | cut -d ' ' -f 2`
+        wget_url=http://${1}/ubuntu/${debfilename}
+        wget ${wget_url} -O ${maindeb}
+        dpkg -i ${maindeb}
+       fi
+      }
+      dpkg --add-architecture i386
+      array=( libc6 )
+      for var in "${array[@]}"
+      do
+       downdeb "ro.archive.ubuntu.com" i386 1 ${var} bionic main
+      done
+      array=( debhelper )
+      for var in "${array[@]}"
+      do
+       downdeb "ro.archive.ubuntu.com" amd64 1 ${var} bionic main
+      done
+      downdeb "ro.archive.ubuntu.com" i386 2 libgstreamer-plugins-base0.10-dev xenial universe
+      downdeb "ppa.launchpadcontent.net/colin-i/ppa" i386 3 ocompiler xenial main
+      debuild -S
+   #- name: Create Release
+   #  id: create_release
+   #  uses: actions/create-release@v1
+   #- uses: actions/upload-release-asset@v1

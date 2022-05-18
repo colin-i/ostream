@@ -1,0 +1,126 @@
+ovideo (1-180) xenial; urgency=medium
+
+  * extra out
+
+ -- bc <bc@ubuntu>  Fri, 13 May 2022 06:38:04 +0300
+
+ovideo (1-179) xenial; urgency=medium
+
+  * fix idle
+
+ -- bc <bc@ubuntu>  Tue, 10 May 2022 20:20:03 +0300
+
+ovideo (1-178) xenial; urgency=medium
+
+  * lots of fixes
+
+ -- bc <bc@ubuntu>  Tue, 10 May 2022 13:41:57 +0300
+
+ovideo (1-177) xenial; urgency=medium
+
+  * version check
+
+ -- bc <bc@ubuntu>  Tue, 10 May 2022 06:12:08 +0300
+
+ovideo (1-176) xenial; urgency=medium
+
+  * fix
+
+ -- bc <bc@ubuntu>  Mon, 09 May 2022 15:47:02 +0300
+
+ovideo (1-175) xenial; urgency=medium
+
+  * fix alpha inputs
+
+ -- bc <bc@ubuntu>  Mon, 09 May 2022 14:12:55 +0300
+
+ovideo (1-174) xenial; urgency=medium
+
+  * color independent
+
+ -- bc <bc@ubuntu>  Sun, 08 May 2022 13:07:13 +0300
+
+ovideo (1-173) xenial; urgency=medium
+
+  * dark/light colors
+
+ -- bc <bc@ubuntu>  Sat, 07 May 2022 15:33:17 +0300
+
+ovideo (1-172) xenial; urgency=medium
+
+  * fixes
+
+ -- bc <bc@ubuntu>  Sat, 07 May 2022 06:08:16 +0300
+
+ovideo (1-171) xenial; urgency=medium
+
+  * async update check
+
+ -- bc <bc@ubuntu>  Fri, 29 Apr 2022 13:40:44 +0300
+
+ovideo (1-170) xenial; urgency=medium
+
+  * share folder fix
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Tue, 26 Apr 2022 18:05:48 +0300
+
+ovideo (1-169) xenial; urgency=medium
+
+  * good 0.10
+
+ -- bc <bc@ubuntu>  Tue, 26 Apr 2022 13:34:15 +0300
+
+ovideo (1-165) xenial; urgency=medium
+
+  * fast gst audio and mkv rgb fix
+
+ -- bc <bc@ubuntu>  Tue, 26 Apr 2022 11:39:03 +0300
+
+ovideo (1-163) xenial; urgency=medium
+
+  * extra code
+
+ -- bc <bc@ubuntu>  Sun, 24 Apr 2022 14:30:35 +0300
+
+ovideo (1-162) xenial; urgency=medium
+
+  * prefs fix
+
+ -- bc <bc@ubuntu>  Fri, 22 Apr 2022 09:12:51 +0300
+
+ovideo (1-161) xenial; urgency=medium
+
+  * version
+
+ -- bc <bc@ubuntu>  Sat, 16 Apr 2022 11:02:23 +0300
+
+ovideo (1-160) xenial; urgency=medium
+
+  * ulltoa
+
+ -- bc <bc@ubuntu>  Sat, 16 Apr 2022 10:19:00 +0300
+
+ovideo (1-159) xenial; urgency=medium
+
+  * playback fix
+
+ -- bc <bc@ubuntu>  Sat, 16 Apr 2022 09:46:59 +0300
+
+ovideo (1-158) xenial; urgency=medium
+
+  * version fix
+
+ -- bc <bc@ubuntu>  Tue, 15 Feb 2022 08:27:38 +0200
+
+ovideo (1-157) xenial; urgency=medium
+
+  * no dh-autoreconf
+
+ -- bc <bc@ubuntu>  Mon, 14 Feb 2022 13:59:23 +0200
+
+ovideo (1-1) xenial; urgency=low
+
+  * Initial release. Closes: #nnnn
+    <nnnn is the bug number of your ITP>
+
+ -- Botescu Costin <costin.botescu@gmail.com>  Mon, 14 Feb 2022 10:05:12 +0200
