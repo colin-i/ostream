@@ -13,9 +13,9 @@ jobs:
   # Steps represent a sequence of tasks that will be executed as part of the job
   steps:
    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-   #- uses: actions/checkout@v3
-   #  with:
-   #   path: in
+   - uses: actions/checkout@v3
+     with:
+      path: in
    #Runs a set of commands using the runners shell
    - name: Run a multi-line script
      run: |
@@ -33,12 +33,12 @@ jobs:
         dpkg -i ${maindeb}
        fi
       }
-      dpkg --add-architecture i386
-      array=( libc6 )
-      for var in "${array[@]}"
-      do
-       downdeb "ro.archive.ubuntu.com" i386 1 ${var} bionic main
-      done
+      #dpkg --add-architecture i386
+      #array=( libc6 )
+      #for var in "${array[@]}"
+      #do
+      # downdeb "ro.archive.ubuntu.com" i386 1 ${var} bionic main
+      #done
       #downdeb "ro.archive.ubuntu.com" i386 2 libgstreamer-plugins-base0.10-dev xenial universe
       downdeb "ppa.launchpadcontent.net/colin-i/ppa" i386 3 ocompiler xenial main
       #array=( debhelper )
