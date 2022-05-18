@@ -30,10 +30,11 @@ jobs:
         debfilename=`grep "^Filename.*/${4}_" ${inter} | tail -1 | cut -d ' ' -f 2`
         wget_url=http://${1}/ubuntu/${debfilename}
         wget ${wget_url} -O ${maindeb}
-        dpkg -i ${maindeb}
+        sudo dpkg -i ${maindeb}
        fi
       }
       #dpkg --add-architecture i386
+      #remote:    dpkg: error: unable to create new file '/var/lib/dpkg/arch-new': Permission denied
       #array=( libc6 )
       #for var in "${array[@]}"
       #do
