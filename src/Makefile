@@ -61,7 +61,7 @@ ounused:
 
 share:
 	if [ "${platform}" = "lin" ]; then \
-		echo return \"${sharefolderpackage}\" > ${lshare}; \
+		echo chars prestart=0x2e\;chars simplestart=\"${sharefolderpackage}\"\;return \#simplestart > ${lshare}; \
 	fi
 
 #at bionic

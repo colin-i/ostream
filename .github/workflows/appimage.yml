@@ -125,7 +125,8 @@ jobs:
        cat > ovideo <<EOF
       #!/bin/bash
       cd "\$(dirname "\$0")"
-      ../../lib32/ld-linux.so.2 --library-path ../../lib32:../../usr/lib/i386-linux-gnu:../../lib/i386-linux-gnu ./ostream
+      cd ../../
+      ./lib32/ld-linux.so.2 --library-path ./lib32:./usr/lib/i386-linux-gnu:./lib/i386-linux-gnu ./usr/bin/ostream `pwd`
       EOF
        chmod 755 ovideo
        cd ../../

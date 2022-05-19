@@ -10,7 +10,7 @@ importx "_gtk_main" gtk_main
 
 import "initfn" initfn
 
-entry _start()
+include "../_dif/difl.s" "../_dif/difw.s"
 
 call gtk_init(0,0)
 call gst_init(0,0)

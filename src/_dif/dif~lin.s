@@ -18,12 +18,14 @@ function movetoScriptfolder(data forward)
 #at this first call img/version and then sys
 	call prog_init()
 	sd f
-	setcall f share_folder()
 	sd err
-	setcall err move_to_folder(f)
+	setcall f share_folder(#err)
 	if err==(noerror)
-		call forward()
-		return (void)
+		setcall err move_to_folder(f)
+		if err==(noerror)
+			call forward()
+			return (void)
+		endif
 	endif
 	call texter(err)
 endfunction
@@ -788,8 +790,11 @@ function move_to_home_core(sv p)
 endfunction
 function move_to_share_v()
 	sd f
-	setcall f share_folder()
-	call dirch(f)
+	sd err
+	setcall f share_folder(#err)
+	if err==(noerror)
+		call dirch(f)
+	endif
 endfunction
 function move_to_share_core(sv p)
 	sv mem
@@ -797,11 +802,14 @@ function move_to_share_core(sv p)
 	set mem mem#
 	if mem!=(NULL)
 		sd f
-		setcall f share_folder()
-		sd b
-		setcall b cat_absolute_verif(mem,f,p#,(NULL))
-		if b==(TRUE)
-			set p# mem
+		sd err
+		setcall f share_folder(#err)
+		if err==(noerror)
+			sd b
+			setcall b cat_absolute_verif(mem,f,p#,(NULL))
+			if b==(TRUE)
+				set p# mem
+			endif
 		endif
 	endif
 endfunction
@@ -838,9 +846,27 @@ function home_folder_r(sd p)
 	call texter(er)
 	return (NULL)
 endfunction
+function init_args(sd argc,sv argv)
+	value shareprefix#1
+	const shareprefix_p^shareprefix
+	if argc<2
+		set shareprefix (NULL)
+		return (void)
+	endif
+	add argv :
+	set shareprefix argv#
+endfunction
 #string
-function share_folder()
-	include "share.txt"
+function share_folder(sv p_err)
+	value a%shareprefix_p
+	if a#==(NULL)
+		set p_err# (noerror)
+		include "share.txt"
+	endif
+	setcall p_err# move_to_folder(a#)
+	if p_err#==(noerror)
+		return #prestart
+	endif
 endfunction
 
 const PATH_MAX=4096
@@ -911,6 +937,7 @@ function cat_absolute_verif(sd mem,sd v,sd v2,sd v3)
 	call texter("path max error.")
 	return (FALSE)
 endfunction
+
 
 function ulltoa(sd low,sd high,sd str)
 	call sprintf(str,"%llu",low,high)
