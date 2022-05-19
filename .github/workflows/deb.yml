@@ -51,6 +51,7 @@ jobs:
        downdeb "ro.archive.ubuntu.com" i386 1 ${var} bionic-updates main
       done
       downdeb "ppa.launchpadcontent.net/colin-i/ppa" i386 2 ocompiler bionic main
+      #manipulate ${debfilename} and get from https://launchpad.net/~colin-i/+archive/ubuntu/ppa/+sourcefiles/ovideo/${version}/ovideo_1.orig.tar.gz
       array=( libgstreamer-plugins-base0.10-dev \
                libgstreamer-plugins-base0.10-0 \
                libgstreamer0.10-dev \
