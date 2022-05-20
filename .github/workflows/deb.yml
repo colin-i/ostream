@@ -74,9 +74,12 @@ jobs:
       fi
       cd in
       debuild -S -us -uc
-      cd ..
-      ls -l
-   #- name: Create Release
-   #  id: create_release
-   #  uses: actions/create-release@v1
-   #- uses: actions/upload-release-asset@v1
+      #cd ..
+      #ls -l
+   - name: unsigned debs
+     uses: actions/upload-artifact@v3
+     with:
+      name: sdebs
+      path: |
+       ./*.dsc
+       ./*.changes
