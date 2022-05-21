@@ -82,4 +82,5 @@ jobs:
       path: |
        ./*.dsc
        ./*.changes
+       ./*.buildinfo
        ./*.debian.tar.xz
