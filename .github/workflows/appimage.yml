@@ -9,6 +9,11 @@ on:
  # branches: [ main ]
  # Allows you to run this workflow manually from the Actions tab
  workflow_dispatch:
+  inputs:
+   ppa:
+    description: "ppa sufix"
+   artifact:
+    description: "result is artifact"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -69,7 +74,7 @@ jobs:
         #tar -xf data.tar -C AppDir
        fi
       }
-      downdeb "ppa.launchpadcontent.net/colin-i/ppa${{ env.ppa }}" i386 1 ovideo
+      downdeb "ppa.launchpadcontent.net/colin-i/ppa${{ env.INPUT_PPA }}" i386 1 ovideo
       downdeb "ro.archive.ubuntu.com" amd64 1 libc6-i386
       array=( libgtk2.0-0 libpangocairo-1.0-0 libatk1.0-0 libcairo2 libgdk-pixbuf2.0-0 \
               libglib2.0-0 libpangoft2-1.0-0 libpango-1.0-0 libfontconfig1 libfreetype6 \
@@ -145,7 +150,7 @@ jobs:
       #echo $tag ${{ env.tag }}
       #ARCH=i686 ${file} ./ovideo.yml
    - name: test artifact
-     if: ${{ env.artifact != "" }}
+     if: ${{ env.INPUT_ARTIFACT != "" }}
      uses: actions/upload-artifact@v3
      with:
       name: appimage
