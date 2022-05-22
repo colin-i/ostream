@@ -161,7 +161,7 @@ jobs:
    #   tag_name: ${{ env.tag }}
    #   release_name: Release ${{ env.tag }}
    #   draft: false
-   #   rerelease: false
+   #   prerelease: false
    #- name: Upload Release Asset
    #  uses: actions/upload-release-asset@v1
    #  env:
