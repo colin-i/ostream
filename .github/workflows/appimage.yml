@@ -150,7 +150,7 @@ jobs:
       #echo $tag ${{ env.tag }}
       #ARCH=i686 ${file} ./ovideo.yml
    - name: test artifact
-     if: ${{ env.INPUT_ARTIFACT != "" }}
+     if: ${{ env.INPUT_ARTIFACT != '' }}
      uses: actions/upload-artifact@v3
      with:
       name: appimage
