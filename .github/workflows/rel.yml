@@ -33,4 +33,4 @@ jobs:
       prerelease: false
    - name: Store upload url for assets
      run: |
-      #to be continued
+      #store at id=67484178
