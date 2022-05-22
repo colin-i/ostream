@@ -39,9 +39,6 @@ jobs:
    #Runs a set of commands using the runners shell
    - name: Run a multi-line script
      run: |
-      if [ -n "${{ env.init }}" ]; then
-       exit
-      fi
       mkdir -p AppDir
       file=runtime
       arch=-x86_64
@@ -74,7 +71,7 @@ jobs:
         #tar -xf data.tar -C AppDir
        fi
       }
-      downdeb "ppa.launchpadcontent.net/colin-i/ppa${{ env.INPUT_PPA }}" i386 1 ovideo
+      downdeb "ppa.launchpadcontent.net/colin-i/ppa${{ github.event.inputs.ppa }}" i386 1 ovideo
       downdeb "ro.archive.ubuntu.com" amd64 1 libc6-i386
       array=( libgtk2.0-0 libpangocairo-1.0-0 libatk1.0-0 libcairo2 libgdk-pixbuf2.0-0 \
               libglib2.0-0 libpangoft2-1.0-0 libpango-1.0-0 libfontconfig1 libfreetype6 \
@@ -150,7 +147,7 @@ jobs:
       #echo $tag ${{ env.tag }}
       #ARCH=i686 ${file} ./ovideo.yml
    - name: test artifact
-     if: ${{ env.INPUT_ARTIFACT != '' }}
+     if: ${{ github.event.inputs.artifact != '' }}
      uses: actions/upload-artifact@v3
      with:
       name: appimage
