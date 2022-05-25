@@ -128,7 +128,7 @@ jobs:
       #!/bin/bash
       cd "\$(dirname "\$0")"
       cd ../../
-      ./lib32/ld-linux.so.2 --library-path ./lib32:./usr/lib/i386-linux-gnu:./lib/i386-linux-gnu ./usr/bin/ostream `pwd`
+      ./lib32/ld-linux.so.2 --library-path ./lib32:./usr/lib/i386-linux-gnu:./lib/i386-linux-gnu ./usr/bin/ostream \`pwd\`
       EOF
        chmod 755 ovideo
        cd ../../
