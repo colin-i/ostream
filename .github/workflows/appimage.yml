@@ -34,7 +34,7 @@ jobs:
    #   repo: 'colin-i/test'
    #   file: 'ovideo.png'
    #   target: 'in/' #plague-linux.zip'
-   # #version: 'tags/1.1'
+   # #version: 'tags/1.5'
    # #token: ${{ secrets.PAT }}
    #Runs a set of commands using the runners shell
    - name: Run a multi-line script
@@ -108,7 +108,7 @@ jobs:
       fi
       pngfile=ovideo.png
       if [ ! -e "${pngfile}" ]; then
-       wget https://github.com/colin-i/test/releases/download/1.1/ovideo.png -O ${pngfile} #O for multiple times
+       wget https://github.com/colin-i/test/releases/download/1.5/ovideo.png -O ${pngfile} #O for multiple times
        cat > ovideo.desktop <<EOF
       [Desktop Entry]
       Type=Application
@@ -143,7 +143,7 @@ jobs:
       #http://ro.archive.ubuntu.com/ubuntu/dists/bionic/main/binary-i386/Packages.xz
       #https://stackoverflow.com/questions/9981099/are-exported-private-keys-in-gpg-still-encrypted
       #echo -n ${{ secrets.PASS }} > pas.txt
-      #echo "tag=refs/tags/1.1" >> $GITHUB_ENV
+      #echo "tag=refs/tags/1.5" >> $GITHUB_ENV
       #echo $tag ${{ env.tag }}
       #ARCH=i686 ${file} ./ovideo.yml
    - name: test artifact
