@@ -19,7 +19,7 @@ function movetoScriptfolder(data forward)
 	call prog_init()
 	sd f
 	sd err
-	setcall f share_folder(#err)
+	setcall f share_folder(#err,(NULL))
 	if err==(noerror)
 		setcall err move_to_folder(f)
 		if err==(noerror)
@@ -791,7 +791,7 @@ endfunction
 function move_to_share_v()
 	sd f
 	sd err
-	setcall f share_folder(#err)
+	setcall f share_folder(#err,(NULL))
 	if err==(noerror)
 		call dirch(f)
 	endif
@@ -803,10 +803,11 @@ function move_to_share_core(sv p)
 	if mem!=(NULL)
 		sd f
 		sd err
-		setcall f share_folder(#err)
+		ss prefix=""
+		setcall f share_folder(#err,#prefix)
 		if err==(noerror)
 			sd b
-			setcall b cat_absolute_verif(mem,f,p#,(NULL))
+			setcall b cat_absolute_verif(mem,prefix,f,p#)
 			if b==(TRUE)
 				set p# mem
 			endif
@@ -857,16 +858,18 @@ function init_args(sd argc,sv argv)
 	set shareprefix argv#
 endfunction
 #string
-function share_folder(sv p_err)
+function share_folder(sv p_err,sv prefix)
 	value a%shareprefix_p
 	if a#==(NULL)
 		set p_err# (noerror)
 		include "share.txt"
 	endif
-	setcall p_err# move_to_folder(a#)
-	if p_err#==(noerror)
-		return #prestart
-	endif
+	if prefix==(NULL)
+		setcall p_err# move_to_folder(a#)
+	else
+		set prefix# a#
+	endelse
+	return #prestart
 endfunction
 
 const PATH_MAX=4096
@@ -921,17 +924,13 @@ function cat_absolute_verif(sd mem,sd v,sd v2,sd v3)
 	setcall s strlen(v)
 	inc s
 	addcall s strlen(v2)
-	if v3!=(NULL)
-		inc s
-		addcall s strlen(v3)
-	endif
+	inc s
+	addcall s strlen(v3)
 	if s<(PATH_MAX)
 		sd n
 		setcall n sprintf(mem,"%s/%s",v,v2)
-		if v3!=(NULL)
-			add mem n
-			call sprintf(mem,"/%s",v3)
-		endif
+		add mem n
+		call sprintf(mem,"/%s",v3)
 		return (TRUE)
 	endif
 	call texter("path max error.")
