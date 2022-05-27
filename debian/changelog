@@ -1,3 +1,9 @@
+ovideo (1-180d) bionic; urgency=medium
+
+  * share prefix fix
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Fri, 27 May 2022 07:03:56 +0300
+
 ovideo (1-180c) bionic; urgency=medium
 
   * first arg for mount share access
