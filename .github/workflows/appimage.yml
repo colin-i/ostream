@@ -58,7 +58,7 @@ jobs:
        if [ ! -e "${maindeb}" ]; then
         inter=Packages${2}${3}
         if [ ! -e "${inter}" ]; then
-         wget http://${1}/ubuntu/dists/bionic/main/binary-${2}/Packages.xz -O ${inter}.xz
+         wget http://${1}/ubuntu/dists/bionic/${5}/binary-${2}/Packages.xz -O ${inter}.xz
          xz -d ${inter}.xz #f for multiple times
         fi
         debfilename=`grep "^Filename.*/${4}_" ${inter} | tail -1 | cut -d ' ' -f 2`
@@ -71,8 +71,8 @@ jobs:
         #tar -xf data.tar -C AppDir
        fi
       }
-      downdeb "ppa.launchpadcontent.net/colin-i/ppa${{ github.event.inputs.ppa }}" i386 1 ovideo
-      downdeb "ro.archive.ubuntu.com" amd64 1 libc6-i386
+      downdeb "ppa.launchpadcontent.net/colin-i/ppa${{ github.event.inputs.ppa }}" i386 1 ovideo main
+      downdeb "ro.archive.ubuntu.com" amd64 1 libc6-i386 main
       array=( libgtk2.0-0 libpangocairo-1.0-0 libatk1.0-0 libcairo2 libgdk-pixbuf2.0-0 \
               libglib2.0-0 libpangoft2-1.0-0 libpango-1.0-0 libfontconfig1 libfreetype6 \
               libgstreamer-plugins-base1.0-0 libgstreamer1.0-0 libjpeg-turbo8 libsoup2.4-1 libasound2 \
@@ -80,7 +80,9 @@ jobs:
               libpixman-1-0 libpng16-16 libxcb-shm0 libxcb1 libxcb-render0 \
               zlib1g libselinux1 libmount1   libharfbuzz0b libthai0   libexpat1 liborc-0.4-0 libffi6   libpcre3 \
               libxml2 libsqlite3-0 libgssapi-krb5-2 libxau6 libxdmcp6   libblkid1   libgraphite2-3 libdatrie1 libicu60   liblzma5 \
-              libkrb5-3 libk5crypto3   libcom-err2   libkrb5support0   libbsd0 libuuid1   libstdc++6   libgcc1 libkeyutils1 )
+              libkrb5-3 libk5crypto3   libcom-err2   libkrb5support0   libbsd0 libuuid1   libstdc++6   libgcc1 libkeyutils1 \
+              \
+              gstreamer1.0-plugins-good )
       #libgtk-x11-2.0.so.0 libpangocairo-1.0.so.0 libatk-1.0.so.0 libcairo.so.2 libgdk_pixbuf-2.0.so.0
       #libglib-2.0.so.0 libpangoft2-1.0.so.0 libpango-1.0.so.0 libfontconfig.so.1 libfreetype.so.6
       #libgstpbutils-1.0.so.0 libgstreamer-1.0.so.0 libjpeg.so.8 libsoup-2.4.so.1 libasound.so.2
@@ -92,8 +94,9 @@ jobs:
       for var in "${array[@]}"
       do
        #var=`echo $var | tr 'Q' '\n' | xargs echo `
-       downdeb "ro.archive.ubuntu.com" i386 2 ${var}
+       downdeb "ro.archive.ubuntu.com" i386 2 ${var} main
       done
+      downdeb "ro.archive.ubuntu.com" i386 3 gstreamer1.0-plugins-bad universe
       cd AppDir
       file2=AppRun
       if [ ! -e "${file2}" ]; then
@@ -124,7 +127,8 @@ jobs:
       gpixd=/usr/lib/i386-linux-gnu/gdk-pixbuf-2.0/
       gpixf=${gpixd}`ls -1 .${gpixd} | head -1`/loaders
       gpixc=.${gpixf}.cache
-      if [ ! -e ".${gpixc}" ]; then
+      if [ ! -e "${gpixc}" ]; then
+       echo pixbuf
        sudo mkdir -p ${gpixf}
        sudo cp .${gpixf}/* ${gpixf}
        ${loader} .${gpixd}gdk-pixbuf-query-loaders > ${gpixc}
@@ -132,6 +136,7 @@ jobs:
       fi
       #
       if [ ! -e "usr/bin/ostream" ]; then
+       echo launcher
        cd usr/bin
        mv ovideo ostream
        #live64 is not having /lib/ld-linux.so.2. without librarypath will wrong libc bionic to jammy
@@ -140,7 +145,7 @@ jobs:
       #!/bin/bash
       cd "\$(dirname "\$0")"
       cd ../../
-      GDK_PIXBUF_MODULE_FILE=${gpixc} ${loader} ./usr/bin/ostream \`pwd\`
+      GDK_PIXBUF_MODULE_FILE=${gpixc} ${loader} ./usr/bin/ostream "\`pwd\`"
       EOF
        chmod 755 ovideo
        cd ../../
