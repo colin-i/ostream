@@ -1,3 +1,9 @@
+ovideo (1-180e) bionic; urgency=medium
+
+  * update
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Fri, 27 May 2022 07:24:34 +0300
+
 ovideo (1-180d) bionic; urgency=medium
 
   * share prefix fix
