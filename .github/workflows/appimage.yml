@@ -145,7 +145,7 @@ jobs:
       #!/bin/bash
       cd "\$(dirname "\$0")"
       cd ../../
-      GDK_PIXBUF_MODULE_FILE=${gpixc} ${loader} ./usr/bin/ostream "\`pwd\`"
+      GDK_PIXBUF_MODULE_FILE=${gpixc} ${loader} ./usr/bin/ostream "\$(pwd)"
       EOF
        chmod 755 ovideo
        cd ../../
