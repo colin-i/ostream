@@ -94,7 +94,7 @@ function gstplayinit(data videowidget)
 	setcall playbin2str get_playbin_str()
 
     setcall playbin2ptr# gst_element_factory_make(playbin2str,playbin2str)
-    #needing gstreamer0.10-plugins-good
+    #playback at plugins base
 
     data playbin2#1
     set playbin2 playbin2ptr#
