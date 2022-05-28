@@ -41,6 +41,9 @@ jobs:
    #Runs a set of commands using the runners shell
    - name: Run a multi-line script
      run: |
+      if [ -n "${{ env.init }}" ]; then
+       exit
+      fi
       mkdir -p AppDir
       file=runtime
       arch_ai=-x86_64
@@ -102,8 +105,10 @@ jobs:
               libxml2 libsqlite3-0 libgssapi-krb5-2 libxau6 libxdmcp6   libblkid1   libgraphite2-3 libdatrie1 libicu60   liblzma5 \
               libkrb5-3 libk5crypto3   libcom-err2   libkrb5support0   libbsd0 libuuid1   libstdc++6   libgcc1 libkeyutils1 \
               \
-              gstreamer1.0-plugins-base gstreamer1.0-plugins-good )
-              #base for playback, good for pixbuf
+              gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
+              #base for playback, good for pixbuf - these , at runtime, warns many main/universe missings
+              libavc1394-0 libv4l-0 libiec61883-0 libv4lconvert0 libraw1394-11 libaa1 \
+              libncurses5 libtinfo5 libslang2 )
       #libgtk-x11-2.0.so.0 libpangocairo-1.0.so.0 libatk-1.0.so.0 libcairo.so.2 libgdk_pixbuf-2.0.so.0
       #libglib-2.0.so.0 libpangoft2-1.0.so.0 libpango-1.0.so.0 libfontconfig.so.1 libfreetype.so.6
       #libgstpbutils-1.0.so.0 libgstreamer-1.0.so.0 libjpeg.so.8 libsoup-2.4.so.1 libasound.so.2
@@ -112,13 +117,22 @@ jobs:
       #libz.so.1 libselinux.so.1 libmount.so.1   libharfbuzz.so.0 libthai.so.0   libexpat.so.1 liborc-0.4.so.0 libffi.so.6   libpcre.so.3
       #libxml2.so.2 libsqlite3.so.0 libgssapi_krb5.so.2 libXau.so.6 libXdmcp.so.6   libblkid.so.1   libgraphite2.so.3 libdatrie.so.1 libicuuc.so.60   liblzma.so.5
       #libkrb5.so.3 libk5crypto.so.3   libcom_err.so.2   libkrb5support.so.0   libbsd.so.0 libuuid.so.1   libstdc++.so.6   libgcc_s.so.1 libkeyutils.so.1
+      #
+      #libavc1394.so.0 libv4l2.so.0 libiec61883.so.0 libv4lconvert.so.0 libraw1394.so.11 libaa.so.1
+      #libncurses.so.5 libtinfo.so.5 libslang.so.2
       for var in "${array[@]}"
       do
        #var=`echo $var | tr 'Q' '\n' | xargs echo `
        downdeb "ro.archive.ubuntu.com" i386 2 ${var} main
       done
-      downdeb "ro.archive.ubuntu.com" i386 3 gstreamer1.0-plugins-bad universe
       #bad for mxf
+      array=( gstreamer1.0-plugins-bad \
+              libzbar0 )
+      #libzbar.so.0
+      for var in "${array[@]}"
+      do
+       downdeb "ro.archive.ubuntu.com" i386 3 ${var} universe
+      done
       cd AppDir
       file2=AppRun
       if [ ! -e "${file2}" ]; then
@@ -144,6 +158,13 @@ jobs:
       EOF
        ln -s ${pngfile} .DirIcon #f for multiple times
       fi
+      #
+      #this is ilogic: if extracted and run the gst plugin path will point right, otherwise will point without /i386-linux-gnu
+      cd usr/lib
+      if [ ! -e "gstreamer-1.0" ]; then
+       ln -s i386-linux-gnu/gstreamer-1.0 gstreamer-1.0
+      fi
+      cd ../../
       #
       if [ ! -e "usr/bin/ostream" ]; then
        echo launcher

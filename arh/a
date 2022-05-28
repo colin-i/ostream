@@ -1,0 +1,6 @@
+cd /etc/apt
+sed '/updates/s/./#&/' sources.list >s
+sed '/security/s/./#&/' s >s2
+mv sources.list sources.list.old
+mv s2 sources.list
+rm s
