@@ -14,6 +14,8 @@ on:
     description: "ppa sufix"
    artifact:
     description: "result is artifact"
+   unpublished:
+    description: "don't wait to publish, take from pending"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -53,25 +55,43 @@ jobs:
        mv ${archfile} ${file}
        chmod a+x ${file}
       fi
+      downdebok () {
+       src=${1}
+       arch=${2}
+       nr=${3}
+       pkg=${4}
+       inter=Packages${arch}${nr}
+       if [ ! -e "${inter}" ]; then
+        rep=${5}
+        wget http://${src}/ubuntu/dists/bionic/${rep}/binary-${arch}/Packages.xz -O ${inter}.xz
+        xz -d ${inter}.xz #f for multiple times
+       fi
+       debfilename=`grep "^Filename.*/${pkg}_" ${inter} | tail -1 | cut -d ' ' -f 2`
+       wget_url=http://${src}/ubuntu/${debfilename}
+       #https://launchpad.net/~colin-i/+archive/ubuntu/ppa/+files/${debfilename}	| grep -o '[^/]*$'
+       maindeb=${pkg}.deb
+       wget ${wget_url} -O ${maindeb}
+       dpkg -x ${maindeb} AppDir
+       #ar x ${maindeb} data.tar.xz
+       #xz -fd data.tar.xz
+       #tar -xf data.tar -C AppDir
+      }
       downdeb () {
-       maindeb=${4}.deb
-       if [ ! -e "${maindeb}" ]; then
-        inter=Packages${2}${3}
-        if [ ! -e "${inter}" ]; then
-         wget http://${1}/ubuntu/dists/bionic/${5}/binary-${2}/Packages.xz -O ${inter}.xz
-         xz -d ${inter}.xz #f for multiple times
-        fi
-        debfilename=`grep "^Filename.*/${4}_" ${inter} | tail -1 | cut -d ' ' -f 2`
-        wget_url=http://${1}/ubuntu/${debfilename}
-        #https://launchpad.net/~colin-i/+archive/ubuntu/ppa/+files/${debfilename}	| grep -o '[^/]*$'
-        wget ${wget_url} -O ${maindeb}
-        dpkg -x ${maindeb} AppDir
-        #ar x ${maindeb} data.tar.xz
-        #xz -fd data.tar.xz
-        #tar -xf data.tar -C AppDir
+       if [ ! -e "${4}.deb" ]; then
+        downdebok ${1} ${2} ${3} ${4} ${5}
        fi
       }
-      downdeb "ppa.launchpadcontent.net/colin-i/ppa${{ github.event.inputs.ppa }}" i386 1 ovideo main
+      if [ ! -e "ovideo.deb" ]; then
+       if [ "${{ github.event.inputs.unpublished }}" = "" ]; then
+        echo published
+        downdebok "ppa.launchpadcontent.net/colin-i/ppa${{ github.event.inputs.ppa }}" i386 1 ovideo main
+       else
+        echo unpublished
+        f=`wget -q https://launchpad.net/~colin-i/+archive/ubuntu/ppa${{ github.event.inputs.ppa }}/+build/${{ github.event.inputs.unpublished }} -O - | grep -o -e "[^\"]*\.deb\""`
+        wget ${f:0:-1} -O ovideo.deb
+        dpkg -x ovideo.deb AppDir
+       fi
+      fi
       downdeb "ro.archive.ubuntu.com" amd64 1 libc6-i386 main
       array=( libgtk2.0-0 libpangocairo-1.0-0 libatk1.0-0 libcairo2 libgdk-pixbuf2.0-0 \
               libglib2.0-0 libpangoft2-1.0-0 libpango-1.0-0 libfontconfig1 libfreetype6 \
