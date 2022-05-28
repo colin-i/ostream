@@ -43,8 +43,8 @@ jobs:
      run: |
       mkdir -p AppDir
       file=runtime
-      arch=-x86_64
-      archfile=${file}${arch}
+      arch_ai=-x86_64
+      archfile=${file}${arch_ai}
       kitpart () {
        urlpart=`wget -q https://github.com/AppImage/AppImageKit/releases/latest -O - | grep "${archfile}" | head -n 1 | cut -d '"' -f 2`
       }
@@ -125,7 +125,7 @@ jobs:
        if [ -z "${urlpart}" ]; then
         kitpart
        fi
-       archfile2=${file2}${arch}
+       archfile2=${file2}${arch_ai}
        urlpart=${urlpart:0:`echo ${urlpart} | grep -ob '[^/]*$' | cut -d ':' -f 1`}${archfile2}
        wget -c https://github.com/${urlpart}
        chmod a+x ${archfile2}
