@@ -82,8 +82,7 @@ jobs:
               libxml2 libsqlite3-0 libgssapi-krb5-2 libxau6 libxdmcp6   libblkid1   libgraphite2-3 libdatrie1 libicu60   liblzma5 \
               libkrb5-3 libk5crypto3   libcom-err2   libkrb5support0   libbsd0 libuuid1   libstdc++6   libgcc1 libkeyutils1 \
               \
-              gstreamer1.0-plugins-base gstreamer1.0-plugins-good )
-              #base for playback, good for pixbuf
+              gstreamer1.0-plugins-good )
       #libgtk-x11-2.0.so.0 libpangocairo-1.0.so.0 libatk-1.0.so.0 libcairo.so.2 libgdk_pixbuf-2.0.so.0
       #libglib-2.0.so.0 libpangoft2-1.0.so.0 libpango-1.0.so.0 libfontconfig.so.1 libfreetype.so.6
       #libgstpbutils-1.0.so.0 libgstreamer-1.0.so.0 libjpeg.so.8 libsoup-2.4.so.1 libasound.so.2
@@ -98,7 +97,6 @@ jobs:
        downdeb "ro.archive.ubuntu.com" i386 2 ${var} main
       done
       downdeb "ro.archive.ubuntu.com" i386 3 gstreamer1.0-plugins-bad universe
-      #bad for mxf
       cd AppDir
       file2=AppRun
       if [ ! -e "${file2}" ]; then
@@ -124,12 +122,21 @@ jobs:
       EOF
        ln -s ${pngfile} .DirIcon #f for multiple times
       fi
+      loader="./lib32/ld-linux.so.2 --library-path ./lib32:./usr/lib/i386-linux-gnu:./lib/i386-linux-gnu"
+      #pixbuf
+      gpixd=/usr/lib/i386-linux-gnu/gdk-pixbuf-2.0/
+      gpixf=${gpixd}`ls -1 .${gpixd} | head -1`/loaders
+      gpixc=.${gpixf}.cache
+      if [ ! -e "${gpixc}" ]; then
+       echo pixbuf
+       sudo mkdir -p ${gpixf}
+       sudo cp .${gpixf}/* ${gpixf}
+       ${loader} .${gpixd}gdk-pixbuf-query-loaders > ${gpixc}
+       sed -i -e "s|^\"/usr|\"./usr|g" "${gpixc}"
+      fi
       #
       if [ ! -e "usr/bin/ostream" ]; then
        echo launcher
-       loader="./lib32/ld-linux.so.2 --library-path ./lib32:./usr/lib/i386-linux-gnu:./lib/i386-linux-gnu"
-       gpixd=/usr/lib/i386-linux-gnu/gdk-pixbuf-2.0/
-       gpixf=${gpixd}`ls -1 .${gpixd} | head -1`/loaders
        cd usr/bin
        mv ovideo ostream
        #live64 is not having /lib/ld-linux.so.2. without librarypath will wrong libc bionic to jammy
@@ -138,15 +145,7 @@ jobs:
       #!/bin/bash
       cd "\$(dirname "\$0")"
       cd ../../
-      hom=\${HOME}/ovideo
-      mkdir -p "\${hom}"
-      gpmf=\${hom}/loaders.cache
-      rootbase=\$(pwd)
-      if [ ! -e "\${gpmf}" ]; then
-       GDK_PIXBUF_MODULEDIR="\${rootbase}${gpixf}" ${loader} .${gpixd}gdk-pixbuf-query-loaders > "\${gpmf}"
-      fi
-      GDK_PIXBUF_MODULE_FILE="\${gpmf}" GST_PLUGIN_SYSTEM_PATH="\${rootbase}usr/lib/i386-linux-gnu/gstreamer-1.0" ${loader} \
-       ./usr/bin/ostream "\${rootbase}"
+      GDK_PIXBUF_MODULE_FILE=${gpixc} ${loader} ./usr/bin/ostream "\`pwd\`"
       EOF
        chmod 755 ovideo
        cd ../../
