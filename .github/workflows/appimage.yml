@@ -72,6 +72,7 @@ jobs:
        #pipe to true to not stop the workflow if grep exits!=0
        debfilename=`grep "^Filename.*/${pkg}_" ${inter} || true`
        #if [ -z "${debfilename}" ]; then
+       # next time with if arch = i386 :i386 and reform array and try on
        # not_are+=" ${pkg}"
        # return
        #fi
