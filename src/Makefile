@@ -84,7 +84,7 @@ share:
 lnk:
 	if [ "${platform}" = "lin" ]; then \
 		export PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig/:${PKG_CONFIG_PATH}; \
-		$(LD) ${syms} -melf_i386 --dynamic-linker=${dynlink} ${obs} -o ${items_prefix}${projname} -lc -lm `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lpthread -lgthread-2.0; \
+		$(LD) ${syms} -melf_i386 --dynamic-linker=${dynlink} ${obs} -o ${items_prefix}${projname} -lc -lm `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lgthread-2.0; \
 	else \
 		i686-w64-mingw32-ld --large-address-aware ${syms} ${obs} -o ${wprojname} -entry _start --start-group \
 		`dpkg -L mingw-w64-i686-dev | grep '\.a' | sed 's/..$$//' | grep -o '[^\/]*$$' | sed 's/^lib/-l/' | xargs echo` \
