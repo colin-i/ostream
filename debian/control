@@ -9,5 +9,5 @@ Homepage: https://github.com/colin-i/ostream
 Package: ovideo
 Architecture: i386
 Multi-Arch: foreign
-Depends: ${misc:Depends}, ${shlibs:Depends}, libgtk2.0-0, gstreamer1.0-plugins-good, gstreamer1.0-plugins-bad
+Depends: ${misc:Depends}, ${shlibs:Depends}, gstreamer1.0-plugins-good, gstreamer1.0-plugins-bad
 Description: O Video
