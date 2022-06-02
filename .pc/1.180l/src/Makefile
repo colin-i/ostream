@@ -73,12 +73,18 @@ share:
 #libjpeg8-dev:i386	libjpeg8:i386 is already
 #libgstreamer1.0-dev:i386 is already	libgstreamer1.0-0:i386 is already
 
-#without -pthread, at launchpad runner: _dif/dif~lin.o: undefined reference to symbol 'sem_init@@GLIBC_2.1'
+#at xenial
+#dev gtk libgstreamer-plugins-base0.10-dev  soup jpeg asound
+#gtk gstreamer0.10-plugins-good
+#for mxf, gstreamer0.10-plugins-bad was deleted at ubuntu
+#cc because -pthread not for ld
+#nostdlib because is complaining about main
+#		$(CC) -nostdlib ${syms} ${obs} -o ${projname} `pkg-config --libs gtk+-2.0 gstreamer-pbutils-0.10 gstreamer-interfaces-0.10 gstreamer-app-0.10` -lsoup-2.4 -ljpeg -lasound -lm -lpthread -lc; \
 
 lnk:
 	if [ "${platform}" = "lin" ]; then \
 		export PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig/:${PKG_CONFIG_PATH}; \
-		$(LD) ${syms} -melf_i386 --dynamic-linker=${dynlink} ${obs} -o ${items_prefix}${projname} -lc -lm `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lgthread-2.0 -pthread; \
+		$(LD) ${syms} -melf_i386 --dynamic-linker=${dynlink} ${obs} -o ${items_prefix}${projname} -lc -lm `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lgthread-2.0; \
 	else \
 		i686-w64-mingw32-ld --large-address-aware ${syms} ${obs} -o ${wprojname} -entry _start --start-group \
 		`dpkg -L mingw-w64-i686-dev | grep '\.a' | sed 's/..$$//' | grep -o '[^\/]*$$' | sed 's/^lib/-l/' | xargs echo` \
