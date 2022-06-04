@@ -93,6 +93,12 @@ link: fast lnk
 #snprintf with circular unresolved requirements
 #cos is in -lmingwex that will work with -lmingw32 -lmsvcrt
 #on win msvcr100 is old and at here is from old java-i586
+lnkapp:
+	LD_LIBRARY_PATH=/home/bc/v/ovideo-1/AppDir/usr/lib/i386-linux-gnu:/home/bc/v/ovideo-1/AppDir/lib/i386-linux-gnu \
+		$(LD) ${syms} -melf_i386 --dynamic-linker=${dynlink} ${obs} -o ${items_prefix}${projname} \
+			-L/home/bc/v/ovideo-1/AppDir/usr/lib/i386-linux-gnu \
+			-l:libc.so.6 -l:libm.so.6 -l:libgtk-x11-2.0.so.0 -l:libgdk-x11-2.0.so.0 -l:libpangocairo-1.0.so.0 -l:libatk-1.0.so.0 -l:libcairo.so.2 -l:libgdk_pixbuf-2.0.so.0 -l:libgio-2.0.so.0 -l:libpangoft2-1.0.so.0 -l:libpango-1.0.so.0 -l:libfontconfig.so.1 -l:libfreetype.so.6 -l:libgstpbutils-1.0.so.0 -l:libgstaudio-1.0.so.0 -l:libgstvideo-1.0.so.0 -l:libgstapp-1.0.so.0 -l:libgstbase-1.0.so.0 -l:libgstreamer-1.0.so.0 -l:libgobject-2.0.so.0 -l:libglib-2.0.so.0 -l:libjpeg.so.8 -l:libsoup-2.4.so.1 -l:libasound.so.2 -l:libpthread.so.0 -l:libgthread-2.0.so.0
+linkapp: fast lnkapp
 
 %: %.s
 	${OCOMP} $< ${OFLAGS}
@@ -133,3 +139,4 @@ uninstall:
 .NOTPARALLEL:
 
 #make compile prefix=/usr && make link syms= LD=/home/bc/Desktop/out/LD-.glibc2.27-x86_64.AppImage items_prefix=/home/bc/v/ovideo-1/src/
+#make compile prefix=/usr && make linkapp syms=
