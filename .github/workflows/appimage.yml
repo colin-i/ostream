@@ -255,7 +255,7 @@ jobs:
        #this is in tmp folder, don't check inside if loaders.cache exists
        # --library-path \"${rootbase}...   will be with problems
        #if there are problems, try this: GTK_MODULE_DIR
-       #GST_PLUGIN_SCANNER last variable was wrong, first variable is ok
+       #GST_PLUGIN_SCANNER weird: launch after appimage-extract twice, the second time will be ok
        cat > ovideo <<EOF
       #!/bin/bash
       cd "\$(dirname "\$0")"
