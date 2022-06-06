@@ -254,6 +254,7 @@ jobs:
        #./lib since zlib1g. ./usr/lib for liblilv-0.so.0
        #this is in tmp folder, don't check inside if loaders.cache exists
        # --library-path \"${rootbase}...   will be with problems
+       #if there are problems, try this: GTK_MODULE_DIR
        cat > ovideo <<EOF
       #!/bin/bash
       cd "\$(dirname "\$0")"
@@ -270,6 +271,7 @@ jobs:
        GIO_MODULE_DIR="\${rootbase}/usr/lib/i386-linux-gnu/gio/modules" \
        GDK_PIXBUF_MODULE_FILE="\${gpmf}" \
        GST_PLUGIN_SYSTEM_PATH="\${rootbase}/usr/lib/gstreamer-1.0" \
+       GST_PLUGIN_SCANNER="\${rootbase}/usr/lib/i386-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner" \
        \${loader} ./usr/bin/ostream "\${rootbase}"
       EOF
        chmod 755 ovideo
