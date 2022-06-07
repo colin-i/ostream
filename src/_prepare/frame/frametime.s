@@ -460,6 +460,29 @@ function stage_frame_equalize_set()
     sd selpos
     setcall selpos stage_get_sel_pos()
 
+#	sd lastpos
+#	setcall lastpos stage_get_frames()
+#	dec lastpos
+
+#	sd dif=0
+#	sd startpos
+#	set startpos selpos
+
+#	while selpos!=lastpos
+#		add dif nr
+#		sd framelength
+#		setcall framelength stage_frame_time_numbers((stage_frame_time_get_at_index),selpos)
+#		if dif>framelength
+#			if startpos!=selpos
+#				#set as much as it is possible
+#			endif
+#			return
+#		endif
+#		sub dif framelength
+#		call set_frame_length_and_redraw(selpos,nr)
+#		inc selpos
+#	endwhile
+	#set what is left at lastpos
     #calculate if equalization is possible
     import "stage_get_frames" stage_get_frames
     sd totalframes
