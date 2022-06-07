@@ -1,3 +1,9 @@
+ovideo (1-181) bionic; urgency=medium
+
+  * equalize frames
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Tue, 07 Jun 2022 15:42:46 +0300
+
 ovideo (1-180m) bionic; urgency=medium
 
   * is at ld, not cc
