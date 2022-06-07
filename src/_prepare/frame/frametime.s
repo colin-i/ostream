@@ -82,9 +82,7 @@ endfunction
 
 #method is defined at olang.h
 
-function stage_frame_time_numbers(sd method,sd arg1,sd newvalue,sd numberoftimes)
-    sd index
-    set index arg1
+function stage_frame_time_numbers(sd method,sd index,sd newvalue,sd numberoftimes)
     if method==(stage_frame_time_init)
         #const stage_frame_time_init=0
         data frames#1
@@ -104,7 +102,7 @@ function stage_frame_time_numbers(sd method,sd arg1,sd newvalue,sd numberoftimes
             set pointer frames
             add pointer size
             sub pointer 4
-            set pointer# arg1
+            set pointer# index
         endif
         return 1
     elseif method==(stage_frame_time_free)
@@ -419,119 +417,31 @@ endfunction
 #equalize
 
 function stage_frame_equalize()
-    import "stage_frame_dialog" stage_frame_dialog
-    data init^stage_frame_equalize_init
-    data on_ok^stage_frame_equalize_set
-    ss title="Equalize"
-    call stage_frame_dialog(init,on_ok,title)
-endfunction
-
-function stage_frame_equalize_edit(sd action,sd value)
-    data equalize_edit#1
-    if action==(value_set)
-        set equalize_edit value
-    else
-        return equalize_edit
-    endelse
-endfunction
-
-function stage_frame_equalize_init(sd vbox)
-    import "label_and_edit" label_and_edit
-    ss txt="Frame length "
-    sd edit
-    setcall edit label_and_edit(vbox,txt)
-    call stage_frame_equalize_edit((value_set),edit)
-endfunction
-
-function stage_frame_equalize_set()
-    #get the number
-    import "entry_to_int_min_N" entry_to_int_min_N
-    sd entry
-    setcall entry stage_frame_equalize_edit((value_get))
-    sd nr
-    sd p_nr^nr
-    sd bool
-    setcall bool entry_to_int_min_N(entry,p_nr,1)
-    if bool!=1
-        return 0
-    endif
-
-    #get sel pos
-    sd selpos
-    setcall selpos stage_get_sel_pos()
-
-#	sd lastpos
-#	setcall lastpos stage_get_frames()
-#	dec lastpos
-
-#	sd dif=0
-#	sd startpos
-#	set startpos selpos
-
-#	while selpos!=lastpos
-#		add dif nr
-#		sd framelength
-#		setcall framelength stage_frame_time_numbers((stage_frame_time_get_at_index),selpos)
-#		if dif>framelength
-#			if startpos!=selpos
-#				#set as much as it is possible
-#			endif
-#			return
-#		endif
-#		sub dif framelength
-#		call set_frame_length_and_redraw(selpos,nr)
-#		inc selpos
-#	endwhile
-	#set what is left at lastpos
-    #calculate if equalization is possible
-    import "stage_get_frames" stage_get_frames
-    sd totalframes
-    setcall totalframes stage_get_frames()
-    sd equalization_end_frame
-    set equalization_end_frame selpos
-    sd dif=0
-    sd prev
-    sd can_be_truncation
-    sd loop=1
-    while loop==1
-        sd framelength
-        setcall framelength stage_frame_time_numbers((stage_frame_time_get_at_index),equalization_end_frame)
-        sub framelength nr
-        add dif framelength
-        set can_be_truncation nr
-        if dif==0
-            set loop 0
-        else
-            #test to truncate last equalization frame
-            sd sign_dif
-            set sign_dif dif
-            and sign_dif 0x80000000
-            if selpos!=equalization_end_frame
-                if sign_dif!=prev
-                    if dif<0
-                        mult dif -1
-                    endif
-                    sub can_be_truncation dif
-                    set loop 0
-                endif
-            endif
-            if loop!=0
-                set prev sign_dif
-
-                inc equalization_end_frame
-                if equalization_end_frame==totalframes
-                    str not_possible="Equalization not possible with the specified number"
-                    call texter(not_possible)
-                    return 0
-                endif
-            endif
-        endelse
-    endwhile
-    while selpos!=equalization_end_frame
-        call set_frame_length_and_redraw(selpos,nr)
-        inc selpos
-    endwhile
-    call set_frame_length_and_redraw(selpos,can_be_truncation)
+	#get sel pos
+	sd selpos
+	setcall selpos stage_get_sel_pos()
+	#
+	sd total
+	setcall total stage_frame_time_numbers((stage_frame_time_total_sum))
+	subcall total stage_frame_time_numbers((stage_frame_time_sum_at_index),selpos)
+	sd rem;set rem total
+	#
+	import "stage_get_frames" stage_get_frames
+	sd totalframes
+	setcall totalframes stage_get_frames()
+	sd max;set max totalframes
+	#
+	sub totalframes selpos
+	div total totalframes
+	dec max #maybe last is with rem
+	while selpos!=max
+		call set_frame_length_and_redraw(selpos,total)
+		inc selpos
+	endwhile
+	#
+	rem rem totalframes
+	add rem total
+	call set_frame_length_and_redraw(selpos,rem)
 endfunction
 
 function set_frame_length_and_redraw(sd pos,sd nr)
@@ -552,3 +462,40 @@ function set_frame_length_and_redraw(sd pos,sd nr)
     importx "_gtk_widget_show_all" gtk_widget_show_all
     call gtk_widget_show_all(ebox)
 endfunction
+
+#    import "stage_frame_dialog" stage_frame_dialog
+#    data init^stage_frame_equalize_init
+#    data on_ok^stage_frame_equalize_set
+#    ss title="Equalize"
+#    call stage_frame_dialog(init,on_ok,title)
+#endfunction
+#function stage_frame_equalize_edit(sd action,sd value)
+#    data equalize_edit#1
+#    if action==(value_set)
+#        set equalize_edit value
+#    else
+#        return equalize_edit
+#    endelse
+#endfunction
+#function stage_frame_equalize_init(sd vbox)
+#    import "label_and_edit" label_and_edit
+#    ss txt="Frame length "
+#    sd edit
+#    setcall edit label_and_edit(vbox,txt)
+#    call stage_frame_equalize_edit((value_set),edit)
+#endfunction
+#function stage_frame_equalize_set()
+#    #get the number
+#    import "entry_to_int_min_N" entry_to_int_min_N
+#    sd entry
+#    setcall entry stage_frame_equalize_edit((value_get))
+#    sd nr
+#    sd p_nr^nr
+#    sd bool
+#    setcall bool entry_to_int_min_N(entry,p_nr,1)
+#    if bool!=1
+#        return
+#    ...
+#                    str not_possible="Equalization not possible with the specified number"
+#    ...
+#endfunction

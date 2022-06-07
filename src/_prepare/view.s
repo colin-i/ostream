@@ -101,7 +101,7 @@ function stage_buttons_enter(sd container)
         #
     import "stage_frame_equalize" stage_frame_equalize
     chars *="equalize.bmp"
-    chars *="Equalize the frames lengths starting with selection; last interval frame can be truncated"
+    chars *="Equalize the frames lengths starting with selection"
     data *^stage_frame_equalize
         #
     data *=0
