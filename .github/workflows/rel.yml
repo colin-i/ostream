@@ -45,4 +45,3 @@ jobs:
       asset_path: ./1.txt
       asset_name: ${{ env.proj }}
       asset_content_type: text/plain
-      #asset_content_type: application/x-executable
