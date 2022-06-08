@@ -30,7 +30,9 @@ jobs:
       #this can be undone. example: git push origin :refs/tags/1.6
    - name: Store upload url for assets
      run: |
-      echo -n ${{ steps.create_release.outputs.upload_url }} > 1.txt
+      #echo straight will not escape {}
+      a=${{ steps.create_release.outputs.upload_url }}
+      echo -n ${a} > 1.txt
       name=`cat debian/changelog | head -1 | grep -o ^[^\ ]*`
       echo "proj=${name}" >> $GITHUB_ENV
    - name: Upload Release Asset
