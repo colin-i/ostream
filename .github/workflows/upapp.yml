@@ -24,7 +24,9 @@ jobs:
       #get appimage artifact
       id=$(gh run list --workflow=deb.yml -b $(git rev-parse --abbrev-ref HEAD) | cut -f7 | head -1)
       repo_at_gh=`cat debian/control | grep "^Homepage" | grep -o [^/]*$`
-      curl -L -H "Authorization: token ${{ secrets.PAT }}" https://api.github.com/repos/colin-i/${repo_at_gh}/actions/artifacts/${id}/zip --output a.zip
+      url=https://api.github.com/repos/colin-i/${repo_at_gh}/actions/artifacts/${id}/zip
+      echo ${url}
+      curl -L -H "Authorization: token ${{ secrets.PAT }}" ${url} --output a.zip
       #to env
       unzip ./a.zip
       echo "file=${name}.AppImage" >> $GITHUB_ENV
