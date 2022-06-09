@@ -31,6 +31,8 @@ jobs:
       #to env
       unzip ./appimage.zip
       echo "file=${name}.AppImage" >> $GITHUB_ENV
+     env:
+      GITHUB_TOKEN: ${{ secrets.PAT }}
    - name: Upload Release Asset
      uses: actions/upload-release-asset@v1
      env:
