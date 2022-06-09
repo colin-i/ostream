@@ -24,14 +24,12 @@ jobs:
       #get appimage artifact
       id=$(gh run list --workflow=deb.yml -b $(git rev-parse --abbrev-ref HEAD) | cut -f7 | head -1)
       repo_at_gh=`cat debian/control | grep "^Homepage" | grep -o [^/]*$`
-      url=`gh api -H "Accept: application/vnd.github.v3+json" /repos/colin-i/${repo_at_gh}/actions/runs/${id}/artifacts | jq ".artifacts[0].archive_download_url"`
-      echo default login colin-i password ${{ secrets.PAT }}> pat
-      url=${url:1:-1}
-      curl --netrc-file ~/pat -L ${url}
+      curl -L -H "Authorization: token ${{ secrets.PAT }}" https://api.github.com/repos/colin-i/${repo_at_gh}/actions/artifacts/${id}/zip --output a.zip
       #to env
-      unzip ./appimage.zip
+      unzip ./a.zip
       echo "file=${name}.AppImage" >> $GITHUB_ENV
      env:
+      #for gh
       GITHUB_TOKEN: ${{ secrets.PAT }}
    - name: Upload Release Asset
      uses: actions/upload-release-asset@v1
