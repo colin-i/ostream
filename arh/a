@@ -19,3 +19,6 @@ p="libc6-i386 libgtk2.0-0:i386 gstreamer1.0-plugins-good:i386 gstreamer1.0-plugi
 #apt depends ${p} --recurse  --no-recommends --no-suggests --no-conflicts --no-breaks --no-replaces --no-enhances --no-pre-depends  | grep "^\w" > 1
 #dpkg -s libgtk2.0-0:i386
 sudo apt install --dry-run ${p}
+
+#convert rgba to rgb24
+#ffmpeg -i a.png -pix_fmt rgb24 b.png

@@ -229,7 +229,7 @@ jobs:
       Name=OVideo
       Exec=ovideo
       Icon=ovideo
-      Categories=GNOME;GTK;
+      Categories=AudioVideo
       EOF
        ln -s ${pngfile} .DirIcon #f for multiple times
       fi
@@ -277,6 +277,37 @@ jobs:
       EOF
        chmod 755 ovideo
        cd ../../
+      fi
+      #metadata file
+      mi=usr/share/metainfo
+      mif=${mi}/com.colin.ovideo.appdata.xml
+      if [ ! -e "${mif}" ]; then
+       mkdir -p ${mi}
+       cat > ${mif} <<EOF
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!-- Copyright 2022 -->
+      <component type="desktop-application">
+       <id>com.colin.ovideo</id>
+       <metadata_license>FSFAP</metadata_license>
+       <name>O Video</name>
+       <summary>Video Editor</summary>
+       <description>
+        <ul>
+         <li>Create videos</li>
+         <li>Add animations</li>
+         <li>Edit frames</li>
+        </ul>
+       </description>
+       <screenshots>
+        <screenshot type="default">
+         <caption>OVideo image</caption>
+         <image>https://raw.github.com/colin-i/ostream/master/arh/ovideo.png</image>
+        </screenshot>
+       </screenshots>
+       <url type="homepage">https://www.github.com/colin-i/ostream</url>
+       <content_rating/>
+      </component>
+      EOF
       fi
       #
       cd ..
