@@ -12,7 +12,7 @@ sudo apt-get install ovideo
 ```
 \
 On linux distributions, appimage from ubuntu bionic.\
-<i>.AppImage</i> file from [releases](https://github.com/colin-i/ostream/releases).
+<i>.AppImage</i> file from [releases](https://github.com/colin-i/ostream/releases).\
 \
 On Windows, <i>.windows.zip</i> file from [releases](https://github.com/colin-i/ostream/releases).\
 <i>Gstreamer sdk</i> is [here](https://www.freedesktop.org/software/gstreamer-sdk/data/packages/windows/x86/).
