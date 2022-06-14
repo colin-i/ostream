@@ -14,6 +14,9 @@ sudo apt-get install ovideo
 On linux distributions, appimage from ubuntu bionic.\
 <i>.AppImage</i> file from [releases](https://github.com/colin-i/ostream/releases).\
 \
+On Fedora, not ready.\
+Missing libjpeg.so.8? https://download.copr.fedorainfracloud.org/results/aflyhorse/libjpeg/fedora-36-i386/ \
+\
 On Windows, <i>.windows.zip</i> file from [releases](https://github.com/colin-i/ostream/releases).\
 <i>Gstreamer sdk</i> is [here](https://www.freedesktop.org/software/gstreamer-sdk/data/packages/windows/x86/).
 
