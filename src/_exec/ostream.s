@@ -13,7 +13,6 @@ import "initfn" initfn
 include "../_dif/difl.s" "../_dif/difw.s"
 
 call gtk_init(0,0)
-call gst_init(0,0)
 
 importx "_setlocale" setlocale
 call setlocale((LC_NUMERIC),"C") #"English" was ok
