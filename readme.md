@@ -16,7 +16,7 @@ On linux distributions, appimage from ubuntu bionic.\
 \
 On Fedora, not ready.\
 Missing libjpeg.so.8? https://download.copr.fedorainfracloud.org/results/aflyhorse/libjpeg/fedora-36-i386/ \
-Unacceptable TLS certificate? Overwrite libgiognutls.so from glib-networking.i686 deployment with [glib-networking:i386 bionic release equivalent](https://github.com/colin-i/test/releases/download/1.1/libgiognutls.so). \
+Unacceptable TLS certificate? Put [glib-networking:i386 bionic release libgiognutls.so](https://github.com/colin-i/test/releases/download/1.1/libgiognutls.so) in a folder and point to that folder with GIO_MODULE_DIR variable. \
 \
 On Windows, <i>.windows.zip</i> file from [releases](https://github.com/colin-i/ostream/releases).\
 <i>Gstreamer sdk</i> is [here](https://www.freedesktop.org/software/gstreamer-sdk/data/packages/windows/x86/).
