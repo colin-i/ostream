@@ -32,7 +32,7 @@ jobs:
       else
        echo unpublished
        f=`wget -q https://launchpad.net/~colin-i/+archive/ubuntu/ppa${{ github.event.inputs.ppa }}/+build/${{ github.event.inputs.unpublished }} -O - | grep -Poe "[^\"]*(?=\.deb\")"`
-       wget ${f} -O ${name}.deb
+       wget ${f}.deb -O ${name}.deb
       fi
       #make rpm
       mkdir out
