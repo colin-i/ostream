@@ -268,10 +268,10 @@ jobs:
       LD_LIBRARY_PATH="\${rootbase}/lib32:\${rootbase}/usr/lib:\${rootbase}/usr/lib/i386-linux-gnu:\${rootbase}/lib/i386-linux-gnu" \
        GDK_PIXBUF_MODULEDIR="\${rootbase}${gpixf}" \
        \${loader} .${gpixd}gdk-pixbuf-query-loaders > "\${gpmf}"
-      GST_PLUGIN_SCANNER="\${rootbase}/usr/lib/i386-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner" \
-       LD_LIBRARY_PATH="\${rootbase}/lib32:\${rootbase}/usr/lib:\${rootbase}/usr/lib/i386-linux-gnu:\${rootbase}/lib/i386-linux-gnu" \
-       GIO_MODULE_DIR="\${rootbase}/usr/lib/i386-linux-gnu/gio/modules" \
+      LD_LIBRARY_PATH="\${rootbase}/lib32:\${rootbase}/usr/lib:\${rootbase}/usr/lib/i386-linux-gnu:\${rootbase}/lib/i386-linux-gnu" \
        GDK_PIXBUF_MODULE_FILE="\${gpmf}" \
+       GIO_EXTRA_MODULES="\${rootbase}/usr/lib/i386-linux-gnu/gio/modules" \
+       GST_PLUGIN_SCANNER="\${rootbase}/usr/lib/i386-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner" \
        GST_PLUGIN_SYSTEM_PATH="\${rootbase}/usr/lib/gstreamer-1.0" \
        \${loader} ./usr/bin/ostream "\${rootbase}"
       EOF

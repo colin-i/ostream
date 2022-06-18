@@ -22,3 +22,9 @@ sudo apt install --dry-run ${p}
 
 #convert rgba to rgb24
 #ffmpeg -i a.png -pix_fmt rgb24 b.png
+
+
+#rpmrebuild -enp ./*.rpm
+
+#libgstgdkpixbuf.so
+#libgstmxf.so

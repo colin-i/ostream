@@ -77,7 +77,3 @@ function content_size(sd ptrdata1,sd ptrdata2)
     add ptrdata2 dw
     set ptrdata2# ptrdata1#
 endfunction
-
-
-
-

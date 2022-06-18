@@ -31,11 +31,12 @@ function getSessionMessageBody(sv sessionMsg,sv ptrmsgmem,sv ptrmsgsize)
 	add sessionMsg (:+DWORD+:+          :)
 	sd status
 	set status sessionMsg#d^
+	add sessionMsg (DWORD)
 	if status!=(HTTP_STATUS_OK)
-		call uri_err(status)
+		call uri_err(status,sessionMsg#)
 		return (FALSE)
 	endif
-	add sessionMsg (DWORD+:+:+:)
+	add sessionMsg (:+:+:)
 
 	sd response_body#1
 	set response_body sessionMsg#
@@ -65,11 +66,14 @@ function uri_queue_content(ss uri,sd callback)
 	#assertion `queue->head == NULL' failed
 endfunction
 
-function uri_err(sd status)
-	vstr urierr="Error status code: "
-	import "strvaluedisp" strvaluedisp
-	data su=stringUinteger
-	call strvaluedisp(urierr,status,su)
+function uri_err(sd status,sd msg)
+	importx "_sprintf" sprintf
+	import "printer" printer
+	import "texter" texter
+	chars n#dword_null
+	call sprintf(#n,"%u",status)
+	call printer(#n)
+	call texter(msg)
 endfunction
 
 importx "_g_object_unref" g_object_unref
