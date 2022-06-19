@@ -26,5 +26,5 @@ sudo apt install --dry-run ${p}
 
 #rpmrebuild -enp ./*.rpm
 
-#libgstgdkpixbuf.so
-#libgstmxf.so
+#Requires:      libgstgdkpixbuf.so
+#Requires:      libgstmxf.so
