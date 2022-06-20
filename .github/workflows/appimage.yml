@@ -70,7 +70,7 @@ jobs:
         xz -d ${inter}.xz #f for multiple times
        fi
        #pipe to true to not stop the workflow if grep exits!=0
-       debfilename=`grep "^Filename.*/${pkg}_" ${inter} || true`
+       debfilename=`grep "^Filename.*/${pkg}_" ${inter}` # || true   is ok now but if package is not, without this, will be workflow fail
        #if [ -z "${debfilename}" ]; then
        # next time with if arch = i386 :i386 and reform array and try on
        # not_are+=" ${pkg}"
