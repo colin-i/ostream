@@ -758,15 +758,15 @@ function pixbuf_draw_text(sd pixbuf,ss text,sd x,sd y,sd size,sd color,sd coordi
         sd p_text_height^text_height
         call pango_layout_get_pixel_size(pangolayout,p_text_width,p_text_height)
 
-		import "get_higher_warn" get_higher_warn
-		sd available_w
-		set available_w width
-		sub available_w text_width
-		setcall available_w get_higher_warn(available_w,0,"big text width")
-		sd available_h
-		set available_h height
-		sub available_h text_height
-		setcall available_h get_higher_warn(available_h,0,"big text height")
+        sd available_w
+        set available_w width
+        sub available_w text_width
+        setcall available_w get_higher(available_w,0)
+
+        sd available_h
+        set available_h height
+        sub available_h text_height
+        setcall available_h get_higher(available_h,0)
 
         inc x
         inc y

@@ -208,7 +208,7 @@ function headline_dlg(sd action,sd vbox)
         str format="%u"
         sd nr=10
         importx "_sprintf" sprintf
-        while nr!=101
+        while nr!=51
             call sprintf(nr_ascii,format,nr)
             importx "_gtk_combo_box_text_append_text" gtk_combo_box_text_append_text
             call gtk_combo_box_text_append_text(size_entry,nr_ascii)

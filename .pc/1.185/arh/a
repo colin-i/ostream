@@ -24,7 +24,7 @@ sudo apt install --dry-run ${p}
 
 #convert rgba to rgb24
 #ffmpeg -i a.png -pix_fmt rgb24 b.png
-#at 128 , text 85 max
+
 
 #rpmrebuild -enp ./*.rpm
 

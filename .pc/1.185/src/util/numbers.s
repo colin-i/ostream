@@ -370,24 +370,18 @@ endfunction
 
 
 function get_lower(sd A,sd B)
-	if A<B
-		return A
-	endif
-	return B
+    if A<B
+        return A
+    else
+        return B
+    endelse
 endfunction
 function get_higher(sd A,sd B)
-	if A>B
-		return A
-	endif
-	return B
-endfunction
-function get_higher_warn(sd A,sd B,sd warn)
-	if A>=B
-		return A
-	endif
-	import "printer" printer
-	call printer(warn)
-	return B
+    if A>B
+        return A
+    else
+        return B
+    endelse
 endfunction
 
 ##char,short,int
@@ -578,3 +572,7 @@ function numbers_proportion(sd unknown_nom,sd known_denom,sd known_nom)
     div known_denom known_nom
     return known_denom
 endfunction
+
+
+
+
