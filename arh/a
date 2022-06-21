@@ -27,11 +27,3 @@ sudo apt install --dry-run ${p}
 #at 128 , text 85 max
 
 #rpmrebuild -enp ./*.rpm
-
-#this is a blocker
-#BuildArch:     i386
-
-#Requires:      libgstgdkpixbuf.so
-#Requires:      libgstmxf.so
-
-#touch /tmp/usr/share/ovideo/regforkoff

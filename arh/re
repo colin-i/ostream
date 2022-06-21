@@ -1,0 +1,8 @@
+
+touch ./usr/share/ovideo/regforkoff
+
+#this is a blocker
+#BuildArch:     i386
+
+#Requires:      libgstgdkpixbuf.so
+#Requires:      libgstmxf.so
