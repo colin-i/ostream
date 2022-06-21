@@ -20,18 +20,11 @@ p="libc6-i386 libgtk2.0-0:i386 gstreamer1.0-plugins-good:i386 gstreamer1.0-plugi
 #dpkg -s libgtk2.0-0:i386
 sudo apt install --dry-run ${p}
 
-#there are more ideas here: https://github.com/aferrero2707/appimage-helper-scripts/blob/master/bundle-gtk2.sh
-
 #convert rgba to rgb24
 #ffmpeg -i a.png -pix_fmt rgb24 b.png
 
 
 #rpmrebuild -enp ./*.rpm
 
-#this is a blocker
-#BuildArch:     i386
-
-#Requires:      libgstgdkpixbuf.so
-#Requires:      libgstmxf.so
-
-#touch /tmp/usr/share/ovideo/regforkoff
+#libgstgdkpixbuf.so
+#libgstmxf.so

@@ -26,8 +26,7 @@ jobs:
   # Steps represent a sequence of tasks that will be executed as part of the job
   steps:
    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-   - uses: actions/checkout@v3
-     if: ${{ env.init != '' }}
+   #- uses: actions/checkout@v3
    #with:
    # repository: colin-i/irc
    # path: my-tools
@@ -71,7 +70,7 @@ jobs:
         xz -d ${inter}.xz #f for multiple times
        fi
        #pipe to true to not stop the workflow if grep exits!=0
-       debfilename=`grep "^Filename.*/${pkg}_" ${inter}` # || true   is ok now but if package is not, without this, will be workflow fail
+       debfilename=`grep "^Filename.*/${pkg}_" ${inter} || true`
        #if [ -z "${debfilename}" ]; then
        # next time with if arch = i386 :i386 and reform array and try on
        # not_are+=" ${pkg}"

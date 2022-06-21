@@ -15,7 +15,6 @@ Const SEEK_SET=0
 Const SEEK_CUR=1
 Const SEEK_END=2
 
-const F_OK=0
 
 const bitsperbyte=8
 
