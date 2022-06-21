@@ -6,3 +6,5 @@ touch ./usr/share/ovideo/regforkoff
 
 #Requires:      libgstgdkpixbuf.so
 #Requires:      libgstmxf.so
+
+#%attr(0644, root, root) "/usr/share/ovideo/regforkoff"
