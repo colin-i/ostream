@@ -6,6 +6,8 @@ format elfobj
 
 include "../../_include/include.h"
 
+#29 june 2022: this is ok on windows but on ubuntu... there are 4 gdk functions
+
 function stage_screenshot()
     importx "_gdk_get_default_root_window" gdk_get_default_root_window
     importx "_gdk_drawable_get_size" gdk_drawable_get_size
