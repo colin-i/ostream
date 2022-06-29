@@ -41,8 +41,9 @@ jobs:
       sudo apt install alien
       sudo alien -rk ../${name}.deb
       fname=`ls`
-      mv ${fname} ../
-      echo "file=${fname}" >> $GITHUB_ENV
+      fnamefinal=`echo ${fname} | sed "s/-/./"`
+      mv ${fname} ../${fnamefinal}
+      echo "file=${fnamefinal}" >> $GITHUB_ENV
    - name: artifact
      uses: actions/upload-artifact@v3
      with:
