@@ -1,10 +1,20 @@
 
 touch ./usr/share/ovideo/regforkoff
 
+#sudo sed is still permission
+
 #this is a blocker
 #BuildArch:     i386
+sed '/^BuildArch:.*i386$/d' text > text2
 
 #Requires:      libgstgdkpixbuf.so
 #Requires:      libgstmxf.so
+sed '/^#Requires.*CompressedFileNames.*$/i Requires:      libgstgdkpixbuf.so\nRequires:      libgstmxf.so\n' text2 > text3
+rm text2
 
 #%attr(0644, root, root) "/usr/share/ovideo/regforkoff"
+sed -e "$(grep -n '^%attr.*\"$' text3 | tail -1 | cut -f1 -d ':')a %attr(0644, root, root) \"/usr/share/ovideo/regforkoff\"" text3 > text2
+cat text2
+rm text3
+
+sudo mv text2 text
