@@ -50,7 +50,8 @@ jobs:
       arch_ai=-x86_64
       archfile=${file}${arch_ai}
       kitpart () {
-       urlpart=`wget -q https://github.com/AppImage/AppImageKit/releases/latest -O - | grep "${archfile}" | head -n 1 | cut -d '"' -f 2`
+       #this is not working anymore urlpart=`wget -q https://github.com/AppImage/AppImageKit/releases/latest -O - | grep "${archfile}" | head -n 1 | cut -d '"' -f 2`
+       urlpart=AppImage/AppImageKit/releases/latest/download/${archfile}
       }
       if [ ! -e "${file}" ]; then
        kitpart
