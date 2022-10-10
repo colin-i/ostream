@@ -58,6 +58,7 @@ compile: share ${items} ounused
 
 ounused:
 	ounused ${logs}
+	@echo
 
 share:
 	if [ "${platform}" = "lin" ]; then \
