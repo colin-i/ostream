@@ -4,9 +4,9 @@ OCOMP=o
 syms=-s
 
 ifeq (${platform},win)
-	OFLAGS = inplace_reloc 0 include_sec 1
+	OFLAGS = inplace_reloc 0 include_sec 1 ${OFLAGSEXTRA}
 else
-	OFLAGS = underscore_pref 1
+	OFLAGS = underscore_pref 1 ${OFLAGSEXTRA}
 	dynlink=/lib/ld-linux.so.2
 endif
 
