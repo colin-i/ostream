@@ -375,6 +375,7 @@ function mkv_info(sd file)
         endif
     endif
 
+const _SegmentUID=!
     chars SegmentUID={0x73,0xA4}
     chars *SegmentUID_size=0x80|16
     data SegmentUID_value#4
@@ -384,6 +385,7 @@ function mkv_info(sd file)
     chars *Duration={0x44,0x89}
     #unsigned integer
     chars *Duration_size=0x84
+const ptr_Duration=!
     data Duration_value#1
     chars *DateUTC={0x44,0x61}
     chars *DateUTC_size=0x80|8
@@ -391,21 +393,18 @@ function mkv_info(sd file)
     data DateUTC_value_low#1
     chars *MuxingApp={0x4D,0x80}
     chars MuxingApp_size#1
-    chars MuxingApp_value={O,A,p,p,l,i,c,a,t,i,o,n,s}
-    chars WritingApp={0x57,0x41}
+const _MuxingApp=!
+    chars *MuxingApp_value={O,A,p,p,l,i,c,a,t,i,o,n,s}
+const App=!-_MuxingApp
+    chars *WritingApp={0x57,0x41}
     chars WritingApp_size#1
     chars WritingApp_value={O,A,p,p,l,i,c,a,t,i,o,n,s}
 
-    const _MuxingApp^MuxingApp_value
-    const MuxingApp_^WritingApp
-    const App=MuxingApp_-_MuxingApp
-    const _SegmentUID^SegmentUID
     const WritingApp_value_^WritingApp_value
     data info_sz=WritingApp_value_-_SegmentUID+App
     data ptr_seg^SegmentUID
 
     #the muxer timecode
-    const ptr_Duration^Duration_value
     const Duration_offset=ptr_Duration-_SegmentUID
     data Dur_offset=Duration_offset
 
@@ -577,7 +576,8 @@ function mkv_track_entry(sd file,sd *size,sd *filepos)
     #no lacing used
     chars *Name={0x53,0x6E}
     chars *Name_size=0x85
-    chars Name_value={V,i,d,e,o}
+const track_last_=!
+    chars *Name_value={V,i,d,e,o}
 
     chars *CodecPrivate={0x63,0xA2}
     chars *CodecPrivate_size=0x80+bitmapInfoHeader_size
@@ -594,7 +594,6 @@ function mkv_track_entry(sd file,sd *size,sd *filepos)
 ##############
 
     const _track^TrackNumber
-    const track_last_^Name_value
     const track_=track_last_+5
     data track_data^TrackNumber
     data track_sz_init=track_-_track
@@ -656,6 +655,7 @@ function mkv_track_video_entry(sd file,sd *size,sd *filepos)
     data DisplayHeight_value#1
     chars *FrameRate={0x23,0x83,0xE3}
     chars *FrameRate_size=0x84
+const video_track_last_=!
     data FrameRate_value#1
 
     chars *ColourSpace={0x2E,0xB5,0x24}
@@ -667,7 +667,6 @@ function mkv_track_video_entry(sd file,sd *size,sd *filepos)
     setcall io mkv_write_read_get()
     if io==(mkv_write)
         const _video_track^PixelWidth
-        const video_track_last_^FrameRate_value
         const video_track_=video_track_last_+4
         data video_track^PixelWidth
         data video_track_sz_init=video_track_-_video_track
@@ -1792,6 +1791,7 @@ endfunction
 #sound entry
 #bool
 function mkv_sound(sd file,sd *size,sd *filepos)
+const _audio=!
     chars CodecID=0x86
  chars *CodecID_size=0x80+1+1+1+1+1+1+    1+1+1+1+    1+1+1
     chars *CodecID_value={A,_,P,C,M,Slash,I,N,T,Slash,L,I,T}
@@ -1815,7 +1815,8 @@ function mkv_sound(sd file,sd *size,sd *filepos)
 
     chars *Audio={0xE1}
     chars Audio_size=0x80
-    chars SamplingFrequency=0xB5
+const _audiospec=!
+    chars *SamplingFrequency=0xB5
     chars *SamplingFrequency_size=0x84
     data SamplingFrequency_value#1
     chars *Channels=0x9F
@@ -1823,13 +1824,12 @@ function mkv_sound(sd file,sd *size,sd *filepos)
     data Channels_value#1
     chars *BitDepth={0x62,0x64}
     chars *BitDepth_size=0x84
+const audiospec_=!
     data BitDepth_value#1
 
     sd io
     setcall io mkv_write_read_get()
     if io==(mkv_write)
-        const _audiospec^SamplingFrequency
-        const audiospec_^BitDepth_value
         const audiospec_@=audiospec_+4
         const audiospec_size=audiospec_@-_audiospec
         or Audio_size (audiospec_size)
@@ -1848,7 +1848,6 @@ function mkv_sound(sd file,sd *size,sd *filepos)
         setcall BitDepth_value dword_reverse(BitDepth_value)
     endif
 
-    const _audio^CodecID
     const audio_size=audiospec_@-_audio
     data audio^CodecID
 
