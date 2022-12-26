@@ -204,6 +204,8 @@ function record_fileandsizes(sd thread_id)
 endfunction
 
 function record_got_file(sd file,sd thread_id)
+#const _RIFF^riff
+const _RIFF=!
     chars riff={R,I,F,F}
     data riffsize#1
 
@@ -224,9 +226,10 @@ function record_got_file(sd file,sd thread_id)
     chars datatag={d,a,t,a}
     data datasize#1
 
+#const RIFF_^RIFF
+const RIFF_=!
+
     data RIFF^riff
-    const _RIFF^riff
-    const RIFF_^RIFF
     const RIFF_size=RIFF_-_RIFF
 
     const _WAVEFORMATEX^wFormatTag

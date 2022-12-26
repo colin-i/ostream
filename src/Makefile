@@ -65,8 +65,10 @@ share:
 		echo chars prestart=0x2e\;chars simplestart=\"${sharefolderpackage}\"\;return \#simplestart > ${lshare}; \
 	fi
 
+#at jammy libgtk2.0-dev:i386,libgstreamer-plugins-base1.0-dev:i386,libsoup2.4-dev:i386,libasound2-dev:i386
+
 #at bionic
-#libgtk2.0-dev:i386	libgtk2.0-0:i386
+#libgtk2.0-dev:i386	libgtk2.0-0:i386 is already
 #libgstreamer-plugins-base1.0-dev:i386	libgstreamer-plugins-base1.0-0:i386 is already
 #no apt-file search libgstinterfaces 0.10 in xenial
 #libsoup2.4-dev:i386      libsoup2.4-1:i386 is already
