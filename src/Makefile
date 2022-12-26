@@ -63,12 +63,10 @@ share:
 		echo return \"${sharefolderpackage}\" > ${lshare}; \
 	fi
 
-#at jammy
-#libgtk2.0-dev:i386	libgtk2.0-0:i386
-#libjpeg8-dev:i386 is already	libjpeg8:i386 is already
-#libgstreamer1.0-dev:i386	libgstreamer1.0-0:i386 is already
-#	gst_implements_interface_cast	video_realize
-#	gst_buffer_set_caps	stage_file_need_fn
+#at jammy libgtk2.0-dev:i386,libgstreamer-plugins-base1.0-dev:i386,libsoup2.4-dev:i386,libasound2-dev:i386
+
+#at bionic
+#libgtk2.0-dev:i386	libgtk2.0-0:i386 is already
 #libgstreamer-plugins-base1.0-dev:i386	libgstreamer-plugins-base1.0-0:i386 is already
 #	gst_app_buffer_new	stage_file_need_fn
 #no apt-file search libgstinterfaces 0.10 in xenial

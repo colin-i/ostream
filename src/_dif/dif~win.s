@@ -680,6 +680,7 @@ function sound_preview_write_buffer(sd buffer,sd buffer_size)
     if hwaveout#==0
         return (void)
     endif
+	const wvhd=!
     data lpData#1
     data dwBufferLength#1
     data *dwBytesRecorded#1
@@ -689,7 +690,7 @@ function sound_preview_write_buffer(sd buffer,sd buffer_size)
     data *lpNext#1
     data *reserved#1
     #lpData, dwBufferLength, and dwFlags members must be set
-    const wvhd^lpData
+#    const wvhd^lpData
     const wvhd_size=!-wvhd
     data wavehd%wvhd
 

@@ -46,12 +46,40 @@ import "av_dialog_run" av_dialog_run
 import "av_dialog_close" av_dialog_close
 import "av_dialog_stop" av_dialog_stop
 
+
+
+#importx "_fread" fread
+#importx "_fwrite" fwrite
+#function extragere(ss location)
+#	data extragere_off1#1
+#	const extr_1^extragere_off1
+#	data extragere_off2#1
+#	const extr_2^extragere_off2
+#	sd file
+#	call openfile(#file,location,"rb")
+#	sd mp3_file
+#	call openfile(#mp3_file,"captures/file.mp3","wb")
+#	sd mp3_sz;set mp3_sz extragere_off2;sub mp3_sz extragere_off1
+#	call file_seek_set(file,extragere_off1)
+#	sd mp3Mem;setcall mp3Mem memalloc(mp3_sz)
+#	Call fread(mp3Mem,1,mp3_sz,file)
+#	Call fwrite(mp3Mem,1,mp3_sz,mp3_file)
+#	call fclose(mp3_file)
+#	call fclose(file)
+#endfunction
+
+
+
+
 function mp4_write()
     call mp4_write_expand_set((mp4_write))
     ss location
     import "stage_get_output_container" stage_get_output_container
     setcall location stage_get_output_container()
     call av_dialog_run(mp4_dialog,location)
+
+#call extragere(location)
+
 endfunction
 #
 function mp4_filewrite(sd file)
@@ -1234,6 +1262,10 @@ import "file_seekSet_setDwRev_goEnd" file_seekSet_setDwRev_goEnd
 
 #bool
 function mp4_mdat(sd file)
+
+#data off1%extr_1
+#call file_tell(file,off1)
+
     sd bool
     setcall bool mp4_mdat_sound(file)
     if bool!=1
@@ -1254,6 +1286,9 @@ function mp4_mdat(sd file)
     if bool!=(TRUE)
         return (FALSE)
     endif
+
+#data off2%extr_2
+#set off2# file_pos
 
     #
     sd all_size_of_sample
