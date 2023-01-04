@@ -1,4 +1,10 @@
 
+#./wmake
+
+#./wmake ../b
+
+#./wmake 1 clean
+
 if [ -z "$1" ] || [ -n "$2" ]
 then
 cd src
