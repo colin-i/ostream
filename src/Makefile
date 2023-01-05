@@ -2,13 +2,7 @@
 platform = lin
 OCOMP=o
 syms=-s
-
-ifeq (${platform},win)
-	OFLAGS = inplace_reloc 0 include_sec 1 ${OFLAGSEXTRA}
-else
-	OFLAGS = underscore_pref 1 ${OFLAGSEXTRA}
-	dynlink=/lib/ld-linux.so.2
-endif
+projname=ovideo
 
 cap = _capture/capture
 err = err/err
@@ -44,26 +38,47 @@ uti = ${u}asm ${u}floating ${u}lists ${u}numbers ${u}update ${u}util
 items = _dif/dif~${platform} ${cap} ${err} ${eve} ${exe} ${ffl} ${gnu} ${int} ${med} ${mem} ${net} ${obj} ${pre} ${sea} ${str} ${uti}
 items_prefix=
 
-projname=ovideo
-wprojname=ovideo.exe
+$(eval obs = )
+$(foreach var,$(items),$(eval obs += ${items_prefix}${var}.o))
+$(eval logs = )
+$(foreach var,$(items),$(eval logs += ${items_prefix}${var}.s.log))
+
+ifeq (${platform},lin)
+
+OFLAGS = underscore_pref 1 ${OFLAGSEXTRA}
+lprojname=${items_prefix}${projname}
 lshare=_dif/share.txt
-logs :=
-obs :=
 sharefolderpackage=$(prefix)/share/ovideo
 sharefolder=$(DESTDIR)${sharefolderpackage}
-
-all: compile lnk
-
-compile: share ${items} ounused
-
-ounused:
+dynlink=/lib/ld-linux.so.2
+all: ${lshare} compile ${lprojname}
+${lprojname}:
 	ounused ${logs}
 	@echo
-
+	export PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig/:${PKG_CONFIG_PATH}; \
+	$(LD) ${syms} -melf_i386 --dynamic-linker=${dynlink} ${obs} -o ${lprojname} -lc -lm `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lgthread-2.0 -lpthread;
 share:
-	if [ "${platform}" = "lin" ]; then \
-		echo chars prestart=0x2e\;chars simplestart=\"${sharefolderpackage}\"\;return \#simplestart > ${lshare}; \
-	fi
+	echo chars prestart=0x2e\;chars simplestart=\"${sharefolderpackage}\"\;return \#simplestart > ${lshare}; \
+
+else
+
+OFLAGS = inplace_reloc 0 include_sec 1 ${OFLAGSEXTRA}
+wprojname=${projname}.exe
+all: compile ${wprojname}
+${wprojname}:
+	ounused ${logs}
+	@echo
+	i686-w64-mingw32-ld --large-address-aware ${syms} ${obs} -o ${wprojname} -entry _start --start-group \
+	`dpkg -L mingw-w64-i686-dev | grep '\.a' | sed 's/..$$//' | grep -o '[^\/]*$$' | sed 's/^lib/-l/' | xargs echo` \
+	--end-group -L`echo ~`/.wine/drive_c/gstreamer-sdk/0.10/x86/lib/ \
+	-lgtk-win32-2.0 -lgdk-win32-2.0 -lgdk_pixbuf-2.0 -lglib-2.0 -lgobject-2.0 -lgio-2.0 -lgthread-2.0 \
+	-lgstreamer-0.10 -lgstapp-0.10 -lgstinterfaces-0.10 -lgstpbutils-0.10 \
+	-lcairo -lpango-1.0 -lsoup-2.4 -ljpeg;
+
+endif
+
+compile: ${obs}
+
 
 #at jammy libgtk2.0-dev:i386,libgstreamer-plugins-base1.0-dev:i386,libsoup2.4-dev:i386,libasound2-dev:i386
 
@@ -78,35 +93,23 @@ share:
 
 #without -pthread, at launchpad runner: _dif/dif~lin.o: undefined reference to symbol 'sem_init@@GLIBC_2.1'
 
-lnk:
-	if [ "${platform}" = "lin" ]; then \
-		export PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig/:${PKG_CONFIG_PATH}; \
-		$(LD) ${syms} -melf_i386 --dynamic-linker=${dynlink} ${obs} -o ${items_prefix}${projname} -lc -lm `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lgthread-2.0 -lpthread; \
-	else \
-		i686-w64-mingw32-ld --large-address-aware ${syms} ${obs} -o ${wprojname} -entry _start --start-group \
-		`dpkg -L mingw-w64-i686-dev | grep '\.a' | sed 's/..$$//' | grep -o '[^\/]*$$' | sed 's/^lib/-l/' | xargs echo` \
-		--end-group -L`echo ~`/.wine/drive_c/gstreamer-sdk/0.10/x86/lib/ \
-		-lgtk-win32-2.0 -lgdk-win32-2.0 -lgdk_pixbuf-2.0 -lglib-2.0 -lgobject-2.0 -lgio-2.0 -lgthread-2.0 \
-		-lgstreamer-0.10 -lgstapp-0.10 -lgstinterfaces-0.10 -lgstpbutils-0.10 \
-		-lcairo -lpango-1.0 -lsoup-2.4 -ljpeg; \
-	fi
-fast:
-	$(eval obs = `printf ' ${items_prefix}%s.o' ${items}`)
-link: fast lnk
+#fast:
+#	$(eval obs = `printf ' ${items_prefix}%s.o' ${items}`)
+#linkapp: fast lnkapp
+#link: fast lnk
 #snprintf with circular unresolved requirements
 #cos is in -lmingwex that will work with -lmingw32 -lmsvcrt
 #on win msvcr100 is old and at here is from old java-i586
-lnkapp:
+linkapp:
 	LD_LIBRARY_PATH=/home/bc/v/ovideo-1/AppDir/usr/lib/i386-linux-gnu:/home/bc/v/ovideo-1/AppDir/lib/i386-linux-gnu \
-		$(LD) ${syms} -melf_i386 --dynamic-linker=${dynlink} ${obs} -o ${items_prefix}${projname} \
+		$(LD) ${syms} -melf_i386 --dynamic-linker=${dynlink} ${obs} -o ${lprojname} \
 			-L/home/bc/v/ovideo-1/AppDir/usr/lib/i386-linux-gnu \
 			-l:libc.so.6 -l:libm.so.6 -l:libgtk-x11-2.0.so.0 -l:libgdk-x11-2.0.so.0 -l:libpangocairo-1.0.so.0 -l:libatk-1.0.so.0 -l:libcairo.so.2 -l:libgdk_pixbuf-2.0.so.0 -l:libgio-2.0.so.0 -l:libpangoft2-1.0.so.0 -l:libpango-1.0.so.0 -l:libfontconfig.so.1 -l:libfreetype.so.6 -l:libgstpbutils-1.0.so.0 -l:libgstaudio-1.0.so.0 -l:libgstvideo-1.0.so.0 -l:libgstapp-1.0.so.0 -l:libgstbase-1.0.so.0 -l:libgstreamer-1.0.so.0 -l:libgobject-2.0.so.0 -l:libglib-2.0.so.0 -l:libjpeg.so.8 -l:libsoup-2.4.so.1 -l:libasound.so.2 -l:libpthread.so.0 -l:libgthread-2.0.so.0
-linkapp: fast lnkapp
 
-%: %.s
+%.o: %.s
 	${OCOMP} $< ${OFLAGS}
-	$(eval logs += $@.s.log)
-	$(eval obs += $@.o)
+#	$(eval logs += $@.s.log)
+#	$(eval obs += $@.o)
 
 clean:
 	-printf ' %s.s.log' ${items} | xargs rm -f
@@ -140,6 +143,3 @@ uninstall:
 .PHONY: all install clean distclean uninstall test
 
 .NOTPARALLEL:
-
-#make compile prefix=/usr && make link syms= LD=/home/bc/Desktop/out/LD-.glibc2.27-x86_64.AppImage items_prefix=/home/bc/v/ovideo-1/src/
-#make compile prefix=/usr && make linkapp syms=
