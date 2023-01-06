@@ -51,21 +51,21 @@ lshare=_dif/share.txt
 sharefolderpackage=$(prefix)/share/ovideo
 sharefolder=$(DESTDIR)${sharefolderpackage}
 dynlink=/lib/ld-linux.so.2
-all: ${lshare} compile ${lprojname}
-${lprojname}:
+all: ${lprojname}
+${lprojname}: ${lshare} ${obs}
 	ounused ${logs}
 	@echo
 	export PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig/:${PKG_CONFIG_PATH}; \
 	$(LD) ${syms} -melf_i386 --dynamic-linker=${dynlink} ${obs} -o ${lprojname} -lc -lm `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lgthread-2.0 -lpthread;
-share:
+${lshare}:
 	echo chars prestart=0x2e\;chars simplestart=\"${sharefolderpackage}\"\;return \#simplestart > ${lshare}; \
 
 else
 
 OFLAGS = inplace_reloc 0 include_sec 1 ${OFLAGSEXTRA}
 wprojname=${projname}.exe
-all: compile ${wprojname}
-${wprojname}:
+all: ${wprojname}
+${wprojname}: ${obs}
 	ounused ${logs}
 	@echo
 	i686-w64-mingw32-ld --large-address-aware ${syms} ${obs} -o ${wprojname} -entry _start --start-group \
@@ -76,8 +76,6 @@ ${wprojname}:
 	-lcairo -lpango-1.0 -lsoup-2.4 -ljpeg;
 
 endif
-
-compile: ${obs}
 
 
 #at jammy libgtk2.0-dev:i386,libgstreamer-plugins-base1.0-dev:i386,libsoup2.4-dev:i386,libasound2-dev:i386

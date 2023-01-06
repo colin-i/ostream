@@ -1,4 +1,11 @@
 
+#./md
+
+#sudo ./md install
+#don't run with o from root
+
+#./md clean
+
 if [ -z "${1}" ]; then
 a=all
 else

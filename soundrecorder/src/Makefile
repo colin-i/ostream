@@ -9,12 +9,12 @@ srcname=${projname}.s
 logname=${srcname}.log
 wprojname=${projname}.exe
 
-all: ${objname} ${wprojname}
+all: ${wprojname}
 
 %.o: %.s
 	${OCOMP} $< ${OFLAGS}
 
-${wprojname}:
+${wprojname}: ${objname}
 	ounused ${logname}
 	@echo
 	i686-w64-mingw32-ld ${syms} ${objname} -o ${wprojname} -entry record \

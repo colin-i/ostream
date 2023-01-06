@@ -1,7 +1,7 @@
 
-#optional 1 debug
+#optional 1 debug/clean
 
-if [ -z "${1}" ]; then
+if [ -z "${1}" ] || [ "$1" = "clean" ]; then
 	make platform=win $@
 else
 	make platform=win syms= OFLAGSEXTRA="function_name 1"

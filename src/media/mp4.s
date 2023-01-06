@@ -58,7 +58,9 @@ import "av_dialog_stop" av_dialog_stop
 #	sd file
 #	call openfile(#file,location,"rb")
 #	sd mp3_file
-#	call openfile(#mp3_file,"captures/file.mp3","wb")
+#	chars out#256
+#	call sprintf(#out,"%s.mp3",location)
+#	call openfile(#mp3_file,#out,"wb")
 #	sd mp3_sz;set mp3_sz extragere_off2;sub mp3_sz extragere_off1
 #	call file_seek_set(file,extragere_off1)
 #	sd mp3Mem;setcall mp3Mem memalloc(mp3_sz)
