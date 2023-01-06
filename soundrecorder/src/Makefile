@@ -9,19 +9,16 @@ srcname=${projname}.s
 logname=${srcname}.log
 wprojname=${projname}.exe
 
-all: compile link
+all: ${objname} ${wprojname}
 
-compile: ${projname} ounused
+%.o: %.s
+	${OCOMP} $< ${OFLAGS}
 
-ounused:
+${wprojname}:
 	ounused ${logname}
-
-link:
+	@echo
 	i686-w64-mingw32-ld ${syms} ${objname} -o ${wprojname} -entry record \
 		 -lmsvcrt -lkernel32 -lwinmm -luser32
-
-%: %.s
-	${OCOMP} $< ${OFLAGS}
 
 clean:
 	-rm -f ${logname}

@@ -5,6 +5,9 @@
 
 #./wmake 1 clean
 
+#./wmake ../b all
+#this is debug but tricking soundrecorder
+
 if [ -z "$1" ] || [ -n "$2" ]
 then
 cd src
@@ -26,17 +29,17 @@ f=$1
 fi
 
 mkdir $f
-cp src/ovideo.exe $f
+rsync -a src/ovideo.exe $f
 
-cp -r build/img $f
+rsync -a -r build/img $f
 
 mkdir $f/html
-cp html/html/use.html $f/html
+rsync -a html/html/use.html $f/html
 
-cp version.txt $f
+rsync -a version.txt $f
 
 mkdir $f/sys
-cp build/sys/* $f/sys
+rsync -a build/sys/* $f/sys
 
 mkdir $f/captures
 
@@ -58,8 +61,8 @@ fi
 
 if [ "$2" != "clean" ]; then
 
-cp soundrecorder/src/soundrecorder.exe $f
-cp soundrecorder/options.txt $f
+rsync -a soundrecorder/src/soundrecorder.exe $f
+rsync -a soundrecorder/options.txt $f
 
 if [ -z "$1" ]
 then
