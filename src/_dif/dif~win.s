@@ -1026,6 +1026,7 @@ function iterate_next_forward_free(sd iter,sd forward)
 	call texter("Iterator error")
 endfunction
 
+#SDL_LIL_ENDIAN means byte order is 1234
 const sound_endian_def=1234
 
 function stage_sound_caps()
