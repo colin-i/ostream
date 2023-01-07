@@ -281,3 +281,11 @@ function fcom_quad_greater_or_equal(sd p_A)
         return 0
     endelse
 endfunction
+
+function fcos()
+	hex 0xD9,0xFF
+endfunction
+
+#function fsin()
+#	hex 0xD9,0xFE
+#endfunction
