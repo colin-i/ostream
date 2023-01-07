@@ -172,7 +172,6 @@ function l3_subband_init()
     import "fsub_quad" fsub_quad
     import "fadd_quad" fadd_quad
     import "double_to_int" double_to_int
-    importx "_cos" cos
     importx "_modf" modf
     sd value
     sd value_2
@@ -195,8 +194,14 @@ function l3_subband_init()
             mult value value_2
             call fild_value(value)
             call fmul_quad(PI64)
-            call fstp_quad(double)
-            call cos(double_low,double_high)
+
+		#this is problematic on linux
+		call fstp_quad(double)
+		importx "_cos" cos
+		call cos(double_low,double_high)
+		#import "fcos" fcos
+		#call fcos()
+
             call fmul_quad(const1)
             sd bool
             setcall bool fcom_quad_greater_or_equal(const4)

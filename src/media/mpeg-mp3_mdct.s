@@ -215,8 +215,6 @@ import "fdiv_quad" fdiv_quad
 import "fild_value" fild_value
 import "double_to_int" double_to_int
 importx "_sqrt" sqrt
-importx "_sin" sin
-importx "_cos" cos
 import "slen" slen
 
 function l3_mdct_init()
@@ -315,8 +313,14 @@ function l3_mdct_init()
             call fild_value(k)
             call fadd_quad(const1)
             call fmul_quad(const2)
-            call fstp_quad(double)
-            call sin(double_low,double_high)
+
+		#cos was problematic on linux
+		call fstp_quad(double)
+		importx "_sin" sin
+		call sin(double_low,double_high)
+		#import "fsin" fsin
+		#call fsin()
+
             #
             set value m
             mult value 2
@@ -332,8 +336,14 @@ function l3_mdct_init()
             call fstp_quad(double)
             call fild_value(value)
             call fmul_quad(double)
-            call fstp_quad(double)
-            call cos(double_low,double_high)
+
+		#this is problematic on linux
+		#call fstp_quad(double)
+		#importx "_cos" cos
+		#call cos(double_low,double_high)
+		import "fcos" fcos
+		call fcos()
+
             call fstp_quad(double)
             call fmul_quad(double)
             #
