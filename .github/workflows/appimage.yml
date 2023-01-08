@@ -99,9 +99,22 @@ jobs:
         downdebok "ppa.launchpadcontent.net/colin-i/ppa${{ github.event.inputs.ppa }}" i386 1 ovideo main
        else
         echo unpublished
-        f=`wget -q https://launchpad.net/~colin-i/+archive/ubuntu/ppa${{ github.event.inputs.ppa }}/+build/${{ github.event.inputs.unpublished }} -O - | grep -o -e "[^\"]*\.deb\""`
-        wget ${f:0:-1} -O ovideo.deb
-        dpkg -x ovideo.deb AppDir
+        #
+        if [ ! -e "lp2.py" ]; then
+         wget -q https://raw.githubusercontent.com/colin-i/test/master/lp2.py
+         #
+         #is already at focal
+         sudo apt install python3-launchpadlib
+        fi
+        name=`cat debian/changelog | head -1 | grep -o ^[^\ ]*`
+        version=`cat debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))"`
+        arh=i386
+        OUTPUT=$(python3 lp2.py ppa${{ github.event.inputs.ppa }} ${name} ${version} ${arh})
+        wget ${OUTPUT}/+files/${name}_${version}_${arh}.deb -O ${name}.deb
+        #
+        #f=`wget -q https://launchpad.net/~colin-i/+archive/ubuntu/ppa${{ github.event.inputs.ppa }}/+build/${{ github.event.inputs.unpublished }} -O - | grep -o -e "[^\"]*\.deb\""`
+        #wget ${f:0:-1} -O ovideo.deb
+        dpkg -x ${name}.deb AppDir
        fi
       fi
       array=( \
