@@ -315,11 +315,12 @@ function l3_mdct_init()
             call fmul_quad(const2)
 
 		#cos was problematic on linux
-		call fstp_quad(double)
-		importx "_sin" sin
-		call sin(double_low,double_high)
-		#import "fsin" fsin
-		#call fsin()
+		#call fstp_quad(double)
+		#importx "_sin" sin
+		#call sin(double_low,double_high)
+		#small diffs only
+		import "fsin" fsin
+		call fsin()
 
             #
             set value m

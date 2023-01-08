@@ -196,11 +196,12 @@ function l3_subband_init()
             call fmul_quad(PI64)
 
 		#this is problematic on linux
-		call fstp_quad(double)
-		importx "_cos" cos
-		call cos(double_low,double_high)
-		#import "fcos" fcos
-		#call fcos()
+		#call fstp_quad(double)
+		#importx "_cos" cos
+		#call cos(double_low,double_high)
+		#small diffs only
+		import "fcos" fcos
+		call fcos()
 
             call fmul_quad(const1)
             sd bool

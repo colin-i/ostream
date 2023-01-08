@@ -286,6 +286,6 @@ function fcos()
 	hex 0xD9,0xFF
 endfunction
 
-#function fsin()
-#	hex 0xD9,0xFE
-#endfunction
+function fsin()
+	hex 0xD9,0xFE
+endfunction
