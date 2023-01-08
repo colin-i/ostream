@@ -27,7 +27,9 @@ jobs:
   steps:
    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
    - uses: actions/checkout@v3
-     if: ${{ env.init != '' }}
+   #this is also required at unpublished from now, not only at tests
+   # if: ${{ env.init != '' }}
+   #
    #with:
    # repository: colin-i/irc
    # path: my-tools
