@@ -2,4 +2,5 @@
 ~/test/debinit2 "${1}" && \
 ~/test/keyring && \
 ~/test/deb && \
-~/test/publp
+~/test/publp && \
+~/test/publp2
