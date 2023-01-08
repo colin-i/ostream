@@ -31,8 +31,17 @@ jobs:
        wget http://${src}/ubuntu/${debfilename} -O ${name}.deb
       else
        echo unpublished
-       f=`wget -q https://launchpad.net/~colin-i/+archive/ubuntu/ppa${{ github.event.inputs.ppa }}/+build/${{ github.event.inputs.unpublished }} -O - | grep -Poe "[^\"]*(?=\.deb\")"`
-       wget ${f}.deb -O ${name}.deb
+       version=`cat debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))"`
+       arh=`cat debian/control | grep ^Architecture | cut -d ' ' -f2`
+       if [ ! -e "lp2.py" ]; then
+        wget -q https://raw.githubusercontent.com/colin-i/test/master/lp2.py
+        #on focal is already
+        sudo apt install python3-launchpadlib
+       fi
+       OUTPUT=$(python3 lp2.py ppa${{ github.event.inputs.ppa }} ${name} ${version} ${arh})
+       wget ${OUTPUT}/+files/${name}_${version}_${arh}.deb -O ${name}.deb
+       #f=`wget -q https://launchpad.net/~colin-i/+archive/ubuntu/ppa${{ github.event.inputs.ppa }}/+build/${{ github.event.inputs.unpublished }} -O - | grep -Poe "[^\"]*(?=\.deb\")"`
+       #wget ${f}.deb -O ${name}.deb
       fi
       #make rpm
       mkdir out
