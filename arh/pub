@@ -1,0 +1,27 @@
+
+#version.txt is still manual
+#xenial still manual (can be tested only when gstreamer 0.10 was)
+
+last=$(curl https://api.github.com/repos/colin-i/$(cat debian/control | grep "^Homepage" | grep -o [^/]*$)/releases/latest -s | jq .tag_name -r) && \
+~/test/debinit2 "${1}" && \
+~/test/keyring2 && \
+~/test/deb && \
+~/test/publp && \
+~/test/ai && \
+~/test/rpm && \
+~/test/del && \
+~/test/rel && \
+./wmake && \
+~/test/pub appimage rpm rel && \
+~/test/rerpm && \
+~/test/upapp && \
+~/test/uprpm && \
+~/test/up && \
+~/test/pub upapp && \
+~/test/pub2 && \
+~/test/publp2 && \
+~/test/lp && \
+~/test/lp x && \
+~/test/keyring && \
+~/test/del x ${last} x && \
+~/test/arh2 ${last}
