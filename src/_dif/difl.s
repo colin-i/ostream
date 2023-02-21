@@ -1,5 +1,5 @@
 
-entrylinux _start(sd argc,sv argv)
+entryraw _start(sd argc,sv argv)
 
 
 import "init_args" init_args
