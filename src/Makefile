@@ -1,9 +1,17 @@
 
-platform = lin
+ifndef OCOMP
 OCOMP=o
-syms=-s
-projname=ovideo
+endif
 
+ifndef platform
+platform=lin
+endif
+
+ifndef syms
+syms=-s
+endif
+
+projname=ovideo
 cap = _capture/capture
 err = err/err
 eve = event/event
