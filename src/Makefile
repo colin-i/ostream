@@ -118,8 +118,8 @@ linkapp:
 #	$(eval obs += $@.o)
 
 clean:
-	-printf ' %s.s.log' ${items} | xargs rm -f
-	-printf ' %s.o' ${items} | xargs rm -f
+	-rm -f ${obs}
+	-rm -f ${logs}
 	-rm -f ${projname}
 	-rm -f ${lshare}
 	-rm -f ${wprojname}
