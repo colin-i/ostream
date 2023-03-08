@@ -214,7 +214,7 @@ function avc_sequenceParameterSet()
     #analyse.inter = X264_ANALYSE_I4x4 | X264_ANALYSE_I8x8 | X264_ANALYSE_PSUB16x16 | X264_ANALYSE_BSUB16x16
     #0x113
     #b_transform_8x8=0
-    #!b_transform_8x8
+    # !b_transform_8x8
     #          analyse.inter &= ~X264_ANALYSE_I8x8
     #0x111
     #if !(analyse.inter & X264_ANALYSE_PSUB8x8) )
