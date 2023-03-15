@@ -11,7 +11,7 @@ import "texter" texter
 
 
 
-chars jerrstruct#jerr_size
+char jerrstruct#jerr_size
 const p_jerrstruct^jerrstruct
 function get_jerr()
     data p%p_jerrstruct
@@ -63,7 +63,7 @@ endfunction
 
 
 
-chars deinfo#jdestruct_size
+char deinfo#jdestruct_size
 const p_deinfo^deinfo
 function get_jdestruct()
     data p%p_deinfo

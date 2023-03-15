@@ -64,9 +64,9 @@ function recSignals(data bus,data dest)
 endfunction
 
 function capture_location()
-const capture_chars_start=!
-	chars folder="captures/"
-const capture_chars=!-capture_chars_start-1
+const capture_char_start=!
+	char folder="captures/"
+const capture_char=!-capture_char_start-1
 	return #folder
 endfunction
 #ogg
@@ -82,7 +82,7 @@ endfunction
 
 import "move_to_home_core" move_to_home_core
 function capture_path(ss format,sd extrabool,sd extranumber)
-	chars capture_data#capture_chars+dword_max+1+dword_max+1+format_max+1
+	char capture_data#capture_char+dword_max+1+dword_max+1+format_max+1
 	ss capture_str^capture_data
 	ss folder
 	setcall folder capture_location()
@@ -125,7 +125,7 @@ function save_get_main_format()
 endfunction
 function save_get_sec_format()
 const save_get_sec_format_a=!
-    chars mediasecform=" %s ! queue ! %s ! mux."
+    char mediasecform=" %s ! queue ! %s ! mux."
 const save_get_sec_format_sz=!-save_get_sec_format_a-2-2-1
     return #mediasecform
 endfunction
@@ -137,7 +137,7 @@ endfunction
 function save_get_audio_format()
 const save_get_audio_format_a=!
 #plugins base
-    chars audio="vorbisenc"
+    char audio="vorbisenc"
 const save_get_audio_format_sz=!-save_get_audio_format_a-1
     return #audio
 endfunction
@@ -171,7 +171,7 @@ const srcname_sz=3
     data flagA=audio
     data flagVA=audiovideo
 
-    chars src_prop_data#5+srcname_sz+1
+    char src_prop_data#5+srcname_sz+1
 
     str format#1
     str sr#1
@@ -192,10 +192,10 @@ const srcname_sz=3
     if streams==flagVA
         str makename="%s."
 const makename_sz=srcname_sz+1
-        chars save_secname_data#makename_sz+1
+        char save_secname_data#makename_sz+1
         str save_src_name^save_secname_data
         call sprintf(save_src_name,makename,srcname)
-        chars save_va_data#save_get_sec_format_sz+makename_sz+save_get_audio_format_sz+1
+        char save_va_data#save_get_sec_format_sz+makename_sz+save_get_audio_format_sz+1
         str save_va^save_va_data
         ss secformat
         setcall secformat save_get_sec_format()
@@ -273,7 +273,7 @@ endfunction
 import "collect_info" collect_info
 #v
 function info_save_stream()
-    chars rec="recording from"
+    char rec="recording from"
 
     str capture^rec
     data *forward^save_stream

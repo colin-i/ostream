@@ -103,7 +103,7 @@ function stage_scale_init(sd vbox,sd *dialog)
     setcall width gdk_pixbuf_get_width(pixbuf)
     setcall height gdk_pixbuf_get_height(pixbuf)
 
-    chars dest#sign_int_null
+    char dest#sign_int_null
     str strconv^dest
 
     str format="%u"

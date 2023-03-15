@@ -27,10 +27,10 @@ function stage_progress_dialog_inc(sd frame)
     mult value frame
     import "stage_get_frames" stage_get_frames
     divcall value stage_get_frames()
-	chars s={_0,Period}
-	chars a#1
-	chars b#1
-	chars *=0
+	char s={_0,Period}
+	char a#1
+	char b#1
+	char *=0
 	set b value
 	rem b 10
 	add b (_0)

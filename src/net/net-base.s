@@ -70,7 +70,7 @@ function uri_err(sd status,sd msg)
 	importx "_sprintf" sprintf
 	import "printer" printer
 	import "texter" texter
-	chars n#dword_null
+	char n#dword_null
 	call sprintf(#n,"%u",status)
 	call printer(#n)
 	call texter(msg)

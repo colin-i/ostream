@@ -41,7 +41,7 @@ function movetoScriptfolder(data forward)
 	setcall err Scriptfullpath(ptrpath)
 	if err==noerr
 		data pointer#1
-		chars z=0
+		char z=0
 		setcall pointer endoffolders(path)
 		set pointer# z
 		setcall err dirch(path)
@@ -57,9 +57,9 @@ import "slen" slen
 
 
 #true if match or false
-Function filepathdelims(chars chr)
-        Chars bslash="\\"
-        Chars slash="/"
+Function filepathdelims(char chr)
+        char bslash="\\"
+        char slash="/"
         Data true=TRUE
         Data false=FALSE
         If chr==bslash
@@ -296,15 +296,15 @@ function capture_alternative_prepare(sd p_mem,sd pix_width,sd pix_height)
     data biSize=40
     data biWidth#1
     data biHeight#1
-    chars *biPlanes={1,0}
-    chars *biBitCount={24,0}
+    char *biPlanes={1,0}
+    char *biBitCount={24,0}
     data *biCompression=0
     data biSizeImage#1
     data *biXPelsPerMeter=0
     data *biYPelsPerMeter=0
     data *biClrUsed=0
     data *biClrImportant=0
-    chars *bmiColors=0
+    char *bmiColors=0
 
     data bitmap^biSize
     set biWidth pix_width
@@ -424,7 +424,7 @@ function fileiteration(sd p_foldername,ss spec,sd forward,sd data)
     set path foldername
     add path folderlen
     dec path
-    chars bslash="\\"
+    char bslash="\\"
     set path# bslash
     inc path
     call cpymem(path,spec,speclen)
@@ -435,11 +435,11 @@ function fileiteration(sd p_foldername,ss spec,sd forward,sd data)
     data *time_access#2
     data *time_write#2
     data *size#1
-    chars name#260
+    char name#260
 
     data file_info^attrib
     str fname^name
-    chars reserve_name#260
+    char reserve_name#260
     str reserve^reserve_name
 
     importx "__findfirst64i32" findfirst
@@ -582,13 +582,13 @@ function shutdown()
     importx "_CreateProcessA@40" CreateProcess
     import "setmemzero" setmemzero
     const startupsize=68
-    chars startup#startupsize
+    char startup#startupsize
     str startupInfo^startup
     call setmemzero(startupInfo,(startupsize))
 
     data hprocess#1
     data hthread#1
-    chars *rest_hproc#16-4-4
+    char *rest_hproc#16-4-4
 
     data procinfo^hprocess
 
@@ -785,15 +785,15 @@ function sound_preview_init()
     #
     sd value
     #WAVEFORMATEX
-    chars wFormatTag={WAVE_FORMAT_PCM,0}
-    chars nChannels#2
+    char wFormatTag={WAVE_FORMAT_PCM,0}
+    char nChannels#2
     data nSamplesPerSec#1
     data nAvgBytesPerSec#1
-    chars nBlockAlign#2
-    chars wBitsPerSample#2
+    char nBlockAlign#2
+    char wBitsPerSample#2
     #EX
     #no extra data, simple PCM-format used
-    chars *cbSize={0,0}
+    char *cbSize={0,0}
     #
     import "int_into_short" int_into_short
     data WAVEFORMATEX^wFormatTag
@@ -976,7 +976,7 @@ function get_new_buffer(sd mem,sd framesize,sd w,sd h)
 	setcall buffer gst_app_buffer_new(mem,framesize,free_fn,mem)
 	#
 	ss capsformat="video/x-raw-rgb,width=%u,height=%u,bpp=%u,endianness=4321,red_mask=0xFF000000,green_mask=0xFF0000,blue_mask=0xFF00,framerate=%u/1"
-	chars capsdata#4*10+130+1-4-4
+	char capsdata#4*10+130+1-4-4
 	str gstcaps^capsdata
 	sd bpp=stage_bpp
 	sd fps
@@ -1030,7 +1030,7 @@ endfunction
 const sound_endian_def=1234
 
 function stage_sound_caps()
-	chars out#88-5-5+(dword_max*5)+1
+	char out#88-5-5+(dword_max*5)+1
 	vstr format="audio/x-raw-int,channels=%u,rate=%u,signed=(boolean)true,width=%u,depth=%u,endianness=%u"
 	sd channels
 	setcall channels stage_sound_channels((value_get))

@@ -703,8 +703,8 @@ function stage_sound_alloc(sd action,sd newblock,sd newblock_size)
 
         #print
         const sountformbufstart=!
-        chars format="Prepared sound time: %u.%u"
-        chars datastring#!-sountformbufstart-2-2+modal_texter_mark
+        char format="Prepared sound time: %u.%u"
+        char datastring#!-sountformbufstart-2-2+modal_texter_mark
         vstr print^datastring
         call sprintf(print,#format,seconds,sec_rest)
         if action==(stage_sound_alloc_printtexter_time)

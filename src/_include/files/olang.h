@@ -11,8 +11,8 @@ const void=0
 const dword_max=10
 const format_max=6
 
-#Const charsnullcompilationstyle=1
-#-charsnullcompilationstyle
+#Const charnullcompilationstyle=1
+#-charnullcompilationstyle
 Const dword_null=1+dword_max
 Const sign_int_null=1+10+1
 #Const sign_int_null_dwords=sign_int_null/4

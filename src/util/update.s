@@ -60,7 +60,7 @@ function update_got_netversion(sd mem,sd size,sd netmem,sd netsize)
     if compare==different
         import "memtostrFw_s" memtostrFw_s
         const safeversion=1+1+3+1 #hard coded, hard to remember
-        chars newvers#safeversion
+        char newvers#safeversion
         vstr newv^newvers
         data sfsize=safeversion
         vdata fw^update_got_new

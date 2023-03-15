@@ -9,128 +9,128 @@ include "../_include/include.h"
 
 function stage_buttons_enter(sd container)
         #newuri
-    chars button="new.bmp"
-    chars *="Creates a blank new media"
+    char button="new.bmp"
+    char *="Creates a blank new media"
     data *^stage_prepare_blank
         #
-    chars *="newuri.bmp"
-    chars *="Open the media from the uri bar"
+    char *="newuri.bmp"
+    char *="Open the media from the uri bar"
     data *^stage_prepare_uri_start
         #
     import "stage_preview" stage_preview
-    chars *="preview.bmp"
-    chars *="Preview the stage"
+    char *="preview.bmp"
+    char *="Preview the stage"
     data *^stage_preview
         #
     import "stage_pause" stage_pause
-    chars *="pause.bmp"
-    chars *="Pause the preview"
+    char *="pause.bmp"
+    char *="Pause the preview"
     data *^stage_pause
         #
-    chars *="close.bmp"
-    chars *="Close the stage bar"
+    char *="close.bmp"
+    char *="Close the stage bar"
     data *^stage_buttons_close
         #
     data *=0
         #
     import "stage_save_all" stage_save_all
-    chars *="file.bmp"
-    chars *="Save the stage to a file"
+    char *="file.bmp"
+    char *="Save the stage to a file"
     data *^stage_save_all
         #
     import "av_expand" av_expand
-    chars *="expand.bmp"
-    chars *="Expand a mp4 or avi(i420,mjpeg,mpg4-asp) file"
+    char *="expand.bmp"
+    char *="Expand a mp4 or avi(i420,mjpeg,mpg4-asp) file"
     data *^av_expand
         #
     import "stage_file_options" stage_file_options
-    chars *="fileoptions.bmp"
-    chars *="Set the stage file options"
+    char *="fileoptions.bmp"
+    char *="Set the stage file options"
     data *^stage_file_options
         #
     data *=0
         #
     import "stage_files_read" stage_files_read
-    chars *="open.bmp"
-    chars *="Append a file created with mkv(i420,mjpeg,rgb24), avi(i420,mjpeg), raw capture output format"
+    char *="open.bmp"
+    char *="Append a file created with mkv(i420,mjpeg,rgb24), avi(i420,mjpeg), raw capture output format"
     data *^stage_files_read
         #
     import "stage_sound" stage_sound
-    chars *="sound.bmp"
-    chars *="Add sound to be used at mkv, avi(i420,mjpeg,mpg4-asp) or mp4 files"
+    char *="sound.bmp"
+    char *="Add sound to be used at mkv, avi(i420,mjpeg,mpg4-asp) or mp4 files"
     data *^stage_sound
         #
     data *=0
         #
     import "capture" capture
-    chars *="capture.bmp"
-    chars *="Screen capture"
+    char *="capture.bmp"
+    char *="Screen capture"
     data *^capture
         #
     data *=0
         #
     import "stage_new_frame_form" stage_new_frame_form
-    chars *="add.bmp"
-    chars *="Add a new frame selecting width,height and color"
+    char *="add.bmp"
+    char *="Add a new frame selecting width,height and color"
     data *^stage_new_frame_form
         #
     import "stage_new_frame" stage_new_frame
-    chars *="addfromfile.bmp"
-    chars *="Add a new frame from a file"
+    char *="addfromfile.bmp"
+    char *="Add a new frame from a file"
     data *^stage_new_frame
         #
     import "stage_remove" stage_remove
-    chars *="remove.bmp"
-    chars *="Remove the selected frame"
+    char *="remove.bmp"
+    char *="Remove the selected frame"
     data *^stage_remove
         #
     import "mass_remove" mass_remove
-    chars *="removeframes.bmp"
-    chars *="Remove a frames interval"
+    char *="removeframes.bmp"
+    char *="Remove a frames interval"
     data *^mass_remove
         #
     import "stage_frame_time" stage_frame_time
-    chars *="ftime.bmp"
-    chars *="Modify the frame time"
+    char *="ftime.bmp"
+    char *="Modify the frame time"
     data *^stage_frame_time
         #
     import "stage_split_frame" stage_split_frame
-    chars *="split.bmp"
-    chars *="Split the selection into two parts"
+    char *="split.bmp"
+    char *="Split the selection into two parts"
     data *^stage_split_frame
         #
     import "stage_frame_equalize" stage_frame_equalize
-    chars *="equalize.bmp"
-    chars *="Equalize the frames lengths starting with selection"
+    char *="equalize.bmp"
+    char *="Equalize the frames lengths starting with selection"
     data *^stage_frame_equalize
         #
     data *=0
         #
     import "stage_frame_panel_open" stage_frame_panel_open
-    chars *="framepanel.bmp"
-    chars *="Open the frame panel"
+    char *="framepanel.bmp"
+    char *="Open the frame panel"
     data *^stage_frame_panel_open
         #
     data *=0
         #
     import "stage_fade" stage_fade
-    chars *="fade.bmp"
-    chars *="Fade In/Fade Out effects"
+    char *="fade.bmp"
+    char *="Fade In/Fade Out effects"
     data *^stage_fade
         #
     import "stage_move" stage_move
-    chars *="move.bmp"
-    chars *="Move In/Move Out effects"
+    char *="move.bmp"
+    char *="Move In/Move Out effects"
     data *^stage_move
         #
     import "stage_cover_panel_open" stage_cover_panel_open
-    chars *="cover_effects.bmp"
-    chars *="Uncover/Cover effects"
+    char *="cover_effects.bmp"
+    char *="Uncover/Cover effects"
     data *^stage_cover_panel_open
         #
     import "stage_effect_scale" stage_effect_scale
-    chars *="scale_effect.bmp"
-    chars *="Scale In/Scale Out effects"
+    char *="scale_effect.bmp"
+    char *="Scale In/Scale Out effects"
     data *^stage_effect_scale
         #
     data *=0

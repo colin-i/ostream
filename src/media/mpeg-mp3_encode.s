@@ -118,7 +118,7 @@ function mp3_encode_frame()
     setcall mean_bits mp3_mean_bits()
     set mean_bits mean_bits#
     #
-    chars buffer_data#buffer_size
+    char buffer_data#buffer_size
     data buffer^buffer_data
     #
     sd l3_sb_sample

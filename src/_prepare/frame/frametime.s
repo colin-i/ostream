@@ -44,7 +44,7 @@ function stage_frame_time_init(sd vbox,sd *dialog)
     setcall length stage_get_fr_length(container)
 
     #convert to string and set to edit
-    chars nr#dword_null
+    char nr#dword_null
     str ptr_nr^nr
     importx "_sprintf" sprintf
     ss dw="%u"
@@ -290,7 +290,7 @@ function stage_split_frame()
     sd noselection=0
     #find the selected unit position
     while cursor!=terminator
-        chars unit_color_data={frame_unit_red,frame_unit_green,frame_unit_blue}
+        char unit_color_data={frame_unit_red,frame_unit_green,frame_unit_blue}
         str unit_color^unit_color_data
         import "cmpmem" cmpmem
         sd memcmp

@@ -32,8 +32,8 @@ endfunction
 
 #e
 function slen_s(ss str,sd size,sd ptrszout)
-    Chars term={0}
-    Chars byte={0}
+    char term={0}
+    char byte={0}
     Data zero=0
     data one=1
     sd loop
@@ -75,7 +75,7 @@ endfunction
 function path_extension(ss path)
     sd len
     ss cursor
-    chars delim="."
+    char delim="."
 
     setcall len slen(path)
 
@@ -167,7 +167,7 @@ function memtostrFw_data(sd mem,sd size,sd forward,sd data)
     dec size
     call cpymem(alloc,mem,size)
     add alloc size
-    chars n=0
+    char n=0
     set alloc# n
     sub alloc size
     call forward(alloc,data)
@@ -227,7 +227,7 @@ function string_alloc_escaped(ss unescaped)
     set cursor_escaped escaped
     while unescaped#!=0
         set cursor_escaped# unescaped#
-        chars bslash="\\"
+        char bslash="\\"
         if unescaped#==bslash
             inc cursor_escaped
             set cursor_escaped# bslash

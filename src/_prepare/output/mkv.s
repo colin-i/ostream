@@ -100,32 +100,32 @@ endfunction
 function mkvfile_headers(sd file)
     #Extensible Binary Meta Language
     #EBML Header, level 0
-    chars EBML={0x1A,0x45,0xDF,0xA3}
-    chars EBML_size#1
-    chars EBMLVersion={0x42,0x86}
-    chars *EBMLVersion_size=0x81
-    chars *EBMLVersion_value=1
-    chars *EBMLReadVersion={0x42,0xF7}
-    chars *EBMLReadVersion_size=0x81
-    chars *EBMLReadVersion_value=1
-    chars *EBMLMaxIDLength={0x42,0xF2}
-    chars *EBMLMaxIDLength_size=0x81
-    chars *EBMLMaxIDLength_value=4
-    chars *EBMLMaxSizeLength={0x42,0xF3}
-    chars *EBMLMaxSizeLength_size=0x81
-    chars *EBMLMaxSizeLength_value=8
-    chars *DocType={0x42,0x82}
-    chars *DocType_size=0x80|8
-    chars *DocType_value={m,a,t,r,o,s,k,a}
-    chars *DocTypeVersion={0x42,0x87}
-    chars *DocTypeVersion_size=0x81
-    chars *DocTypeVersion_value=2
-    chars *DocTypeReadVersion={0x42,0x85}
-    chars *DocTypeReadVersion_size=0x81
-    chars DocTypeReadVersion_value=2
+    char EBML={0x1A,0x45,0xDF,0xA3}
+    char EBML_size#1
+    char EBMLVersion={0x42,0x86}
+    char *EBMLVersion_size=0x81
+    char *EBMLVersion_value=1
+    char *EBMLReadVersion={0x42,0xF7}
+    char *EBMLReadVersion_size=0x81
+    char *EBMLReadVersion_value=1
+    char *EBMLMaxIDLength={0x42,0xF2}
+    char *EBMLMaxIDLength_size=0x81
+    char *EBMLMaxIDLength_value=4
+    char *EBMLMaxSizeLength={0x42,0xF3}
+    char *EBMLMaxSizeLength_size=0x81
+    char *EBMLMaxSizeLength_value=8
+    char *DocType={0x42,0x82}
+    char *DocType_size=0x80|8
+    char *DocType_value={m,a,t,r,o,s,k,a}
+    char *DocTypeVersion={0x42,0x87}
+    char *DocTypeVersion_size=0x81
+    char *DocTypeVersion_value=2
+    char *DocTypeReadVersion={0x42,0x85}
+    char *DocTypeReadVersion_size=0x81
+    char DocTypeReadVersion_value=2
 
     #segment, level 0
-    chars *SegmentElement={0x18,0x53,0x80,0x67}
+    char *SegmentElement={0x18,0x53,0x80,0x67}
 
     data f^mkv_segment
 
@@ -160,7 +160,7 @@ function mkv_segment(sd file,sd read_size,sd file_pos)
 
     #seek head
     #level 1
-    chars SeekHead={0x11,0x4D,0x9B,0x74}
+    char SeekHead={0x11,0x4D,0x9B,0x74}
 
     data f^mkv_seekhead
 
@@ -183,7 +183,7 @@ function mkv_segment(sd file,sd read_size,sd file_pos)
     endif
 
     #level 1
-    chars Info={0x15,0x49,0xA9,0x66}
+    char Info={0x15,0x49,0xA9,0x66}
 
     data fn^mkv_info
 
@@ -206,7 +206,7 @@ function mkv_segment(sd file,sd read_size,sd file_pos)
     endif
 
     #level 1
-    chars Tracks={0x16,0x54,0xAE,0x6B}
+    char Tracks={0x16,0x54,0xAE,0x6B}
 
     data fnc^mkv_track
 
@@ -218,7 +218,7 @@ function mkv_segment(sd file,sd read_size,sd file_pos)
     endif
 
     #clusters
-    chars Cluster={0x1F,0x43,0xB6,0x75}
+    char Cluster={0x1F,0x43,0xB6,0x75}
     data p_fn^mkv_cluster
     data p_start^Cluster
     data p_end^p_fn
@@ -269,7 +269,7 @@ function mkv_seekhead_fn(sd action,sd file)
         #seek entry KaxInfo
         data info#1
         data ptr_info^info
-        chars KaxInfo={0x15,0x49,0xA9,0x66}
+        char KaxInfo={0x15,0x49,0xA9,0x66}
         sd todata^KaxInfo
 
         sd bool
@@ -281,7 +281,7 @@ function mkv_seekhead_fn(sd action,sd file)
         #seek entry KaxTracks
         data tracks#1
         data ptr_tracks^tracks
-        chars KaxTracks={0x16,0x54,0xAE,0x6B}
+        char KaxTracks={0x16,0x54,0xAE,0x6B}
         sd dodata^KaxTracks
 
         setcall bool seek_entry(dodata#,file,ptr_tracks)
@@ -320,14 +320,14 @@ endfunction
 
 #bool
 function seek_entry(sd value,sd file,sd ptr_pointer)
-    chars Seek={0x4D,0xBB}
-    chars *Seek_size=0x80+2+1+4+2+1+4
-    chars *SeekID={0x53,0xAB}
-    chars *SeekID_size=0x84
+    char Seek={0x4D,0xBB}
+    char *Seek_size=0x80+2+1+4+2+1+4
+    char *SeekID={0x53,0xAB}
+    char *SeekID_size=0x84
     data SeekID_value#1
-    chars *SeekPosition={0x53,0xAC}
-    chars *SeekPosition_size=0x84
-    chars SeekPosition_value#4
+    char *SeekPosition={0x53,0xAC}
+    char *SeekPosition_size=0x84
+    char SeekPosition_value#4
 
     set SeekID_value value
 
@@ -376,29 +376,29 @@ function mkv_info(sd file)
     endif
 
 const _SegmentUID=!
-    chars SegmentUID={0x73,0xA4}
-    chars *SegmentUID_size=0x80|16
+    char SegmentUID={0x73,0xA4}
+    char *SegmentUID_size=0x80|16
     data SegmentUID_value#4
-    chars *TimecodeScale={0x2A,0xD7,0xB1}
-    chars *TimecodeScale_size=0x84
+    char *TimecodeScale={0x2A,0xD7,0xB1}
+    char *TimecodeScale_size=0x84
     data TimecodeScale_value#1
-    chars *Duration={0x44,0x89}
+    char *Duration={0x44,0x89}
     #unsigned integer
-    chars *Duration_size=0x84
+    char *Duration_size=0x84
 const ptr_Duration=!
     data Duration_value#1
-    chars *DateUTC={0x44,0x61}
-    chars *DateUTC_size=0x80|8
+    char *DateUTC={0x44,0x61}
+    char *DateUTC_size=0x80|8
     data DateUTC_value_high#1
     data DateUTC_value_low#1
-    chars *MuxingApp={0x4D,0x80}
-    chars MuxingApp_size#1
+    char *MuxingApp={0x4D,0x80}
+    char MuxingApp_size#1
 const _MuxingApp=!
-    chars *MuxingApp_value={O,A,p,p,l,i,c,a,t,i,o,n,s}
+    char *MuxingApp_value={O,A,p,p,l,i,c,a,t,i,o,n,s}
 const App=!-_MuxingApp
-    chars *WritingApp={0x57,0x41}
-    chars WritingApp_size#1
-    chars WritingApp_value={O,A,p,p,l,i,c,a,t,i,o,n,s}
+    char *WritingApp={0x57,0x41}
+    char WritingApp_size#1
+    char WritingApp_value={O,A,p,p,l,i,c,a,t,i,o,n,s}
 
     const WritingApp_value_^WritingApp_value
     data info_sz=WritingApp_value_-_SegmentUID+App
@@ -490,7 +490,7 @@ import "file_sizeofseek_offset_plus_size" file_sizeofseek_offset_plus_size
 
 function mkv_track(sd file,sd size,sd filepos)
     #level 2
-    chars TrackEntry=0xAE
+    char TrackEntry=0xAE
 
     data f^mkv_track_entry
     data start^TrackEntry
@@ -546,7 +546,7 @@ const TrackNumber_audio=2
 const bitmapInfoHeader_size=40
 
 function mkv_track_entry(sd file,sd *size,sd *filepos)
-    chars CodecID=0x86
+    char CodecID=0x86
     data f^mkv_codecid
 
     data start^CodecID
@@ -560,32 +560,32 @@ function mkv_track_entry(sd file,sd *size,sd *filepos)
     endif
 
 ##############
-    chars TrackNumber=0xD7
-    chars *TrackNumber_size=0x81
-    chars *TrackNumber_value=TrackNumber_video
-    chars *TrackUID={0x73,0xC5}
-    chars *TrackUID_size=0x81
-    chars *TrackUID_value=TrackNumber_video
-    chars *TrackType=0x83
-    chars *TrackType_size=0x81
-    chars *TrackType_value=1
+    char TrackNumber=0xD7
+    char *TrackNumber_size=0x81
+    char *TrackNumber_value=TrackNumber_video
+    char *TrackUID={0x73,0xC5}
+    char *TrackUID_size=0x81
+    char *TrackUID_value=TrackNumber_video
+    char *TrackType=0x83
+    char *TrackType_size=0x81
+    char *TrackType_value=1
     #video type=1
-    chars *FlagLacing=0x9C
-    chars *FlagLacing_size=0x81
-    chars *FlagLacing_value=0
+    char *FlagLacing=0x9C
+    char *FlagLacing_size=0x81
+    char *FlagLacing_value=0
     #no lacing used
-    chars *Name={0x53,0x6E}
-    chars *Name_size=0x85
+    char *Name={0x53,0x6E}
+    char *Name_size=0x85
 const track_last_=!
-    chars *Name_value={V,i,d,e,o}
+    char *Name_value={V,i,d,e,o}
 
-    chars *CodecPrivate={0x63,0xA2}
-    chars *CodecPrivate_size=0x80+bitmapInfoHeader_size
+    char *CodecPrivate={0x63,0xA2}
+    char *CodecPrivate_size=0x80+bitmapInfoHeader_size
     data *biSize=bitmapInfoHeader_size
     data biWidth#1
     data biHeight#1
-    chars *biPlanes={1,0}
-    chars *biBitCount={24,0}
+    char *biPlanes={1,0}
+    char *biBitCount={24,0}
     data *biCompression=BI_RGB
     data biSizeImage#1
     data *biXPelsPerMeter=0
@@ -628,7 +628,7 @@ const track_last_=!
     endif
 
     #add the video track
-    chars Video=0xE0
+    char Video=0xE0
     data f_vd^mkv_track_video_entry
     data start_vd^Video
     data end_vd^f_vd
@@ -641,26 +641,26 @@ endfunction
 
 function mkv_track_video_entry(sd file,sd *size,sd *filepos)
     #level 3
-    chars PixelWidth=0xB0
-    chars *PixelWidth_size=0x84
+    char PixelWidth=0xB0
+    char *PixelWidth_size=0x84
     data PixelWidth_value#1
-    chars PixelHeight=0xBA
-    chars *PixelHeight_size=0x84
+    char PixelHeight=0xBA
+    char *PixelHeight_size=0x84
     data PixelHeight_value#1
-    chars DisplayWidth={0x54,0xB0}
-    chars *DisplayWidth_size=0x84
+    char DisplayWidth={0x54,0xB0}
+    char *DisplayWidth_size=0x84
     data DisplayWidth_value#1
-    chars *DisplayHeight={0x54,0xBA}
-    chars *DisplayHeight_size=0x84
+    char *DisplayHeight={0x54,0xBA}
+    char *DisplayHeight_size=0x84
     data DisplayHeight_value#1
-    chars *FrameRate={0x23,0x83,0xE3}
-    chars *FrameRate_size=0x84
+    char *FrameRate={0x23,0x83,0xE3}
+    char *FrameRate_size=0x84
 const video_track_last_=!
     data FrameRate_value#1
 
-    chars *ColourSpace={0x2E,0xB5,0x24}
-    chars *ColourSpace_size=0x84
-    chars *ColourSpace_value={I,_4,_2,_0}
+    char *ColourSpace={0x2E,0xB5,0x24}
+    char *ColourSpace_size=0x84
+    char *ColourSpace_value={I,_4,_2,_0}
 
     sd err
     sd io
@@ -784,8 +784,8 @@ function mkv_codecid(sd file,sd size,sd *filepos)
 endfunction
 
 function mkv_cluster(sd file,sd read_size,sd file_pos)
-    chars Timecode=0xE7
-    chars *Timecode_size=0x84
+    char Timecode=0xE7
+    char *Timecode_size=0x84
     data Timecode_value#1
 
     #data p_nomoreframes%ptr_nomoreframes
@@ -849,7 +849,7 @@ function mkv_cluster(sd file,sd read_size,sd file_pos)
                 set loop 0
             endif
         else
-            chars SimpleBlock=0xA3
+            char SimpleBlock=0xA3
             data f^mkv_simpleblock
 
             data start^SimpleBlock
@@ -944,11 +944,11 @@ function mkv_simpleblock(sd file,sd size,sd filepos)
 
     const SimpleBlock_Flags_Keyframe=0x80
 
-    chars Track_Number#1
-    chars Timecode_high#1
-    chars Timecode_low#1
+    char Track_Number#1
+    char Timecode_high#1
+    char Timecode_low#1
     #cluster relative, signed int16
-    chars Flags#1
+    char Flags#1
 
     #cluster time
     sd frames
@@ -1669,21 +1669,21 @@ function mkv_codecid_data(sd io,sd arg,sd size)
         setcall encoder stage_file_get_mkv_encoder()
         if encoder==(format_mkv_i420)
                 const codecid_i420_sz=1+1+1+1+1+1+1+1+1+1+1+1+1+1
-            chars CodecID_i420_value={V,_,U,N,C,O,M,P,R,E,S,S,E,D}
+            char CodecID_i420_value={V,_,U,N,C,O,M,P,R,E,S,S,E,D}
             data p_uncomp^CodecID_i420_value
 
             set codec_ptr p_uncomp
             set codec_sz (codecid_i420_sz)
         elseif encoder==(format_mkv_mjpg)
                 const codecid_mjpg_sz=1+1+1+1+1+1+1
-            chars CodecID_mjpg_value={V,_,M,J,P,E,G}
+            char CodecID_mjpg_value={V,_,M,J,P,E,G}
             data p_mjpg^CodecID_mjpg_value
 
             set codec_ptr p_mjpg
             set codec_sz (codecid_mjpg_sz)
         elseif encoder==(format_mkv_xvid)
                 const codecid_xvid_sz=1+1+1+1+1+1+ 1+1+    1+1+1+1+    1+1+1
-            chars CodecID_xvid_value={V,_,M,P,E,G,_4,Slash,I,S,O,Slash,A,S,P}
+            char CodecID_xvid_value={V,_,M,P,E,G,_4,Slash,I,S,O,Slash,A,S,P}
             data p_xvid^CodecID_xvid_value
 
             set codec_ptr p_xvid
@@ -1691,7 +1691,7 @@ function mkv_codecid_data(sd io,sd arg,sd size)
         else
         #if encoder==(format_mkv_rgb24)
                 const codecid_rgb24_sz=1+1+1+1+1+    1+1+1+1+    1+1+1+1+1+1
-            chars CodecID_rgb24_value={V,_,M,S,Slash,V,F,W,Slash,F,O,U,R,C,C}
+            char CodecID_rgb24_value={V,_,M,S,Slash,V,F,W,Slash,F,O,U,R,C,C}
             data p_rgb24^CodecID_rgb24_value
 
             set codec_ptr p_rgb24
@@ -1792,38 +1792,38 @@ endfunction
 #bool
 function mkv_sound(sd file,sd *size,sd *filepos)
 const _audio=!
-    chars CodecID=0x86
- chars *CodecID_size=0x80+1+1+1+1+1+1+    1+1+1+1+    1+1+1
-    chars *CodecID_value={A,_,P,C,M,Slash,I,N,T,Slash,L,I,T}
-    chars *TrackNumber=0xD7
-    chars *TrackNumber_size=0x81
-    chars *TrackNumber_value=TrackNumber_audio
-    chars *TrackUID={0x73,0xC5}
-    chars *TrackUID_size=0x81
-    chars *TrackUID_value=TrackNumber_audio
-    chars *TrackType=0x83
-    chars *TrackType_size=0x81
-    chars *TrackType_value=2
+    char CodecID=0x86
+ char *CodecID_size=0x80+1+1+1+1+1+1+    1+1+1+1+    1+1+1
+    char *CodecID_value={A,_,P,C,M,Slash,I,N,T,Slash,L,I,T}
+    char *TrackNumber=0xD7
+    char *TrackNumber_size=0x81
+    char *TrackNumber_value=TrackNumber_audio
+    char *TrackUID={0x73,0xC5}
+    char *TrackUID_size=0x81
+    char *TrackUID_value=TrackNumber_audio
+    char *TrackType=0x83
+    char *TrackType_size=0x81
+    char *TrackType_value=2
     #audio type=2
-    chars *FlagLacing=0x9C
-    chars *FlagLacing_size=0x81
-    chars *FlagLacing_value=0
+    char *FlagLacing=0x9C
+    char *FlagLacing_size=0x81
+    char *FlagLacing_value=0
     #no lacing used
-    chars *Name={0x53,0x6E}
-    chars *Name_size=0x85
-    chars *Name_value={A,u,d,i,o}
+    char *Name={0x53,0x6E}
+    char *Name_size=0x85
+    char *Name_value={A,u,d,i,o}
 
-    chars *Audio={0xE1}
-    chars Audio_size=0x80
+    char *Audio={0xE1}
+    char Audio_size=0x80
 const _audiospec=!
-    chars *SamplingFrequency=0xB5
-    chars *SamplingFrequency_size=0x84
+    char *SamplingFrequency=0xB5
+    char *SamplingFrequency_size=0x84
     data SamplingFrequency_value#1
-    chars *Channels=0x9F
-    chars *Channels_size=0x84
+    char *Channels=0x9F
+    char *Channels_size=0x84
     data Channels_value#1
-    chars *BitDepth={0x62,0x64}
-    chars *BitDepth_size=0x84
+    char *BitDepth={0x62,0x64}
+    char *BitDepth_size=0x84
 const audiospec_=!
     data BitDepth_value#1
 

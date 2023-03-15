@@ -13,7 +13,7 @@ function memrealloc(sd block,sd size)
     sd newblock
     SetCall newblock realloc(block,size)
     If newblock==0
-            Chars newmem="Realloc failed with error: "
+            char newmem="Realloc failed with error: "
             str pnewmem^newmem
             call strerrno(pnewmem)
     EndIf

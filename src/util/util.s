@@ -18,7 +18,7 @@ function strvaluedisp(str text,data part2,data formattype)
     data su=stringUinteger
 
     const infomax=200
-    chars disp#infomax
+    char disp#infomax
     str display^disp
 
     import "slen" slen
@@ -26,7 +26,7 @@ function strvaluedisp(str text,data part2,data formattype)
     data truncation#1
     data notruncation=0
     data dword=4
-    chars truncdata="..."
+    char truncdata="..."
     data truncdots^truncdata
 
     set truncation notruncation

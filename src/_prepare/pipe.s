@@ -63,7 +63,7 @@ import "stage_frame_time_numbers" stage_frame_time_numbers
 function stage_display_info(sd widget)
     #display the frame position and time informations
     str format="Frame: %u/%u; Time: %u:%02u from %u:%02u; Position: %u from %u"
-    chars data#200
+    char data#200
     str string^data
     sd length_at_index
     sd length_total
@@ -119,13 +119,13 @@ endfunction
 
 function img_folder()
 const img_folder_start=!
-	chars img="img"
+	char img="img"
 const img_folder_size=!-img_folder_start-1
 	return #img
 endfunction
 function edit_folder()
 const edit_folder_start=!
-	chars edit="edit"
+	char edit="edit"
 const edit_folder_size=!-edit_folder_start-1
 	return #edit
 endfunction
@@ -151,7 +151,7 @@ function stage_get_image(ss image)
 	ss e
 	setcall i img_folder()
 	setcall e edit_folder()
-	chars bytes#img_folder_size+1+edit_folder_size+1+unselected_bmp_size+1
+	char bytes#img_folder_size+1+edit_folder_size+1+unselected_bmp_size+1
 	ss file^bytes
 	str form="%s/%s/%s"
 	call sprintf(file,form,i,e,image)

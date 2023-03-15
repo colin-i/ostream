@@ -306,7 +306,7 @@ function capture_alt_thread_proc(sd *noArg)
     while 1==1
         const STDIN_FILENO=0
         const fd_set_size=128
-        chars filedescriptor_set#fd_set_size
+        char filedescriptor_set#fd_set_size
         data fds^filedescriptor_set
         call setmemzero(fds,(fd_set_size))
         #define __FD_SET(d, set) \
@@ -1002,7 +1002,7 @@ function get_mxf_caps()
     sd ptr_pack^pixbuf
     call stage_file_frame_main_set(ptr_pack,firstframe)
 	ss capsformat="caps=video/x-raw,format=(string)RGBA,width=%u,height=%u,bpp=%u,endianness=4321,red_mask=0xFF000000,green_mask=0xFF0000,blue_mask=0xFF00,framerate=%u/1"
-	chars capsdata#4*10+150+1-4-4
+	char capsdata#4*10+150+1-4-4
 	str gstcaps^capsdata
 	sd bpp=stage_bpp
 	sd fps
@@ -1043,7 +1043,7 @@ function iterate_next_forward_free(sd iter,sd forward)
 endfunction
 
 function stage_sound_caps()
-	chars out#65-2-2+(dword_max*2)+1
+	char out#65-2-2+(dword_max*2)+1
 	vstr format="audio/x-raw,format=S16LE,channels=%u,rate=%u,signed=(boolean)true"
 	sd channels
 	setcall channels stage_sound_channels((value_get))

@@ -8,7 +8,7 @@ include "../_include/include.h"
 ##set
 
 #void
-function setmem(str pointer,data size,chars value)
+function setmem(str pointer,data size,char value)
     str end#1
     set end pointer
     add end size
@@ -20,7 +20,7 @@ endfunction
 
 #void
 function setmemzero(str pointer,data size)
-    chars zero=0
+    char zero=0
     call setmem(pointer,size,zero)
 endfunction
 
@@ -123,8 +123,8 @@ Function cmpmem(str m1,str m2,data size)
         Data equal=equalCompare
         Data notequal=differentCompare
 
-        Chars c1#1
-        Chars c2#1
+        char c1#1
+        char c2#1
         While size!=zero
                 Set c1 m1#
                 Set c2 m2#
@@ -165,10 +165,10 @@ endfunction
 ##valinmem
 
 #return the size of the value, if the delim is found the size counts until there
-Function valinmemsens(str content,data size,chars delim) #,data sens
+Function valinmemsens(str content,data size,char delim) #,data sens
         Data length#1
         Set length size
-        Chars byte#1
+        char byte#1
         Data zero=0
 
         If size==zero

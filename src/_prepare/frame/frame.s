@@ -38,68 +38,68 @@ function stage_frame_panel_open_fn(sd p_data)
     set user_data p_data#
 
     import "stage_save_img" stage_save_img
-    chars frame_lot="img.bmp"
-    chars *="Save the current selection to a file"
+    char frame_lot="img.bmp"
+    char *="Save the current selection to a file"
     data *^stage_save_img
     #
     import "stage_add_centered" stage_add_centered
-    chars *="addcenter.bmp"
-    chars *="Add an image scaled and centered on the selected frame"
+    char *="addcenter.bmp"
+    char *="Add an image scaled and centered on the selected frame"
     data *^stage_add_centered
     #
     import "stage_color_under_image" stage_color_under_image
-    chars *="addmargins.bmp"
-    chars *="Create an image selecting width,height and color, then place over it the selected frame scaled and centered"
+    char *="addmargins.bmp"
+    char *="Create an image selecting width,height and color, then place over it the selected frame scaled and centered"
     data *^stage_color_under_image
     #
     import "stage_scale_img" stage_scale_img
-    chars *="scale.bmp"
-    chars *="Scale the selection to new values"
+    char *="scale.bmp"
+    char *="Scale the selection to new values"
     data *^stage_scale_img
     #
     import "stage_crop" stage_crop
-    chars *="crop.bmp"
-    chars *="Crop the selection"
+    char *="crop.bmp"
+    char *="Crop the selection"
     data *^stage_crop
     #
     import "stage_pencil" stage_pencil
-    chars *="pencil.bmp"
-    chars *="Pencil tool"
+    char *="pencil.bmp"
+    char *="Pencil tool"
     data *^stage_pencil
     #
     import "stage_screenshot" stage_screenshot
-    chars *="screenshot.bmp"
-    chars *="Print screen and add to stage button"
+    char *="screenshot.bmp"
+    char *="Print screen and add to stage button"
     data *^stage_screenshot
     #
     import "stage_brightness" stage_brightness
-    chars *="bright.bmp"
-    chars *="Brighten or darken the selection"
+    char *="bright.bmp"
+    char *="Brighten or darken the selection"
     data *^stage_brightness
     #
     import "stage_overlay" stage_overlay
-    chars *="overlay.bmp"
-    chars *="Add an image over selection"
+    char *="overlay.bmp"
+    char *="Add an image over selection"
     data *^stage_overlay
     #
     import "stage_rotate_left" stage_rotate_left
-    chars *="rotateleft.bmp"
-    chars *="Rotate the selection 90 degrees at left"
+    char *="rotateleft.bmp"
+    char *="Rotate the selection 90 degrees at left"
     data *^stage_rotate_left
     #
     import "stage_rotate_right" stage_rotate_right
-    chars *="rotateright.bmp"
-    chars *="Rotate the selection 90 degrees at right"
+    char *="rotateright.bmp"
+    char *="Rotate the selection 90 degrees at right"
     data *^stage_rotate_right
     #
     import "headline_dialog" headline_dialog
-    chars *="headline.bmp"
-    chars *="Draw headline text"
+    char *="headline.bmp"
+    char *="Draw headline text"
     data *^headline_dialog
     #
     import "stage_lines" stage_lines
-    chars *="resize.bmp"
-    chars *="Add/Remove rows or columns at sides at all stage images"
+    char *="resize.bmp"
+    char *="Add/Remove rows or columns at sides at all stage images"
     data *^stage_lines
     #
     data *=0
