@@ -90,7 +90,7 @@ function search_parse_got_body(ss body,sd size,sd data)
     sd ptr_totalentries^totalentries
     sd counter^count_the_findings
     call find_start_end_forward_center_data(body,size,start,end,counter,ptr_totalentries)
-    chars number#dword_null
+    char number#dword_null
     ss nr^number
     str dw_str="%u"
     call sprintf(nr,dw_str,totalentries)

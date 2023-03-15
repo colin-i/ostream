@@ -28,48 +28,48 @@ import "movetoScriptfolder" movetoScriptfolder
 #returns the stage function for set click on stage button
 function buttons_combinations()
     import "stage_start" stage_start
-    chars button="prepare.bmp"
-    chars *="Media edit panel"
+    char button="prepare.bmp"
+    char *="Media edit panel"
     data match^stage_start
     data *=0
 
     import "play_click" play_click
-    chars *="play.bmp"
-    chars *="Play the media"
+    char *="play.bmp"
+    char *="Play the media"
     data *^play_click
     import "info_save_stream" info_save_stream
-    chars *="save.bmp"
-    chars *="Save the stream to a file"
+    char *="save.bmp"
+    char *="Save the stream to a file"
     data *^info_save_stream
     import "gather_info" gather_info
-    chars *="info.bmp"
-    chars *="Detect if the stream has audio or video"
+    char *="info.bmp"
+    char *="Detect if the stream has audio or video"
     data *^gather_info
     import "stop" stop
-    chars *="close.bmp"
-    chars *="Stop the play or the save actions"
+    char *="close.bmp"
+    char *="Stop the play or the save actions"
     data *^stop
     data *=0
 
     import "search_parse" search_parse
-    chars *="search.bmp"
-    chars *="Search for all streams at the uri using the rules from the search preferences"
+    char *="search.bmp"
+    char *="Search for all streams at the uri using the rules from the search preferences"
     data *^search_parse
     import "show_preferences" show_preferences
-    chars *="preferences.bmp"
-    chars *="Display the search preferences window"
+    char *="preferences.bmp"
+    char *="Display the search preferences window"
     data *^show_preferences
     data *=0
 
     import "mix_start" mix_start
-    chars *="mix.bmp"
-    chars *="Mux video and audio from two uri-s"
+    char *="mix.bmp"
+    char *="Mux video and audio from two uri-s"
     data *^mix_start
     data *=0
 
     import "view_use_file" view_use_file
-    chars *="help.bmp"
-    chars *="View informations about the program"
+    char *="help.bmp"
+    char *="View informations about the program"
     data *^view_use_file
     data *=0
 
@@ -181,7 +181,7 @@ function initfn()
     data window#1
     setcall window gtk_window_new(GTK_WINDOW_TOPLEVEL)
 
-    chars programname="OStream"
+    char programname="OStream"
     str program^programname
     call gtk_window_set_title(window,program)
 
@@ -194,7 +194,7 @@ function initfn()
     call gtk_window_set_default_size(window,width,height)
 
     data ptr_gtk_main_quit^gtk_main_quit
-    chars destr="destroy"
+    char destr="destroy"
     str destroy^destr
     call g_signal_connect_data(window,destroy,ptr_gtk_main_quit,null,null,null)
 

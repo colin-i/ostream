@@ -72,9 +72,9 @@ endfunction
 
 
 #bool numeric
-Function numeric(chars c)
-        Chars zero="0"
-        Chars nine="9"
+Function numeric(char c)
+        char zero="0"
+        char nine="9"
         Data false=FALSE
         Data true=TRUE
         If c<zero
@@ -92,7 +92,7 @@ Function memtoint(str content,data size,data outvalue)
         return (FALSE)
     endif
     sd minusbool=FALSE
-    Chars negsign="-"
+    char negsign="-"
     If content#==negsign
         Inc content;Dec size
         If size==0
@@ -122,7 +122,7 @@ Function memtoint_add(str content,data size,data outvalue,data minusbool)
         Dec content;Dec size
 
         Data bool#1
-        Chars byte#1
+        char byte#1
         Set byte content#
         SetCall bool numeric(byte)
         If bool==(FALSE)

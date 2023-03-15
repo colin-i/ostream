@@ -203,7 +203,7 @@ function headline_dlg(sd action,sd vbox)
         setcall size_x gtk_hbox_new(0,0)
         setcall size_entry gtk_combo_box_text_new()
         call packstart_default(size_x,size_entry)
-        chars str_data#30
+        char str_data#30
         str nr_ascii^str_data
         str format="%u"
         sd nr=10
@@ -618,7 +618,7 @@ function stage_lines_thread_loop()
         setcall totalframes stage_get_frames()
         const imagetoolsbufstart=!
         ss format="Images: %u/%u"
-        chars buf#!-imagetoolsbufstart-2-2+dword_max+dword_max
+        char buf#!-imagetoolsbufstart-2-2+dword_max+dword_max
         str buffer^buf
         call sprintf(buffer,format,img_nr,totalframes)
         call dialog_modal_texter_draw(buffer)

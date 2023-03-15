@@ -38,32 +38,32 @@ function stage_cover_panel_open_fn(sd p_data)
     set user_data p_data#
 
     import "stage_cover" stage_cover
-    chars cover_lot="cover.bmp"
-    chars *="Uncover/Cover sides effects"
+    char cover_lot="cover.bmp"
+    char *="Uncover/Cover sides effects"
     data *^stage_cover
     #
-    chars *="center_cover.bmp"
-    chars *="Uncover/Cover center lines effects"
+    char *="center_cover.bmp"
+    char *="Uncover/Cover center lines effects"
     data *^stage_reveal_centerline
     #
     import "stage_reveal_rectangle" stage_reveal_rectangle
-    chars *="rectangle_cover.bmp"
-    chars *="Uncover/Cover rectangle effects"
+    char *="rectangle_cover.bmp"
+    char *="Uncover/Cover rectangle effects"
     data *^stage_reveal_rectangle
     #
     import "stage_reveal_diamond" stage_reveal_diamond
-    chars *="diamond_cover.bmp"
-    chars *="Uncover/Cover diamond effects"
+    char *="diamond_cover.bmp"
+    char *="Uncover/Cover diamond effects"
     data *^stage_reveal_diamond
     #
     import "stage_reveal_curve" stage_reveal_curve
-    chars *="curve_cover.bmp"
-    chars *="Uncover/Cover curve effects"
+    char *="curve_cover.bmp"
+    char *="Uncover/Cover curve effects"
     data *^stage_reveal_curve
     #
     import "stage_reveal_diagonal" stage_reveal_diagonal
-    chars *="diagonal_cover.bmp"
-    chars *="Uncover/Cover diagonal effects"
+    char *="diagonal_cover.bmp"
+    char *="Uncover/Cover diagonal effects"
     data *^stage_reveal_diagonal
     #
     data *=0

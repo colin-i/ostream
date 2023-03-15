@@ -81,8 +81,8 @@ function linked_instance(sd destcontainer,sd lots,sd trigbutton,sd callbackfunc,
     sd p_alignment^alignment
     setcall buttonscontainer buttons_interface(destcontainer,lots,p_alignment)
 
-    chars connect="close.bmp"
-    chars *="Close the panel"
+    char connect="close.bmp"
+    char *="Close the panel"
     data backfunc#1
     data *=0
 

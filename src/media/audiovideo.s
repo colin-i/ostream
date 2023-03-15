@@ -378,10 +378,10 @@ const av_info_simple=1
 function av_display_progress(sd image_nr,sd flag_simple)
     #capture_flag and read info both goes in flag_simple
 	const procimgstrstart=!
-	chars format_stage="Processed images: %u/%u"
-	chars data#!-procimgstrstart-2-2+dword_max+dword_max
+	char format_stage="Processed images: %u/%u"
+	char data#!-procimgstrstart-2-2+dword_max+dword_max
 	vstr string^data
-	chars format_capture="Processed images: %u"
+	char format_capture="Processed images: %u"
     importx "_sprintf" sprintf
     if flag_simple==(av_info_all)
         import "stage_get_frames" stage_get_frames
@@ -418,7 +418,7 @@ function av_display_info(sd action,sd file,sd nr,sd frame_size)
     else
         #if action==(value_write)
         #get/display
-        chars bf#100
+        char bf#100
         str text^bf
         str format="Frame: %u, Size: %u bytes"
         sd size

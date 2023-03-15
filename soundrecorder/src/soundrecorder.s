@@ -62,7 +62,7 @@ function record_options(sd file)
 
     const max_options_length=100
 
-    chars text#max_options_length
+    char text#max_options_length
     ss options_text^text
 
     if len>=(max_options_length)
@@ -78,7 +78,7 @@ function record_options(sd file)
         call errors(readerr)
         return 0
     endif
-    chars spc=" "
+    char spc=" "
 
     ss safe
     set safe options_text
@@ -184,7 +184,7 @@ function record_fileandsizes(sd thread_id)
     sd tm
     setcall tm time()
     import "_sprintf" sprintf
-    chars filename_data#100
+    char filename_data#100
     str filename^filename_data
     str format="%u.wav"
     call sprintf(filename,format,tm)
@@ -206,24 +206,24 @@ endfunction
 function record_got_file(sd file,sd thread_id)
 #const _RIFF^riff
 const _RIFF=!
-    chars riff={R,I,F,F}
+    char riff={R,I,F,F}
     data riffsize#1
 
-    chars WAVE={W,A,V,E}
-    chars *fmt={f,m,t,Space}
+    char WAVE={W,A,V,E}
+    char *fmt={f,m,t,Space}
     data fmtsize#1
     #WAVEFORMATEX
-    chars wFormatTag={WAVE_FORMAT_PCM,0}
-    chars nChannels={1,0}
+    char wFormatTag={WAVE_FORMAT_PCM,0}
+    char nChannels={1,0}
     data nSamplesPerSec#1
     data nAvgBytesPerSec#1
-    chars nBlockAlign={2,0}
-    chars wBitsPerSample={16,0}
+    char nBlockAlign={2,0}
+    char wBitsPerSample={16,0}
     #EX
     #no extra data, simple PCM-format used
-    chars *cbSize={0,0}
+    char *cbSize={0,0}
 
-    chars datatag={d,a,t,a}
+    char datatag={d,a,t,a}
     data datasize#1
 
 #const RIFF_^RIFF
@@ -464,7 +464,7 @@ function record_dialog()
     import "__getch" getch
     call getch()
 
-    chars nl={0xa,0}
+    char nl={0xa,0}
     str newline^nl
 
     call printf(newline)

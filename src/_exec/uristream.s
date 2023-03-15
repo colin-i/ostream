@@ -38,7 +38,7 @@ const u64bytes=20
 
 function ldiv_lowdivisor(sv p,sd dividendlow,sd dividendhigh,sd divisor)
 	#sd input#(4/:*3)+3
-	chars input#u64bytes+1
+	char input#u64bytes+1
 	ss instr^input
 
 	#%llu linux ok
@@ -49,7 +49,7 @@ function ldiv_lowdivisor(sv p,sd dividendlow,sd dividendhigh,sd divisor)
 
 	# As result can be very large store it in string
 	#sd quotient#(4/:*3)+3
-	chars quotient#u64bytes
+	char quotient#u64bytes
 	sd rem
 	ss dest;set dest instr
 	addcall dest strlen(instr)
@@ -123,13 +123,13 @@ function ldiv_lowdivisor_s(ss outstr,ss instr,ss dest,sd divisor,sd p_rem)
 endfunction
 function memto64(sd in,ss dest,sd out)
 	const hconv64=16+1
-	chars h#hconv64
+	char h#hconv64
 	#sd h#(4/:*2)+3
 	ss hex^h
 	add hex (hconv64-1)
 	sd sz;set sz hex
 	set hex# 0
-	chars quotient#u64bytes
+	char quotient#u64bytes
 	sd in2;set in2 #quotient
 	sd rem
 
@@ -249,7 +249,7 @@ function streamtimer(data *data)
 			str poserr="Could not query current position."
 			call texter(poserr)
 		else
-			chars printduration#10+1+2+1+2+3+10+1+2+1+2+1
+			char printduration#10+1+2+1+2+3+10+1+2+1+2+1
 			str print^printduration
 
 			data durH#1

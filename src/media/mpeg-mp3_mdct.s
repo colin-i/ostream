@@ -228,14 +228,14 @@ function l3_mdct_init()
     data *double_3_high#1
     data double_3^double_3_low
     ##prepare the aliasing reduction butterflies
-    chars c_data="-0.6"
-    chars *="-0.535"
-    chars *="-0.33"
-    chars *="-0.185"
-    chars *="-0.095"
-    chars *="-0.041"
-    chars *="-0.0142"
-    chars *="-0.0037"
+    char c_data="-0.6"
+    char *="-0.535"
+    char *="-0.33"
+    char *="-0.185"
+    char *="-0.095"
+    char *="-0.041"
+    char *="-0.0142"
+    char *="-0.0037"
     sd c^c_data
     sd ca
     sd cs

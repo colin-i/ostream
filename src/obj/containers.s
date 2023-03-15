@@ -134,7 +134,7 @@ import "cpymem" cpymem
 import "slen" slen
 #const modal_texter_draw_data_size=100
 function dialogfield_modal_texter_drawtext(sd procedure,sd text)
-	chars text_data#22+modal_texter_mark+1
+	char text_data#22+modal_texter_mark+1
 	vstr strtext^text_data
 	if procedure==(value_set)
 	#this is not main thread

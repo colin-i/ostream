@@ -9,7 +9,7 @@ const horizontal=1
 #cbp
 function mpeg_mb_prediction(sd x,sd y,sd mb_width,sd qcoeff,sd acpred_direction)
     sd s=0
-    chars predictors_data#6*8*int16
+    char predictors_data#6*8*int16
     data predictors^predictors_data
 
     #sd scaler=default_scaler
@@ -164,9 +164,9 @@ function mpeg_predict_acdc(sd x,sd mb_width,sd mbpos,sd block,sd predictors,sd a
     #sd top_quant=DEFAULT_QUANT
 
     #int16
-    chars default_acdc_values={1024,1024/0x100}
-    chars *={0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0}
-    chars *={0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0}
+    char default_acdc_values={1024,1024/0x100}
+    char *={0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0}
+    char *={0,0, 0,0, 0,0, 0,0, 0,0, 0,0, 0,0}
 
     sd p_left^default_acdc_values
     sd p_top^default_acdc_values
@@ -396,7 +396,7 @@ function calc_acdc_bits(sd acpred_direction,sd mbpos,sd sector,sd qcoeff,sd pred
     sd z2
     setcall z2 coef_intra_calc(qcoeff,(zig_zag))
 
-    chars tmp#8*int16
+    char tmp#8*int16
     data temp^tmp
     set i 1
     #apply ac prediction & calc cost

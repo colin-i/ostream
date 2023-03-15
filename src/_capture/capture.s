@@ -413,23 +413,23 @@ endfunction
 import "file_write" file_write
 
 function capture_left_string()
-    chars c#dword_null
+    char c#dword_null
     return #c
 endfunction
 function capture_top_string()
-    chars c#dword_null
+    char c#dword_null
     return #c
 endfunction
 function capture_width_string()
-    chars c#dword_null
+    char c#dword_null
     return #c
 endfunction
 function capture_height_string()
-    chars c#dword_null
+    char c#dword_null
     return #c
 endfunction
 function capture_size_string()
-    chars c#dword_null
+    char c#dword_null
     return #c
 endfunction
 import "file_write_string" file_write_string
@@ -1141,7 +1141,7 @@ function capture_raw_files(sd output_file)
         endelse
 
         importx "_sprintf" sprintf
-        chars outfile_data#100
+        char outfile_data#100
         str outfile^outfile_data
         str outformat="%s.%u"
         call sprintf(outfile,outformat,output_file,files)
@@ -1202,7 +1202,7 @@ function capture_raw_read_file(sd file,sd path)
     ss filepath
     set filepath path
     add filepath sz
-    chars delim="."
+    char delim="."
     setcall sz valinmemsens(filepath,sz,delim) #,(BACKWARD)
     sub filepath sz
     set filepath# 0

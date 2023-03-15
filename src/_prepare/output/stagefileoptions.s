@@ -376,25 +376,25 @@ function stage_file_get_format()
     sd ptr_index%ptr_output
 #these formats are related to format_max
     #Audio Video Interleaved
-    chars entry1="avi"
+    char entry1="avi"
     #Audio Video Interleaved / I420
-    chars *="avi"
+    char *="avi"
     #Audio Video Interleaved / MJPEG
-    chars *="avi"
+    char *="avi"
     #Audio Video Interleaved / MPG4-ASP
-    chars *="avi"
+    char *="avi"
     #Material eXchange Format
-    chars *="mxf"
+    char *="mxf"
     #Matroska / I420
-    chars *="mkv"
+    char *="mkv"
     #Matroska / MJPEG
-    chars *="mkv"
+    char *="mkv"
     #Matroska / MPG4-ASP
-    chars *="mkv"
+    char *="mkv"
     #Matroska / RGB24
-    chars *="mkv"
+    char *="mkv"
     #Mp4 / MPEG4-AVC
-    chars *="mp4"
+    char *="mp4"
 
     sd index
     set index ptr_index#
@@ -406,7 +406,7 @@ endfunction
 function stage_file_get_format_name()
     ss format
     setcall format stage_file_get_format()
-    chars dest_data#format_max+1
+    char dest_data#format_max+1
     data dest^dest_data
     import "strcpy" strcpy
     import "slen" slen

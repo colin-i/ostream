@@ -311,7 +311,7 @@ function capture_alt_thread_proc(sd *noArg)
     while 1==1
         const STDIN_FILENO=0
         const fd_set_size=128
-        chars filedescriptor_set#fd_set_size
+        char filedescriptor_set#fd_set_size
         data fds^filedescriptor_set
         call setmemzero(fds,(fd_set_size))
         #define __FD_SET(d, set) \

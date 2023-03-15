@@ -90,7 +90,7 @@ function on_discover(data *discoverer,data info,data gerror,data passdata)
 
             importx "_sprintf" sprintf
             str infodispformat="%s%s%s %s: "
-            chars infodisp#40
+            char infodisp#40
             str infotext^infodisp
 
             call sprintf(infotext,infodispformat,v,conjunction,a,passdata#)
@@ -187,7 +187,7 @@ function collect_info(str intrusion)
 endfunction
 
 function gather_info()
-    chars detected="detected at"
+    char detected="detected at"
 
     str discover^detected
     data *noforward=0

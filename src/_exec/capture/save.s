@@ -64,9 +64,9 @@ function recSignals(data bus,data dest)
 endfunction
 
 function capture_location()
-const capture_chars_start=!
-	chars folder="captures/"
-const capture_chars=!-capture_chars_start-1
+const capture_char_start=!
+	char folder="captures/"
+const capture_char=!-capture_char_start-1
 	return #folder
 endfunction
 #ogg
@@ -82,7 +82,7 @@ endfunction
 
 import "move_to_home_core" move_to_home_core
 function capture_path(ss format,sd extrabool,sd extranumber)
-	chars capture_data#capture_chars+dword_max+1+dword_max+1+format_max+1
+	char capture_data#capture_char+dword_max+1+dword_max+1+format_max+1
 	ss capture_str^capture_data
 	ss folder
 	setcall folder capture_location()
@@ -163,7 +163,7 @@ function save_stream_dest_ready(str dest)
     data flagA=audio
     data flagVA=audiovideo
 
-    chars src_prop_data#20
+    char src_prop_data#20
 
     str format#1
     str sr#1
@@ -183,10 +183,10 @@ function save_stream_dest_ready(str dest)
     set m1 video
     if streams==flagVA
         str makename="%s."
-        chars save_secname_data#15
+        char save_secname_data#15
         str save_src_name^save_secname_data
         call sprintf(save_src_name,makename,srcname)
-        chars save_va_data#40
+        char save_va_data#40
         str save_va^save_va_data
         ss secformat
         setcall secformat save_get_sec_format()
@@ -264,7 +264,7 @@ endfunction
 import "collect_info" collect_info
 #v
 function info_save_stream()
-    chars rec="recording from"
+    char rec="recording from"
 
     str capture^rec
     data *forward^save_stream

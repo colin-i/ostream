@@ -13,9 +13,9 @@ importx "_gtk_widget_modify_bg" gtk_widget_modify
 #void
 function setWidgetBase(sd widget,ss in_colors)
 	data guint32_pixel=0
-	chars *=0;chars guint16_red#1
-	chars *=0;chars guint16_green#1
-	chars *=0;chars guint16_blue#1
+	char *=0;char guint16_red#1
+	char *=0;char guint16_green#1
+	char *=0;char guint16_blue#1
 	set guint16_red in_colors#
 	inc in_colors;set guint16_green in_colors#
 	inc in_colors;set guint16_blue in_colors#
@@ -83,7 +83,7 @@ import "getsubject" getsubject
 
 #integer to string to object name
 function object_set_dword_name(sd object,sd int_name)
-    chars str_name#dword_null
+    char str_name#dword_null
     str s_name^str_name
     str dw_str="%u"
     importx "_sprintf" sprintf

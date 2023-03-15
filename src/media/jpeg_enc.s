@@ -142,9 +142,9 @@ function write_jpeg_blocks(sd pixbuf)
         sd i=0
         while i<w
             #get a 8x8 block
-            chars Y_data#8*8
-            chars Cb_data#8*8
-            chars Cr_data#8*8
+            char Y_data#8*8
+            char Cb_data#8*8
+            char Cr_data#8*8
             str Y^Y_data
             str Cb^Cb_data
             str Cr^Cr_data
@@ -155,7 +155,7 @@ function write_jpeg_blocks(sd pixbuf)
 
             #apply fast DCT and zigzag
             #int16
-            chars DCT_Quant_Y_data#64*2
+            char DCT_Quant_Y_data#64*2
             str DCT_Quant_Y^DCT_Quant_Y_data
             ##3,4
             call jpeg_FDCT_Quantization_And_ZigZag((value_run),Y,DCT_Quant_Y,FDCT_Y)
@@ -165,7 +165,7 @@ function write_jpeg_blocks(sd pixbuf)
                 return 0
             endif
             #
-            chars DCT_Quant_Cb_data#64*2
+            char DCT_Quant_Cb_data#64*2
             str DCT_Quant_Cb^DCT_Quant_Cb_data
             call jpeg_FDCT_Quantization_And_ZigZag((value_run),Cb,DCT_Quant_Cb,FDCT_CbCr)
             setcall bool jpeg_encode_Huffman(1,DCT_Quant_Cb,(crom),p_prev_DC_Cb)
@@ -173,7 +173,7 @@ function write_jpeg_blocks(sd pixbuf)
                 return 0
             endif
             #
-            chars DCT_Quant_Cr_data#64*2
+            char DCT_Quant_Cr_data#64*2
             str DCT_Quant_Cr^DCT_Quant_Cr_data
             call jpeg_FDCT_Quantization_And_ZigZag((value_run),Cr,DCT_Quant_Cr,FDCT_CbCr)
             setcall bool jpeg_encode_Huffman(1,DCT_Quant_Cr,(crom),p_prev_DC_Cr)
@@ -186,7 +186,7 @@ function write_jpeg_blocks(sd pixbuf)
     endwhile
 
     #Write End of Image Marker
-    chars EOI_data={0xFF,0xD9}
+    char EOI_data={0xFF,0xD9}
     str EOI^EOI_data
     setcall bool jpeg_file_mem_add(EOI,2)
     if bool!=1
@@ -262,23 +262,23 @@ endfunction
 #bool
 function write_jpeg_headers_appinfo()
     #JPEG INIT
-    chars JPEG_INIT={0xff,0xD8}
+    char JPEG_INIT={0xff,0xD8}
     #marker
-    chars *={0xff,0xE0}
+    char *={0xff,0xE0}
     #length = 16 for usual JPEG, no thumbnail
-    chars *={0,16}
+    char *={0,16}
     #signature
-    chars *="JFIF"
+    char *="JFIF"
     #high version,low version
-    chars *={1,1}
+    char *={1,1}
     #xyunits = 0 = no units, normal density
-    chars *=0
+    char *=0
     #x density = 1
-    chars *={0,1}
+    char *={0,1}
     #y density = 1
-    chars *={0,1}
+    char *={0,1}
     #thumb n width, thumb n height
-    chars *={0,0}
+    char *={0,0}
 
     data size#1
 
@@ -301,47 +301,47 @@ endfunction
 #Quantization Tables
 #bool
 function write_jpeg_quantizationTables(sd quality)
-    chars marker={0xFF,0xDB}
+    char marker={0xFF,0xDB}
     #length = 132
-    chars *={0,132}
+    char *={0,132}
     #QTYinfo
     #bit 0..3: number of QT = 0 (table for Y)
     #bit 4..7: precision of QT, 0 = 8 bit
-    chars *=0
+    char *=0
     #Y Table, luminance table
-    chars Y_Table#64
+    char Y_Table#64
     #QTCbinfo
     #quantization table for Cb,Cr
-    chars *=1
+    char *=1
     #CbCr Table, chromiance table
-    chars CbCr_Table#64
+    char CbCr_Table#64
 
     data size#1
     const _quantizationTables^marker
     const quantizationTables_^size
     set size (quantizationTables_-_quantizationTables)
 
-    chars luminance_r1={16, 11, 10, 16,24, 40, 51, 61}
-    chars *         r2={12, 12, 14, 19,26, 58, 60, 55}
-    chars *         r3={14, 13, 16, 24,40, 57, 69, 56}
-    chars *         r4={14, 17, 22, 29,51, 87, 80, 62}
-    chars *         r5={18, 22, 37, 56,68, 109,103,77}
-    chars *         r6={24, 35, 55, 64,81, 104,113,92}
-    chars *         r7={49, 64, 78, 87,103,121,120,101}
-    chars *         r8={72, 92, 95, 98,112,100,103,99}
+    char luminance_r1={16, 11, 10, 16,24, 40, 51, 61}
+    char *         r2={12, 12, 14, 19,26, 58, 60, 55}
+    char *         r3={14, 13, 16, 24,40, 57, 69, 56}
+    char *         r4={14, 17, 22, 29,51, 87, 80, 62}
+    char *         r5={18, 22, 37, 56,68, 109,103,77}
+    char *         r6={24, 35, 55, 64,81, 104,113,92}
+    char *         r7={49, 64, 78, 87,103,121,120,101}
+    char *         r8={72, 92, 95, 98,112,100,103,99}
 
     str luminance^luminance_r1
     str Y_Tab^Y_Table
     call jpeg_Scale_And_ZigZag_Quantization_Table(luminance,Y_Tab,quality)
 
-    chars chromiance_r1={17,  18,  24,  47,  99,  99,  99,  99}
-    chars *          r2={18,  21,  26,  66,  99,  99,  99,  99}
-    chars *          r3={24,  26,  56,  99,  99,  99,  99,  99}
-    chars *          r4={47,  66,  99,  99,  99,  99,  99,  99}
-    chars *          r5={99,  99,  99,  99,  99,  99,  99,  99}
-    chars *          r6={99,  99,  99,  99,  99,  99,  99,  99}
-    chars *          r7={99,  99,  99,  99,  99,  99,  99,  99}
-    chars *          r8={99,  99,  99,  99,  99,  99,  99,  99}
+    char chromiance_r1={17,  18,  24,  47,  99,  99,  99,  99}
+    char *          r2={18,  21,  26,  66,  99,  99,  99,  99}
+    char *          r3={24,  26,  56,  99,  99,  99,  99,  99}
+    char *          r4={47,  66,  99,  99,  99,  99,  99,  99}
+    char *          r5={99,  99,  99,  99,  99,  99,  99,  99}
+    char *          r6={99,  99,  99,  99,  99,  99,  99,  99}
+    char *          r7={99,  99,  99,  99,  99,  99,  99,  99}
+    char *          r8={99,  99,  99,  99,  99,  99,  99,  99}
 
     str chromiance^chromiance_r1
     str CbCr_Tab^CbCr_Table
@@ -394,14 +394,14 @@ function jpeg_Scale_And_ZigZag_Quantization_Table(ss srctable,ss desttable,sd qu
 endfunction
 
 function jpeg_ZigZag_get(sd i)
-    chars zigzag_r1={0, 1, 5, 6, 14,15,27,28}
-    chars *      r2={2, 4, 7, 13,16,26,29,42}
-    chars *      r3={3, 8, 12,17,25,30,41,43}
-    chars *      r4={9, 11,18,24,31,40,44,53}
-    chars *      r5={10,19,23,32,39,45,52,54}
-    chars *      r6={20,22,33,38,46,51,55,60}
-    chars *      r7={21,34,37,47,50,56,59,61}
-    chars *      r8={35,36,48,49,57,58,62,63}
+    char zigzag_r1={0, 1, 5, 6, 14,15,27,28}
+    char *      r2={2, 4, 7, 13,16,26,29,42}
+    char *      r3={3, 8, 12,17,25,30,41,43}
+    char *      r4={9, 11,18,24,31,40,44,53}
+    char *      r5={10,19,23,32,39,45,52,54}
+    char *      r6={20,22,33,38,46,51,55,60}
+    char *      r7={21,34,37,47,50,56,59,61}
+    char *      r8={35,36,48,49,57,58,62,63}
 
     str zigzag^zigzag_r1
     ss ztab
@@ -427,35 +427,35 @@ endfunction
 
 #bool
 function write_jpeg_sof(sd pixbuf)
-    chars marker={0xFF,0xC0}
+    char marker={0xFF,0xC0}
     #length = 17 for a truecolor YCbCr JPG
-    chars *={0,17}
+    char *={0,17}
     #precision, Should be 8: 8 bits/sample
-    chars *=8
+    char *=8
     #height
-    chars height#2
+    char height#2
     #width
-    chars width#2
+    char width#2
     #nrofcomponents, Should be 3: We encode a truecolor JPG
-    chars *=3
+    char *=3
     #IdY
-    chars *=1
+    char *=1
     #HVY, sampling factors for Y (bit 0-3 vert., 4-7 hor.)
-    chars *=0x11
+    char *=0x11
     #QTY, Quantization Table number for Y = 0
-    chars *=0
+    char *=0
     #IdCb
-    chars *=2
+    char *=2
     #HVCb
-    chars *=0x11
+    char *=0x11
     #QTCb
-    chars *=1
+    char *=1
     #IdCr
-    chars *=3
+    char *=3
     #HVCr
-    chars *=0x11
+    char *=0x11
     #QTCr, Normally equal to QTCb = 1
-    chars *=1
+    char *=1
 
     data size#1
     const _sof^marker
@@ -488,9 +488,9 @@ const Huffman_get=1
 
 #bool
 function write_jpeg_Huffman()
-    chars marker={0xFF,0xC4}
+    char marker={0xFF,0xC4}
     #length
-    chars *={0x01,0xA2}
+    char *={0x01,0xA2}
 
     data size#1
     const _Huffman^marker
@@ -538,9 +538,9 @@ const DC_table=0
 const AC_table=0x10
 
 function Huffman_DC_Luminance(sd action,sd ptr_values)
-    chars HT=Y_table|DC_table
-    chars NRCodes={0, 0, 1, 5, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0}
-    chars Values={ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}
+    char HT=Y_table|DC_table
+    char NRCodes={0, 0, 1, 5, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0}
+    char Values={ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}
 
     data Values_size#1
 
@@ -569,29 +569,29 @@ function Huffman_DC_Luminance(sd action,sd ptr_values)
 endfunction
 
 function Huffman_AC_Luminance(sd action,sd ptr_values)
-    chars HT=Y_table|AC_table
-    chars NRCodes={0, 0, 2, 1, 3, 3, 2, 4, 3, 5, 5, 4, 4, 0, 0, 1, 0x7d}
-    chars Values={0x01, 0x02, 0x03, 0x00, 0x04, 0x11, 0x05, 0x12}
-    chars     *2={0x21, 0x31, 0x41, 0x06, 0x13, 0x51, 0x61, 0x07}
-    chars     *3={0x22, 0x71, 0x14, 0x32, 0x81, 0x91, 0xa1, 0x08}
-    chars     *4={0x23, 0x42, 0xb1, 0xc1, 0x15, 0x52, 0xd1, 0xf0}
-    chars     *5={0x24, 0x33, 0x62, 0x72, 0x82, 0x09, 0x0a, 0x16}
-    chars     *6={0x17, 0x18, 0x19, 0x1a, 0x25, 0x26, 0x27, 0x28}
-    chars     *7={0x29, 0x2a, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39}
-    chars     *8={0x3a, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49}
-    chars     *9={0x4a, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59}
-    chars    *10={0x5a, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69}
-    chars    *11={0x6a, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78, 0x79}
-    chars    *12={0x7a, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88, 0x89}
-    chars    *13={0x8a, 0x92, 0x93, 0x94, 0x95, 0x96, 0x97, 0x98}
-    chars    *14={0x99, 0x9a, 0xa2, 0xa3, 0xa4, 0xa5, 0xa6, 0xa7}
-    chars    *15={0xa8, 0xa9, 0xaa, 0xb2, 0xb3, 0xb4, 0xb5, 0xb6}
-    chars    *16={0xb7, 0xb8, 0xb9, 0xba, 0xc2, 0xc3, 0xc4, 0xc5}
-    chars    *17={0xc6, 0xc7, 0xc8, 0xc9, 0xca, 0xd2, 0xd3, 0xd4}
-    chars    *18={0xd5, 0xd6, 0xd7, 0xd8, 0xd9, 0xda, 0xe1, 0xe2}
-    chars    *19={0xe3, 0xe4, 0xe5, 0xe6, 0xe7, 0xe8, 0xe9, 0xea}
-    chars    *20={0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8}
-    chars    *21={0xf9, 0xfa}
+    char HT=Y_table|AC_table
+    char NRCodes={0, 0, 2, 1, 3, 3, 2, 4, 3, 5, 5, 4, 4, 0, 0, 1, 0x7d}
+    char Values={0x01, 0x02, 0x03, 0x00, 0x04, 0x11, 0x05, 0x12}
+    char     *2={0x21, 0x31, 0x41, 0x06, 0x13, 0x51, 0x61, 0x07}
+    char     *3={0x22, 0x71, 0x14, 0x32, 0x81, 0x91, 0xa1, 0x08}
+    char     *4={0x23, 0x42, 0xb1, 0xc1, 0x15, 0x52, 0xd1, 0xf0}
+    char     *5={0x24, 0x33, 0x62, 0x72, 0x82, 0x09, 0x0a, 0x16}
+    char     *6={0x17, 0x18, 0x19, 0x1a, 0x25, 0x26, 0x27, 0x28}
+    char     *7={0x29, 0x2a, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39}
+    char     *8={0x3a, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49}
+    char     *9={0x4a, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59}
+    char    *10={0x5a, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69}
+    char    *11={0x6a, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78, 0x79}
+    char    *12={0x7a, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88, 0x89}
+    char    *13={0x8a, 0x92, 0x93, 0x94, 0x95, 0x96, 0x97, 0x98}
+    char    *14={0x99, 0x9a, 0xa2, 0xa3, 0xa4, 0xa5, 0xa6, 0xa7}
+    char    *15={0xa8, 0xa9, 0xaa, 0xb2, 0xb3, 0xb4, 0xb5, 0xb6}
+    char    *16={0xb7, 0xb8, 0xb9, 0xba, 0xc2, 0xc3, 0xc4, 0xc5}
+    char    *17={0xc6, 0xc7, 0xc8, 0xc9, 0xca, 0xd2, 0xd3, 0xd4}
+    char    *18={0xd5, 0xd6, 0xd7, 0xd8, 0xd9, 0xda, 0xe1, 0xe2}
+    char    *19={0xe3, 0xe4, 0xe5, 0xe6, 0xe7, 0xe8, 0xe9, 0xea}
+    char    *20={0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8}
+    char    *21={0xf9, 0xfa}
 
     data Values_size#1
 
@@ -619,9 +619,9 @@ function Huffman_AC_Luminance(sd action,sd ptr_values)
 endfunction
 
 function Huffman_DC_Chromiance(sd action,sd ptr_values)
-    chars HT=Cb_table|DC_table
-    chars NRCodes={0, 0, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0}
-    chars Values={0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}
+    char HT=Cb_table|DC_table
+    char NRCodes={0, 0, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0}
+    char Values={0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}
 
     data Values_size#1
 
@@ -649,29 +649,29 @@ function Huffman_DC_Chromiance(sd action,sd ptr_values)
 endfunction
 
 function Huffman_AC_Chromiance(sd action,sd ptr_values)
-    chars HT=Cb_table|AC_table
-    chars NRCodes={0, 0, 2, 1, 2, 4, 4, 3, 4, 7, 5, 4, 4, 0, 1, 2, 0x77}
-    chars Values={0x00, 0x01, 0x02, 0x03, 0x11, 0x04, 0x05, 0x21}
-    chars     *2={0x31, 0x06, 0x12, 0x41, 0x51, 0x07, 0x61, 0x71}
-    chars     *3={0x13, 0x22, 0x32, 0x81, 0x08, 0x14, 0x42, 0x91}
-    chars     *4={0xa1, 0xb1, 0xc1, 0x09, 0x23, 0x33, 0x52, 0xf0}
-    chars     *5={0x15, 0x62, 0x72, 0xd1, 0x0a, 0x16, 0x24, 0x34}
-    chars     *6={0xe1, 0x25, 0xf1, 0x17, 0x18, 0x19, 0x1a, 0x26}
-    chars     *7={0x27, 0x28, 0x29, 0x2a, 0x35, 0x36, 0x37, 0x38}
-    chars     *8={0x39, 0x3a, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48}
-    chars     *9={0x49, 0x4a, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58}
-    chars    *10={0x59, 0x5a, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68}
-    chars    *11={0x69, 0x6a, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78}
-    chars    *12={0x79, 0x7a, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87}
-    chars    *13={0x88, 0x89, 0x8a, 0x92, 0x93, 0x94, 0x95, 0x96}
-    chars    *14={0x97, 0x98, 0x99, 0x9a, 0xa2, 0xa3, 0xa4, 0xa5}
-    chars    *15={0xa6, 0xa7, 0xa8, 0xa9, 0xaa, 0xb2, 0xb3, 0xb4}
-    chars    *16={0xb5, 0xb6, 0xb7, 0xb8, 0xb9, 0xba, 0xc2, 0xc3}
-    chars    *17={0xc4, 0xc5, 0xc6, 0xc7, 0xc8, 0xc9, 0xca, 0xd2}
-    chars    *18={0xd3, 0xd4, 0xd5, 0xd6, 0xd7, 0xd8, 0xd9, 0xda}
-    chars    *19={0xe2, 0xe3, 0xe4, 0xe5, 0xe6, 0xe7, 0xe8, 0xe9}
-    chars    *20={0xea, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8}
-    chars    *21={0xf9, 0xfa}
+    char HT=Cb_table|AC_table
+    char NRCodes={0, 0, 2, 1, 2, 4, 4, 3, 4, 7, 5, 4, 4, 0, 1, 2, 0x77}
+    char Values={0x00, 0x01, 0x02, 0x03, 0x11, 0x04, 0x05, 0x21}
+    char     *2={0x31, 0x06, 0x12, 0x41, 0x51, 0x07, 0x61, 0x71}
+    char     *3={0x13, 0x22, 0x32, 0x81, 0x08, 0x14, 0x42, 0x91}
+    char     *4={0xa1, 0xb1, 0xc1, 0x09, 0x23, 0x33, 0x52, 0xf0}
+    char     *5={0x15, 0x62, 0x72, 0xd1, 0x0a, 0x16, 0x24, 0x34}
+    char     *6={0xe1, 0x25, 0xf1, 0x17, 0x18, 0x19, 0x1a, 0x26}
+    char     *7={0x27, 0x28, 0x29, 0x2a, 0x35, 0x36, 0x37, 0x38}
+    char     *8={0x39, 0x3a, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48}
+    char     *9={0x49, 0x4a, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58}
+    char    *10={0x59, 0x5a, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68}
+    char    *11={0x69, 0x6a, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78}
+    char    *12={0x79, 0x7a, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87}
+    char    *13={0x88, 0x89, 0x8a, 0x92, 0x93, 0x94, 0x95, 0x96}
+    char    *14={0x97, 0x98, 0x99, 0x9a, 0xa2, 0xa3, 0xa4, 0xa5}
+    char    *15={0xa6, 0xa7, 0xa8, 0xa9, 0xaa, 0xb2, 0xb3, 0xb4}
+    char    *16={0xb5, 0xb6, 0xb7, 0xb8, 0xb9, 0xba, 0xc2, 0xc3}
+    char    *17={0xc4, 0xc5, 0xc6, 0xc7, 0xc8, 0xc9, 0xca, 0xd2}
+    char    *18={0xd3, 0xd4, 0xd5, 0xd6, 0xd7, 0xd8, 0xd9, 0xda}
+    char    *19={0xe2, 0xe3, 0xe4, 0xe5, 0xe6, 0xe7, 0xe8, 0xe9}
+    char    *20={0xea, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8}
+    char    *21={0xf9, 0xfa}
 
     data Values_size#1
 
@@ -721,22 +721,22 @@ endfunction
 
 #bool
 function write_jpeg_sos()
-    chars marker={0xFF,0xDA}
-    chars *length={0,12}
+    char marker={0xFF,0xDA}
+    char *length={0,12}
     #nrofcomponents Should be 3: truecolor JPG
-    chars *=3
+    char *=3
 
-    chars *IdY=1
+    char *IdY=1
     #HT, bits 0..3: AC table (0..3)
     #    bits 4..7: DC table (0..3)
-    chars *HTY=0
-    chars *IdCb=2
-    chars *HTCb=0x11
-    chars *IdCr=3
-    chars *HTCr=0x11
-    chars *Ss=0
-    chars *Se=0x3F
-    chars *Bf=0
+    char *HTY=0
+    char *IdCb=2
+    char *HTCb=0x11
+    char *IdCr=3
+    char *HTCr=0x11
+    char *Ss=0
+    char *Se=0x3F
+    char *Bf=0
 
     data size#1
     const _sos^marker
@@ -963,15 +963,15 @@ function jpeg_FDCT_Quantization_Tables(sd action,sd p_CbCr)
         data CosineScaleFactor_data#8*2
         sd CosineScaleFactor^CosineScaleFactor_data
 
-        chars CosineScaleFactor_coef1="1.0"
-        chars *CosineScaleFactor_coef2="1.387039845"
-        chars *CosineScaleFactor_coef3="1.306562965"
-        chars *CosineScaleFactor_coef4="1.175875602"
-        chars *CosineScaleFactor_coef5="1.0"
-        chars *CosineScaleFactor_coef6="0.785694958"
-        chars *CosineScaleFactor_coef7="0.541196100"
-        chars *CosineScaleFactor_coef8="0.275899379"
-        chars *=0
+        char CosineScaleFactor_coef1="1.0"
+        char *CosineScaleFactor_coef2="1.387039845"
+        char *CosineScaleFactor_coef3="1.306562965"
+        char *CosineScaleFactor_coef4="1.175875602"
+        char *CosineScaleFactor_coef5="1.0"
+        char *CosineScaleFactor_coef6="0.785694958"
+        char *CosineScaleFactor_coef7="0.541196100"
+        char *CosineScaleFactor_coef8="0.275899379"
+        char *=0
 
         ss CosineScaleFactor_coef^CosineScaleFactor_coef1
 
@@ -1111,7 +1111,7 @@ function jpeg_FDCT_Quantization_And_ZigZag(sd action,ss data8x8,sd out_DCT_Quant
     sd cursor
     sd value
     #convert the sbyte table to float
-    chars temp_data#64*4
+    char temp_data#64*4
     sd temp^temp_data
     sd i=0
     set cursor temp
@@ -1503,15 +1503,15 @@ function jpeg_encode_Huffman(sd action,sd DCT_tab,sd lum_or_crom,sd prev_DC)
         sd p_Standard_AC_Chromiance_Val^Standard_AC_Chromiance_Val
         setcall Standard_AC_Chromiance_Nr Huffman_AC_Chromiance((Huffman_get),p_Standard_AC_Chromiance_Val)
 
-        chars Y_DC_Huffman_Table_nr#12
-        chars Y_DC_Huffman_Table_value#12*2
-        chars Y_AC_Huffman_Table_nr#256
-        chars Y_AC_Huffman_Table_value#256*2
+        char Y_DC_Huffman_Table_nr#12
+        char Y_DC_Huffman_Table_value#12*2
+        char Y_AC_Huffman_Table_nr#256
+        char Y_AC_Huffman_Table_value#256*2
 
-        chars CbCr_DC_Huffman_Table_nr#12
-        chars CbCr_DC_Huffman_Table_value#12*2
-        chars CbCr_AC_Huffman_Table_nr#256
-        chars CbCr_AC_Huffman_Table_value#256*2
+        char CbCr_DC_Huffman_Table_nr#12
+        char CbCr_DC_Huffman_Table_value#12*2
+        char CbCr_AC_Huffman_Table_nr#256
+        char CbCr_AC_Huffman_Table_value#256*2
 
         data p_Lum_DC_nr^Y_DC_Huffman_Table_nr
         data p_Lum_DC_val^Y_DC_Huffman_Table_value
@@ -1712,11 +1712,11 @@ function jpeg_bytepos(sd action,sd value)
 endfunction
 
 function jpeg_write_data(sd pos,sd data)
-    #words style from chars
-    chars m_data={1,   0,         2,   0,         4,    0,          8,    0}
-    chars      *={16,  0,         32,  0,         64,   0,          128,  0}
-    chars      *={256, 256/0x100, 512, 512/0x100, 1024, 1024/0x100, 2048, 2048/0x100}
-    chars      *={4096,4096/0x100,8192,8192/0x100,16384,16384/0x100,32768,32768/0x100}
+    #words style from char
+    char m_data={1,   0,         2,   0,         4,    0,          8,    0}
+    char      *={16,  0,         32,  0,         64,   0,          128,  0}
+    char      *={256, 256/0x100, 512, 512/0x100, 1024, 1024/0x100, 2048, 2048/0x100}
+    char      *={4096,4096/0x100,8192,8192/0x100,16384,16384/0x100,32768,32768/0x100}
     str mask^m_data
 
     dec pos

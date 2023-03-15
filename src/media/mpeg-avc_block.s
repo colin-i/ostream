@@ -110,9 +110,9 @@ endfunction
 import "avc_width" avc_width
 
 function avc_enc_16x16(sd Y,sd residual_ac,sd residual_luma)
-    chars dct_data#16*4*4*WORD
+    char dct_data#16*4*4*WORD
     data d_dct^dct_data
-    chars dct_luma_data#4*4*WORD
+    char dct_luma_data#4*4*WORD
     data d_dct_luma^dct_luma_data
     sd stride
     setcall stride avc_width((value_get))
@@ -178,8 +178,8 @@ function avc_dct_sub(sd p_dct,ss plane,sd coef,sd stride)
         call avc_dct_sub_row(p_dct,plane,coef,stride)
     else
         sd value
-        chars d_data#4*4*WORD
-        chars tmp_data#4*4*WORD
+        char d_data#4*4*WORD
+        char tmp_data#4*4*WORD
         data d^d_data
         data tmp^tmp_data
         import "sar32" sar
@@ -776,9 +776,9 @@ function avc_enc_8x8_chroma(sd U,sd V,sd residual_ac_u,sd residual_ac_v,sd chrom
     call avc_enc_chroma_block(V,residual_ac_v,chroma_dc_v)
 endfunction
 function avc_enc_chroma_block(sd plane,sd residual_ac,sd residual_dc)
-    chars dct_data#4*4*4*WORD
+    char dct_data#4*4*4*WORD
     data d_dct^dct_data
-    chars dct2x2_data#2*2*WORD
+    char dct2x2_data#2*2*WORD
     data dct2x2^dct2x2_data
     sd stride
     setcall stride avc_width((value_get))
@@ -845,7 +845,7 @@ function avc_dct2x2dc(sd dct)
     call array_set_word_bi(dct,1,2,1,value)
 endfunction
 function avc_dct4x4dc(sd dct)
-    chars tmp_data#4*4*WORD
+    char tmp_data#4*4*WORD
     data tmp^tmp_data
     sd s01
     sd s23
@@ -985,7 +985,7 @@ function avc_dequant(sd dct)
 endfunction
 
 function avc_idct_dc(sd dct)
-    chars tmp_data#4*4*WORD
+    char tmp_data#4*4*WORD
     data tmp^tmp_data
     sd s01
     sd s23
@@ -1119,9 +1119,9 @@ function avc_dct_add(sd p_dct,ss plane,sd coef,sd stride,sd p_index)
         sd nr
         set nr numbers#
         if nr<0
-            chars d_data#4*4*WORD
+            char d_data#4*4*WORD
             data d^d_data
-            chars tmp_data#4*4*WORD
+            char tmp_data#4*4*WORD
             data tmp^tmp_data
             sd cursor
             sd s02

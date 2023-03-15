@@ -27,10 +27,10 @@ function stage_progress_dialog_inc(sd frame)
     mult value frame
     import "stage_get_frames" stage_get_frames
     divcall value stage_get_frames()
-	chars s={_0,Period}
-	chars a#1
-	chars b#1
-	chars *=0
+	char s={_0,Period}
+	char a#1
+	char b#1
+	char *=0
 	set b value
 	rem b 10
 	add b (_0)
@@ -257,7 +257,7 @@ function stage_file_need_fn(sd appsrc)
         setcall buffer gst_app_buffer_new(mem,framesize,free_fn,mem)
 
         ss capsformat="video/x-raw-rgb,width=%u,height=%u,bpp=%u,endianness=4321,red_mask=0xFF000000,green_mask=0xFF0000,blue_mask=0xFF00,framerate=%u/1"
-        chars capsdata#200
+        char capsdata#200
         str gstcaps^capsdata
         sd bpp=stage_bpp
         sd fps

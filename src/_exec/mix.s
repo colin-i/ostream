@@ -63,7 +63,7 @@ function mix_timeout(sd *data)
 	setcall text gtk_entry_get_text(widget)
 	sd pos
 	sd ptr_pos^pos
-	chars onedot={Period,0}
+	char onedot={Period,0}
 	import "slen" slen
 	setcall pos slen(text)
 	if pos==3
@@ -203,7 +203,7 @@ function mix_launch()
     import "save_get_sec_format" save_get_sec_format
     import "save_get_audio_format" save_get_audio_format
 
-    chars audio_vars_data#40
+    char audio_vars_data#40
 
     #let first space otherelse will be pipe start unable
     ss audiogetformat=" uridecodebin uri=\"%s\"%s"

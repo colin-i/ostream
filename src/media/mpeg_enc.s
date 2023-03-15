@@ -5,8 +5,8 @@ include "../_include/include.h"
 
 #bool
 function mpeg_frame_block(sd max_y,sd max_x,sd type)
-    chars dct_codes#6*64*int16
-    chars qcoeff#6*64*int16
+    char dct_codes#6*64*int16
+    char qcoeff#6*64*int16
 
     data p_dct_codes^dct_codes
     data p_qcoeff^qcoeff

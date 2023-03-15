@@ -965,7 +965,7 @@ endfunction
 
 ##################misc funcs
 function log2bin(sd value)
-    chars log2={0,1,2,2,3,3,3,3,4,4,4,4,4,4,4,4}
+    char log2={0,1,2,2,3,3,3,3,4,4,4,4,4,4,4,4}
     sd n=0
     sd x
     set x value
@@ -1028,7 +1028,7 @@ function mpeg_vol_header()
     if bool!=1
         return 0
     endif
-    chars vol_profile=Profile_Unrestricted
+    char vol_profile=Profile_Unrestricted
     setcall bool mpeg_file_mem_append(vol_profile,8)
     if bool!=1
         return 0
@@ -1282,7 +1282,7 @@ function mpeg_vol_header()
             return 0
         endif
         #if max_bframes > 0,ARG_MAXBFRAMES=2
-        chars p="p"
+        char p="p"
         set flags global_flags
         and flags (XVID_GLOBAL_PACKED)
         if flags!=0

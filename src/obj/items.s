@@ -186,7 +186,7 @@ function editfieldEnter(data container,data length,data forward)
     data GtkWidget#1
     setcall GtkWidget editfield(container,length)
 
-    chars key="key-press-event"
+    char key="key-press-event"
     str keypress^key
     data enter^recoverEnter
     data null=NULL
@@ -209,7 +209,7 @@ endfunction
 function printer(ss text)
     importx "_printf" printf
     call printf(text)
-    chars nl={0xa,0}
+    char nl={0xa,0}
     str newline^nl
     call printf(newline)
 endfunction
@@ -306,7 +306,7 @@ endfunction
 
 #field
 function edit_info_prepare_blue(ss text)
-    chars infocolors={0x00,0x00,0xff}
+    char infocolors={0x00,0x00,0xff}
     data infoptrcolors^infocolors
     sd widget
     setcall widget edit_info_prepare_texter(infoptrcolors,text,(NULL))
@@ -315,7 +315,7 @@ endfunction
 
 #field
 function edit_info_prepare_texter_green(ss text,sd p_texter)
-    chars infocolors={0x00,0xff,0x00}
+    char infocolors={0x00,0xff,0x00}
     data infoptrcolors^infocolors
     sd widget
     setcall widget edit_info_prepare_texter(infoptrcolors,text,p_texter)
@@ -331,7 +331,7 @@ function editinfofield_green(sd box)
 endfunction
 
 function editfield_with_int(sd int)
-    chars spc#sign_int_null
+    char spc#sign_int_null
     str intstring^spc
     str frm="%i"
     importx "_sprintf" sprintf

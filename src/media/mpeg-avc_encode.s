@@ -114,7 +114,7 @@ function avc_ini_headers()
     sd ver_len
     #
     #importx "_sprintf" sprintf
-    #chars version_data#256
+    #char version_data#256
     #str version^version_data
     #str format="x264 - core %d%s - H.264/MPEG-4 AVC codec - Copyleft 2005 - http://www.videolan.org/x264.html"
     #sd X264_BUILD=34
@@ -128,8 +128,8 @@ function avc_ini_headers()
 
     call avc_bs_write_byte(length)
 
-    chars id_data={0xdc,0x45,0xe9,0xbd,0xe6,0xd9,0x48,0xb7}
-    chars *      ={0x96,0x2c,0xd8,0x20,0xd9,0x23,0xee,0xef}
+    char id_data={0xdc,0x45,0xe9,0xbd,0xe6,0xd9,0x48,0xb7}
+    char *      ={0x96,0x2c,0xd8,0x20,0xd9,0x23,0xee,0xef}
     data id^id_data
 
     call avc_bs_write_data(id,16)

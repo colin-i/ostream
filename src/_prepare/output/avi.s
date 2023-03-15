@@ -584,9 +584,9 @@ function avi_streamformat(sd file)
     data biSize=40
     data biWidth#1
     data biHeight#1
-    chars *biPlanes={1,0}
-    chars biBitCount={24,0}
-    chars biCompression#4
+    char *biPlanes={1,0}
+    char biBitCount={24,0}
+    char biCompression#4
     data biSizeImage#1
     data *biXPelsPerMeter=0
     data *biYPelsPerMeter=0
@@ -657,11 +657,11 @@ endfunction
 
 #bool
 function avi_streamheader_audio(sd file)
-    chars fccType={a,u,d,s}
+    char fccType={a,u,d,s}
     data *fccHandler=0
     data *dwFlags=0
-    chars *wPriority={0,0}
-    chars *wLanguage={0,0}
+    char *wPriority={0,0}
+    char *wLanguage={0,0}
     data *dwInitialFrames=0
     #blockalign
     data dwScale#1
@@ -723,15 +723,15 @@ endfunction
 
 function avi_streamformat_audio(sd file)
     #WAVEFORMATEX
-    chars wFormatTag={WAVE_FORMAT_PCM,0}
-    chars nChannels={1,0}
+    char wFormatTag={WAVE_FORMAT_PCM,0}
+    char nChannels={1,0}
     data nSamplesPerSec#1
     data nAvgBytesPerSec#1
-    chars nBlockAlign={2,0}
-    chars wBitsPerSample={16,0}
+    char nBlockAlign={2,0}
+    char wBitsPerSample={16,0}
     #EX
     #no extra data, simple PCM-format used
-    chars *cbSize={0,0}
+    char *cbSize={0,0}
 
     data WAVEFORMATEX^wFormatTag
 
@@ -770,7 +770,7 @@ function avi_odml(sd file)
         return 0
     endif
 
-    chars dmlh={d,m,l,h}
+    char dmlh={d,m,l,h}
     data *size=4
     data value#1
 

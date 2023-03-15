@@ -303,10 +303,10 @@ endfunction
 #bool
 function mp4_ftyp(sd file)
 const ftyp_start=!
-    chars GF_ISOM_BRAND_ISOM={i,s,o,m}
-    chars *minorVersion={0,0,0,1}
-    chars *brand={i,s,o,m}
-    chars *brand_1={a,v,c,_1}
+    char GF_ISOM_BRAND_ISOM={i,s,o,m}
+    char *minorVersion={0,0,0,1}
+    char *brand={i,s,o,m}
+    char *brand_1={a,v,c,_1}
 const ftyp_size=!-ftyp_start
     data ftyp^GF_ISOM_BRAND_ISOM
     data ftyp_size=ftyp_size
@@ -367,15 +367,15 @@ import "file_get_dword" file_get_dword
 function mp4_mvhd(sd file)
 const mvhd_start=!
     #movie header
-    chars version_u8={0}
-    chars *flags_u24={0,0,0}
+    char version_u8={0}
+    char *flags_u24={0,0,0}
     data creationTime#1
     data *modificationTime#1
     data timeScale#1
     data duration#1
     data preferredRate#1
-    chars preferredVolume#2
-    chars *reserved={0,0,0,0,0,0,0,0,0,0}
+    char preferredVolume#2
+    char *reserved={0,0,0,0,0,0,0,0,0,0}
     data matrixA#1
     data *matrixB=0
     data *matrixU=0
@@ -455,18 +455,18 @@ function mp4_iods(sd file)
     const iod_inlineProfileFlag=0
     const iod_reserved=0xf
 
-    chars version=0
-    chars *flags={0,0,0}
+    char version=0
+    char *flags={0,0,0}
 
-    chars *tag=GF_ODF_ISOM_IOD_TAG
-    chars *tag_size=7
-    chars iod_attr_data#2
-    chars *OD_profileAndLevel=0xff
-    chars *scene_profileAndLevel=0xff
-    chars audio_profileAndLevel#1
+    char *tag=GF_ODF_ISOM_IOD_TAG
+    char *tag_size=7
+    char iod_attr_data#2
+    char *OD_profileAndLevel=0xff
+    char *scene_profileAndLevel=0xff
+    char audio_profileAndLevel#1
     #AVC/H264 Profile
-    chars *visual_profileAndLevel=0x15
-    chars *graphics_profileAndLevel=0xff
+    char *visual_profileAndLevel=0x15
+    char *graphics_profileAndLevel=0xff
 
     data iod^version
     data _iod^iod
@@ -534,27 +534,27 @@ endfunction
 
 #bool
 function mp4_tkhd(sd file)
-    chars version_u8={0}
-    chars *flags_u24={0,0,enable_flag}
+    char version_u8={0}
+    char *flags_u24={0,0,enable_flag}
     data creationTime#1
     data *modificationTime#1
-    chars *trackID={0,0,0,videoId}
+    char *trackID={0,0,0,videoId}
     data *reserved1=0
     data duration#1
     data *reserved2={0,0}
-    chars *layer={0,0}
-    chars *alternate_group={0,0}
-    chars *volume={0,0}
-    chars *reserved3={0,0}
-    chars *matrix0={0,1,0,0}
+    char *layer={0,0}
+    char *alternate_group={0,0}
+    char *volume={0,0}
+    char *reserved3={0,0}
+    char *matrix0={0,1,0,0}
     data *matrix1=0
     data *matrix2=0
     data *matrix3=0
-    chars *matrix4={0,1,0,0}
+    char *matrix4={0,1,0,0}
     data *matrix5=0
     data *matrix6=0
     data *matrix7=0
-    chars *matrix8={0x40,0,0,0}
+    char *matrix8={0x40,0,0,0}
     data width#1
     data height#1
 
@@ -615,14 +615,14 @@ endfunction
 
 #bool
 function mp4_mdhd(sd file)
-    chars version_u8={0}
-    chars *flags_u24={0,0,0}
+    char version_u8={0}
+    char *flags_u24={0,0,0}
     data creationTime#1
     data *modificationTime#1
     data timeScale#1
     data duration#1
-    chars language#2
-    chars *reserved={0,0}
+    char language#2
+    char *reserved={0,0}
 
     data mdhd^version_u8
     data _mdhd^mdhd
@@ -687,14 +687,14 @@ endfunction
 #bool
 function mp4_hdlr(sd file)
 const hdlr_start=!
-    chars version_u8={0}
-    chars *flags_u24={0,0,0}
+    char version_u8={0}
+    char *flags_u24={0,0,0}
     data *reserved1=0
-    chars *handlerType={v,i,d,e}
-    chars *reserved2={0,0,0,0,0,0,0,0,0,0,0,0}
+    char *handlerType={v,i,d,e}
+    char *reserved2={0,0,0,0,0,0,0,0,0,0,0,0}
     #is null terminated
-    #chars *nameUTF8="GPAC ISO Video Handler"
-    chars *nameUTF8="OApplications Video"
+    #char *nameUTF8="GPAC ISO Video Handler"
+    char *nameUTF8="OApplications Video"
 const hdlr_size=!-hdlr_start
     data hdlr^version_u8
     data hdlr_size=hdlr_size
@@ -736,9 +736,9 @@ endfunction
 
 #bool
 function mp4_vmhd(sd file)
-    chars version_u8={0}
-    chars *flags_u24={0,0,enable_flag}
-    chars *reserved={0,0,0,0,0,0,0,0}
+    char version_u8={0}
+    char *flags_u24={0,0,enable_flag}
+    char *reserved={0,0,0,0,0,0,0,0}
 
     data vmhd^version_u8
     data _vmhd^vmhd
@@ -777,9 +777,9 @@ endfunction
 
 #bool
 function mp4_dref(sd file)
-    chars version_u8={0}
-    chars *flags_u24={0,0,0}
-    chars *count={0,0,0,1}
+    char version_u8={0}
+    char *flags_u24={0,0,0}
+    char *count={0,0,0,1}
 
     data dref^version_u8
     data _dref^dref
@@ -806,8 +806,8 @@ endfunction
 
 #bool
 function mp4_url(sd file)
-    chars version_u8={0}
-    chars *flags_u24={0,0,enable_flag}
+    char version_u8={0}
+    char *flags_u24={0,0,enable_flag}
 
     data url^version_u8
     data _url^url
@@ -874,9 +874,9 @@ endfunction
 #bool
 function mp4_stsd(sd file)
 const stsd_start=!
-    chars version_u8={0}
-    chars *flags_u24={0,0,0}
-    chars *entryCount={0,0,0,1}
+    char version_u8={0}
+    char *flags_u24={0,0,0}
+    char *entryCount={0,0,0,1}
 const stsd_size=!-stsd_start
     data stsd^version_u8
     data stsd_size=stsd_size
@@ -900,22 +900,22 @@ endfunction
 #bool
 function mp4_avc1(sd file)
 const avc1_start=!
-    chars reserved={0,0,0,0,0,0}
-    chars *dataReferenceIndex={0,videoId}
-    chars *version={0,0}
-    chars *revision={0,0}
+    char reserved={0,0,0,0,0,0}
+    char *dataReferenceIndex={0,videoId}
+    char *version={0,0}
+    char *revision={0,0}
     data *vendor=0
     data *temporal_quality=0
     data *spacial_quality=0
-    chars Width#2
-    chars Height#2
-    chars *horiz_res={0,0x48,0,0}
-    chars *vert_res={0,0x48,0,0}
+    char Width#2
+    char Height#2
+    char *horiz_res={0,0x48,0,0}
+    char *vert_res={0,0x48,0,0}
     data *entry_data_size=0
-    chars *frames_per_sample={0,1}
-    chars *compressor_name={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
-    chars *bit_depth={0,0x18}
-    chars color_table_index#2
+    char *frames_per_sample={0,1}
+    char *compressor_name={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+    char *bit_depth={0,0x18}
+    char color_table_index#2
 const avc1_size=!-avc1_start
     data avc1^reserved
     data avc1_size=avc1_size
@@ -961,11 +961,11 @@ endfunction
 #bool
 function mp4_avcC(sd file)
 const avcC_start=!
-    chars configurationVersion=1
-    chars AVCProfileIndication#1
-    chars profile_compatibility#1
-    chars AVCLevelIndication#1
-    chars cfg_data#2
+    char configurationVersion=1
+    char AVCProfileIndication#1
+    char profile_compatibility#1
+    char AVCLevelIndication#1
+    char cfg_data#2
 const avcC_size=!-avcC_start
     data avcfg_main^configurationVersion
     data avcfg_main_size=avcC_size
@@ -1017,7 +1017,7 @@ const avcC_size=!-avcC_start
             return 0
         endif
         #
-        chars count=1
+        char count=1
         sd p_count^count
         setcall err file_write(p_count,1,file)
         if err!=(noerror)
@@ -1084,9 +1084,9 @@ import "file_seek_cursor_get_dword_reverse" file_seek_cursor_get_dword_reverse
 #bool
 function mp4_stts(sd file)
 const mp4_stts_start=!
-    chars version_u8={0}
-    chars *flags_u24={0,0,0}
-    chars *list_count={0,0,0,1}
+    char version_u8={0}
+    char *flags_u24={0,0,0}
+    char *list_count={0,0,0,1}
 const mp4_stts_sampleCount_offset=!-mp4_stts_start
     data sampleCount#1
     data sampleDelta#1
@@ -1121,10 +1121,10 @@ endfunction
 #bool
 function mp4_stss(sd file)
 const stss_start=!
-    chars version_u8={0}
-    chars *flags_u24={0,0,0}
-    chars *entryCount={0,0,0,1}
-    chars *sampleNumber={0,0,0,1}
+    char version_u8={0}
+    char *flags_u24={0,0,0}
+    char *entryCount={0,0,0,1}
+    char *sampleNumber={0,0,0,1}
 const stss_size=!-stss_start
     data stss^version_u8
     data stss_size=stss_size
@@ -1140,12 +1140,12 @@ endfunction
 #bool
 function mp4_stsc(sd file)
 const stsc_start=!
-    chars version={0}
-    chars *flags={0,0,0}
-    chars *list_count={0,0,0,1}
-    chars *firstChunk={0,0,0,1}
+    char version={0}
+    char *flags={0,0,0}
+    char *list_count={0,0,0,1}
+    char *firstChunk={0,0,0,1}
     data samplesPerChunk#1
-    chars *sampleDescriptionIndex={0,0,0,1}
+    char *sampleDescriptionIndex={0,0,0,1}
 const stsc_size=!-stsc_start
     data stsc^version
     data stsc_size=stsc_size
@@ -1168,8 +1168,8 @@ endfunction
 #bool
 function mp4_stsz(sd file)
 const stsz_start=!
-    chars version={0}
-    chars *flags={0,0,0}
+    char version={0}
+    char *flags={0,0,0}
     data *sampleSize=0
     data sampleCount#1
 const stsz_size=!-stsz_start
@@ -1214,9 +1214,9 @@ import "mp4_video_offset_get" mp4_video_offset_get
 #bool
 function mp4_stco(sd file)
 const stco_start=!
-    chars version={0}
-    chars *flags={0,0,0}
-    chars *entries={0,0,0,1}
+    char version={0}
+    char *flags={0,0,0}
+    char *entries={0,0,0,1}
 const stco_offset_pos=!-stco_start
     data offset#1
 const stco_size=!-stco_start
@@ -1644,8 +1644,8 @@ function mp4_mdat_sound(sd file)
             sd bytesleft
             setcall bytesleft stage_sound_alloc_getremainingsize()
             const soundbufstart=!
-            chars format="Sound Bytes Left: %u"
-            chars buffer#!-soundbufstart-2+dword_max
+            char format="Sound Bytes Left: %u"
+            char buffer#!-soundbufstart-2+dword_max
             vstr buf^buffer
             call sprintf(buf,#format,bytesleft)
             call dialog_modal_texter_draw(buf)
@@ -1741,27 +1741,27 @@ endfunction
 #bool
 function mp4_soundtkhd(sd file)
 const soundtkhd_start=!
-    chars version_u8={0}
-    chars *flags_u24={0,0,enable_flag}
+    char version_u8={0}
+    char *flags_u24={0,0,enable_flag}
     data creationTime#1
     data *modificationTime#1
-    chars *trackID={0,0,0,soundId}
+    char *trackID={0,0,0,soundId}
     data *reserved1=0
     data duration#1
     data *reserved2={0,0}
-    chars *layer={0,0}
-    chars *alternate_group={0,0}
-    chars *volume={1,0}
-    chars *reserved3={0,0}
-    chars *matrix0={0,1,0,0}
+    char *layer={0,0}
+    char *alternate_group={0,0}
+    char *volume={1,0}
+    char *reserved3={0,0}
+    char *matrix0={0,1,0,0}
     data *matrix1=0
     data *matrix2=0
     data *matrix3=0
-    chars *matrix4={0,1,0,0}
+    char *matrix4={0,1,0,0}
     data *matrix5=0
     data *matrix6=0
     data *matrix7=0
-    chars *matrix8={0x40,0,0,0}
+    char *matrix8={0x40,0,0,0}
     data *width=0
     data *height=0
 const soundtkhd_size=!-soundtkhd_start
@@ -1813,15 +1813,15 @@ endfunction
 #bool
 function mp4_soundmdhd(sd file)
 const soundmdhd_start=!
-    chars version_u8={0}
-    chars *flags_u24={0,0,0}
+    char version_u8={0}
+    char *flags_u24={0,0,0}
     data creationTime#1
     data *modificationTime#1
     data timeScale#1
 const soundmdhd_duration=!-soundmdhd_start
     data duration#1
-    chars language#2
-    chars *reserved={0,0}
+    char language#2
+    char *reserved={0,0}
 const soundmdhd_size=!-soundmdhd_start
     data mdhd^version_u8
     data mdhd_size=soundmdhd_size
@@ -1856,14 +1856,14 @@ endfunction
 #bool
 function mp4_soundhdlr(sd file)
 const soundhdlr_start=!
-    chars version_u8={0}
-    chars *flags_u24={0,0,0}
+    char version_u8={0}
+    char *flags_u24={0,0,0}
     data *reserved1=0
-    chars *handlerType={s,o,u,n}
-    chars *reserved2={0,0,0,0,0,0,0,0,0,0,0,0}
+    char *handlerType={s,o,u,n}
+    char *reserved2={0,0,0,0,0,0,0,0,0,0,0,0}
     #is null terminated
-    #chars *nameUTF8="GPAC ISO Audio Handler"
-    chars *nameUTF8="OApplications Audio"
+    #char *nameUTF8="GPAC ISO Audio Handler"
+    char *nameUTF8="OApplications Audio"
 const soundhdlr_size=!-soundhdlr_start
     data hdlr^version_u8
     data hdlr_size=soundhdlr_size
@@ -1905,8 +1905,8 @@ endfunction
 #bool
 function mp4_smhd(sd file)
 const sound_smhd_start=!
-    chars version=0
-    chars *flags={0,0,0}
+    char version=0
+    char *flags={0,0,0}
     data *reserved=0
 const sound_smhd_size=!-sound_smhd_start
     data smhd^version
@@ -1964,9 +1964,9 @@ endfunction
 #bool
 function mp4_soundstsd(sd file)
 const soundstsd_start=!
-    chars version_u8={0}
-    chars *flags_u24={0,0,0}
-    chars *entryCount={0,0,0,1}
+    char version_u8={0}
+    char *flags_u24={0,0,0}
+    char *entryCount={0,0,0,1}
 const soundstsd_size=!-soundstsd_start
     data stsd^version_u8
     data stsd_size=soundstsd_size
@@ -1990,17 +1990,17 @@ endfunction
 #bool
 function mp4_mp4a(sd file)
 const mp4a_start=!
-    chars reserved={0,0,0,0,0,0}
-    chars *dataReferenceIndex={0,videoId}
-    chars *version={0,0}
-    chars *revision={0,0}
+    char reserved={0,0,0,0,0,0}
+    char *dataReferenceIndex={0,videoId}
+    char *version={0,0}
+    char *revision={0,0}
     data *vendor=0
-    chars *channel_count={0,mp3_channels}
-    chars *bitspersample={0,mp3_bitspersample}
-    chars *compression_id={0,0}
-    chars *packet_size={0,0}
-    chars samplerate_hi#2
-    chars *samplerate_lo={0,0}
+    char *channel_count={0,mp3_channels}
+    char *bitspersample={0,mp3_bitspersample}
+    char *compression_id={0,0}
+    char *packet_size={0,0}
+    char samplerate_hi#2
+    char *samplerate_lo={0,0}
 const mp4a_size=!-mp4a_start
     data mp4a^reserved
     data mp4a_size=mp4a_size
@@ -2036,19 +2036,19 @@ endfunction
 #bool
 function mp4_esds(sd file)
 const esds_start=!
-    chars version=0
-    chars *flags={0,0,0}
-    chars *GF_ODF_ESD_TAG=3
-    chars esd_size#1
+    char version=0
+    char *flags={0,0,0}
+    char *GF_ODF_ESD_TAG=3
+    char esd_size#1
 
-    chars ESID={0,0}
+    char ESID={0,0}
     #lengths: dependsOnESID 1,URLString 1,OCRESID 1,streamPriority 5
-    chars *info=0
+    char *info=0
 
-    chars *GF_ODF_DCD_TAG=4
-    chars dcd_size#1
+    char *GF_ODF_DCD_TAG=4
+    char dcd_size#1
         const objectTypeIndication_MPEG1Audio=0x6b
-    chars objectTypeIndication=objectTypeIndication_MPEG1Audio
+    char objectTypeIndication=objectTypeIndication_MPEG1Audio
         const GF_STREAM_AUDIO=5
     const streamType_value=GF_STREAM_AUDIO
     const upstream_value=0
@@ -2058,16 +2058,16 @@ const esds_start=!
         const upstream_pack=upstream_value*reserved_shift
         const streamType_shift_pack=reserved_shift*upstream_shift
         const streamType_pack=streamType_value*streamType_shift_pack
-    chars *info=streamType_pack|upstream_pack|reserved_value
+    char *info=streamType_pack|upstream_pack|reserved_value
 const sound_bufferSizeDB_offset=!-esds_start
-    chars bufferSizeDB#3
+    char bufferSizeDB#3
     data maxBitrate#1
     data *avgBitrate#1
 
-    chars GF_ODF_SLC_TAG=6
-    chars slc_size#1
+    char GF_ODF_SLC_TAG=6
+    char slc_size#1
         const SLPredef_MP4=2
-    chars predefined=SLPredef_MP4
+    char predefined=SLPredef_MP4
 const esds_size=!-esds_start
     data esds^version
     data esds_size=esds_size
@@ -2142,9 +2142,9 @@ endfunction
 #bool
 function mp4_soundstts(sd file)
 const soundstts_start=!
-    chars version_u8={0}
-    chars *flags_u24={0,0,0}
-    chars *list_count={0,0,0,1}
+    char version_u8={0}
+    char *flags_u24={0,0,0}
+    char *list_count={0,0,0,1}
     data sampleCount#1
     data sampleDelta#1
 const soundstts_size=!-soundstts_start
@@ -2171,12 +2171,12 @@ endfunction
 #bool
 function mp4_soundstsc(sd file)
 const soundstsc_start=!
-    chars version={0}
-    chars *flags={0,0,0}
-    chars *list_count={0,0,0,1}
-    chars *firstChunk={0,0,0,1}
+    char version={0}
+    char *flags={0,0,0}
+    char *list_count={0,0,0,1}
+    char *firstChunk={0,0,0,1}
     data samplesPerChunk#1
-    chars *sampleDescriptionIndex={0,0,0,1}
+    char *sampleDescriptionIndex={0,0,0,1}
 const soundstsc_size=!-soundstsc_start
     data stsc^version
     data stsc_size=soundstsc_size
@@ -2200,8 +2200,8 @@ endfunction
 #bool
 function mp4_soundstsz(sd file)
 const soundstsz_start=!
-    chars version={0}
-    chars *flags={0,0,0}
+    char version={0}
+    char *flags={0,0,0}
     data sampleSize#1
     data sampleCount#1
 const soundstsz_size=!-soundstsz_start
@@ -2240,9 +2240,9 @@ endfunction
 #bool
 function mp4_soundstco(sd file)
 const soundstco_start=!
-    chars version={0}
-    chars *flags={0,0,0}
-    chars *entries={0,0,0,1}
+    char version={0}
+    char *flags={0,0,0}
+    char *entries={0,0,0,1}
 const soundstco_offset_pos=!-soundstco_start
     data offset#1
 const soundstco_size=!-soundstco_start
