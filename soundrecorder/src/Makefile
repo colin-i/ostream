@@ -1,5 +1,8 @@
 
+ifndef OCOMP
 OCOMP=o
+endif
+
 syms=-s
 OFLAGS = inplace_reloc 0
 

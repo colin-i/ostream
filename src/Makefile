@@ -1,6 +1,9 @@
 
-platform = lin
+ifndef OCOMP
 OCOMP=o
+endif
+
+platform = lin
 syms=-s
 
 ifeq (${platform},win)
