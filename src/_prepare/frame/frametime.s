@@ -433,7 +433,7 @@ function stage_frame_equalize()
 	#
 	sub totalframes selpos
 	div total totalframes
-	dec max #maybe last is with rem
+	dec max ##maybe last is with rem
 	while selpos!=max
 		call set_frame_length_and_redraw(selpos,total)
 		inc selpos
