@@ -3,8 +3,11 @@ ifndef OCOMP
 OCOMP=o
 endif
 
+ifndef syms
+syms="-O3 -s"
+endif
+
 platform = lin
-syms=-s
 
 ifeq (${platform},win)
 	OFLAGS = inplace_reloc 0 include_sec 1 ${OFLAGSEXTRA}
