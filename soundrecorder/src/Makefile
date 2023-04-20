@@ -3,7 +3,10 @@ ifndef OCOMP
 OCOMP=o
 endif
 
-syms=-O1 -s
+ifndef linkerflags
+linkerflags=-O1 -s
+endif
+
 OFLAGS = inplace_reloc 0
 
 projname=soundrecorder
@@ -20,7 +23,7 @@ all: ${wprojname}
 ${wprojname}: ${objname}
 	ounused ${logname}
 	@echo
-	i686-w64-mingw32-ld ${syms} ${objname} -o ${wprojname} -entry record \
+	i686-w64-mingw32-ld ${linkerflags} ${objname} -o ${wprojname} -entry record \
 		 -lmsvcrt -lkernel32 -lwinmm -luser32
 
 clean:

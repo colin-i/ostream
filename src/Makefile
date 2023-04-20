@@ -7,8 +7,8 @@ ifndef platform
 platform=lin
 endif
 
-ifndef syms
-syms=-O1 -s
+ifndef linkerflags
+linkerflags=-O1 -s
 endif
 
 projname=ovideo
@@ -64,7 +64,7 @@ ${lprojname}: ${lshare} ${obs}
 	ounused ${logs}
 	@echo
 	export PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig/:${PKG_CONFIG_PATH}; \
-	$(LD) ${syms} -melf_i386 --dynamic-linker=${dynlink} ${obs} -o ${lprojname} -lc -lm `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lgthread-2.0 -lpthread;
+	$(LD) ${linkerflags} -melf_i386 --dynamic-linker=${dynlink} ${obs} -o ${lprojname} -lc -lm `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lgthread-2.0 -lpthread;
 ${lshare}:
 	echo char prestart=0x2e\;char simplestart=\"${sharefolderpackage}\"\;return \#simplestart > ${lshare}; \
 
@@ -76,7 +76,7 @@ all: ${wprojname}
 ${wprojname}: ${obs}
 	ounused ${logs}
 	@echo
-	i686-w64-mingw32-ld --large-address-aware ${syms} ${obs} -o ${wprojname} -entry _start --start-group \
+	i686-w64-mingw32-ld --large-address-aware ${linkerflags} ${obs} -o ${wprojname} -entry _start --start-group \
 	`dpkg -L mingw-w64-i686-dev | grep '\.a' | sed 's/..$$//' | grep -o '[^\/]*$$' | sed 's/^lib/-l/' | xargs echo` \
 	--end-group -L`echo ~`/.wine/drive_c/gstreamer-sdk/0.10/x86/lib/ \
 	-lgtk-win32-2.0 -lgdk-win32-2.0 -lgdk_pixbuf-2.0 -lglib-2.0 -lgobject-2.0 -lgio-2.0 -lgthread-2.0 \
@@ -108,7 +108,7 @@ endif
 #on win msvcr100 is old and at here is from old java-i586
 linkapp:
 	LD_LIBRARY_PATH=/home/bc/v/ovideo-1/AppDir/usr/lib/i386-linux-gnu:/home/bc/v/ovideo-1/AppDir/lib/i386-linux-gnu \
-		$(LD) ${syms} -melf_i386 --dynamic-linker=${dynlink} ${obs} -o ${lprojname} \
+		$(LD) ${linkerflags} -melf_i386 --dynamic-linker=${dynlink} ${obs} -o ${lprojname} \
 			-L/home/bc/v/ovideo-1/AppDir/usr/lib/i386-linux-gnu \
 			-l:libc.so.6 -l:libm.so.6 -l:libgtk-x11-2.0.so.0 -l:libgdk-x11-2.0.so.0 -l:libpangocairo-1.0.so.0 -l:libatk-1.0.so.0 -l:libcairo.so.2 -l:libgdk_pixbuf-2.0.so.0 -l:libgio-2.0.so.0 -l:libpangoft2-1.0.so.0 -l:libpango-1.0.so.0 -l:libfontconfig.so.1 -l:libfreetype.so.6 -l:libgstpbutils-1.0.so.0 -l:libgstaudio-1.0.so.0 -l:libgstvideo-1.0.so.0 -l:libgstapp-1.0.so.0 -l:libgstbase-1.0.so.0 -l:libgstreamer-1.0.so.0 -l:libgobject-2.0.so.0 -l:libglib-2.0.so.0 -l:libjpeg.so.8 -l:libsoup-2.4.so.1 -l:libasound.so.2 -l:libpthread.so.0 -l:libgthread-2.0.so.0
 
