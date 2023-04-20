@@ -3,7 +3,7 @@ ifndef OCOMP
 OCOMP=o
 endif
 
-syms=-s
+syms="-O3 -s"
 OFLAGS = inplace_reloc 0
 
 projname=soundrecorder
