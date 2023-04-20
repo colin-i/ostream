@@ -8,7 +8,7 @@ platform=lin
 endif
 
 ifndef syms
-syms="-O3 -s"
+syms=-O1 -s
 endif
 
 projname=ovideo
