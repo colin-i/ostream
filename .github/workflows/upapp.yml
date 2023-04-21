@@ -27,9 +27,9 @@ jobs:
       #get appimage artifact
       flow=${{ github.event.inputs.flow }}
       if [ "${flow}" = "" ]; then
-       flow=appimage.yml
+       flow=appimage
       fi
-      id=$(gh run list --workflow=${flow} -b $(git rev-parse --abbrev-ref HEAD) | cut -f7 | head -1)
+      id=$(gh run list --workflow=${flow}.yml -b $(git rev-parse --abbrev-ref HEAD) | cut -f7 | head -1)
       repo_at_gh=`cat debian/control | grep "^Homepage" | grep -o [^/]*$`
       #
       url=`gh api -H "Accept: application/vnd.github.v3+json" /repos/colin-i/${repo_at_gh}/actions/runs/${id}/artifacts | jq ".artifacts[0].archive_download_url"`
