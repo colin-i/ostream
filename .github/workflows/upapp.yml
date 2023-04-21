@@ -1,6 +1,8 @@
 
 on:
  workflow_dispatch:
+   flow:
+    description: "workflow artifact"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -22,7 +24,11 @@ jobs:
       wget https://github.com/colin-i/test/releases/download/1.5/${name} -O 1.txt
       echo "up_url=`cat 1.txt`" >> $GITHUB_ENV
       #get appimage artifact
-      id=$(gh run list --workflow=appimage.yml -b $(git rev-parse --abbrev-ref HEAD) | cut -f7 | head -1)
+      flow=${{ github.event.inputs.flow }}
+      if [ "${flow}" = "" ]; then
+       flow=appimage.yml
+      fi
+      id=$(gh run list --workflow=${flow} -b $(git rev-parse --abbrev-ref HEAD) | cut -f7 | head -1)
       repo_at_gh=`cat debian/control | grep "^Homepage" | grep -o [^/]*$`
       #
       url=`gh api -H "Accept: application/vnd.github.v3+json" /repos/colin-i/${repo_at_gh}/actions/runs/${id}/artifacts | jq ".artifacts[0].archive_download_url"`

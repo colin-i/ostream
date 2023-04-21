@@ -1,0 +1,48 @@
+
+on:
+ workflow_dispatch:
+
+jobs:
+ aiupdatebuild:
+  runs-on: ubuntu-latest
+  steps:
+   - uses: actions/checkout@v3
+   - name: Run a multi-line script
+     run: |
+      name=`cat debian/changelog | head -1 | grep -o ^[^\ ]*`
+      version=`cat debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))"`
+      arh=`cat debian/control | grep ^Architecture | cut -d ' ' -f2`
+      aiarh=amd64
+      ghname=`cat debian/control | grep "^Homepage" | grep -o [^/]*$`
+      runtime=runtime-x86_64
+      #
+      wget -c https://github.com/AppImage/AppImageKit/releases/latest/download/${runtime}
+      chmod a+x ${runtime}
+      #
+      ver=`curl https://api.github.com/repos/colin-i/${ghname}/releases/latest -s | jq .tag_name -r`
+      #
+      wget https://github.com/colin-i/${ghname}/releases/download/${ver}/${name}.${aiarh}.AppImage -O a.AppImage
+      #
+      chmod a+x a.AppImage
+      ./a.AppImage --appimage-extract
+      #
+      wget -q https://raw.githubusercontent.com/colin-i/test/master/lp2.py
+      OUTPUT=$(python3 lp2.py ppa ${name} ${version} ${arh})
+      wget ${OUTPUT}/+files/${name}_${version}_${arh}.deb -O ${name}.deb
+      #
+      #need to keep the launcher
+      mv -i squashfs-root/usr/bin/${name} .
+      dpkg -x ${name}.deb squashfs-root
+      mv squashfs-root/usr/bin/${name} squashfs-root/usr/bin/${ghname}
+      mv ${name} squashfs-root/usr/bin/${name}
+      #
+      mksquashfs squashfs-root ${name}.squashfs -root-owned -noappend
+      cat ${runtime} >> ${name}.AppImage
+      cat ${name}.squashfs >> ${name}.AppImage
+      chmod a+x ${name}.AppImage
+      echo "file=${name}.AppImage" >> $GITHUB_ENV
+   - name: artifact
+     uses: actions/upload-artifact@v3
+     with:
+      name: appimage
+      path: ./${{ env.file }}
