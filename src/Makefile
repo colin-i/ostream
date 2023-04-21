@@ -136,7 +136,8 @@ test:
 
 install-proc:
 	cd ../build; \
-	find ./img -type f -exec install -Dm 664 {} ${sharefolder}/{} \;
+	find ./img -type f ! -name 1616.png -exec install -Dm 664 {} ${sharefolder}/{} \;
+	#is with ! name can try in debian/rules override_dh_auto_clean maybe
 	install -d ${sharefolder}/html
 	cd ../html; \
 	install -Dm 664 html/use.html ${sharefolder}/html/
