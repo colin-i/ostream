@@ -11,6 +11,11 @@ ifndef linkerflags
 linkerflags=-O1 -s
 endif
 
+ifndef prefix
+prefix=/usr
+endif
+#at _dif/share.txt on launchpad prefix is not coming at make, only at make install
+
 projname=ovideo
 cap = _capture/capture
 err = err/err
