@@ -1,6 +1,7 @@
 
 on:
  workflow_dispatch:
+  inputs:
    flow:
     description: "workflow artifact"
 
