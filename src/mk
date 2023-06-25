@@ -7,5 +7,4 @@ fi
 
 make ${a} prefix=/usr LD=/home/bc/Desktop/out/LD-.glibc2.27-x86_64.AppImage items_prefix=`pwd`/
 #2.34-6ubuntu1.6 was ok
-#backportpackage -k D51F0B6365EAB122 -s focal -d focal -u ppa:colin-i/ppa-staging binutils -w .
-#	-u is for uploading (after that it will delete local source, and let some information)
+#backportpackage -s focal -d focal -w . -u ppa:colin-i/ppa-staging -k D51F0B6365EAB122 binutils  #folder will gone, apt source to take it back
