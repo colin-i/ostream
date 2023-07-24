@@ -16,7 +16,6 @@ import "texter" texter
 function movetoScriptfolder(data forward)
 #on lin no, Script is alone in bin folder
 #at this first call img/version and then sys
-	call prog_init()
 	sd f
 	sd err
 	setcall f share_folder(#err,(NULL))
@@ -848,6 +847,9 @@ function home_folder_r(sd p)
 	return (NULL)
 endfunction
 function init_args(sd argc,sv argv)
+	#needed quick at regforkok for fedora
+	call prog_init()
+
 	value shareprefix#1
 	const shareprefix_p^shareprefix
 	if argc<2
@@ -868,6 +870,7 @@ function share_folder(sv p_err,sv prefix)
 		setcall p_err# move_to_folder(a#)
 	else
 		set prefix# a#
+		set p_err# (noerror)
 	endelse
 	return #prestart
 endfunction
@@ -877,6 +880,7 @@ importx "malloc" malloc
 importx "free" free
 importx "strlen" strlen
 importx "sprintf" sprintf
+importx "printf" printf
 
 function prog_init()
 	sv a
@@ -888,15 +892,15 @@ function prog_init()
 	vstr s="malloc error."
 	sd c
 	setcall c malloc((PATH_MAX))
-	if a!=(NULL)
+	if c!=(NULL)
 		set a# c
 		setcall c malloc((PATH_MAX))
-		if b!=(NULL)
+		if c!=(NULL)
 			set b# c
 			return (void)
 		endif
 	endif
-	call texter(s)
+	call printf(s)
 endfunction
 function prog_free()
 	sv a
