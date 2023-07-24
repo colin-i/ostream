@@ -866,10 +866,10 @@ function prog_init()
 	vstr s="malloc error."
 	sd c
 	setcall c malloc((PATH_MAX))
-	if a!=(NULL)
+	if c!=(NULL)
 		set a# c
 		setcall c malloc((PATH_MAX))
-		if b!=(NULL)
+		if c!=(NULL)
 			set b# c
 			return (void)
 		endif
