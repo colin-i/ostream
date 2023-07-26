@@ -1,2 +1,4 @@
 
-./ovideo /home/bc/v/ovideo-1/test
+if [ -z "${1}" ]; then a=/home/bc/v/ovideo-1/test
+else a=${1}; fi
+./ovideo ${a}

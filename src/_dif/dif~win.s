@@ -1068,3 +1068,51 @@ function stage_sound_buffer(sd gstappsink,sd *user_data)
     importx "_gst_mini_object_unref" gst_mini_object_unref
     call gst_mini_object_unref(buffer)
 endfunction
+
+
+Importx "_GetCommandLineW@0" GetCommandName
+Importx "_CommandLineToArgvW@8" CommandLineToArgvW
+importx "_strcmp" strcmp
+
+#cmp
+function init_args()
+	sd command_name
+	#sd commname_size
+	sd argc;sv argv
+
+	sd cmp=-1
+
+	SetCall command_name GetCommandName()
+
+	#this is so bugged but accepted , strlen is ansi, but no wide path in this program, so first XX00h will stop
+	#anyway argv0 can't be '\0'
+	#SetCall commname_size strlen(command_name)
+	#If commname_size!=0
+	setcall argv CommandLineToArgvW(command_name,#argc)
+	if argv!=(NULL)
+		if argc>1
+			incst argv
+			call wide_to_ansi(argv#)
+			setcall cmp strcmp(argv#,"--remove-config")
+		endif
+		call free(argv)
+	endif
+	#EndIf
+	return cmp
+endfunction
+
+function wide_to_ansi(ss in)
+	ss out
+	set out in
+	dec out
+	char n=0;char x#1
+	while 0==0
+		inc out
+		set x in#
+		set out# x
+		if x==n
+			ret
+		endif
+		add in 2
+	endwhile
+endfunction

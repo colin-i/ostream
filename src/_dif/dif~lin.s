@@ -846,6 +846,7 @@ function home_folder_r(sd p)
 	call texter(er)
 	return (NULL)
 endfunction
+importx "strcmp" strcmp
 function init_args(sd argc,sv argv)
 	#needed quick at regforkok for fedora
 	call prog_init()
@@ -854,10 +855,20 @@ function init_args(sd argc,sv argv)
 	const shareprefix_p^shareprefix
 	if argc<2
 		set shareprefix (NULL)
-		return (void)
+		return (FALSE)
 	endif
 	add argv :
+	sd cmp;setcall cmp strcmp(argv#,"--help")
+	if cmp==0
+		call printf("
+ovideo --help              This help
+ovideo --remove-config     Remove configuration files
+ovideo PATH_NAME           PATH_NAME=\"path to share folder\"
+")
+		return (FALSE)
+	endif
 	set shareprefix argv#
+	return (TRUE)
 endfunction
 #string
 function share_folder(sv p_err,sv prefix)
