@@ -1072,7 +1072,6 @@ endfunction
 
 Importx "_GetCommandLineW@0" GetCommandName
 Importx "_CommandLineToArgvW@8" CommandLineToArgvW
-importx "_strcmp" strcmp
 
 #cmp
 function init_args()
@@ -1091,28 +1090,14 @@ function init_args()
 	setcall argv CommandLineToArgvW(command_name,#argc)
 	if argv!=(NULL)
 		if argc>1
-			incst argv
-			call wide_to_ansi(argv#)
-			setcall cmp strcmp(argv#,"--remove-config")
+			set cmp 0
+			#incst argv
+			#call wide_to_ansi(argv#) #same as ocompiler
+			#importx "_strcmp" strcmp
+			#setcall cmp strcmp(argv#,"--remove-config")
 		endif
 		call free(argv)
 	endif
 	#EndIf
 	return cmp
-endfunction
-
-function wide_to_ansi(ss in)
-	ss out
-	set out in
-	dec out
-	char n=0;char x#1
-	while 0==0
-		inc out
-		set x in#
-		set out# x
-		if x==n
-			ret
-		endif
-		add in 2
-	endwhile
 endfunction

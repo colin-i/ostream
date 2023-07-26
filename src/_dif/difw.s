@@ -1,4 +1,5 @@
 
+#entry _WinMain@16()
 entry _start()
 
 import "init_args" init_args

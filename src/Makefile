@@ -81,6 +81,9 @@ all: ${wprojname}
 ${wprojname}: ${obs}
 	ounused ${logs}
 	@echo
+	#this is also working
+	#i686-w64-mingw32-gcc -Wl,--large-address-aware ${linkerflags} ${obs} -o ${wprojname} -Wl,--start-group \
+	#-Wl,--end-group
 	i686-w64-mingw32-ld --large-address-aware ${linkerflags} ${obs} -o ${wprojname} -entry _start --start-group \
 	`dpkg -L mingw-w64-i686-dev | grep '\.a' | sed 's/..$$//' | grep -o '[^\/]*$$' | sed 's/^lib/-l/' | xargs echo` \
 	--end-group -L`echo ~`/.wine/drive_c/gstreamer-sdk/0.10/x86/lib/ \
