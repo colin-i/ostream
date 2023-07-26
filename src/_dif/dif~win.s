@@ -1091,10 +1091,10 @@ function init_args()
 	if argv!=(NULL)
 		if argc>1
 			set cmp 0
-			#incst argv
-			#call wide_to_ansi(argv#) #same as ocompiler
+			#sd a1=:;add a1 argv
+			#call wide_to_ansi(a1#) #same as ocompiler
 			#importx "_strcmp" strcmp
-			#setcall cmp strcmp(argv#,"--remove-config")
+			#setcall cmp strcmp(a1#,"--remove-config")
 		endif
 		call free(argv)
 	endif
