@@ -12,9 +12,10 @@ importx "_free" free
 import "memoryalloc" memoryalloc
 import "texter" texter
 
+const MAX_PATH=260
 #err
 function Scriptfullpath(sv ptrfullpath)
-	data MAX_PATH=260
+	data MAX_PATH=MAX_PATH
 	sd err
 	setcall err memoryalloc(MAX_PATH,ptrfullpath)
 	if err==(noerror)
@@ -114,14 +115,14 @@ function timeNode(data ptrtime_t)
     return time_t
 endfunction
 
-import "_chdir" chd
+importx "_chdir" chd
 function chdr(str value)
     data x#1
     setcall x chd(value)
     return x
 endfunction
 
-import "_snprintf" snprintf
+importx "_snprintf" snprintf
 function c_snprintf_strvaluedisp(str display,data max,str format,str text,data part2)
     call snprintf(display,max,format,text,part2)
 endfunction
@@ -1095,9 +1096,18 @@ function init_args()
 			#call wide_to_ansi(a1#) #same as ocompiler
 			#importx "_strcmp" strcmp
 			#setcall cmp strcmp(a1#,"--remove-config")
+
+			import "uninit_print" uninit_print
+			sv c;sv s;setcall s uninit_print(#c)
 		endif
 		call free(argv)
 	endif
 	#EndIf
 	return cmp
+endfunction
+importx "__fullpath" fullpath
+#path
+function real_path(sd path)
+	sd mem;setcall mem fullpath((NULL),path,(MAX_PATH))
+	return mem
 endfunction

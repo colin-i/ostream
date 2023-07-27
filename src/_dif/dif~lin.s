@@ -45,21 +45,21 @@ function system_variables_alignment_pad(data *value,data *greatest)
     return noalignment
 endfunction
 
-import "time" time
+importx "time" time
 function timeNode(data ptrtime_t)
     data time_t#1
     setcall time_t time(ptrtime_t)
     return time_t
 endfunction
 
-import "chdir" chd
+importx "chdir" chd
 function chdr(str value)
     data x#1
     setcall x chd(value)
     return x
 endfunction
 
-import "snprintf" snprintf
+importx "snprintf" snprintf
 function c_snprintf_strvaluedisp(str display,data max,str format,str text,data part2)
     call snprintf(display,max,format,text,part2)
 endfunction
@@ -101,7 +101,7 @@ const CLOCK_MONOTONIC=1
 
 #milliseconds
 function get_time()
-    import "clock_gettime" clock_gettime
+    importx "clock_gettime" clock_gettime
     data sec#1
     data nanoseconds#1
 
@@ -118,7 +118,7 @@ function get_time()
 endfunction
 
 function sleepMs(sd value)
-    import "usleep" usleep
+    importx "usleep" usleep
 
     #milliseconds in, convert to microseconds
     mult value 1000
@@ -237,20 +237,20 @@ function capture_alt_ev_set()
 endfunction
 ##events
 function createevent(sd event)
-    import "sem_init" sem_init
+    importx "sem_init" sem_init
     call sem_init(event,0,0)
     #0 ok,-1 error(bad argument?)
 endfunction
 function waitevent(sd event)
-    import "sem_wait" sem_wait
+    importx "sem_wait" sem_wait
     call sem_wait(event)
 endfunction
 function closeevent(sd event)
-    import "sem_destroy" sem_destroy
+    importx "sem_destroy" sem_destroy
     call sem_destroy(event)
 endfunction
 function setevent(sd event)
-    import "sem_post" sem_post
+    importx "sem_post" sem_post
     call sem_post(event)
 endfunction
 
@@ -321,7 +321,7 @@ function capture_alt_thread_proc(sd *noArg)
         or value mask
         call array_set_int(fds,elt,value)
 
-        import "select" select
+        importx "select" select
         sd tv_sec=100
         sd *tv_usec=0
         sd timeval^tv_sec
@@ -364,21 +364,21 @@ const SND_PCM_FORMAT_S16_LE=2
 const SND_PCM_NONBLOCK=1
 #const SND_PCM_ASYNC=2
 
-import "snd_pcm_open" snd_pcm_open
-import "snd_pcm_hw_params_malloc" snd_pcm_hw_params_malloc
-import "snd_pcm_hw_params_free" snd_pcm_hw_params_free
-import "snd_pcm_close" snd_pcm_close
-import "snd_pcm_writei" snd_pcm_writei
-import "snd_pcm_avail_update" snd_pcm_avail_update
-import "snd_pcm_get_params" snd_pcm_get_params
+importx "snd_pcm_open" snd_pcm_open
+importx "snd_pcm_hw_params_malloc" snd_pcm_hw_params_malloc
+importx "snd_pcm_hw_params_free" snd_pcm_hw_params_free
+importx "snd_pcm_close" snd_pcm_close
+importx "snd_pcm_writei" snd_pcm_writei
+importx "snd_pcm_avail_update" snd_pcm_avail_update
+importx "snd_pcm_get_params" snd_pcm_get_params
 
-import "snd_pcm_hw_params_any" snd_pcm_hw_params_any
-import "snd_pcm_hw_params_set_access" snd_pcm_hw_params_set_access
-import "snd_pcm_hw_params_set_format" snd_pcm_hw_params_set_format
-import "snd_pcm_hw_params_set_rate" snd_pcm_hw_params_set_rate
-import "snd_pcm_hw_params_set_channels" snd_pcm_hw_params_set_channels
-import "snd_pcm_hw_params" snd_pcm_hw_params
-import "snd_pcm_prepare" snd_pcm_prepare
+importx "snd_pcm_hw_params_any" snd_pcm_hw_params_any
+importx "snd_pcm_hw_params_set_access" snd_pcm_hw_params_set_access
+importx "snd_pcm_hw_params_set_format" snd_pcm_hw_params_set_format
+importx "snd_pcm_hw_params_set_rate" snd_pcm_hw_params_set_rate
+importx "snd_pcm_hw_params_set_channels" snd_pcm_hw_params_set_channels
+importx "snd_pcm_hw_params" snd_pcm_hw_params
+importx "snd_pcm_prepare" snd_pcm_prepare
 
 #bool
 function sound_preview_init()
@@ -673,8 +673,8 @@ const SND_PCM_STATE_RUNNING=3
 
 #bool
 function sound_preview_end_and_no_errors()
-    import "snd_pcm_status_malloc" snd_pcm_status_malloc
-    import "snd_pcm_status_free" snd_pcm_status_free
+    importx "snd_pcm_status_malloc" snd_pcm_status_malloc
+    importx "snd_pcm_status_free" snd_pcm_status_free
     sd handle
     setcall handle sound_preview_playback_handle()
     sd status
@@ -692,8 +692,8 @@ function sound_preview_end_and_no_errors()
 endfunction
 #bool
 function sound_preview_end_and_no_errors_continuation(sd handle,sd status)
-    import "snd_pcm_status" snd_pcm_status
-    import "snd_pcm_status_get_state" snd_pcm_status_get_state
+    importx "snd_pcm_status" snd_pcm_status
+    importx "snd_pcm_status_get_state" snd_pcm_status_get_state
     sd er
     setcall er snd_pcm_status(handle,status)
     if er<0
@@ -813,6 +813,29 @@ function move_to_share_core(sv p)
 		endif
 	endif
 endfunction
+importx "access" access
+#er
+function uninit_start()
+	sd f
+	sd er
+	setcall er home_folder(#f,(NULL))
+	if er==(noerror)
+		sd a;setcall a access(f,(F_OK))
+		if a==0
+			setcall er move_to_folder(f)
+			if er==(noerror)
+				return (noerror)
+			endif
+		endif
+	endif
+	return er
+endfunction
+#path
+function real_path(sd p)
+importx "realpath" realpath
+	sd mem;setcall mem realpath(p,(NULL))
+	return mem
+endfunction
 
 #e
 function home_folder(sv pf,sv ph)
@@ -865,6 +888,17 @@ ovideo --help              This help
 ovideo --remove-config     Remove configuration files
 ovideo PATH_NAME           PATH_NAME=\"path to share folder\"
 ")
+		return (FALSE)
+	endif
+	setcall cmp strcmp(argv#,"--remove-config")
+	if cmp==0
+		sd er;setcall er uninit_start()
+		if er==(noerror)
+			import "uninit_print" uninit_print
+			import "uninit_print_entry" uninit_print_entry
+			sv c;sv s;setcall s uninit_print(#c)
+			call uninit_print_entry(".")
+		endif
 		return (FALSE)
 	endif
 	set shareprefix argv#
