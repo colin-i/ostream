@@ -823,9 +823,6 @@ function uninit_start()
 		sd a;setcall a access(f,(F_OK))
 		if a==0
 			setcall er move_to_folder(f)
-			if er==(noerror)
-				return (noerror)
-			endif
 		endif
 	endif
 	return er
@@ -897,7 +894,16 @@ ovideo PATH_NAME           PATH_NAME=\"path to share folder\"
 			import "uninit_print" uninit_print
 			import "uninit_print_entry" uninit_print_entry
 			sv c;sv s;setcall s uninit_print(#c)
-			call uninit_print_entry(".")
+			vstr current_folder="."
+			call uninit_print_entry(current_folder)
+			import "uninit_decision" uninit_decision
+			sd b;setcall b uninit_decision()
+			if b==(TRUE)
+				import "uninit_delete" uninit_delete
+				call uninit_delete(s,c)
+				import "uninit_delete_folder" uninit_delete_folder
+				call uninit_delete_folder(current_folder)
+			endif
 		endif
 		return (FALSE)
 	endif

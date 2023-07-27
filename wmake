@@ -1,81 +1,82 @@
 
 #./wmake
+#make/copy to ./ovideo
 
 #./wmake ../b
+#copy
 
 #./wmake 1 clean
+#clean
 
 #./wmake ../b all
-#this is debug but tricking soundrecorder
+#make/copy ("src/wmake all" will do debug)
 
 if [ -z "$1" ] || [ -n "$2" ]
 then
-cd src
-./wmake $2
-if [ "$?" != 0 ]; then
-exit
-fi
-cd ..
+#make/clean
+	cd src
+	./wmake $2
+	if [ "$?" != 0 ]; then
+		exit
+	fi
+	cd ..
 fi
 
 
 
 if [ "$2" != "clean" ]; then
+#copy
+	if [ -z "$1" ]; then
+		f=ovideo
+	else
+		f=$1
+	fi
 
-if [ -z "$1" ]; then
-f=ovideo
-else
-f=$1
-fi
+	mkdir $f
+	rsync -a src/ovideo.exe $f
 
-mkdir $f
-rsync -a src/ovideo.exe $f
+	rsync -a -r build/img $f
 
-rsync -a -r build/img $f
+	mkdir $f/html
+	rsync -a html/html/use.html $f/html
 
-mkdir $f/html
-rsync -a html/html/use.html $f/html
+	rsync -a version.txt $f
 
-rsync -a version.txt $f
+	mkdir $f/sys
+	rsync -a build/sys/* $f/sys
 
-mkdir $f/sys
-rsync -a build/sys/* $f/sys
-
-mkdir $f/captures
-
+	mkdir $f/captures
 fi
 
 
 
 if [ -z "$1" ] || [ -n "$2" ]
 then
-cd soundrecorder
-make $2
-if [ "$?" != 0 ]; then
-exit
-fi
-cd ..
+	cd soundrecorder
+	make $2
+	if [ "$?" != 0 ]; then
+		exit
+	fi
+	cd ..
 fi
 
 
 
 if [ "$2" != "clean" ]; then
+	rsync -a soundrecorder/src/soundrecorder.exe $f
+	rsync -a soundrecorder/options.txt $f
 
-rsync -a soundrecorder/src/soundrecorder.exe $f
-rsync -a soundrecorder/options.txt $f
-
-if [ -z "$1" ]
-then
-cd src
-./wmake clean
-cd ../soundrecorder
-make clean
-cd ..
-zip -r ovideo.zip ovideo && \
-rm -r ./ovideo && \
-unzip -l ovideo.zip
-fi
-
+	if [ -z "$1" ]
+	then
+		cd src
+		./wmake clean
+		cd ../soundrecorder
+		make clean
+		cd ..
+		zip -r ovideo.zip ovideo && \
+		rm -r ./ovideo && \
+	unzip -l ovideo.zip
+	fi
 fi
 
 

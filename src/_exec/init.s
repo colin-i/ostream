@@ -13,7 +13,7 @@ importx "_write" write
 importx "_close" close
 importx "_sprintf" sprintf
 
-import "capture_location" capture_location
+import "capture_folder" capture_folder
 import "sys_folder" sys_folder
 import "chdr" chdr
 import "move_to_home" move_to_home
@@ -24,7 +24,7 @@ function init_user()
 	setcall err move_to_home()
 	if err==(noerror)
 		sd d
-		setcall d capture_location()
+		setcall d capture_folder()
 		setcall err init_dir(d)
 		if err==(noerror)
 			setcall d sys_folder()
@@ -167,7 +167,7 @@ function uninit_folder(sd fn)
 	return (NULL)
 endfunction
 
-importx "_printf" printf
+importx "_puts" puts
 import "sys_folder_enterleave" sys_folder_enterleave
 
 function uninit_sys_print()
@@ -177,23 +177,76 @@ import "real_path" real_path
 function uninit_print_entry(sd f)
 	sd p;setcall p real_path(f)
 	if p!=(NULL)
-		call printf(p)
-		call printf("\n")
+		call puts(p)
 		call free(p)
 	endif
 endfunction
 #sys folder
 function uninit_print(sv p_c)
-	call printf("Would remove:\n") #on linux there is main folder already
-	sd c;setcall c uninit_folder(capture_location)
+	call puts("Would remove:") #on linux there is main folder already
 	sd s;setcall s uninit_folder(sys_folder)
+	sd c;setcall c uninit_folder(capture_folder)
+	if s!=(NULL)
+		call sys_folder_enterleave(uninit_sys_print)
+		call uninit_print_entry(s)
+	endif
 	if c!=(NULL)
 		call uninit_print_entry(c)
 	endif
-	if s!=(NULL)
-		call uninit_print_entry(s)
-		call sys_folder_enterleave(uninit_sys_print)
-	endif
 	set p_c# c
 	return s
+endfunction
+importx "_getchar" getchar
+#b
+function uninit_decision()
+	call puts("yes ?")
+	sd c;setcall c getchar()
+	if c==(y)
+		setcall c getchar()
+		if c==(e)
+			setcall c getchar()
+			if c==(s)
+			#more chars can be, after this will exit anyway
+				return (TRUE)
+			endif
+		endif
+	endif
+	call puts("expecting \"yes\"")
+	return (FALSE)
+endfunction
+
+function uninit_delete(sd sys,sd captures)
+	if sys!=(NULL)
+		call sys_folder_enterleave(uninit_delete_sys)
+		call uninit_delete_folder(sys)
+	endif
+	if captures!=(NULL)
+		call uninit_delete_folder(captures)
+	endif
+endfunction
+function uninit_delete_sys()
+	call init_user_sys(uninit_delete_file)
+endfunction
+function uninit_delete_entry(sd entry,sd function)
+	sd p;setcall p real_path(entry)
+	if p!=(NULL)
+		sd x;setcall x function(p)
+		if x==0
+			call uninit_deleted(p)
+		endif
+		call free(p)
+	endif
+endfunction
+importx "_unlink" unlink
+function uninit_delete_file(sd file)
+	call uninit_delete_entry(file,unlink)
+endfunction
+importx "_printf" printf
+function uninit_deleted(sd s)
+	call printf("%s removed\n",s)
+endfunction
+importx "_rmdir" rmdir
+function uninit_delete_folder(sd folder)
+	call uninit_delete_entry(folder,rmdir)
+	#printf("%s ignored (maybe is not empty)\n",folder)
 endfunction

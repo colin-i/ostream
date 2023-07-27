@@ -1099,6 +1099,12 @@ function init_args()
 
 			import "uninit_print" uninit_print
 			sv c;sv s;setcall s uninit_print(#c)
+			import "uninit_decision" uninit_decision
+			sd b;setcall b uninit_decision()
+			if b==(TRUE)
+				import "uninit_delete" uninit_delete
+				call uninit_delete(s,c)
+			endif
 		endif
 		call free(argv)
 	endif

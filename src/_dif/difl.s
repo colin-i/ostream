@@ -5,8 +5,7 @@ entryraw _start(sd argc,sv argv)
 import "init_args" init_args
 sd bool;setcall bool init_args(argc,#argv)
 if bool!=(FALSE)
-
-	importx "_access" access
+	importx "access" access
 	import "move_to_share_core" move_to_share_core
 	ss testfile="regforkoff"
 	call move_to_share_core(#testfile)
