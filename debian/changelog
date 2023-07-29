@@ -1,3 +1,9 @@
+ovideo (1-187) focal; urgency=medium
+
+  * remove user files
+
+ -- bc <bc@bc-HP-Pavilion-x360-Convertible>  Sat, 29 Jul 2023 15:30:03 +0300
+
 ovideo (1-186+3) bionic; urgency=medium
 
   * remove a file from final .deb
