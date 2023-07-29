@@ -70,7 +70,7 @@ jobs:
        inter=Packages${arch}${nr}
        if [ ! -e "${inter}" ]; then
         rep=${5}
-        wget http://${src}/ubuntu/dists/bionic/${rep}/binary-${arch}/Packages.xz -O ${inter}.xz
+        wget http://${src}/ubuntu/dists/focal/${rep}/binary-${arch}/Packages.xz -O ${inter}.xz
         xz -d ${inter}.xz #f for multiple times
        fi
        #pipe to true to not stop the workflow if grep exits!=0
