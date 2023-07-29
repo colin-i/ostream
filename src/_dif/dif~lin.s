@@ -880,35 +880,46 @@ function init_args(sd argc,sv argv)
 		return (FALSE)
 	endif
 	add argv :
-	sd cmp;setcall cmp strcmp(argv#,"--help")
-	if cmp==0
-		call printf("
-ovideo --help              This help
-ovideo --remove-config     Remove configuration files
-ovideo PATH_NAME           PATH_NAME=\"path to share folder\"
-")
-		return (FALSE)
-	endif
-	setcall cmp strcmp(argv#,"--remove-config")
-	if cmp==0
-		sd er;setcall er uninit_start()
-		if er==(noerror)
-			import "uninit_print" uninit_print
-			import "uninit_print_entry" uninit_print_entry
-			sv c;sv s;setcall s uninit_print(#c)
-			vstr current_folder="."
-			call uninit_print_entry(current_folder)
-			import "uninit_decision" uninit_decision
-			sd b;setcall b uninit_decision()
-			if b==(TRUE)
-				import "uninit_delete" uninit_delete
-				call uninit_delete(s,c)
-				import "uninit_delete_folder" uninit_delete_folder
-				call uninit_delete_folder(current_folder)
-			endif
+	sd cmp
+	setcall cmp strcmp(argv#,"d")
+	if cmp!=0
+		setcall cmp strcmp(argv#,"--help")
+		if cmp==0
+			call puts("
+	ovideo --help              This help
+	ovideo --remove-config     Remove configuration files
+	ovideo PATH_NAME           PATH_NAME=\"path to share folder\"
+	ovideo d PATH_NAME         same")
+			return (FALSE)
 		endif
-		return (FALSE)
-	endif
+		setcall cmp strcmp(argv#,"--remove-config")
+		if cmp==0
+			sd er;setcall er uninit_start()
+			if er==(noerror)
+				import "uninit_print" uninit_print
+				import "uninit_print_entry" uninit_print_entry
+				sv c;sv s;setcall s uninit_print(#c)
+				vstr current_folder="."
+				call uninit_print_entry(current_folder)
+				import "uninit_decision" uninit_decision
+				sd b;setcall b uninit_decision()
+				if b==(TRUE)
+					import "uninit_delete" uninit_delete
+					call uninit_delete(s,c)
+					import "uninit_delete_folder" uninit_delete_folder
+					call uninit_delete_folder(current_folder)
+				endif
+			endif
+			return (FALSE)
+		endif
+	else
+	#share folder can be a reserved word. example: --help
+		if argc==2
+			call puts("Missing PATH_NAME")
+			return (FALSE)
+		endif
+		add argv :
+	endelse
 	set shareprefix argv#
 	return (TRUE)
 endfunction
@@ -933,7 +944,7 @@ importx "malloc" malloc
 importx "free" free
 importx "strlen" strlen
 importx "sprintf" sprintf
-importx "printf" printf
+importx "puts" puts
 
 function prog_init()
 	sv a
@@ -953,7 +964,7 @@ function prog_init()
 			return (void)
 		endif
 	endif
-	call printf(s)
+	call puts(s)
 endfunction
 function prog_free()
 	sv a
