@@ -822,7 +822,9 @@ function uninit_start()
 		sd a;setcall a access(f,(F_OK))
 		if a==0
 			setcall er move_to_folder(f)
-		endif
+		else
+			return (error)
+		endelse
 	endif
 	return er
 endfunction
