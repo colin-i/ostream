@@ -3,8 +3,6 @@ format elfobj
 
 include "../_include/include.h" #files/olang.h
 
-const F_OK=0
-
 importx "_strlen" strlen
 importx "_access" access
 importx "_mkdir" mkdir
