@@ -1,4 +1,5 @@
 
+git show master:version.txt > version.txt && \
 ~/test/debinit2 "${1}" && \
 ~/test/keyring && \
 ~/test/deb && \
