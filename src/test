@@ -1,4 +1,6 @@
 
-if [ -z "${1}" ]; then a=/home/bc/v/ovideo-1/test
+if [ -z "${1}" ]; then
+	a=/home/bc/v/test
+	#this is a folder with symlinks that will break dpkg-source if let at ovideo-1. anyway test/usr/share/ovideo has 3 symlinks: html,img and version.txt
 else a=${1}; fi
 ./ovideo ${a}
