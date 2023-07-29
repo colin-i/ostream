@@ -812,6 +812,26 @@ function move_to_share_core(sv p)
 		endif
 	endif
 endfunction
+importx "access" access
+#er
+function uninit_start()
+	sd f
+	sd er
+	setcall er home_folder(#f,(NULL))
+	if er==(noerror)
+		sd a;setcall a access(f,(F_OK))
+		if a==0
+			setcall er move_to_folder(f)
+		endif
+	endif
+	return er
+endfunction
+#path
+function real_path(sd p)
+importx "realpath" realpath
+	sd mem;setcall mem realpath(p,(NULL))
+	return mem
+endfunction
 
 #e
 function home_folder(sv pf,sv ph)
@@ -945,18 +965,4 @@ function init_args(sd argc)
 		return 0
 	endif
 	return -1
-endfunction
-importx "access" access
-#er
-function uninit_start()
-	sd f
-	sd er
-	setcall er home_folder(#f,(NULL))
-	if er==(noerror)
-		sd a;setcall a access(f,(F_OK))
-		if a==0
-			setcall er move_to_folder(f)
-		endif
-	endif
-	return er
 endfunction
