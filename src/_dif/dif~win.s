@@ -12,9 +12,10 @@ importx "_free" free
 import "memoryalloc" memoryalloc
 import "texter" texter
 
+const MAX_PATH=260
 #err
 function Scriptfullpath(sv ptrfullpath)
-	data MAX_PATH=260
+	data MAX_PATH=MAX_PATH
 	sd err
 	setcall err memoryalloc(MAX_PATH,ptrfullpath)
 	if err==(noerror)
@@ -121,14 +122,14 @@ function timeNode(data ptrtime_t)
     return time_t
 endfunction
 
-import "_chdir" chd
+importx "_chdir" chd
 function chdr(str value)
     data x#1
     setcall x chd(value)
     return x
 endfunction
 
-import "_snprintf" snprintf
+importx "_snprintf" snprintf
 function c_snprintf_strvaluedisp(str display,data max,str format,str text,data part2)
     call snprintf(display,max,format,text,part2)
 endfunction
@@ -938,3 +939,50 @@ function ulltoa(sd low,sd high,sd instr)
 	call ulltoa_extern(low,high,instr,10)
 endfunction
 
+
+Importx "_GetCommandLineW@0" GetCommandName
+Importx "_CommandLineToArgvW@8" CommandLineToArgvW
+
+#cmp
+function init_args()
+	sd command_name
+	#sd commname_size
+	sd argc;sv argv
+
+	sd cmp=-1
+
+	SetCall command_name GetCommandName()
+
+	#this is so bugged but accepted , strlen is ansi, but no wide path in this program, so first XX00h will stop
+	#anyway argv0 can't be '\0'
+	#SetCall commname_size strlen(command_name)
+	#If commname_size!=0
+	setcall argv CommandLineToArgvW(command_name,#argc)
+	if argv!=(NULL)
+		if argc>1
+			set cmp 0
+			#sd a1=:;add a1 argv
+			#call wide_to_ansi(a1#) #same as ocompiler
+			#importx "_strcmp" strcmp
+			#setcall cmp strcmp(a1#,"--remove-config")
+
+			import "uninit_print" uninit_print
+			sv c;sv s;setcall s uninit_print(#c)
+			import "uninit_decision" uninit_decision
+			sd b;setcall b uninit_decision()
+			if b==(TRUE)
+				import "uninit_delete" uninit_delete
+				call uninit_delete(s,c)
+			endif
+		endif
+		call free(argv)
+	endif
+	#EndIf
+	return cmp
+endfunction
+importx "__fullpath" fullpath
+#path
+function real_path(sd path)
+	sd mem;setcall mem fullpath((NULL),path,(MAX_PATH))
+	return mem
+endfunction

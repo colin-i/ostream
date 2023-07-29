@@ -15,7 +15,7 @@ importx "_write" write
 importx "_close" close
 importx "_sprintf" sprintf
 
-import "capture_location" capture_location
+import "capture_folder" capture_folder
 import "sys_folder" sys_folder
 import "chdr" chdr
 import "move_to_home" move_to_home
@@ -26,7 +26,7 @@ function init_user()
 	setcall err move_to_home()
 	if err==(noerror)
 		sd d
-		setcall d capture_location()
+		setcall d capture_folder()
 		setcall err init_dir(d)
 		if err==(noerror)
 			setcall d sys_folder()
@@ -39,7 +39,7 @@ function init_user()
 					sd x
 					setcall x chdr(d)
 					if x==0
-						setcall err init_user_sys()
+						setcall err init_user_sys((NULL))
 						setcall x chdr(p)
 						if x!=0
 							set err cerr
@@ -57,7 +57,7 @@ function init_user()
 	return err
 endfunction
 #e
-function init_user_sys()
+function init_user_sys(sv forward)
 	const start=!
 	char a="capture"
 	const biggest_string=7
@@ -95,7 +95,7 @@ function init_user_sys()
 	ss f^e
 	sd err=noerror
 	while c!=b
-		setcall c init_sys(c,f#,#err)
+		setcall c init_sys(c,f#,#err,forward)
 		if err!=(noerror)
 			return err
 		endif
@@ -104,14 +104,14 @@ function init_user_sys()
 	return (noerror)
 endfunction
 
-function init_sys(sd c,sd sz,sd perr)
+function init_sys(sd c,sd sz,sd perr,sv forward)
 	sd len
 	setcall len strlen(c)
 	sd f
 	set f c
 	add c len
 	inc c
-	call init_sys_file(f,c,sz,perr)
+	call init_sys_file(f,c,sz,perr,forward)
 	add c sz
 	return c
 endfunction
@@ -130,23 +130,125 @@ function init_dir(sd f)
 	return (noerror)
 endfunction
 
-function init_sys_file(sd f,sd data,sd sz,sv perr)
+function init_sys_file(sd f,sd data,sd sz,sv perr,sv forward)
 	char buf#biggest_string+1+4+1
 	call sprintf(#buf,"%s.data",f)
 	sd is
 	setcall is access(#buf,(F_OK))
-	if is==-1
-		#open
-		const O_WRONLY=0x0001
-		sd fd
-		setcall fd open(#buf,(O_WRONLY|flag_O_BINARY|flag_O_CREAT),(flag_fmode))
-		#write
-		sd len
-		setcall len write(fd,data,sz)
-		#close
-		call close(fd)
-		if len!=sz
-			set perr# "write error at init user"
+	if forward==(NULL)
+		if is==-1
+			#open
+			const O_WRONLY=0x0001
+			sd fd
+			setcall fd open(#buf,(O_WRONLY|flag_O_BINARY|flag_O_CREAT),(flag_fmode))
+			#write
+			sd len
+			setcall len write(fd,data,sz)
+			#close
+			call close(fd)
+			if len!=sz
+				set perr# "write error at init user"
+			endif
+		endif
+	else
+		if is==0
+			call forward(#buf)
+		endif
+	endelse
+endfunction
+
+
+#d
+function uninit_folder(sd fn)
+	sd d;sd a
+	setcall d fn()
+	setcall a access(d,(F_OK))
+	if a==0
+		return d
+	endif
+	return (NULL)
+endfunction
+
+importx "_puts" puts
+import "sys_folder_enterleave" sys_folder_enterleave
+
+function uninit_sys_print()
+	call init_user_sys(uninit_print_entry)
+endfunction
+import "real_path" real_path
+function uninit_print_entry(sd f)
+	sd p;setcall p real_path(f)
+	if p!=(NULL)
+		call puts(p)
+		call free(p)
+	endif
+endfunction
+#sys folder
+function uninit_print(sv p_c)
+	call puts("Would remove:") #on linux there is main folder already
+	sd s;setcall s uninit_folder(sys_folder)
+	sd c;setcall c uninit_folder(capture_folder)
+	if s!=(NULL)
+		call sys_folder_enterleave(uninit_sys_print)
+		call uninit_print_entry(s)
+	endif
+	if c!=(NULL)
+		call uninit_print_entry(c)
+	endif
+	set p_c# c
+	return s
+endfunction
+importx "_getchar" getchar
+#b
+function uninit_decision()
+	call puts("yes ?")
+	sd c;setcall c getchar()
+	if c==(y)
+		setcall c getchar()
+		if c==(e)
+			setcall c getchar()
+			if c==(s)
+			#more chars can be, after this will exit anyway
+				return (TRUE)
+			endif
 		endif
 	endif
+	call puts("expecting \"yes\"")
+	return (FALSE)
+endfunction
+
+function uninit_delete(sd sys,sd captures)
+	if sys!=(NULL)
+		call sys_folder_enterleave(uninit_delete_sys)
+		call uninit_delete_folder(sys)
+	endif
+	if captures!=(NULL)
+		call uninit_delete_folder(captures)
+	endif
+endfunction
+function uninit_delete_sys()
+	call init_user_sys(uninit_delete_file)
+endfunction
+function uninit_delete_entry(sd entry,sd function)
+	sd p;setcall p real_path(entry)
+	if p!=(NULL)
+		sd x;setcall x function(p)
+		if x==0
+			call uninit_deleted(p)
+		endif
+		call free(p)
+	endif
+endfunction
+importx "_unlink" unlink
+function uninit_delete_file(sd file)
+	call uninit_delete_entry(file,unlink)
+endfunction
+importx "_printf" printf
+function uninit_deleted(sd s)
+	call printf("%s removed\n",s)
+endfunction
+importx "_rmdir" rmdir
+function uninit_delete_folder(sd folder)
+	call uninit_delete_entry(folder,rmdir)
+	#printf("%s ignored (maybe is not empty)\n",folder)
 endfunction

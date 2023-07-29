@@ -63,9 +63,9 @@ function recSignals(data bus,data dest)
     call connect_signal(bus,error,errorfn)
 endfunction
 
-function capture_location()
+function capture_folder()
 const capture_char_start=!
-	char folder="captures/"
+	char folder="captures"
 const capture_char=!-capture_char_start-1
 	return #folder
 endfunction
@@ -82,13 +82,13 @@ endfunction
 
 import "move_to_home_core" move_to_home_core
 function capture_path(ss format,sd extrabool,sd extranumber)
-	char capture_data#capture_char+dword_max+1+dword_max+1+format_max+1
+	char capture_data#capture_char+1+dword_max+1+dword_max+1+format_max+1
 	ss capture_str^capture_data
 	ss folder
-	setcall folder capture_location()
+	setcall folder capture_folder()
 	sd tm
 	setcall tm time(0)
-	ss fmt="%s%s%u.%s"
+	ss fmt="%s/%s%u.%s"
 	ss extra
 	if extrabool==0
 		ss null=""
