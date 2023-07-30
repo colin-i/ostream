@@ -4,31 +4,7 @@ format elfobj
 include "../_include/include.h"
 
 import "memoryalloc" memalloc
-
-function tostring(str string,data size)
-        data zero=0
-        str s#1
-
-        set s string
-        add s size
-        set s# zero
-endfunction
-
-import "cpymem" cpymem
-
-#void/err
-function memtostrFw_s(str mem,data size,str dest,data destsize,data forward)
-    if size>destsize
-        import "texter" texter
-        vstr memtostrconflict="Mem2Str: destination is too small."
-        call texter(memtostrconflict)
-    endif
-
-    call cpymem(dest,mem,size)
-    call tostring(dest,size)
-
-    call forward(dest)
-endfunction
+import "texter" texter
 
 #e
 function slen_s(ss str,sd size,sd ptrszout)
@@ -153,6 +129,9 @@ Function strinmem_portions_advance(sd str_sz,str match,sd takeall,sd advance)
 EndFunction
 
 importx "_free" free
+
+import "cpymem" cpymem
+
 #e
 function memtostrFw_data(sd mem,sd size,sd forward,sd data)
     sd err

@@ -20,6 +20,8 @@ import "move_to_share_v" move_to_share_v
 importx "_g_object_unref" g_object_unref
 importx "_g_idle_add" g_idle_add
 
+importx "_free" free
+
 #void
 function update_async_callback(sd ses,sd msg) #,sd data
 	sd netmem
@@ -36,7 +38,6 @@ function update_async_callback(sd ses,sd msg) #,sd data
 		setcall err file_get_content("version.txt",#size,#mem)
 		if err==(noerror)
 			call update_got_netversion(mem,size,netmem,netsize)
-			importx "_free" free
 			call free(mem)
 		endif
 	endif
@@ -50,22 +51,27 @@ function update_async_sync(sd ses)
 endfunction
 
 #void
-function update_got_netversion(sd mem,sd size,sd netmem,sd netsize)
-    #forward to view if it is a new version
-    data compare#1
-    import "cmpmem_s" cmpmem_s
-    setcall compare cmpmem_s(netmem,netsize,mem,size)
+function update_got_netversion(sd mem,sd size,sd netmem,ss netsize)
+	import "memalloc" memalloc
+	sd sz=1;add sz netsize
+	sd newmem;setcall newmem memalloc(sz)
+	if newmem!=(NULL)
+		import "cmpmem_s" cmpmem_s
+		sd compare;setcall compare cmpmem_s(netmem,netsize,mem,size)
 
-    data different=differentCompare
-    if compare==different
-        import "memtostrFw_s" memtostrFw_s
-        const safeversion=1+1+3+1 #hard coded, hard to remember
-        char newvers#safeversion
-        vstr newv^newvers
-        data sfsize=safeversion
-        vdata fw^update_got_new
-        call memtostrFw_s(netmem,netsize,newv,sfsize,fw)
-    endif
+		importx "_memcpy" memcpy
+		importx "_printf" printf
+		call memcpy(newmem,netmem,netsize)
+		add netsize newmem
+		set netsize# 0
+
+		if compare==(differentCompare)
+			call update_got_new(newmem)
+		else
+			call printf("version: %s\n",newmem)
+		endelse
+		call free(newmem)
+	endif
 endfunction
 
 function update()
