@@ -16,4 +16,4 @@ fi
 
 #make compile prefix=/usr && make linkapp linkerflags=
 
-make ${a} prefix=/usr OFLAGSEXTRA="function_name 1" linkerflags= LD=/home/bc/Desktop/out/LD-.glibc2.27-x86_64.AppImage items_prefix=`pwd`/
+LD_LIBRARY_PATH=/home/bc/Desktop/out/ld/usr/lib/i386-linux-gnu make ${a} prefix=/usr OFLAGSEXTRA="function_name 1" linkerflags= LD=/home/bc/Desktop/out/ld/usr/bin/i686-linux-gnu-ld.bfd items_prefix=`pwd`/

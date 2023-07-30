@@ -868,21 +868,6 @@ function home_folder_r(sd p)
 	call texter(er)
 	return (NULL)
 endfunction
-#string
-function share_folder(sv p_err,sv prefix)
-	value a%shareprefix_p
-	if a#==(NULL)
-		set p_err# (noerror)
-		include "share.txt"
-	endif
-	if prefix==(NULL)
-		setcall p_err# move_to_folder(a#)
-	else
-		set prefix# a#
-		set p_err# (noerror)
-	endelse
-	return #prestart
-endfunction
 
 importx "strcmp" strcmp
 function init_args(sd argc,sv argv)
@@ -901,11 +886,10 @@ function init_args(sd argc,sv argv)
 	if cmp!=0
 		setcall cmp strcmp(argv#,"--help")
 		if cmp==0
-			call puts("
-	ovideo --help              This help
-	ovideo --remove-config     Remove configuration files
-	ovideo PATH_NAME           PATH_NAME=\"path to share folder\"
-	ovideo d PATH_NAME         same")
+			call puts("ovideo --help              This help
+ovideo --remove-config     Remove configuration files
+ovideo PATH_NAME           PATH_NAME=\"path to share folder\"
+ovideo d PATH_NAME         same")
 			return (FALSE)
 		endif
 		setcall cmp strcmp(argv#,"--remove-config")
@@ -938,6 +922,21 @@ function init_args(sd argc,sv argv)
 	endelse
 	set shareprefix argv#
 	return (TRUE)
+endfunction
+#string
+function share_folder(sv p_err,sv prefix)
+	value a%shareprefix_p
+	if a#==(NULL)
+		set p_err# (noerror)
+		include "share.txt"
+	endif
+	if prefix==(NULL)
+		setcall p_err# move_to_folder(a#)
+	else
+		set prefix# a#
+		set p_err# (noerror)
+	endelse
+	return #prestart
 endfunction
 
 const PATH_MAX=4096

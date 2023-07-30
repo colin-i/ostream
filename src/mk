@@ -5,6 +5,6 @@ else
 a=${1}
 fi
 
-make ${a} prefix=/usr LD=/home/bc/Desktop/out/LD-.glibc2.27-x86_64.AppImage items_prefix=`pwd`/
+LD_LIBRARY_PATH=/home/bc/Desktop/out/ld/usr/lib/i386-linux-gnu make ${a} prefix=/usr LD=/home/bc/Desktop/out/ld/usr/bin/i686-linux-gnu-ld.bfd items_prefix=`pwd`/
 #2.34-6ubuntu1.6 was ok
 #backportpackage -s focal -d focal -w . -k D51F0B6365EAB122 -u ppa:colin-i/ppa-staging binutils  #folder will gone (or error without the key), apt source to take it back

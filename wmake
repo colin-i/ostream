@@ -89,6 +89,8 @@ fi
 #file:///d:/some/path/to/repos/on/d/drive
 #file:///var/www/html/s.webm
 
+#0.10: /home/bc/u/download D:\b\Desktop\gstreamer
+
 #gstreamer1.0-plugins-bad
 #gst-launch-1.0 -v playbin uri=file:///home/bc/v/b/captures/1650430132.mxf
 #./e && GST_DEBUG=2 ./a.out #7 is max
