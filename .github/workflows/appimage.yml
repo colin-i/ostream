@@ -180,7 +180,7 @@ jobs:
        #this is not ok: only when running the appimage file: when testing with GST_DEBUG=5: GST_PLUGIN_SYSTEM_PATH will miss /i386-linux-gnu
        ln -s i386-linux-gnu/gstreamer-1.0 gstreamer-1.0
        #this also at runtime, missing
-       ln -s i386-linux-gnu/pulseaudio/libpulsecommon-11.1.so libpulsecommon-11.1.so
+       ln -s i386-linux-gnu/pulseaudio/libpulsecommon-13.99.so libpulsecommon-13.99.so
       fi
       cd ../../
       #
