@@ -35,8 +35,8 @@ jobs:
        arh=`cat debian/control | grep ^Architecture | cut -d ' ' -f2`
        if [ ! -e "lp2.py" ]; then
         wget -q https://raw.githubusercontent.com/colin-i/test/master/lp2.py
-        #on focal is already
-        sudo apt install python3-launchpadlib
+        #on focal is already, python3-launchpadlib is already the newest version
+        #sudo apt install python3-launchpadlib
        fi
        OUTPUT=$(python3 lp2.py ppa${{ github.event.inputs.ppa }} ${name} ${version} ${arh})
        wget ${OUTPUT}/+files/${name}_${version}_${arh}.deb -O ${name}.deb
