@@ -195,8 +195,8 @@ jobs:
        #this is in tmp folder, don't check inside if loaders.cache exists
        # --library-path \"${rootbase}...   will be with problems
        #if there are problems, try this: GTK_MODULE_DIR
-       #GST_PLUGIN_SCANNER="\${rootbase}/usr/lib/i386-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner" \
-       #setting GST_PLUGIN_SCANNER will only add a warning, let the program find it. it is in libgstreamer1.0-0
+       #to not see GST_PLUGIN_SCANNER warning, extract, run once, it is writing elsewhere not in appimg folders, run second time and is ok
+       #if is same with or without GST_PLUGIN_SCANNER then why set? GST_DEBUG=6 will state "Trying GST_PLUGIN_SCANNER env var" so the fault is from there
        cat > ovideo <<EOF
       #!/bin/bash
       cd "\$(dirname "\$0")"
@@ -213,6 +213,7 @@ jobs:
       LD_LIBRARY_PATH="\${paths}" \
        GDK_PIXBUF_MODULE_FILE="\${gpmf}" \
        GIO_EXTRA_MODULES="\${rootbase}/usr/lib/i386-linux-gnu/gio/modules" \
+       GST_PLUGIN_SCANNER="\${rootbase}/usr/lib/i386-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner" \
        GST_PLUGIN_SYSTEM_PATH="\${rootbase}/usr/lib/gstreamer-1.0" \
        \${loader} ./usr/bin/ostream "\${rootbase}"
       EOF
