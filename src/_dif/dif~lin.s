@@ -872,6 +872,30 @@ function share_folder()
 	include "share.txt"
 endfunction
 
+#cmp
+function init_args(sd argc)
+	if argc>1
+		sd er;setcall er uninit_start()
+		if er==(noerror)
+			import "uninit_print" uninit_print
+			import "uninit_print_entry" uninit_print_entry
+			sv c;sv s;setcall s uninit_print(#c)
+			vstr current_folder="."
+			call uninit_print_entry(current_folder)
+			import "uninit_decision" uninit_decision
+			sd b;setcall b uninit_decision()
+			if b==(TRUE)
+				import "uninit_delete" uninit_delete
+				call uninit_delete(s,c)
+				import "uninit_delete_folder" uninit_delete_folder
+				call uninit_delete_folder(current_folder)
+			endif
+		endif
+		return 0
+	endif
+	return -1
+endfunction
+
 const PATH_MAX=4096
 importx "malloc" malloc
 importx "free" free
@@ -943,28 +967,4 @@ endfunction
 
 function ulltoa(sd low,sd high,sd str)
 	call sprintf(str,"%llu",low,high)
-endfunction
-
-#cmp
-function init_args(sd argc)
-	if argc>1
-		sd er;setcall er uninit_start()
-		if er==(noerror)
-			import "uninit_print" uninit_print
-			import "uninit_print_entry" uninit_print_entry
-			sv c;sv s;setcall s uninit_print(#c)
-			vstr current_folder="."
-			call uninit_print_entry(current_folder)
-			import "uninit_decision" uninit_decision
-			sd b;setcall b uninit_decision()
-			if b==(TRUE)
-				import "uninit_delete" uninit_delete
-				call uninit_delete(s,c)
-				import "uninit_delete_folder" uninit_delete_folder
-				call uninit_delete_folder(current_folder)
-			endif
-		endif
-		return 0
-	endif
-	return -1
 endfunction

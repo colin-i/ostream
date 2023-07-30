@@ -11,15 +11,16 @@ Install:
 sudo apt-get install ovideo
 ```
 \
-On Windows the program is at this [link](https://github.com/colin-i/ostream/releases).
-The requirement is the program <i>gstreamer sdk x86 (0.10)</i>.
+On Windows, <i>.windows.zip</i> file from [releases](https://github.com/colin-i/ostream/releases).\
+<i>Gstreamer sdk</i> x86 0.10 from [here](https://cgit.freedesktop.org/gstreamer/gstreamer/refs/heads).
 
 ## From source
 Compile with [O Compiler](https://github.com/colin-i/o) and link with
 <i>binutils</i> and see the <i>Makefile</i> for requirements.
 
 ## Info
-[Video tutorials](https://www.youtube.com/channel/UC7I-BgCSgKI9uxvNsdkE-wg).
+[Video tutorials](https://www.youtube.com/channel/UC7I-BgCSgKI9uxvNsdkE-wg).\
+Remove configuration with one argument at command line start.
 
 ## Donations
 The *donations* section is here
