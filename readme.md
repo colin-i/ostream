@@ -21,14 +21,15 @@ yum install ovideo-*.*.rpm
 ```
 \
 On Windows, <i>.windows.zip</i> file from [releases](https://github.com/colin-i/ostream/releases).\
-<i>Gstreamer sdk</i> is [here](https://www.freedesktop.org/software/gstreamer-sdk/data/packages/windows/x86/).
+<i>Gstreamer sdk</i> x86 0.10 from [here](https://cgit.freedesktop.org/gstreamer/gstreamer/refs/heads).
 
 ## From source
 Compile with [O Compiler](https://github.com/colin-i/o) and link with
 <i>binutils</i> and see the <i>Makefile</i> for requirements.
 
 ## Info
-[Video tutorials](https://www.youtube.com/channel/UC7I-BgCSgKI9uxvNsdkE-wg).
+[Video tutorials](https://www.youtube.com/channel/UC7I-BgCSgKI9uxvNsdkE-wg).\
+On Linux, follow ```ovideo --help``` to remove configuration data. On Windows, remove configuration with one argument at command line start.
 
 ## Donations
 The *donations* section is here

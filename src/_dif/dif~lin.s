@@ -868,6 +868,22 @@ function home_folder_r(sd p)
 	call texter(er)
 	return (NULL)
 endfunction
+#string
+function share_folder(sv p_err,sv prefix)
+	value a%shareprefix_p
+	if a#==(NULL)
+		set p_err# (noerror)
+		include "share.txt"
+	endif
+	if prefix==(NULL)
+		setcall p_err# move_to_folder(a#)
+	else
+		set prefix# a#
+		set p_err# (noerror)
+	endelse
+	return #prestart
+endfunction
+
 importx "strcmp" strcmp
 function init_args(sd argc,sv argv)
 	#needed quick at regforkok for fedora
@@ -922,21 +938,6 @@ function init_args(sd argc,sv argv)
 	endelse
 	set shareprefix argv#
 	return (TRUE)
-endfunction
-#string
-function share_folder(sv p_err,sv prefix)
-	value a%shareprefix_p
-	if a#==(NULL)
-		set p_err# (noerror)
-		include "share.txt"
-	endif
-	if prefix==(NULL)
-		setcall p_err# move_to_folder(a#)
-	else
-		set prefix# a#
-		set p_err# (noerror)
-	endelse
-	return #prestart
 endfunction
 
 const PATH_MAX=4096
