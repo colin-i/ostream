@@ -28,7 +28,7 @@ Compile with [O Compiler](https://github.com/colin-i/o) and link with
 <i>binutils</i> and see the <i>Makefile</i> for requirements.
 
 ## Info
-[Video tutorials](https://www.youtube.com/channel/UC7I-BgCSgKI9uxvNsdkE-wg).\
+[Video tutorials](https://www.youtube.com/channel/UCBJPvGdXY5U3p8Fbl6HOFkQ).\
 On Linux, follow ```ovideo --help``` to remove configuration data. On Windows, remove configuration with one argument at command line start.
 
 ## Donations
