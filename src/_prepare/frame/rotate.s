@@ -15,7 +15,7 @@ function stage_rotate(sd x_at_start,sd y_at_start,sd on_y,sd on_x)
     import "stage_get_selection_pixbuf" stage_get_selection_pixbuf
     sd px
     setcall px stage_get_selection_pixbuf()
-    if px==0
+    if px=0
         return 0
     endif
     sd w
@@ -26,7 +26,7 @@ function stage_rotate(sd x_at_start,sd y_at_start,sd on_y,sd on_x)
     import "new_pixbuf" new_pixbuf
     sd newpixbuf
     setcall newpixbuf new_pixbuf(h,w)
-    if newpixbuf==0
+    if newpixbuf=0
         return 0
     endif
 

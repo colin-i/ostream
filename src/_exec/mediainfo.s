@@ -31,7 +31,7 @@ function on_discover(data *discoverer,data info,data gerror,data passdata)
     data busy=GST_DISCOVERER_BUSY
     data misses=GST_DISCOVERER_MISSING_PLUGINS
 
-    if result==ok
+    if result=ok
         importx "_gst_discoverer_info_get_video_streams" gst_discoverer_info_get_video_streams
         importx "_gst_discoverer_info_get_audio_streams" gst_discoverer_info_get_audio_streams
         importx "_gst_discoverer_stream_info_list_free" gst_discoverer_stream_info_list_free
@@ -78,11 +78,11 @@ function on_discover(data *discoverer,data info,data gerror,data passdata)
             set a nullstring
             xor streams flagA
         endelse
-        if streams==null
+        if streams=null
             str nothingtodo="No video or audio discovered at: "
             call strstrdisp(nothingtodo,uri)
         else
-            if streams==flagVA
+            if streams=flagVA
                 set conjunction both
             else
                 set conjunction nullstring
@@ -104,19 +104,19 @@ function on_discover(data *discoverer,data info,data gerror,data passdata)
                 call forward(uri,streams)
             endif
         endelse
-    elseif result==invalid
+    elseif result=invalid
         str invuri="Invalid uri: "
         call strstrdisp(invuri,uri)
-    elseif result==error
+    elseif result=error
         import "view_gerror_message" view_gerror_message
         call view_gerror_message(gerror)
-    elseif result==timeout
+    elseif result=timeout
         str timeouterr="Timeout error. Uri: "
         call strstrdisp(timeouterr,uri)
-    elseif result==busy
+    elseif result=busy
         str busyerr="Busy error. Uri: "
         call strstrdisp(busyerr,uri)
-    elseif result==misses
+    elseif result=misses
         importx "_gst_discoverer_info_get_misc" gst_discoverer_info_get_misc
         importx "_gst_structure_to_string" gst_structure_to_string
         importx "_g_free" g_free
@@ -140,7 +140,7 @@ function collect_info_got_src(str src,data discover)
     data bool#1
     setcall bool gst_discoverer_discover_uri_async(discover,src)
     data false=0
-    if bool==false
+    if bool=false
         str discerr="Uri media discover failed: "
         call strstrdisp(discerr,src)
         call gst_object_unref(discover)
@@ -165,7 +165,7 @@ function collect_info(str intrusion)
     setcall ptrgerr getptrgerr()
     setcall dsc gst_discoverer_new(low,high,ptrgerr)
     data n=0
-    if dsc==n
+    if dsc=n
         call gerrtoerr(ptrgerr)
     endif
 

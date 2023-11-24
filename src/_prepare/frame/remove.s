@@ -13,7 +13,7 @@ function stage_remove()
     #verify no frames
     sd img
     setcall img stage_get_sel()
-    if img==0
+    if img=0
         return 0
     endif
 
@@ -46,8 +46,8 @@ function stage_remove_frame(sd pos)
     sd p_selpos^selpos
     sd err
     setcall err stage_get_sel_position(p_selpos)
-    if err==(noerror)
-        if selpos==pos
+    if err=(noerror)
+        if selpos=pos
             import "stage_sel_prepare_img_space" stage_sel_prepare_img_space
             call stage_sel_prepare_img_space()
         endif
@@ -68,7 +68,7 @@ function stage_remove_after(sd pos)
     import "stage_get_frames" stage_get_frames
     sd total_pos
     setcall total_pos stage_get_frames()
-    if total_pos==0
+    if total_pos=0
         #clears the draw area
         import "stage_redraw" stage_redraw
         call stage_redraw()
@@ -90,7 +90,7 @@ function stage_remove_after(sd pos)
     endif
 
     #if last position was deleted, decrement position
-    if pos==total_pos
+    if pos=total_pos
         dec pos
     endif
 
@@ -108,7 +108,7 @@ endfunction
 #mass remove
 function mass_remove_run(sd action,sd value)
     data start_entry#1
-    if action==(value_set)
+    if action=(value_set)
         set start_entry value
     else
     #if action==(value_run)
@@ -151,9 +151,9 @@ endfunction
 
 function link_mass_remove(sd action,sd value)
     data link#1
-    if action==(value_set)
+    if action=(value_set)
         set link value
-    elseif action==(value_write)
+    elseif action=(value_write)
         if link!=0
             import "int_to_entry" int_to_entry
             sd pos
@@ -177,7 +177,7 @@ function mass_remove()
     #verify no frames
     sd img
     setcall img stage_get_sel()
-    if img==0
+    if img=0
         return 0
     endif
 
@@ -223,7 +223,7 @@ endfunction
 
 function mass_remove_set(sd response_id)
     #start to remove if response is ok
-    if response_id==(GTK_RESPONSE_OK)
+    if response_id=(GTK_RESPONSE_OK)
         call mass_remove_run((value_run))
     endif
     call link_mass_remove((value_set),0)

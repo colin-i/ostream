@@ -22,21 +22,21 @@ import "move_to_home" move_to_home
 function init_user()
 	sd err
 	setcall err move_to_home()
-	if err==(noerror)
+	if err=(noerror)
 		sd d
 		setcall d capture_folder()
 		setcall err init_dir(d)
-		if err==(noerror)
+		if err=(noerror)
 			setcall d sys_folder()
 			setcall err init_dir(d)
-			if err==(noerror)
+			if err=(noerror)
 				sd p
 				setcall p getcwd((NULL),0)
 				if p!=(NULL)
 					vstr cerr="chdir error at init user"
 					sd x
 					setcall x chdr(d)
-					if x==0
+					if x=0
 						setcall err init_user_sys((NULL))
 						setcall x chdr(p)
 						if x!=0
@@ -119,7 +119,7 @@ function init_dir(sd f)
 	sd is
 	setcall is access(f,(F_OK))
 	#this looks useless check but we want mkdir to return success, then, it is ok, ignoring mkdir by others between these calls
-	if is==-1
+	if is=-1
 		setcall is mkdir(f,(flag_dmode))
 		if is!=0
 			return "mkdir error"
@@ -133,8 +133,8 @@ function init_sys_file(sd f,sd data,sd sz,sv perr,sv forward)
 	call sprintf(#buf,"%s.data",f)
 	sd is
 	setcall is access(#buf,(F_OK))
-	if forward==(NULL)
-		if is==-1
+	if forward=(NULL)
+		if is=-1
 			#open
 			const O_WRONLY=0x0001
 			sd fd
@@ -149,7 +149,7 @@ function init_sys_file(sd f,sd data,sd sz,sv perr,sv forward)
 			endif
 		endif
 	else
-		if is==0
+		if is=0
 			call forward(#buf)
 		endif
 	endelse
@@ -161,7 +161,7 @@ function uninit_folder(sd fn)
 	sd d;sd a
 	setcall d fn()
 	setcall a access(d,(F_OK))
-	if a==0
+	if a=0
 		return d
 	endif
 	return (NULL)
@@ -201,11 +201,11 @@ importx "_getchar" getchar
 function uninit_decision()
 	call puts("yes ?")
 	sd c;setcall c getchar()
-	if c==(y)
+	if c=(y)
 		setcall c getchar()
-		if c==(e)
+		if c=(e)
 			setcall c getchar()
-			if c==(s)
+			if c=(s)
 			#more chars can be, after this will exit anyway
 				return (TRUE)
 			endif
@@ -231,7 +231,7 @@ function uninit_delete_entry(sd entry,sd function)
 	sd p;setcall p real_path(entry)
 	if p!=(NULL)
 		sd x;setcall x function(p)
-		if x==0
+		if x=0
 			call uninit_deleted(p)
 		endif
 		call free(p)

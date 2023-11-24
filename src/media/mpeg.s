@@ -37,27 +37,27 @@ function mpeg_init(sd file,sd pixbufSample,sd totalframes)
 
     sd bool
     setcall bool mpeg_file_mem((value_set))
-    if bool==1
+    if bool=1
         set filemem 1
         setcall bool mpeg_input_mem((value_set))
-        if bool==1
+        if bool=1
             set inputmem 1
             setcall bool macro_blocks((value_set))
-            if bool==1
+            if bool=1
                 return 1
             endif
         endif
     endif
 
-    if filemem==0
+    if filemem=0
         return 0
     endif
     call mpeg_file_mem((value_unset))
-    if inputmem==0
+    if inputmem=0
         return 0
     endif
     call mpeg_input_mem((value_unset))
-    if macroblocks==0
+    if macroblocks=0
         return 0
     endif
     call macro_blocks((value_unset))
@@ -82,7 +82,7 @@ endfunction
 
 function mpeg_lastframe(sd action,sd value)
     data lastframe#1
-    if action==(value_set)
+    if action=(value_set)
         dec value
         set lastframe value
     else
@@ -114,7 +114,7 @@ endfunction
 const value_is_key=value_custom
 function mpeg_ptr_is_keyframe(sd action,sd value)
     data ptr_is_keyframe#1
-    if action==(value_set)
+    if action=(value_set)
         set ptr_is_keyframe value
         set ptr_is_keyframe# 0
     else
@@ -151,11 +151,11 @@ function mpeg_write_frame(sd p_bframes,sd argument,sd frameindex,sd p_is_key_fra
     call mpeg_ptr_is_keyframe((value_set),p_is_key_frame)
 
     ##flush bframes
-    if p_bframes==0
+    if p_bframes=0
         set p_bframes argument
 
-        if ivop_comeback==1
-            if ivop_wait_bframes==0
+        if ivop_comeback=1
+            if ivop_wait_bframes=0
                 ##add passed frames
                 call mpeg_time((value_append),ivop_frameindex)
                 ##get new time
@@ -198,7 +198,7 @@ function mpeg_write_frame(sd p_bframes,sd argument,sd frameindex,sd p_is_key_fra
             dec bframes_counter
         else
             #flag to stop the container loop
-            if ivop_comeback==1
+            if ivop_comeback=1
                 set ivop_wait_bframes 0
             else
                 set p_bframes# 0
@@ -212,7 +212,7 @@ function mpeg_write_frame(sd p_bframes,sd argument,sd frameindex,sd p_is_key_fra
 
     ##set first frame inits
     set p_bframes# 0
-    if frameindex==0
+    if frameindex=0
         set bframes_counter 0
         set key_interval 0
     endif
@@ -233,18 +233,18 @@ function mpeg_write_frame(sd p_bframes,sd argument,sd frameindex,sd p_is_key_fra
 
     ##frame type and key_interval
     sd type=I_VOP
-    if frameindex==0
+    if frameindex=0
     #first frame is intra
-    elseif frameindex==framelast
+    elseif frameindex=framelast
     #last frame is prediction
         set type (P_VOP)
-    elseif key_interval==(ARG_MAXKEYINTERVAL)
+    elseif key_interval=(ARG_MAXKEYINTERVAL)
     #intra frame
     else
         import "me_analyze" me_analyze
         setcall type me_analyze()
-        if type==(B_VOP)
-            if bframes_counter==(ARG_MAXBFRAMES)
+        if type=(B_VOP)
+            if bframes_counter=(ARG_MAXBFRAMES)
                 #maximum bframes encounter
                 set type (P_VOP)
             else
@@ -268,11 +268,11 @@ function mpeg_write_frame(sd p_bframes,sd argument,sd frameindex,sd p_is_key_fra
         endif
     endelse
 
-    if type==(I_VOP)
+    if type=(I_VOP)
         set key_interval 0
     endif
     inc key_interval
-    if type==(B_VOP)
+    if type=(B_VOP)
         return 1
     endif
 
@@ -281,7 +281,7 @@ function mpeg_write_frame(sd p_bframes,sd argument,sd frameindex,sd p_is_key_fra
     if bframes_counter!=0
         set p_bframes# 1
         set flush_counter 0
-        if type==(I_VOP)
+        if type=(I_VOP)
             #keep the values for when the i vop turn comes
             set ivop_frameindex frameindex
             set ivop_pixbuf pixbuf
@@ -298,7 +298,7 @@ function mpeg_write_frame(sd p_bframes,sd argument,sd frameindex,sd p_is_key_fra
         endif
     endif
 
-    if ivop_comeback==0
+    if ivop_comeback=0
         ##add passed frames
         call mpeg_time((value_append),frameindex)
         ##get new time
@@ -365,7 +365,7 @@ function mpeg_frame(sd type,sd sec,sd nth_sec,sd pixbuf,sd vop_coded)
     sd bool
 
     ##headers
-    if type==(I_VOP)
+    if type=(I_VOP)
         #vol header
         setcall bool mpeg_vol_header()
         if bool!=1
@@ -445,7 +445,7 @@ endfunction
 
 function mpeg_buffer_size(sd action,sd size,sd w,sd h)
     data buffer_size#1
-    if action==(value_set)
+    if action=(value_set)
         set buffer_size size
         call mpeg_image_w((value_set),w)
         call mpeg_image_h((value_set),h)
@@ -455,7 +455,7 @@ function mpeg_buffer_size(sd action,sd size,sd w,sd h)
 endfunction
 function mpeg_image_w(sd action,sd w)
     data width#1
-    if action==(value_set)
+    if action=(value_set)
         set width w
     else
         return width
@@ -463,7 +463,7 @@ function mpeg_image_w(sd action,sd w)
 endfunction
 function mpeg_image_h(sd action,sd h)
     data height#1
-    if action==(value_set)
+    if action=(value_set)
         set height h
     else
         return height
@@ -491,7 +491,7 @@ function mpeg_input_mem(sd action,ss rgb)
     data memory#1
     data distance#1
 
-    if action==(value_set)
+    if action=(value_set)
     #bool
         sd size
         import "yuv_get_all_sizes" yuv_get_all_sizes
@@ -521,7 +521,7 @@ function mpeg_input_mem(sd action,ss rgb)
         mult size 2
 
         setcall mem memalloc(size)
-        if mem==0
+        if mem=0
             return 0
         endif
 
@@ -537,7 +537,7 @@ function mpeg_input_mem(sd action,ss rgb)
         add V mem
 
         return 1
-    elseif action==(value_rgbtoyuv)
+    elseif action=(value_rgbtoyuv)
         #place the cursor on one of the two images
         add mem distance
         add temp_y distance
@@ -584,11 +584,11 @@ endfunction
 function mpeg_input_y(sd action,sd value,sd distance)
     data y#1
     data y_ref#1
-    if action==(value_set)
+    if action=(value_set)
         set y value
         set y_ref y
         add y_ref distance
-    elseif action==(value_get)
+    elseif action=(value_get)
         return y
     else
     #if action==(value_get_prev)
@@ -598,11 +598,11 @@ endfunction
 function mpeg_input_u(sd action,sd value,sd distance)
     data u#1
     data u_ref#1
-    if action==(value_set)
+    if action=(value_set)
         set u value
         set u_ref u
         add u_ref distance
-    elseif action==(value_get)
+    elseif action=(value_get)
         return u
     else
     #if action==(value_get_prev)
@@ -612,11 +612,11 @@ endfunction
 function mpeg_input_v(sd action,sd value,sd distance)
     data v#1
     data v_ref#1
-    if action==(value_set)
+    if action=(value_set)
         set v value
         set v_ref v
         add v_ref distance
-    elseif action==(value_get)
+    elseif action=(value_get)
         return v
     else
     #if action==(value_get_prev)
@@ -625,7 +625,7 @@ function mpeg_input_v(sd action,sd value,sd distance)
 endfunction
 function mpeg_input_lumstride(sd action,sd value)
     data lumstride#1
-    if action==(value_set)
+    if action=(value_set)
         set lumstride value
     else
         return lumstride
@@ -633,7 +633,7 @@ function mpeg_input_lumstride(sd action,sd value)
 endfunction
 function mpeg_input_cromstride(sd action,sd value)
     data cromstride#1
-    if action==(value_set)
+    if action=(value_set)
         set cromstride value
     else
         return cromstride
@@ -667,7 +667,7 @@ endfunction
 
 function mpeg_write_file(sd action,sd value)
     data file#1
-    if action==(value_set)
+    if action=(value_set)
         set file value
     else
         return file
@@ -707,7 +707,7 @@ function mpeg_file_mem(sd action,sd append,sd append_bits)
     data p_size^size
     sd bool
 
-    if action==(value_set)
+    if action=(value_set)
     #bool
         set size 0
         set bits 0
@@ -715,15 +715,15 @@ function mpeg_file_mem(sd action,sd append,sd append_bits)
 
         setcall all_size mpeg_buffer_size((value_get))
         setcall mem memalloc(all_size)
-        if mem==0
+        if mem=0
             return 0
         endif
         return 1
-    elseif action==(value_get)
+    elseif action=(value_get)
         return bits_pos
-    elseif action==(value_unset)
+    elseif action=(value_unset)
         call free(mem)
-    elseif action==(value_append)
+    elseif action=(value_append)
     #bool
         import "neg" neg
 
@@ -731,7 +731,7 @@ function mpeg_file_mem(sd action,sd append,sd append_bits)
         sd bits_count
 
         sd loop=1
-        while loop==1
+        while loop=1
             #32-bitsPos-appendBits
             sd shift
             set shift 32
@@ -751,7 +751,7 @@ function mpeg_file_mem(sd action,sd append,sd append_bits)
             add bits_pos bits_count
             sub append_bits bits_count
 
-            if bits_pos==32
+            if bits_pos=32
                 setcall bool mpeg_outbuffer_add(p_size,all_size,bits,mem,4)
                 if bool!=1
                     return 0
@@ -759,7 +759,7 @@ function mpeg_file_mem(sd action,sd append,sd append_bits)
                 set bits 0
                 set bits_pos 0
             endif
-            if append_bits==0
+            if append_bits=0
                 set loop 0
             endif
         endwhile
@@ -823,8 +823,8 @@ function mpeg_mem_pad(sd mode)
     set pad 8
     sub pad pad_rest
 
-    if mode==(if_needed)
-        if pad==8
+    if mode=(if_needed)
+        if pad=8
             return 1
         endif
     endif
@@ -888,10 +888,10 @@ function mpeg_time(sd action,sd arg)
     #store the frames interval and process the time
     data begin#1
     data end#1
-    if action==(value_set)
+    if action=(value_set)
         set begin 0
         set end 0
-    elseif action==(value_get)
+    elseif action=(value_get)
     #nth_of_sec return
         sd p_sec
         set p_sec arg
@@ -910,7 +910,7 @@ function mpeg_time(sd action,sd arg)
         set nth_of_sec framesstack
         sub nth_of_sec sec
         return nth_of_sec
-    elseif action==(value_append)
+    elseif action=(value_append)
         set end arg
     else
     #if action==(value_endinterval)
@@ -922,7 +922,7 @@ endfunction
 function mpeg_get_quant(sd type)
     sd quant
     set quant (DEFAULT_QUANT)
-    if type==(B_VOP)
+    if type=(B_VOP)
         add quant (DEFAULT_QUANT)
         mult quant (ARG_BQRATIO)
         div quant 2
@@ -934,7 +934,7 @@ endfunction
 
 function mpeg_fixcode(sd mv)
     sd fcode=1
-    while 1==1
+    while 1=1
         sd value
         setcall value shl(16,fcode)
         if value>mv
@@ -948,8 +948,8 @@ endfunction
 ##rounding
 function mpeg_rounding_type(sd action,sd type)
     data rounding#1
-    if action==(value_set)
-        if type==(I_VOP)
+    if action=(value_set)
+        if type=(I_VOP)
             set rounding 1
         else
         #P_VOP
@@ -1377,7 +1377,7 @@ function mpeg_vop_header(sd type,sd vop_coded,sd seconds,sd nth_of_sec)
     endif
 
     #not vop_coded
-    if vop_coded==0
+    if vop_coded=0
         setcall bool mpeg_mem_bit(0)
         if bool!=1
             return 0
@@ -1392,7 +1392,7 @@ function mpeg_vop_header(sd type,sd vop_coded,sd seconds,sd nth_of_sec)
     endif
 
     #(frame->coding_type == P_VOP) || (frame->coding_type == S_VOP)
-    if type==(P_VOP)
+    if type=(P_VOP)
         #rounding_type
         sd rounding
         setcall rounding mpeg_rounding_type((value_get))
@@ -1429,7 +1429,7 @@ function mpeg_vop_header(sd type,sd vop_coded,sd seconds,sd nth_of_sec)
             return 0
         endif
 
-        if type==(B_VOP)
+        if type=(B_VOP)
     #backward_fixed_code
             sd bcode
             setcall bcode mpeg_fixcode(0)
@@ -1469,7 +1469,7 @@ endfunction
 
 function mpeg_single_tolerance(sd action,sd value)
     data single_tolerance#1
-    if action==(value_set)
+    if action=(value_set)
         set single_tolerance value
     else
         return single_tolerance
@@ -1477,7 +1477,7 @@ function mpeg_single_tolerance(sd action,sd value)
 endfunction
 function mpeg_group_tolerance(sd action,sd value)
     data group_tolerance#1
-    if action==(value_set)
+    if action=(value_set)
         set group_tolerance value
     else
         return group_tolerance
@@ -1536,7 +1536,7 @@ endfunction
 
 function mpeg_single_scale(sd action,sd value)
     data single_scale#1
-    if action==(value_set)
+    if action=(value_set)
         set single_scale value
     else
         return single_scale
@@ -1544,7 +1544,7 @@ function mpeg_single_scale(sd action,sd value)
 endfunction
 function mpeg_group_scale(sd action,sd value)
     data group_scale#1
-    if action==(value_set)
+    if action=(value_set)
         set group_scale value
     else
         return group_scale

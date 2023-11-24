@@ -37,17 +37,17 @@ function mp3_calc_runlen(sd l3enc_tt,sd gr_info)
     #int rzero = 0;
     sd value
     sd loop=1
-    while loop==1
+    while loop=1
         set loop 0
         if i>1
             set value i
             sub value 1
             setcall value l3_enc_sample_get(l3enc_tt,value)
-            if value==0
+            if value=0
                 set value i
                 sub value 2
                 setcall value l3_enc_sample_get(l3enc_tt,value)
-                if value==0
+                if value=0
                     #rzero++
                     sub i 2
                     set loop 1
@@ -58,7 +58,7 @@ function mp3_calc_runlen(sd l3enc_tt,sd gr_info)
     sd index
     call mp3_gr_info_itemSet(gr_info,(gr_info_count1),0)
     set loop 1
-    while loop==1
+    while loop=1
         set loop 0
         if i>3
             set index i
@@ -183,7 +183,7 @@ function subdivide(sd gr_info,sd p_addresses)
     mult sizeadd index
     add scalefac_band sizeadd
     sd loop=1
-    while loop==1
+    while loop=1
         set loop 0
         if thiscount!=0
             if scalefac_band#>bigvalues_region
@@ -208,7 +208,7 @@ function subdivide(sd gr_info,sd p_addresses)
     mult sizeadd index
     add scalefac_band sizeadd
     set loop 1
-    while loop==1
+    while loop=1
         set loop 0
         if thiscount!=0
             if scalefac_band#>bigvalues_region
@@ -297,7 +297,7 @@ import "huffman_tabs" huffman_tabs
 function mp3_choose_table(sd l3enc_tt,sd start,sd end)
     sd max
     setcall max mp3_int_max(l3enc_tt,start,end)
-    if max==0
+    if max=0
         return 0
     endif
     sd i
@@ -317,17 +317,17 @@ function mp3_choose_table(sd l3enc_tt,sd start,sd end)
             endif
         endwhile
         setcall sum_0 mp3_count_bit(l3enc_tt,start,end,choice_0)
-        if choice_0==2
+        if choice_0=2
             setcall sum_1 mp3_count_bit(l3enc_tt,start,end,3)
             if sum_1<=sum_0
                 set choice_0 3
             endif
-        elseif choice_0==5
+        elseif choice_0=5
             setcall sum_1 mp3_count_bit(l3enc_tt,start,end,6)
             if sum_1<=sum_0
                 set choice_0 6
             endif
-        elseif choice_0==7
+        elseif choice_0=7
             setcall sum_1 mp3_count_bit(l3enc_tt,start,end,8)
             if sum_1<=sum_0
                 set choice_0 8
@@ -337,7 +337,7 @@ function mp3_choose_table(sd l3enc_tt,sd start,sd end)
             if sum_1<=sum_0
                 set choice_0 9
             endif
-        elseif choice_0==10
+        elseif choice_0=10
             setcall sum_1 mp3_count_bit(l3enc_tt,start,end,11)
             if sum_1<=sum_0
                 set choice_0 11
@@ -347,7 +347,7 @@ function mp3_choose_table(sd l3enc_tt,sd start,sd end)
             if sum_1<=sum_0
                 set choice_0 12
             endif
-        elseif choice_0==13
+        elseif choice_0=13
             setcall sum_1 mp3_count_bit(l3enc_tt,start,end,15)
             if sum_1<=sum_0
                 set choice_0 15
@@ -387,7 +387,7 @@ endfunction
 
 #bits
 function mp3_count_bit(sd l3enc_tt,sd start,sd end,sd table)
-    if table==0
+    if table=0
         return 0
     endif
     sd ylen

@@ -43,9 +43,9 @@ function stage_move_cover_effect(sd action,sd value)
 
     data p_values^effect
 
-    if action==(stage_move_cover_set)
+    if action=(stage_move_cover_set)
         set effect value
-        if effect==(stage_move_select)
+        if effect=(stage_move_select)
             ss move_in_text="Move In"
             ss move_out_text="Move Out"
             ss move_direction_text="Move in From/Move out To:"
@@ -99,11 +99,11 @@ endfunction
 
 function stage_move_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd rowstride,sd animpixels,sd *animpixbuf,sd in_out)
     data inits#1
-    if part==0
+    if part=0
         set inits 1
         return 1
     endif
-    if inits==1
+    if inits=1
         set inits 0
 
         data start_x#1
@@ -125,7 +125,7 @@ function stage_move_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd rowstride,sd 
         mult start_x x_coef
         mult start_y y_coef
 
-        if in_out==(out_effect)
+        if in_out=(out_effect)
             sd aux
             set aux start_x
             set start_x end_x
@@ -184,7 +184,7 @@ function stage_move_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd rowstride,sd 
             set y j
             sd move_or_cover
             setcall move_or_cover stage_move_cover_effect((stage_move_cover_get),(stage_move_cover_move_or_cover))
-            if move_or_cover==(stage_move_select)
+            if move_or_cover=(stage_move_select)
                 sub x frame_left
                 sub y frame_top
             endif

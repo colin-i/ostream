@@ -90,7 +90,7 @@ function capture_path(ss format,sd extrabool,sd extranumber)
 	setcall tm time(0)
 	ss fmt="%s/%s%u.%s"
 	ss extra
-	if extrabool==0
+	if extrabool=0
 		ss null=""
 		set extra null
 	else
@@ -189,7 +189,7 @@ const srcname_sz=3
     set dst dest
 
     set m1 video
-    if streams==flagVA
+    if streams=flagVA
         str makename="%s."
 const makename_sz=srcname_sz+1
         char save_secname_data#makename_sz+1
@@ -203,7 +203,7 @@ const makename_sz=srcname_sz+1
         set secondstream save_va
     else
         set secondstream nullstr
-        if streams==flagA
+        if streams=flagA
             set m1 audio
         endif
     endelse
@@ -233,7 +233,7 @@ const makename_sz=srcname_sz+1
     setcall pipe gst_parse_launch(mem,ptrgerr)
     call free(mem)
     data n=0
-    if pipe==n
+    if pipe=n
         call gerrtoerr(ptrgerr)
         return ptrgerr
     endif

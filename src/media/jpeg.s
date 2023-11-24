@@ -43,7 +43,7 @@ function jpeg_errorhandle(sd *j_common_ptr cinfo)
 endfunction
 function jpeg_continue(sd action,sd value)
     data continue#1
-    if action==(value_set)
+    if action=(value_set)
         set continue value
     else
         return continue
@@ -87,7 +87,7 @@ function read_jpeg(sd file,sd forward)
     importx "_jpeg_CreateDecompress" jpeg_CreateDecompress
     call jpeg_CreateDecompress(jdestruct,(JPEG_LIB_VERSION),jdestruct_size)
     setcall continue jpeg_continue((value_get))
-    if continue==0
+    if continue=0
         return continue
     endif
 
@@ -111,7 +111,7 @@ function read_jpeg_prepare(sd file,sd forward)
     importx "_jpeg_stdio_src" jpeg_stdio_src
     call jpeg_stdio_src(jdestruct,file)
     setcall continue jpeg_continue((value_get))
-    if continue==0
+    if continue=0
         return continue
     endif
 
@@ -120,14 +120,14 @@ function read_jpeg_prepare(sd file,sd forward)
     #2nd arg=TRUE to reject a tables-only JPEG file as an error
     call jpeg_read_header(jdestruct,(TRUE))
     setcall continue jpeg_continue((value_get))
-    if continue==0
+    if continue=0
         return continue
     endif
 
     importx "_jpeg_start_decompress" jpeg_start_decompress
     call jpeg_start_decompress(jdestruct)
     setcall continue jpeg_continue((value_get))
-    if continue==0
+    if continue=0
         return continue
     endif
 
@@ -179,11 +179,11 @@ function read_jpeg_scanlines(sd forward)
     while j!=output_height
         call jpeg_read_scanlines(jdestruct,buffer,1)
         setcall continue jpeg_continue((value_get))
-        if continue==0
+        if continue=0
             return continue
         endif
         setcall continue forward(buffer#,filerowstride,j)
-        if continue==0
+        if continue=0
             call jpeg_continue((value_set),0)
             return continue
         endif

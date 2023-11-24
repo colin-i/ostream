@@ -247,7 +247,7 @@ function fcom_quad_greater(sd p_A)
     hex 0x8b,ecx*to_regopcode|eax
     #
     and value 0x00004100
-    if value==0
+    if value=0
         return 1
     else
         return 0
@@ -275,7 +275,7 @@ function fcom_quad_greater_or_equal(sd p_A)
     hex 0x8b,ecx*to_regopcode|eax
     #
     and value 0x00000100
-    if value==0
+    if value=0
         return 1
     else
         return 0

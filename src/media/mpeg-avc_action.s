@@ -59,7 +59,7 @@ function avc_residual_write(sd residual,sd ctxBlockCat,sd count,sd idx)
     endelse
     import "avc_cabac_decision" avc_cabac_decision
     call avc_cabac_decision(value,b)
-    if coeff==0
+    if coeff=0
         return 0
     endif
 
@@ -71,7 +71,7 @@ function avc_residual_write(sd residual,sd ctxBlockCat,sd count,sd idx)
     while i!=index
         sd sig_ctx
         sd last_ctx
-        if ctxBlockCat==5
+        if ctxBlockCat=5
             setcall sig_ctx avc_significant_coeff_flag_offset_8x8(i)
             setcall last_ctx avc_last_significant_coeff_flag_offset_8x8(i)
         else
@@ -86,7 +86,7 @@ function avc_residual_write(sd residual,sd ctxBlockCat,sd count,sd idx)
             setcall value avc_last_significant_coeff_flag_offset(ctxBlockCat)
             add value last_ctx
             add value 166
-            if i==last
+            if i=last
                 call avc_cabac_decision(value,1)
             else
                 call avc_cabac_decision(value,0)
@@ -97,7 +97,7 @@ function avc_residual_write(sd residual,sd ctxBlockCat,sd count,sd idx)
             add value 105
             call avc_cabac_decision(value,0)
         endelse
-        if i==last
+        if i=last
             set i index
         else
             add array (DWORD)
@@ -130,7 +130,7 @@ function avc_residual_write(sd residual,sd ctxBlockCat,sd count,sd idx)
         sd ctx
         set ctx ctxIdxInc
         add ctx 227
-        if prefix==0
+        if prefix=0
             call avc_cabac_decision(ctx,0)
         else
             call avc_cabac_decision(ctx,1)
@@ -158,7 +158,7 @@ function avc_residual_write(sd residual,sd ctxBlockCat,sd count,sd idx)
             set sufix abs_m1
             sub sufix 14
             sd loop=1
-            while loop==1
+            while loop=1
                 setcall value shl(1,k)
                 if sufix>=value
                     call avc_cabac_bypass(1)
@@ -181,7 +181,7 @@ function avc_residual_write(sd residual,sd ctxBlockCat,sd count,sd idx)
         setcall value array_get_int(i_coeff_sign,i)
 
         call avc_cabac_bypass(value)
-        if abs_m1==0
+        if abs_m1=0
             inc abslevel1
         else
             inc abslevelgt1
@@ -269,7 +269,7 @@ function avc_cabac_mb_cbf_ctxidxinc(sd ctxBlockCat,sd idx)
     sd idx_x
     sd idx_y
     sd cbp
-    if ctxBlockCat==0
+    if ctxBlockCat=0
         if left_nr>0
             #i_mba_xy = h->mb.i_mb_xy -1; or not -1
             set mba_xy 0
@@ -277,7 +277,7 @@ function avc_cabac_mb_cbf_ctxidxinc(sd ctxBlockCat,sd idx)
             set left left_nr
             dec left
             setcall type avc_mb_data((value_item),(avc_mb_type_offset),left,top_nr)
-            if type==(avc_I_16x16)
+            if type=(avc_I_16x16)
                 setcall nza avc_mb_data((value_item),(avc_mb_cbp_offset),left,top_nr)
                 and nza 0x100
             endif
@@ -289,7 +289,7 @@ function avc_cabac_mb_cbf_ctxidxinc(sd ctxBlockCat,sd idx)
             set top top_nr
             dec top
             setcall type avc_mb_data((value_item),(avc_mb_type_offset),left_nr,top)
-            if type==(avc_I_16x16)
+            if type=(avc_I_16x16)
                 setcall nzb avc_mb_data((value_item),(avc_mb_cbp_offset),left_nr,top)
                 and nzb 0x100
             endif
@@ -341,7 +341,7 @@ function avc_cabac_mb_cbf_ctxidxinc(sd ctxBlockCat,sd idx)
                 setcall nzb avc_mb_non_zero((value_get),nzb)
             endif
         endif
-    elseif ctxBlockCat==3
+    elseif ctxBlockCat=3
         if left_nr!=0
             set mba_xy 0
             set left left_nr
@@ -379,9 +379,9 @@ function avc_cabac_mb_cbf_ctxidxinc(sd ctxBlockCat,sd idx)
         setcall idx_c rest(idx,4)
 
         set left left_nr
-        if idx_c==1
+        if idx_c=1
             set mba_xy 0
-        elseif idx_c==3
+        elseif idx_c=3
             set mba_xy 0
         elseif left_nr!=0
             set mba_xy 0
@@ -389,9 +389,9 @@ function avc_cabac_mb_cbf_ctxidxinc(sd ctxBlockCat,sd idx)
         endelseif
 
         set top top_nr
-        if idx_c==2
+        if idx_c=2
             set mbb_xy 0
-        elseif idx_c==3
+        elseif idx_c=3
             set mbb_xy 0
         elseif top_nr!=0
             set mbb_xy 0
@@ -401,7 +401,7 @@ function avc_cabac_mb_cbf_ctxidxinc(sd ctxBlockCat,sd idx)
         if mba_xy!=-1
             setcall cbp avc_mb_data((value_item),(avc_mb_cbp_offset),left,top_nr)
             and cbp 0x30
-            if cbp==0x20
+            if cbp=0x20
                 set idx_x idx
                 add idx_x 16
                 setcall nza avc_scan8(idx_x)
@@ -412,7 +412,7 @@ function avc_cabac_mb_cbf_ctxidxinc(sd ctxBlockCat,sd idx)
         if mbb_xy!=-1
             setcall cbp avc_mb_data((value_item),(avc_mb_cbp_offset),left_nr,top)
             and cbp 0x30
-            if cbp==0x20
+            if cbp=0x20
                 set idx_y idx
                 add idx_y 16
                 setcall nzb avc_scan8(idx_y)
@@ -427,7 +427,7 @@ function avc_cabac_mb_cbf_ctxidxinc(sd ctxBlockCat,sd idx)
     elseif nza>0
         set ctx_add 1
     endelseif
-    if ctx_add==1
+    if ctx_add=1
         inc ctx
     endif
     set ctx_add 0
@@ -436,7 +436,7 @@ function avc_cabac_mb_cbf_ctxidxinc(sd ctxBlockCat,sd idx)
     elseif nzb>0
         set ctx_add 1
     endelseif
-    if ctx_add==1
+    if ctx_add=1
         add ctx 2
     endif
     set value ctxBlockCat
@@ -476,7 +476,7 @@ function avc_mb_cache_init(sd x,sd y,sd type)
 
     call avc_mb_data((value_write),(avc_mb_type_offset),x,y,type)
 
-    if type==(avc_P_SKIP)
+    if type=(avc_P_SKIP)
         call avc_mb_data((value_write),(avc_mb_cbp_offset),x,y,0)
         set i 0
         while i!=(avc_mb_cache_units)

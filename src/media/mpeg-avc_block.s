@@ -72,7 +72,7 @@ function avc_block(sd Y,sd U,sd V,sd x,sd y)
         add residual_ac_ch (15*DWORD)
         inc i
     endwhile
-    if cbp_chroma==0
+    if cbp_chroma=0
         setcall value avc_array_non_zero_count(chroma_dc_u,4)
         addcall value avc_array_non_zero_count(chroma_dc_v,4)
         if value>0
@@ -316,7 +316,7 @@ function avc_dct_pred(sd way,sd plane,sd stride,sd count)
     data preds_init^pred_data
     sd preds
     set preds preds_init
-    if way==(value_set)
+    if way=(value_set)
         call avc_dct_sub_pred_index((value_set),0)
         import "avc_mb_nr_left" avc_mb_nr_left
         import "avc_mb_nr_top" avc_mb_nr_top
@@ -336,15 +336,15 @@ function avc_dct_pred(sd way,sd plane,sd stride,sd count)
         sd dc2
         sd dc3
         #first
-        if left_nr==0
-            if top_nr==0
+        if left_nr=0
+            if top_nr=0
                 set dc0 0x80
                 set dc1 0x80
                 set dc2 0x80
                 set dc3 0x80
             endif
         endif
-        if count==(luma_count)
+        if count=(luma_count)
         #luma
             #left
             if left_nr!=0
@@ -356,7 +356,7 @@ function avc_dct_pred(sd way,sd plane,sd stride,sd count)
                     addcall dc0 array_get_byte(plane,value)
                     inc n
                 endwhile
-                if top_nr==0
+                if top_nr=0
                 #nothing at top, left done
                     add dc0 8
                     setcall dc0 sar(dc0,4)
@@ -374,7 +374,7 @@ function avc_dct_pred(sd way,sd plane,sd stride,sd count)
                     addcall dc1 array_get_byte(plane,value)
                     inc n
                 endwhile
-                if left_nr==0
+                if left_nr=0
                 #nothing at left, top done
                     add dc1 8
                     setcall dc1 sar(dc1,4)
@@ -415,7 +415,7 @@ function avc_dct_pred(sd way,sd plane,sd stride,sd count)
                     addcall s3 array_get_byte(plane,value)
                     inc n
                 endwhile
-                if top_nr==0
+                if top_nr=0
                 #nothing at top, left done
                     set dc0 s2
                     add dc0 2
@@ -440,7 +440,7 @@ function avc_dct_pred(sd way,sd plane,sd stride,sd count)
                     addcall s1 array_get_byte(plane,value)
                     inc n
                 endwhile
-                if left_nr==0
+                if left_nr=0
                 #nothing at left, top done
                     set dc0 s0
                     add dc0 2
@@ -643,7 +643,7 @@ function avc_quant(sd dct,sd upper_limit,sd dc_bool)
     sd quant_mf
     sd shift_value
     setcall quant_mf avc_quant_mf_array()
-    if dc_bool==0
+    if dc_bool=0
         setcall f shl(1,qbits)
         set shift_value qbits
     else
@@ -663,7 +663,7 @@ function avc_quant(sd dct,sd upper_limit,sd dc_bool)
             sd value
             setcall value short_get_to_int(dct)
             if value>0
-                if dc_bool==0
+                if dc_bool=0
                     mult value quant_mf#
                 else
                     mult value i_qmf
@@ -671,7 +671,7 @@ function avc_quant(sd dct,sd upper_limit,sd dc_bool)
                 add value f
                 setcall value sar(value,shift_value)
             else
-                if dc_bool==0
+                if dc_bool=0
                     mult value quant_mf#
                 else
                     mult value i_qmf

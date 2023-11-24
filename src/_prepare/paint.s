@@ -20,7 +20,7 @@ function stage_paint_event(sd widget,sd *event,sd *data)
     sd bool
     setcall bool get_playbool()
     #on gst play don't combine with stage
-    if bool==(TRUE)
+    if bool=(TRUE)
         return (FALSE)
     endif
 
@@ -29,7 +29,7 @@ function stage_paint_event(sd widget,sd *event,sd *data)
     sd p_px^px
     sd err
     setcall err stage_get_sel_pixbuf_nowarning(p_px)
-    if err==(noerror)
+    if err=(noerror)
         import "widget_draw_pixbuf" widget_draw_pixbuf
         call widget_draw_pixbuf(widget,px)
     endif

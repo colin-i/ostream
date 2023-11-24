@@ -49,7 +49,7 @@ function stage_img_with_length(ss file,sd parent)
     import "pixbuf_from_file" pixbuf_from_file
     sd pixbuf
     setcall pixbuf pixbuf_from_file(file)
-    if pixbuf==0
+    if pixbuf=0
         return img
     endif
 
@@ -104,16 +104,16 @@ function stage_img_with_length_fn(sd pixb,sd img)
         sd i=0
         while i!=w
             sd border=0
-            if j==0
+            if j=0
                 set border 1
-            elseif j==prelast_h
+            elseif j=prelast_h
                 set border 1
-            elseif i==0
+            elseif i=0
                 set border 1
-            elseif i==prelast_w
+            elseif i=prelast_w
                 set border 1
             endelseif
-            if border==1
+            if border=1
                 ss px
                 set px pixels
                 set px# 0
@@ -146,7 +146,7 @@ function stage_sel_img_listen(sd newparent)
     sd pi%ptr_img
     sd img=0
     data z=0
-    if pi#==z
+    if pi#=z
         setcall img stage_sel_img_set(newparent)
     endif
     return img
@@ -183,7 +183,7 @@ endfunction
 function stage_sel_framebar_pixbuf()
     sd img
     setcall img stage_get_sel()
-    if img==0
+    if img=0
         return 0
     endif
     importx "_gtk_image_get_pixbuf" gtk_image_get_pixbuf
@@ -208,7 +208,7 @@ function stage_get_sel()
     sd pi%ptr_img
     sd img
     set img pi#
-    if img==0
+    if img=0
         call stage_save_nothing()
         return 0
     endif
@@ -219,7 +219,7 @@ endfunction
 function stage_get_sel_parent(sd ptr_eventbox)
     sd img
     setcall img stage_get_sel()
-    if img==0
+    if img=0
         return (error)
     endif
     setcall ptr_eventbox# gtk_widget_get_parent(img)
@@ -245,7 +245,7 @@ endfunction
 #e
 function stage_get_sel_pixbuf_nowarning(sd ptr)
     sd pi%ptr_img
-    if pi#==0
+    if pi#=0
         return (error)
     endif
     call stage_get_sel_pixbuf(ptr)
@@ -302,7 +302,7 @@ endfunction
 function frame_jobs()
     sd img
     setcall img stage_get_sel()
-    if img==0
+    if img=0
         return 0
     endif
     sd bool
@@ -360,7 +360,7 @@ function stage_get_sel_position(sd p_pos)
     sd pi%ptr_img
     sd img
     set img pi#
-    if img==0
+    if img=0
         return (error)
     endif
     sd selparent

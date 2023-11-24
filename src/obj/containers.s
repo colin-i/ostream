@@ -75,7 +75,7 @@ endfunction
 
 function dialog_handle(sd action,sd value)
     data dialog#1
-    if action==(value_set)
+    if action=(value_set)
         set dialog value
     else
         return dialog
@@ -88,13 +88,13 @@ function dialogfield_size_button(ss title,sd modal_flag,sd forward1,sd forward2,
     setcall dialog dialogfield_size_button_core(title,modal_flag,forward1,width,height,button,bresponse)
     call dialog_handle((value_set),dialog)
 
-    if modal_flag==(GTK_DIALOG_MODAL)
+    if modal_flag=(GTK_DIALOG_MODAL)
     #modal dialog
         importx "_gtk_dialog_run" gtk_dialog_run
         sd response
         setcall response gtk_dialog_run(dialog)
 
-        if response==(GTK_RESPONSE_OK)
+        if response=(GTK_RESPONSE_OK)
             if forward2!=0
                 call forward2()
             endif
@@ -136,13 +136,13 @@ import "slen" slen
 function dialogfield_modal_texter_drawtext(sd procedure,sd text)
 	char text_data#22+modal_texter_mark+1
 	vstr strtext^text_data
-	if procedure==(value_set)
+	if procedure=(value_set)
 	#this is not main thread
 		sd len
 		setcall len slen(text)
 		inc len
 		call cpymem(strtext,text,len)
-	elseif procedure==(value_get)
+	elseif procedure=(value_get)
 	#this is main thread
 		import "draw_expose_text" draw_expose_text
 		call draw_expose_text(text,strtext)
@@ -189,7 +189,7 @@ function dialogfield_modal_texter_init(sd vbox,sd dialog)
 endfunction
 function dialog_modal_texter_drawwidget(sd action,sd value)
     data drawwidget#1
-    if action==(value_set)
+    if action=(value_set)
         set drawwidget value
     else
         return drawwidget
@@ -243,7 +243,7 @@ function dialogfield_modal_texter_sync(ss title,sd forward_init,ss buttontext,sd
     sd dialog
     setcall dialog dialogfield_modal_texter_core(title,forward_init,buttontext)
     call gtk_dialog_run(dialog)
-    while global_flag#==1
+    while global_flag#=1
         import "sleepMs" sleepMs
         set stop_flag# 1
         call sleepMs(500)
@@ -277,7 +277,7 @@ function file_chooser_get_filename(sd dialog)
     ss file
     setcall file file_chooser_get_fname(dialog)
     data z=0
-    if file==z
+    if file=z
         str er="Dialog file name representation error."
         import "texter" texter
         call texter(er)
@@ -319,7 +319,7 @@ function filechooserfield_dialog(sd dialog)
 
     sd resp
     setcall resp gtk_dialog_run(dialog)
-    if resp==(GTK_RESPONSE_ACCEPT)
+    if resp=(GTK_RESPONSE_ACCEPT)
         ss file
         setcall file file_chooser_get_filename(dialog)
         if file!=0
@@ -328,7 +328,7 @@ function filechooserfield_dialog(sd dialog)
             setcall len slen(file)
             inc len
             setcall filename memrealloc(0,len)
-            if filename==0
+            if filename=0
                 call g_free(file)
                 return filename
             endif
@@ -346,7 +346,7 @@ function filechooserfield_forward(sd forward)
     setcall dialog filechooserfield_core()
     sd resp
     setcall resp gtk_dialog_run(dialog)
-    if resp==(GTK_RESPONSE_ACCEPT)
+    if resp=(GTK_RESPONSE_ACCEPT)
         ss file
         setcall file file_chooser_get_filename(dialog)
         if file!=0
@@ -475,14 +475,14 @@ function table_add_row_allCol(sd table,sd row,sd allCol)
 
     sd c=0
     sd col
-    if allCol==true
+    if allCol=true
         set col columns
     else
         set col firstcol
     endelse
     sd add
     set add true
-    while add==true
+    while add=true
         if row#!=0
             call gtk_table_attach_defaults(table,row#,c,col,lastrow,rows)
         endif

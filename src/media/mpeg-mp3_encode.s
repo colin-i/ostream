@@ -92,7 +92,7 @@ function mp3_encode_init()
     mult bits_per_frame 8
 
     sd sideinfo_len
-    if (mp3_channels)==1
+    if (mp3_channels)=1
         set sideinfo_len 168
     else
         set sideinfo_len 288

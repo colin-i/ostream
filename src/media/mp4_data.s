@@ -7,7 +7,7 @@ function mp4_sizes(sd way,sd arg)
     data w#1
     data h#1
     data wh^w
-    if way==(value_set)
+    if way=(value_set)
         import "pixbuf_get_wh" pixbuf_get_wh
         call pixbuf_get_wh(arg,wh)
     else
@@ -24,7 +24,7 @@ import "dword_reverse" dword_reverse
 function mp4_times(sd way,sd p_time)
     import "timeNode" time
     data f_time#1
-    if way==(value_set)
+    if way=(value_set)
         setcall f_time time(0)
         add f_time (GF_ISOM_MAC_TIME_OFFSET)
         setcall f_time dword_reverse(f_time)
@@ -45,7 +45,7 @@ function mp4_tscale()
 endfunction
 function mp4_duration(sd way)
     data duration#1
-    if way==(value_set)
+    if way=(value_set)
         sd dur
         setcall dur mp4_SampleCount((value_get))
         sd timescale
@@ -60,16 +60,16 @@ endfunction
 
 function mp4_timescale(sd way)
     data timescale#1
-    if way==(value_set)
+    if way=(value_set)
         sd fps_1000
         setcall fps_1000 stage_file_options_fps()
         #u32 fps_1000 = (u32) (fps*+ 0.5);
         mult fps_1000 1000
-        if fps_1000==29970
+        if fps_1000=29970
             set timescale 30000
-        elseif fps_1000==23976
+        elseif fps_1000=23976
             set timescale 24000
-        elseif fps_1000==59940
+        elseif fps_1000=59940
             set timescale 60000
         else
             set timescale fps_1000
@@ -80,7 +80,7 @@ function mp4_timescale(sd way)
 endfunction
 function mp4_duration_1000(sd way)
     data duration#1
-    if way==(value_set)
+    if way=(value_set)
         sd dur
         setcall dur mp4_SampleCount((value_get))
         sd ts
@@ -121,7 +121,7 @@ endfunction
 
 function mp4_SampleCount(sd way)
     data SampleCount#1
-    if way==(value_set)
+    if way=(value_set)
         import "stage_frame_time_numbers" stage_frame_time_numbers
         setcall SampleCount stage_frame_time_numbers((stage_frame_time_total_sum))
         addcall SampleCount mp4_video_samples_get()
@@ -131,7 +131,7 @@ function mp4_SampleCount(sd way)
 endfunction
 function mp4_samplesOffset(sd way,sd value)
     data samplesOffset#1
-    if way==(value_set)
+    if way=(value_set)
         set samplesOffset value
     else
         return samplesOffset
@@ -139,7 +139,7 @@ function mp4_samplesOffset(sd way,sd value)
 endfunction
 function mp4_bufferSzOffset(sd way,sd value)
     data bufferSzOffset#1
-    if way==(value_set)
+    if way=(value_set)
         set bufferSzOffset value
     else
         return bufferSzOffset
@@ -147,7 +147,7 @@ function mp4_bufferSzOffset(sd way,sd value)
 endfunction
 function mp4_avgbitrateOffset(sd way,sd value)
     data avgbitrateOffset#1
-    if way==(value_set)
+    if way=(value_set)
         set avgbitrateOffset value
     else
         return avgbitrateOffset
@@ -155,7 +155,7 @@ function mp4_avgbitrateOffset(sd way,sd value)
 endfunction
 function mp4_chunksOffset(sd way,sd value)
     data chunkOffsets#1
-    if way==(value_set)
+    if way=(value_set)
         set chunkOffsets value
     else
         return chunkOffsets

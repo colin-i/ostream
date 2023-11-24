@@ -73,10 +73,10 @@ function ldiv_lowdivisor(sv p,sd dividendlow,sd dividendhigh,sd divisor)
 endfunction
 function ldiv_lowdivisor_s(ss outstr,ss instr,ss dest,sd divisor,sd p_rem)
 	sd start;set start instr
-	if divisor>(0xcCCccCC) #(this-1)*10+9=0x7f...F7 +0xa=0x8...1
+	if divisor>(0xcCCccCC) #(this-1)*10+9 equal 0x7f...F7 +0xa equal 0x8...1
 		#there will be troubles in two places without this
 		dec dest
-		if instr==dest
+		if instr=dest
 			return start
 		endif
 		set dest# 0
@@ -89,7 +89,7 @@ function ldiv_lowdivisor_s(ss outstr,ss instr,ss dest,sd divisor,sd p_rem)
 	sub temp (_0)
 	while temp<divisor
 		inc instr
-		if instr==dest
+		if instr=dest
 			return start
 		endif
 		set n instr#
@@ -228,7 +228,7 @@ function streamtimer(data *data)
 	data true=1
 	data false=0
 
-	if playbool==true
+	if playbool=true
 		data duration64low#1
 		data *duration64high#1
 		data ptrduration^duration64low
@@ -245,7 +245,7 @@ function streamtimer(data *data)
 
 		setcall ptrplaybin getplaybin2ptr()
 		setcall bool gst_element_query_position(ptrplaybin#,ptrformat,ptrcurrent)
-		if bool==false
+		if bool=false
 			str poserr="Could not query current position."
 			call texter(poserr)
 		else
@@ -296,7 +296,7 @@ function statechanged(data *bus,data message)
 	call gst_message_parse_state_changed(message,null,ptrnewstate,null)
 
 	data GST_STATE_PLAYING=GST_STATE_PLAYING
-	if newstate==GST_STATE_PLAYING
+	if newstate=GST_STATE_PLAYING
 		data quadword=8
 
 		sd duration%ptrduration

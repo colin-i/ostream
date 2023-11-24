@@ -43,7 +43,7 @@ function avc_bs_write(sd value,sd len)
             xor unit -1
             and mem# unit
         endelse
-        if pos==0
+        if pos=0
             inc size
             set pos 8
         endif
@@ -63,7 +63,7 @@ function avc_bs_write_ue(sd value)
     data *              ={8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8}
     data *              ={8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8}
     data i_size_tab^i_size_tab_data
-    if value==0
+    if value=0
         call avc_bs_write(1,1)
     else
         #unsigned int temp
@@ -76,7 +76,7 @@ function avc_bs_write_ue(sd value)
         elseif temp>=0x00010000
             set enter 1
         endelseif
-        if enter==1
+        if enter=1
             add i_size 16
             setcall temp sar(temp,16)
         endif

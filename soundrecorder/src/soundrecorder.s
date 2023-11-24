@@ -90,7 +90,7 @@ function record_options(sd file)
     ss cursor
     set cursor options_text
     while len!=0
-        if cursor#==spc
+        if cursor#=spc
             import "_atoi" atoi
             set cursor# 0
             sd value
@@ -100,9 +100,9 @@ function record_options(sd file)
                 call errors(lowval)
                 return 0
             endif
-            if count==0
+            if count=0
                 call channels_value((value_set),value)
-            elseif count==1
+            elseif count=1
                 call rate_value((value_set),value)
             else
                 if value<8
@@ -168,7 +168,7 @@ function record_createthread()
 
     sd thread
     setcall thread CreateThread(0,0,f,0,0,p_thread_id)
-    if thread==0
+    if thread=0
         return 0
     endif
 
@@ -192,7 +192,7 @@ function record_fileandsizes(sd thread_id)
     str wr="wb"
     sd file
     setcall file fopen(filename,wr)
-    if file==0
+    if file=0
         str err="Cannot open the output file."
         call errors(err)
         return 0
@@ -244,7 +244,7 @@ const RIFF_=!
 
     sd bool
     setcall bool file_write(RIFF,(RIFF_size),file)
-    if bool==0
+    if bool=0
         return 0
     endif
 
@@ -272,7 +272,7 @@ const RIFF_=!
     #write riffsize and datasize
     sd position
     setcall position ftell(file)
-    if position==(INVALID_HANDLE)
+    if position=(INVALID_HANDLE)
         str ertell="Get file position error"
         call errors(ertell)
         return 0
@@ -284,7 +284,7 @@ const RIFF_=!
     sd even
     set even position
     and even 1
-    if even==1
+    if even=1
         str pad=""
         setcall bool file_write(pad,1,file)
         if bool!=1
@@ -331,7 +331,7 @@ function record_got_wavein()
     setcall len BufferLength_value()
     sd buffer
     setcall buffer alloc(len)
-    if buffer==0
+    if buffer=0
         return 0
     endif
     import "_free" free
@@ -387,7 +387,7 @@ function record_buffer_next()
     setcall len BufferLength_value()
     sd buffer_2
     setcall buffer_2 alloc(len)
-    if buffer_2==0
+    if buffer_2=0
         return 0
     endif
     call record_prepare_buffer_2(buffer_2)
@@ -497,7 +497,7 @@ function record_second_thread(sd *data)
     sd flag
     setcall flag record_flag((value_get))
 
-    if flag==(flag_stop)
+    if flag=(flag_stop)
         return 0
     endif
 
@@ -523,16 +523,16 @@ function record_loop_messages()
     sd looper=1
     while looper!=-1
         setcall looper GetMessage(msg,0,0,0)
-        if message==(MM_WIM_DATA)
+        if message=(MM_WIM_DATA)
             call record_newbuffer(lParam)
             sd flag
             setcall flag record_flag((value_get))
-            if flag==(flag_stop)
+            if flag=(flag_stop)
                 sd buffers
                 setcall buffers record_buffers((value_get))
                 dec buffers
                 call record_buffers((value_set),buffers)
-                if buffers==0
+                if buffers=0
                     return 0
                 endif
             else
@@ -572,7 +572,7 @@ str options="options.txt"
 str r="rb"
 sd file
 setcall file fopen(options,r)
-if file==0
+if file=0
     str err="Cannot open options file."
     call errors(err)
     return 0

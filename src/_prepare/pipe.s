@@ -259,7 +259,7 @@ function stage_element(sd *bus,sd message,sd ptrpipeline)
             endif
         endif
         #
-		if skip==0
+		if skip=0
 			import "rgb_test" rgb_test
 			setcall pixbuf rgb_test(pixbuf)
 			if pixbuf!=(NULL)
@@ -272,7 +272,7 @@ function stage_element(sd *bus,sd message,sd ptrpipeline)
 		if skip!=0
 			importx "_g_object_unref" g_object_unref
 			call g_object_unref(pixbuf)
-			if skip==1
+			if skip=1
 				call strdworddisp("Skipped frame: ",pos#)
 			else
 				call stage_display_index("Total frames: ",1)
@@ -345,7 +345,7 @@ function stage_start_pipe(ss uri)
 
     importx "_free" free
     call free(mem)
-    if pipe==0
+    if pipe=0
         return (void)
     endif
 

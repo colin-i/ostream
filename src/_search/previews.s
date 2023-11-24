@@ -99,7 +99,7 @@ function search_get_image(ss uri,sd handle)
     setcall pipeline launch_pipe(mem)
 
     call free(mem)
-    if pipeline==n
+    if pipeline=n
         return n
     endif
 

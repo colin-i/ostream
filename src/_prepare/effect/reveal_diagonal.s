@@ -35,7 +35,7 @@ endfunction
 
 function stage_reveal_diagonal_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd rowstride,sd animpixels,sd *animpixbuf,sd in_out)
     data init#1
-    if part==0
+    if part=0
         set init 0
         return 1
     endif
@@ -56,7 +56,7 @@ function stage_reveal_diagonal_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd ro
     const first_diagonal=0
     const second_diagonal=1
 
-    if init==0
+    if init=0
         set init 1
 
         sd corners
@@ -69,12 +69,12 @@ function stage_reveal_diagonal_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd ro
         set height_factor 0
         set effect_side_x 0
         set effect_side_y 0
-        if corners==(top_left)
+        if corners=(top_left)
             set start_x 0
             set start_y 0
 
             set diagonal (second_diagonal)
-        elseif corners==(top_right)
+        elseif corners=(top_right)
             set end_x 0
             set start_y 0
 
@@ -83,7 +83,7 @@ function stage_reveal_diagonal_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd ro
             set effect_side_x 1
 
             set diagonal (first_diagonal)
-        elseif corners==(bottom_left)
+        elseif corners=(bottom_left)
             set start_x 0
             set end_y 0
 
@@ -104,7 +104,7 @@ function stage_reveal_diagonal_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd ro
 
             set diagonal (second_diagonal)
         endelse
-        if in_out==(cover)
+        if in_out=(cover)
             xor effect_side_x 1
             xor effect_side_y 1
         endif
@@ -118,7 +118,7 @@ function stage_reveal_diagonal_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd ro
     set part_frame nr
     div part_frame 2
 
-    if k==part_frame
+    if k=part_frame
         xor width_factor 1
         xor height_factor 1
     endif
@@ -159,7 +159,7 @@ function stage_reveal_diagonal_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd ro
     setcall diag_bottom get_higher(pointwidth_y,pointheight_y)
 
     import "rgb_copy" rgb_copy
-    if effect_side_y==(top_is_effect)
+    if effect_side_y=(top_is_effect)
         call rgb_copy(animpixels,pixels,0,0,w,diag_top,rowstride)
     endif
 
@@ -168,14 +168,14 @@ function stage_reveal_diagonal_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd ro
     while j!=diag_bottom
         import "rule3_two_offsets" rule3_two_offsets
         sd x
-        if diagonal==(first_diagonal)
+        if diagonal=(first_diagonal)
             setcall x rule3_two_offsets(diag_top,j,diag_bottom,diag_left,diag_right)
         else
             setcall x rule3_two_offsets(diag_top,j,diag_bottom,diag_right,diag_left)
         endelse
         sd i
         sd end_i
-        if effect_side_x==(left_is_effect)
+        if effect_side_x=(left_is_effect)
             set i 0
             set end_i x
         else
@@ -194,7 +194,7 @@ function stage_reveal_diagonal_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd ro
         inc j
     endwhile
 
-    if effect_side_y==(bottom_is_effect)
+    if effect_side_y=(bottom_is_effect)
         call rgb_copy(animpixels,pixels,0,diag_bottom,w,h,rowstride)
     endif
 endfunction
@@ -203,7 +203,7 @@ endfunction
 
 
 function stage_effect_corner(sd part,sd vbox)
-    if part==0
+    if part=0
         #frame
         import "framefield" framefield
         str corner="Corner start"
@@ -258,17 +258,17 @@ function stage_effect_corner(sd part,sd vbox)
 
         #top-left
         setcall bool gtk_toggle_button_get_active(c_top_left)
-        if bool==1
+        if bool=1
             return (top_left)
         endif
         #top-right
         setcall bool gtk_toggle_button_get_active(c_top_right)
-        if bool==1
+        if bool=1
             return (top_right)
         endif
         #bottom-left
         setcall bool gtk_toggle_button_get_active(c_bottom_left)
-        if bool==1
+        if bool=1
             return (bottom_left)
         endif
         #bottom

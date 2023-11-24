@@ -38,7 +38,7 @@ function stage_crop_set()
 endfunction
 
 function stage_crop_tool(sd action,sd vbox)
-    if action==(stage_crop_tool_init)
+    if action=(stage_crop_tool_init)
         import "hboxfield_cnt" hboxfield_cnt
         sd hbox
         setcall hbox hboxfield_cnt(vbox)
@@ -135,7 +135,7 @@ function stage_crop_tool(sd action,sd vbox)
         str expose="expose-event"
         data fn^stage_crop_preview_expose
         call connect_signal(display,expose,fn)
-    elseif action==(stage_crop_tool_input)
+    elseif action=(stage_crop_tool_input)
     #preview or set
         sd value
         sd p_value^value
@@ -168,11 +168,11 @@ function stage_crop_tool(sd action,sd vbox)
         import "pixbuf_new_subpixels" pixbuf_new_subpixels
         sd croppixbuf
         setcall croppixbuf pixbuf_new_subpixels(pixbuf,left,top,right,bottom)
-        if croppixbuf==0
+        if croppixbuf=0
             return 0
         endif
 
-        if action==(stage_crop_tool_preview)
+        if action=(stage_crop_tool_preview)
             import "widget_draw_pixbuf" widget_draw_pixbuf
             call widget_draw_pixbuf(display,croppixbuf)
             importx "_g_object_unref" g_object_unref

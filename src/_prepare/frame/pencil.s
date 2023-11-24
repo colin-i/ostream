@@ -13,9 +13,9 @@ const stage_pencil_pixbuf_get=1
 #pixbuf
 function stage_pencil_pixbuf(sd action,sd value)
     data pixbuf#1
-    if action==(stage_pencil_pixbuf_set)
+    if action=(stage_pencil_pixbuf_set)
         set pixbuf value
-    elseif action==(stage_pencil_pixbuf_get)
+    elseif action=(stage_pencil_pixbuf_get)
         return pixbuf
     else
     #if action==(stage_pencil_on_ok)
@@ -31,10 +31,10 @@ importx "_g_object_unref" g_object_unref
 #cursor
 function stage_pencil_cursor(sd action)
     data cursor#1
-    if action==(stage_pencil_cursor_set)
+    if action=(stage_pencil_cursor_set)
         importx "_gdk_cursor_new" gdk_cursor_new
         setcall cursor gdk_cursor_new((GDK_PENCIL))
-    elseif action==(stage_pencil_cursor_get)
+    elseif action=(stage_pencil_cursor_get)
         return cursor
     else
         importx "_gdk_cursor_unref" gdk_cursor_unref
@@ -46,7 +46,7 @@ endfunction
 #color widget
 function stage_pencil_color(sd action,sd value)
     data color#1
-    if action==(value_set)
+    if action=(value_set)
         set color value
     else
     #if action==(value_get)
@@ -57,7 +57,7 @@ endfunction
 #draw widget
 function stage_pencil_draw(sd action,sd value)
     data drawfield#1
-    if action==(value_set)
+    if action=(value_set)
         set drawfield value
     else
     #if action==(value_get)
@@ -67,7 +67,7 @@ endfunction
 
 function stage_pencil_zoomvalue(sd action,sd value)
     data zoomfield#1
-    if action==(value_set)
+    if action=(value_set)
         set zoomfield value
     else
         import "hscale_get" hscale_get
@@ -90,14 +90,14 @@ function stage_pencil()
     sd p_pixbuf^pixbuf
     import "stage_get_sel_pixbuf" stage_get_sel_pixbuf
     call stage_get_sel_pixbuf(p_pixbuf)
-    if pixbuf==0
+    if pixbuf=0
         return 0
     endif
 
     import "pixbuf_copy" pixbuf_copy
     sd workingpixbuf
     setcall workingpixbuf pixbuf_copy(pixbuf)
-    if workingpixbuf==0
+    if workingpixbuf=0
         return 0
     endif
     call stage_pencil_pixbuf((stage_pencil_pixbuf_set),workingpixbuf)
@@ -289,7 +289,7 @@ function stage_pencil_setpixel(sd *ebox,sd event,sd *data)
     setcall sz slen(txt)
     sd bool
     setcall bool memtoint(txt,sz,#pixel_value)
-    if bool==(FALSE)
+    if bool=(FALSE)
         set pixel_value 1
     elseif pixel_value<1
         set pixel_value 1

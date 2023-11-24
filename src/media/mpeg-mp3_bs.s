@@ -43,7 +43,7 @@ function mp3_bs_write(sd value,sd len)
             xor unit -1
             and mem# unit
         endelse
-        if pos==0
+        if pos=0
             inc size
             set pos 8
         endif

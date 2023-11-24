@@ -206,7 +206,7 @@ function l3_subband_init()
             call fmul_quad(const1)
             sd bool
             setcall bool fcom_quad_greater_or_equal(const4)
-            if bool==1
+            if bool=1
                 call fadd_quad(const2)
             else
                 call fsub_quad(const2)

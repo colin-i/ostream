@@ -103,7 +103,7 @@ function mp4_container(sd file,sd pixbuf)
         return 0
     endif
     setcall bool mp3_init()
-    if bool==1
+    if bool=1
         call mp4_file(file,pixbuf)
         call mp3_free()
     endif
@@ -143,7 +143,7 @@ function mp4_file(sd file,sd pixbuf)
     call stage_sound_sizedone((value_set),0)
     sd is_sound_or_is_not
     setcall is_sound_or_is_not mp4_sound_presence_get()
-    if is_sound_or_is_not==0
+    if is_sound_or_is_not=0
         setcall is_sound_or_is_not stage_sound_alloc_getremainingsize()
     endif
     if is_sound_or_is_not!=0
@@ -157,7 +157,7 @@ function mp4_file(sd file,sd pixbuf)
     endif
     #
     setcall bool mp4_start(file)
-    if bool==(TRUE)
+    if bool=(TRUE)
         call mp4_info_set(1)
     endif
 endfunction
@@ -179,7 +179,7 @@ function mp4_start(sd file)
     #
     sd procedure
     setcall procedure mp4_write_expand_get()
-    if procedure==(mp4_expand)
+    if procedure=(mp4_expand)
         #at read for expand stop here
         return (TRUE)
     endif
@@ -220,7 +220,7 @@ function mp4_wrap(sd file,sd name,sd forward,sd f_data,sd sizefield_bytes,sd sub
     endif
     sd procedure
     setcall procedure mp4_write_expand_get()
-    if procedure==(mp4_write)
+    if procedure=(mp4_write)
         sd dummy_size
         sd dummy^dummy_size
         setcall err file_write(dummy,sizefield_bytes,file)
@@ -255,7 +255,7 @@ function mp4_wrap(sd file,sd name,sd forward,sd f_data,sd sizefield_bytes,sd sub
         inc count
     endwhile
 
-    if procedure==(mp4_write)
+    if procedure=(mp4_write)
         sd file_pos_out
         sd ptr_file_pos_out^file_pos_out
         setcall err file_tell(file,ptr_file_pos_out)
@@ -401,7 +401,7 @@ const mvhd_size=!-mvhd_start
 
     sd procedure
     setcall procedure mp4_write_expand_get()
-    if procedure==(mp4_write)
+    if procedure=(mp4_write)
         data times^creationTime
         call mp4_times((value_get),times)
         setcall timeScale mp4_tscale((value_get))
@@ -476,7 +476,7 @@ function mp4_iods(sd file)
 
     sd procedure
     setcall procedure mp4_write_expand_get()
-    if procedure==(mp4_write)
+    if procedure=(mp4_write)
         set iod_size _iod
         sub iod_size iod
 
@@ -566,7 +566,7 @@ function mp4_tkhd(sd file)
 
     sd procedure
     setcall procedure mp4_write_expand_get()
-    if procedure==(mp4_write)
+    if procedure=(mp4_write)
         set tkhd_size _tkhd
         sub tkhd_size tkhd
 
@@ -632,7 +632,7 @@ function mp4_mdhd(sd file)
 
     sd procedure
     setcall procedure mp4_write_expand_get()
-    if procedure==(mp4_write)
+    if procedure=(mp4_write)
         set mdhd_size _mdhd
         sub mdhd_size mdhd
 
@@ -748,7 +748,7 @@ function mp4_vmhd(sd file)
 
     sd procedure
     setcall procedure mp4_write_expand_get()
-    if procedure==(mp4_write)
+    if procedure=(mp4_write)
         set vmhd_size _vmhd
         sub vmhd_size vmhd
 
@@ -765,7 +765,7 @@ endfunction
 function mp4_dinf(sd file)
     sd procedure
     setcall procedure mp4_write_expand_get()
-    if procedure==(mp4_write)
+    if procedure=(mp4_write)
         sd bool
         str drf="dref"
         data drf_fwd^mp4_dref
@@ -924,7 +924,7 @@ const avc1_size=!-avc1_start
 
     sd procedure
     setcall procedure mp4_write_expand_get()
-    if procedure==(mp4_write)
+    if procedure=(mp4_write)
         sd w
         sd h
         sd wh^w
@@ -974,7 +974,7 @@ const avcC_size=!-avcC_start
 
     sd procedure
     setcall procedure mp4_write_expand_get()
-    if procedure==(mp4_write)
+    if procedure=(mp4_write)
         setcall AVCProfileIndication avc_ProfileIndication((value_get))
         setcall profile_compatibility avc_profile_compatibility((value_get))
         setcall AVCLevelIndication avc_LevelIndication((value_get))
@@ -1052,7 +1052,7 @@ const btrt_size=!-btrt_start
 
     sd procedure
     setcall procedure mp4_write_expand_get()
-    if procedure==(mp4_write)
+    if procedure=(mp4_write)
         sd file_pos
         sd ptr_file_pos^file_pos
         sd err
@@ -1100,7 +1100,7 @@ const mp4_stts_size=!-mp4_stts_start
     sd err
     sd procedure
     setcall procedure mp4_write_expand_get()
-    if procedure==(mp4_write)
+    if procedure=(mp4_write)
         setcall sampleCount mp4_SampleCount((value_get))
         setcall sampleCount dword_reverse(sampleCount)
         setcall sampleDelta dword_reverse((sample_delta))
@@ -1154,7 +1154,7 @@ const stsc_size=!-stsc_start
 
     sd procedure
     setcall procedure mp4_write_expand_get()
-    if procedure==(mp4_write)
+    if procedure=(mp4_write)
         setcall samplesPerChunk mp4_SampleCount((value_get))
         setcall samplesPerChunk dword_reverse(samplesPerChunk)
 
@@ -1180,7 +1180,7 @@ const stsz_size=!-stsz_start
 
     sd procedure
     setcall procedure mp4_write_expand_get()
-    if procedure==(mp4_write)
+    if procedure=(mp4_write)
         sd NrOfSamples
         setcall NrOfSamples mp4_SampleCount((value_write))
         setcall sampleCount dword_reverse(NrOfSamples)
@@ -1227,7 +1227,7 @@ const stco_size=!-stco_start
 
     sd procedure
     setcall procedure mp4_write_expand_get()
-    if procedure==(mp4_write)
+    if procedure=(mp4_write)
         import "mp4_chunksOffset" mp4_chunksOffset
         sd file_pos
         sd ptr_file_pos^file_pos
@@ -1341,7 +1341,7 @@ function mp4_mdat(sd file)
         #
         sd mem
         setcall mem memalloc(max_size)
-        if mem==0
+        if mem=0
             return 0
         endif
         sd ex_samples
@@ -1421,7 +1421,7 @@ function mp4_mdat(sd file)
             setcall f_size stage_frame_time_numbers((stage_frame_time_get_at_index),encode_slice)
         endif
         dec f_size
-        if f_size==0
+        if f_size=0
             set f_size -1
             inc current_slice
         endif
@@ -1432,7 +1432,7 @@ function mp4_mdat(sd file)
     sd bf_offset
     setcall bf_offset mp4_bufferSzOffset((value_get))
     setcall bool file_seekSet_setDwRev_goEnd(file,bf_offset,max_size)
-    if bool==0
+    if bool=0
         return 0
     endif
     #average bit rate
@@ -1497,7 +1497,7 @@ endfunction
 function mp4_avc(sd file,sd current_slice)
     sd stop
     setcall stop av_dialog_stop((value_get))
-    if stop==1
+    if stop=1
         return 0
     endif
     if current_slice<0
@@ -1575,7 +1575,7 @@ function mp4_mdat_sound(sd file)
                 endif
                 sd mem
                 setcall mem memalloc(sound_size)
-                if mem==0
+                if mem=0
                     call free(mem)
                     return 0
                 endif
@@ -1608,10 +1608,10 @@ function mp4_mdat_sound(sd file)
         sd timescale=mp3_samplerate
         sd samples=0
         sd loop=1
-        while loop==1
+        while loop=1
             sd stop_question
             setcall stop_question av_dialog_stop((value_get))
-            if stop_question==1
+            if stop_question=1
                 return 0
             endif
             setcall err file_tell(file,ptr_file_pos)
@@ -1772,7 +1772,7 @@ const soundtkhd_size=!-soundtkhd_start
 
     sd procedure
     setcall procedure mp4_write_expand_get()
-    if procedure==(mp4_write)
+    if procedure=(mp4_write)
         data tm^creationTime
         call mp4_times((value_get),tm)
         setcall duration mp4_sound_duration()
@@ -1830,7 +1830,7 @@ const soundmdhd_size=!-soundmdhd_start
 
     sd procedure
     setcall procedure mp4_write_expand_get()
-    if procedure==(mp4_write)
+    if procedure=(mp4_write)
         sd times^creationTime
         call mp4_times((value_get),times)
         set timeScale (mp3_samplerate)
@@ -2009,7 +2009,7 @@ const mp4a_size=!-mp4a_start
     #
     sd procedure
     setcall procedure mp4_write_expand_get()
-    if procedure==(mp4_write)
+    if procedure=(mp4_write)
         import "int_into_short" int_into_short
         sd sr
         setcall sr dword_reverse((mp3_samplerate))
@@ -2076,7 +2076,7 @@ const esds_size=!-esds_start
 
     sd procedure
     setcall procedure mp4_write_expand_get()
-    if procedure==(mp4_write)
+    if procedure=(mp4_write)
         const _esds^ESID
         const esds_^esds
         set esd_size (esds_-_esds)
@@ -2155,7 +2155,7 @@ const soundstts_size=!-soundstts_start
 
     sd procedure
     setcall procedure mp4_write_expand_get()
-    if procedure==(mp4_write)
+    if procedure=(mp4_write)
         sd sample_count
         setcall sample_count mp4_sample_count()
         setcall sampleCount dword_reverse(sample_count#)
@@ -2185,7 +2185,7 @@ const soundstsc_size=!-soundstsc_start
 
     sd procedure
     setcall procedure mp4_write_expand_get()
-    if procedure==(mp4_write)
+    if procedure=(mp4_write)
         sd sample_count
         setcall sample_count mp4_sample_count()
         setcall samplesPerChunk dword_reverse(sample_count#)
@@ -2212,7 +2212,7 @@ const soundstsz_size=!-soundstsz_start
 
     sd procedure
     setcall procedure mp4_write_expand_get()
-    if procedure==(mp4_write)
+    if procedure=(mp4_write)
         sd err
         sd file_pos
         sd ptr_file_pos^file_pos
@@ -2253,7 +2253,7 @@ const soundstco_size=!-soundstco_start
 
     sd procedure
     setcall procedure mp4_write_expand_get()
-    if procedure==(mp4_write)
+    if procedure=(mp4_write)
         sd err
         sd file_pos
         sd ptr_file_pos^file_pos
@@ -2378,7 +2378,7 @@ function mp4_dialog(ss filename)
     #
     sd procedure
     setcall procedure mp4_write_expand_get()
-    if procedure==(mp4_write)
+    if procedure=(mp4_write)
         #write
         call file_write_forward(filename,mp4_filewrite)
     else
@@ -2398,7 +2398,7 @@ function mp4_dialog(ss filename)
 
     sd info
     setcall info mp4_info_get()
-    if info==(TRUE)
+    if info=(TRUE)
         import "save_inform_saved" save_inform_saved
         call save_inform_saved(filename)
     endif
@@ -2411,7 +2411,7 @@ function mp4_write_seek(sd mem,sd size,sd file)
     sd procedure
     sd err
     setcall procedure mp4_write_expand_get()
-    if procedure==(mp4_write)
+    if procedure=(mp4_write)
         setcall err file_write(mem,size,file)
         if err!=(noerror)
             return (FALSE)
@@ -2429,7 +2429,7 @@ endfunction
 function mp4_write_or_no(sd mem,sd size,sd file)
     sd procedure
     setcall procedure mp4_write_expand_get()
-    if procedure==(mp4_expand)
+    if procedure=(mp4_expand)
         return (noerror)
     endif
     sd err
@@ -2478,7 +2478,7 @@ function mp4_expand_go(ss filepath,ss temppath)
     sd file
     sd err
     setcall err openfile(#file,temppath,"rb")
-    if err==(noerror)
+    if err=(noerror)
         #info
         call dialog_modal_texter_draw("Prepare the original file")
         #store read handle for reading at the other file
@@ -2487,7 +2487,7 @@ function mp4_expand_go(ss filepath,ss temppath)
         #read data
         sd read_bool
         setcall read_bool mp4_start(file)
-        if read_bool==(TRUE)
+        if read_bool=(TRUE)
             #open write
             call mp4_write_expand_set((mp4_write))
             call file_write_forward(filepath,mp4_filewrite)
@@ -2496,11 +2496,11 @@ function mp4_expand_go(ss filepath,ss temppath)
         endif
         #close old file
         call fclose(file)
-        if read_bool==(FALSE)
+        if read_bool=(FALSE)
             #change back if was an error at read
             call change_name(temppath,filepath)
         else
-            if info==(TRUE)
+            if info=(TRUE)
                 #remove initial file
                 call remove(temppath)
             endif

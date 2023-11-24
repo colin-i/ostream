@@ -38,7 +38,7 @@ endfunction
 
 function hscale_entry(sd action,sd value)
     data hscale#1
-    if action==(value_set)
+    if action=(value_set)
         set hscale value
     else
         return hscale
@@ -109,7 +109,7 @@ function stage_brightness_set()
                 div average_color 3
             endif
 
-            if procedure==(blacken)
+            if procedure=(blacken)
                 #sub colors to same level
                 sub end_red average_color
                 sub end_green average_color
@@ -127,7 +127,7 @@ function stage_brightness_set()
             setcall blue rule3_offset(walked,(brightness_half),blue,end_blue)
 
             #correct overflow
-            if procedure==(blacken)
+            if procedure=(blacken)
                 if red<0
                     set red 0
                 endif

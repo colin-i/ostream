@@ -33,7 +33,7 @@ function stage_filechooser_verify_noframes(sd forward_fn)
     import "stage_get_sel" stage_get_sel
     sd img
     setcall img stage_get_sel()
-    if img==0
+    if img=0
         return 0
     endif
     call filechooserfield_forward(forward_fn)
@@ -49,7 +49,7 @@ endfunction
 function stage_add_centered_fn(sd filename)
     sd newpixbuf
     setcall newpixbuf pixbuf_from_file(filename)
-    if newpixbuf==0
+    if newpixbuf=0
         return 0
     endif
     sd pixbuf
@@ -163,7 +163,7 @@ endfunction
 function stage_new_frame_form_set()
     sd pixbuf
     setcall pixbuf stage_frame_form_data((stage_frame_form_data_pixbuf))
-    if pixbuf==0
+    if pixbuf=0
         return 0
     endif
     call stage_new_pixbuf(pixbuf)
@@ -217,15 +217,15 @@ function stage_frame_form_data_init(sd vbox,sd pixbuf)
 endfunction
 
 function stage_frame_form_data(sd action,sd value)
-    if action==0
+    if action=0
         data width_entry#1
         set width_entry value
         return 0
-    elseif action==1
+    elseif action=1
         data height_entry#1
         set height_entry value
         return 0
-    elseif action==2
+    elseif action=2
         data color_entry#1
         set color_entry value
         return 0
@@ -248,7 +248,7 @@ function stage_frame_form_data(sd action,sd value)
     import "new_pixbuf_color" new_pixbuf_color
     sd pixbuf
     setcall pixbuf new_pixbuf_color(width,height,color)
-    if pixbuf==0
+    if pixbuf=0
         return 0
     endif
 

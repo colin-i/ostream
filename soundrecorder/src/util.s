@@ -10,7 +10,7 @@ endfunction
 
 #bool
 function file_write(sd buffer,sd size,sd file)
-    if size==0
+    if size=0
         return 1
     endif
     sd sizewrote
@@ -29,7 +29,7 @@ function alloc(sd size)
     import "_malloc" malloc
     sd buffer
     setcall buffer malloc(size)
-    if buffer==0
+    if buffer=0
         str er="Memory alloc error"
         call errors(er)
         return buffer

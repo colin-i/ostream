@@ -57,27 +57,27 @@ function avc_init(sd pixbuf)
 
     sd mem_pre_in
     setcall mem_pre_in memalloc(alloc_size)
-    if mem_pre_in==0
+    if mem_pre_in=0
         return 0
     endif
     call avc_pre_input((value_set),mem_pre_in)
     sd mem_in
     setcall mem_in memalloc(alloc_size)
-    if mem_in==0
+    if mem_in=0
         call avc_free()
         return 0
     endif
     call avc_input((value_set),mem_in)
     sd mem_out
     setcall mem_out memalloc(alloc_size)
-    if mem_out==0
+    if mem_out=0
         call avc_free()
         return 0
     endif
     call avc_output((value_set),mem_out)
     sd mem_nal_out
     setcall mem_nal_out memalloc(alloc_size)
-    if mem_nal_out==0
+    if mem_nal_out=0
         call avc_free()
         return 0
     endif
@@ -87,14 +87,14 @@ function avc_init(sd pixbuf)
     mult mem_mb mb_h
     mult mem_mb (avc_mb_size)
     setcall mem_mb memalloc(mem_mb)
-    if mem_mb==0
+    if mem_mb=0
         call avc_free()
         return 0
     endif
     call avc_mb_data((value_set),mem_mb)
     sd mem_input_deq
     setcall mem_input_deq memalloc(alloc_size)
-    if mem_input_deq==0
+    if mem_input_deq=0
         call avc_free()
         return 0
     endif

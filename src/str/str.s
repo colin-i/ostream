@@ -16,12 +16,12 @@ function slen_s(ss str,sd size,sd ptrszout)
 
     set ptrszout# size
     set loop one
-    while loop==one
-        if size==zero
+    while loop=one
+        if size=zero
             set loop zero
         else
             Set byte str#
-            if byte==term
+            if byte=term
                 set loop zero
             else
                 Inc str
@@ -30,7 +30,7 @@ function slen_s(ss str,sd size,sd ptrszout)
         endelse
     endwhile
     sub ptrszout# size
-    if size==zero
+    if size=zero
         str er="String null termination expected."
         call texter(er)
         return er
@@ -59,7 +59,7 @@ function path_extension(ss path)
     add cursor len
     while cursor!=path
         dec cursor
-        if cursor#==delim
+        if cursor#=delim
             inc cursor
             return cursor
         endif
@@ -71,7 +71,7 @@ endfunction
 import "move_cursors" move_cursors
 function move_cursors_test(sd str_sz,sd size,sd advance)
     data true=1
-    if advance==true
+    if advance=true
         call move_cursors(str_sz,size)
     endif
 endfunction
@@ -94,8 +94,8 @@ Function strinmem_portions_advance(sd str_sz,str match,sd takeall,sd advance)
         import "content_size" content_size
         call content_size(str_sz,string_size)
 
-        if nrsz==zero
-            if takeall==true
+        if nrsz=zero
+            if takeall=true
                 call move_cursors_test(str_sz,size,advance)
                 return size
             else
@@ -113,7 +113,7 @@ Function strinmem_portions_advance(sd str_sz,str match,sd takeall,sd advance)
         Data b#1
         While sz>=nrsz
                 SetCall b cmpmem(cnt,match,nrsz)
-                If b==zero
+                If b=zero
                     Sub cnt content
                     call move_cursors_test(str_sz,cnt,advance)
                     call move_cursors_test(str_sz,nrsz,advance)
@@ -207,7 +207,7 @@ function string_alloc_escaped(ss unescaped)
     while unescaped#!=0
         set cursor_escaped# unescaped#
         char bslash="\\"
-        if unescaped#==bslash
+        if unescaped#=bslash
             inc cursor_escaped
             set cursor_escaped# bslash
         endif

@@ -11,7 +11,7 @@ function stage_cover_panel(sd action,sd button,sd backfn,sd panel)
 
     data panelwidget#1
 
-    if action==(buttons_panel_open)
+    if action=(buttons_panel_open)
         set openbutton button
         set panelwidget panel
         set backfunction backfn
@@ -120,11 +120,11 @@ endfunction
 
 function stage_reveal_centerline_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd rowstride,sd animpixels,sd *animpixbuf,sd in_out)
     data init#1
-    if part==0
+    if part=0
         set init 0
         return 0
     endif
-    if init==0
+    if init=0
         data last_frame#1
         set last_frame nr
         dec last_frame
@@ -144,7 +144,7 @@ function stage_reveal_centerline_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd 
         data end_height#1
 
 
-        if in_out==(uncover)
+        if in_out=(uncover)
             set start_width 0
             set end_width w
             set start_height 0
@@ -165,7 +165,7 @@ function stage_reveal_centerline_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd 
     sd top
     sd right
     sd bottom
-    if axis==(width_axis)
+    if axis=(width_axis)
         set left 0
         set right w
         setcall bottom rule3_offset(k,last_frame,start_height,end_height)

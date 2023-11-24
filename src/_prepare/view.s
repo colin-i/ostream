@@ -397,7 +397,7 @@ function stage_prepare_uri_set()
     sd bool
     setcall text gtk_entry_get_text(f_entry#)
     setcall len slen(text)
-    if len==0
+    if len=0
         set first# -1
     else
         setcall bool strtoint_positive(text,first)
@@ -407,7 +407,7 @@ function stage_prepare_uri_set()
     endelse
     setcall text gtk_entry_get_text(l_entry#)
     setcall len slen(text)
-    if len==0
+    if len=0
         set last# -1
     else
         setcall bool strtoint_positive(text,last)
@@ -554,7 +554,7 @@ endfunction
 
 function stage_vbox(sd part,sd value)
     data vbox#1
-    if part==0
+    if part=0
         set vbox value
     else
         return vbox
@@ -639,7 +639,7 @@ function stage_init_frame_sizes()
     #
     sd pixbuf
     setcall pixbuf pixbuf_from_file(normalframe)
-    if pixbuf==0
+    if pixbuf=0
         set frame_width# 10
         return 25
     endif
@@ -950,7 +950,7 @@ function sound_pixbuf_paint()
             call fistp(#x)
             sd channels=0
             while channels!=nr_of_channels
-                if bps==8
+                if bps=8
                     set value_max 0x7f
                     set value sound_bytes_cursor#
                     if value>=0x80
@@ -990,7 +990,7 @@ function sound_pixbuf_paint()
                 add y_last number
 
                 set y half
-                if y==y_last
+                if y=y_last
                     #do at least a dot
                     add y_last y_sens
                 endif

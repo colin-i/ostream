@@ -115,7 +115,7 @@ function stage_nthPixbufFromContainer(sd value)
     setcall container stage_get_frames_container()
     sd eventbox
     setcall eventbox nthwidgetFromcontainer(container,value)
-    if eventbox==0
+    if eventbox=0
         return 0
     endif
     sd pixbuf
@@ -213,17 +213,17 @@ function stage_file_need_fn(sd appsrc)
     if eventbox!=0
         sd d%stage_file_dialog
         data false=0
-        if d#==false
+        if d#=false
             return false
         endif
 
         import "stage_get_fr_length" stage_get_fr_length
-        if file_frames_portions==0
+        if file_frames_portions=0
             setcall file_frames_portions stage_get_fr_length(eventbox)
             call stage_progress_dialog_inc(file_frames)
         endif
         dec file_frames_portions
-        if file_frames_portions==0
+        if file_frames_portions=0
             inc file_frames
         endif
 
@@ -271,7 +271,7 @@ function stage_file_need_fn(sd appsrc)
         endif
 
         setcall eventbox stage_nthwidgetFromcontainer(file_frames)
-        if eventbox==0
+        if eventbox=0
             #state must be play or pause
             importx "_gst_app_src_end_of_stream" gst_app_src_end_of_stream
             call gst_app_src_end_of_stream(appsrc)
@@ -309,7 +309,7 @@ function stage_file_command(ss command)
     import "launch_pipe_start" launch_pipe_start
     sd pipe
     setcall pipe launch_pipe_start(command)
-    if pipe==0
+    if pipe=0
         return 0
     endif
 
@@ -373,7 +373,7 @@ function stage_save_all()
     str mk="mkv"
     sd cmp
     setcall cmp cmpmem(format,mk,3)
-    if cmp==(equalCompare)
+    if cmp=(equalCompare)
         import "mkvfile" mkvfile
         call mkvfile((capture_flag_off))
         return 1
@@ -381,7 +381,7 @@ function stage_save_all()
 
     import "is_local_avi" is_local_avi
     setcall bool is_local_avi()
-    if bool==1
+    if bool=1
         import "aviwrite" aviwrite
         call aviwrite(0)
         return 1
@@ -390,7 +390,7 @@ function stage_save_all()
     import "slen" slen
     str mp4="mp4"
     setcall cmp cmpmem(format,mp4,3)
-    if cmp==(equalCompare)
+    if cmp=(equalCompare)
         import "mp4_write" mp4_write
         call mp4_write()
         return 1
@@ -465,9 +465,9 @@ endfunction
 
 function av_frames(sd action,sd value)
     data image_nr#1
-    if action==(value_set)
+    if action=(value_set)
         set image_nr value
-    elseif action==(value_get)
+    elseif action=(value_get)
         return image_nr
     else
         #const get_buffer=value_extra
@@ -475,7 +475,7 @@ function av_frames(sd action,sd value)
         #image_nr = frame index
         sd eventbox
         setcall eventbox stage_nthwidgetFromcontainer(image_nr)
-        if eventbox==0
+        if eventbox=0
             return 0
         endif
 
@@ -506,7 +506,7 @@ function av_frames_mainpixbuf_sizes(sd wh)
 endfunction
 
 function av_good_fps(sd ptr_fps)
-    if ptr_fps#==0
+    if ptr_fps#=0
         set ptr_fps# 1
         str fpsnotzero="Frames-per-second can not be 0"
         call texter(fpsnotzero)
@@ -519,27 +519,27 @@ import "alloc_block" alloc_block
 function stage_read_values(sd action,sd append,sd append_size)
     data mem#1
     data size#1
-    if action==(value_set)
+    if action=(value_set)
     #bool
         setcall mem alloc_block((value_set))
-        if mem==0
+        if mem=0
             return 0
         endif
         set size 0
         return 1
-    elseif action==(value_unset)
+    elseif action=(value_unset)
         call free(mem)
-    elseif action==(value_append)
+    elseif action=(value_append)
     #bool
         sd appendresult
         setcall appendresult alloc_block((value_append),mem,size,append,append_size)
-        if appendresult==0
+        if appendresult=0
             return 0
         endif
         set mem appendresult
         add size append_size
         return 1
-    elseif action==(value_write)
+    elseif action=(value_write)
         sd cursor
         set cursor mem
         sd pixbuf
@@ -561,7 +561,7 @@ function stage_read_values(sd action,sd append,sd append_size)
     #if action==(value_custom)
     #increment the last frame length
     #bool
-        if size==0
+        if size=0
             return 0
         endif
         sd pointer
@@ -580,7 +580,7 @@ function stage_files_read()
     import "filechooserfield" filechooserfield
     sd filename
     setcall filename filechooserfield()
-    if filename==0
+    if filename=0
         return 0
     endif
 
@@ -590,16 +590,16 @@ function stage_files_read()
     sd length
     setcall length slen(extension)
     sd format=format_raw
-    if length==3
+    if length=3
         sd compare
         str avi="avi"
         setcall compare cmpmem(avi,extension,3)
-        if compare==(equalCompare)
+        if compare=(equalCompare)
             set format (format_avi)
         else
             str mkv="mkv"
             setcall compare cmpmem(mkv,extension,3)
-            if compare==(equalCompare)
+            if compare=(equalCompare)
                 set format (format_mkv)
             endif
         endelse
@@ -608,9 +608,9 @@ function stage_files_read()
     import "aviread" aviread
     import "stage_mkv_read" stage_mkv_read
     import "capture_raw_read" capture_raw_read
-    if format==(format_avi)
+    if format=(format_avi)
         call aviread(filename)
-    elseif format==(format_mkv)
+    elseif format=(format_mkv)
         call stage_mkv_read(filename)
     else
         call capture_raw_read(filename)

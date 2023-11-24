@@ -18,7 +18,7 @@ function Scriptfullpath(sv ptrfullpath)
 	data MAX_PATH=MAX_PATH
 	sd err
 	setcall err memoryalloc(MAX_PATH,ptrfullpath)
-	if err==(noerror)
+	if err=(noerror)
 		data size#1
 		setcall size GetModuleFileName((NULL),ptrfullpath#,MAX_PATH)
 		if size!=(NULL)
@@ -40,13 +40,13 @@ function movetoScriptfolder(data forward)
 	data err#1
 	data noerr=noerror
 	setcall err Scriptfullpath(ptrpath)
-	if err==noerr
+	if err=noerr
 		data pointer#1
 		char z=0
 		setcall pointer endoffolders(path)
 		set pointer# z
 		setcall err dirch(path)
-		if err==noerr
+		if err=noerr
 			call forward()
 		endif
 		call free(path)
@@ -63,10 +63,10 @@ Function filepathdelims(char chr)
         char slash="/"
         Data true=TRUE
         Data false=FALSE
-        If chr==bslash
+        If chr=bslash
                 Return true
         EndIf
-        If chr==slash
+        If chr=slash
                 Return true
         EndIf
         Return false
@@ -84,7 +84,7 @@ Function endoffolders(ss path)
         dec cursor
         sd bool
         setcall bool filepathdelims(cursor#)
-        if bool==(TRUE)
+        if bool=(TRUE)
             inc cursor
             return cursor
         endif
@@ -184,7 +184,7 @@ const DIB_RGB_COLORS=0
 
 function dest_dc(sd action,sd value)
     data dc#1
-    if action==(value_set)
+    if action=(value_set)
         set dc value
     else
         return dc
@@ -192,7 +192,7 @@ function dest_dc(sd action,sd value)
 endfunction
 function dest_dib(sd action,sd value)
     data dib#1
-    if action==(value_set)
+    if action=(value_set)
         set dib value
     else
         return dib
@@ -200,7 +200,7 @@ function dest_dib(sd action,sd value)
 endfunction
 function gdi_toggle(sd action,sd value)
     data gdi_entry#1
-    if action==(value_set)
+    if action=(value_set)
         set gdi_entry value
     else
         return gdi_entry
@@ -286,7 +286,7 @@ function capture_alternative_prepare(sd p_mem,sd pix_width,sd pix_height)
     setcall srcDC GetWindowDC(0)
     sd destDC
     setcall destDC CreateCompatibleDC(srcDC)
-    if destDC==0
+    if destDC=0
         str no_dc="DC error"
         call texter(no_dc)
         return 0
@@ -315,7 +315,7 @@ function capture_alternative_prepare(sd p_mem,sd pix_width,sd pix_height)
 
     sd dib
     setcall dib CreateDIBSection(destDC,bitmap,(DIB_RGB_COLORS),p_mem,0,0)
-    if dib==0
+    if dib=0
         call DeleteObject(destDC)
         str no_dib="DIB error"
         call texter(no_dib)
@@ -334,7 +334,7 @@ function capture_alternative_append(sd x,sd y,sd pix_width,sd pix_height,sd curs
     sd destDC
     setcall destDC dest_dc((value_get))
     call BitBlt(destDC,0,0,pix_width,pix_height,srcDC,x,y,(SRCCOPY))
-    if cursor_flag==1
+    if cursor_flag=1
         #CURSORINFO
         data cbSize#1
         data *flags#1
@@ -392,7 +392,7 @@ function mass_foldername(ss foldername)
 endfunction
 
 function fileiterate(ss foldername,ss spec,sd forward,sd data)
-    if foldername==0
+    if foldername=0
         return 0
     endif
     sd p_foldername^foldername
@@ -416,7 +416,7 @@ function fileiteration(sd p_foldername,ss spec,sd forward,sd data)
     import "cpymem" cpymem
     sd foldername
     setcall foldername memrealloc(p_foldername#,flen)
-    if foldername==0
+    if foldername=0
         return 0
     endif
     set p_foldername# foldername
@@ -449,7 +449,7 @@ function fileiteration(sd p_foldername,ss spec,sd forward,sd data)
 
     sd handle
     setcall handle findfirst(foldername,file_info)
-    if handle==-1
+    if handle=-1
         return 0
     endif
     str onedot="."
@@ -459,7 +459,7 @@ function fileiteration(sd p_foldername,ss spec,sd forward,sd data)
     set path fname
     add path folderlen
     sd end=0
-    while end==0
+    while end=0
         sd namelen
         setcall namelen slen(fname)
 
@@ -469,11 +469,11 @@ function fileiteration(sd p_foldername,ss spec,sd forward,sd data)
         if cmp!=(equalCompare)
             setcall cmp cmpmem_s(fname,namelen,twodots,2)
         endif
-        if cmp==(equalCompare)
+        if cmp=(equalCompare)
             set verify 0
         endif
 
-        if verify==1
+        if verify=1
             inc namelen
             call cpymem(reserve,fname,namelen)
             call cpymem(fname,foldername,folderlen)
@@ -490,7 +490,7 @@ function mass_folder_file(ss name,sd *attrib,sd p_counter)
     call stage_prepare()
     import "stage_mkv_read" stage_mkv_read
     call stage_mkv_read(name)
-    if p_counter#==0
+    if p_counter#=0
         import "aviwrite" aviwrite
         str location#1
         sd counter
@@ -510,7 +510,7 @@ function mass_init_file()
     import "is_local_avi" is_local_avi
     sd bool
     setcall bool is_local_avi()
-    if bool==0
+    if bool=0
         import "message_dialog" message_dialog
         ss er="Set avi(i420,mjpeg,mpg4-asp) from the Stage Options"
         call message_dialog(er)
@@ -541,10 +541,10 @@ function mass_many_folders_poweroff(sd poweroff_flag)
     #fileiterate returns if folder==0
     call fileiterate(foldername,nullstr,forwrd,0)
 
-    if foldername==0
+    if foldername=0
         return 0
     endif
-    if poweroff_flag==1
+    if poweroff_flag=1
         call shutdown()
     endif
 endfunction
@@ -560,7 +560,7 @@ function mass_all_folders(ss filefolder_entry,sd attrib)
         inc len
         sd mem
         setcall mem memalloc(len)
-        if mem==0
+        if mem=0
             return 0
         endif
         call cpymem(mem,filefolder_entry,len)
@@ -570,7 +570,7 @@ endfunction
 
 function files_counter(sd action,sd value)
     data counter#1
-    if action==(value_set)
+    if action=(value_set)
         set counter value
     else
         return counter
@@ -596,7 +596,7 @@ function shutdown()
     str comm="shutdown /p"
     sd bool
     setcall bool CreateProcess(0,comm,0,0,0,0,0,0,startupInfo,procinfo)
-    if bool==0
+    if bool=0
         str er="CreateProcess failed"
         call texter(er)
         return 0
@@ -671,7 +671,7 @@ const sound_preview_buffers_max=128
 function sound_preview_write_buffer(sd buffer,sd buffer_size)
     sd hwaveout
     setcall hwaveout sound_preview_mm_hwaveout()
-    if hwaveout#==0
+    if hwaveout#=0
         return (void)
     endif
 	const wvhd=!
@@ -749,7 +749,7 @@ function sound_preview_buffers_unprep(sd nr,sd wavehdr)
     setcall bools sound_preview_buffers_bool()
     mult nr (DWORD)
     add bools nr
-    if bools#==1
+    if bools#=1
         sd hwo
         setcall hwo sound_preview_mm_hwaveout()
         sd waveheader
@@ -829,7 +829,7 @@ function sound_preview_init()
     mult size nr
     sd buffers_space
     setcall buffers_space memalloc(size)
-    if buffers_space==0
+    if buffers_space=0
         call sound_preview_free()
         return 0
     endif
@@ -869,7 +869,7 @@ function sound_preview_end_and_no_errors()
     sd max
     setcall max sound_mm_buffers_get()
     while i<max
-        if bools#==(TRUE)
+        if bools#=(TRUE)
             sd buffer
             setcall buffer sound_preview_mm_buffers(i)
             const off_lpData=0
@@ -882,7 +882,7 @@ function sound_preview_end_and_no_errors()
             sd flags
             set flags buffer#
             and flags (WHDR_DONE)
-            if flags==0
+            if flags=0
                 return (FALSE)
             endif
         endif
@@ -1101,7 +1101,7 @@ function init_args()
 			sv c;sv s;setcall s uninit_print(#c)
 			import "uninit_decision" uninit_decision
 			sd b;setcall b uninit_decision()
-			if b==(TRUE)
+			if b=(TRUE)
 				import "uninit_delete" uninit_delete
 				call uninit_delete(s,c)
 			endif

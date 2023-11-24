@@ -55,7 +55,7 @@ function stage_fade_tool(sd *part,sd k,sd nr,sd pixels,sd w,sd h,sd rowstride,sd
             const fadein=0
             #const fadeout=1
             import "rule3_offset" rule3_offset
-            if in_out==(fadein)
+            if in_out=(fadein)
                 setcall red rule3_offset(k,last_index,red_bg,red)
                 setcall green rule3_offset(k,last_index,green_bg,green)
                 setcall blue rule3_offset(k,last_index,blue_bg,blue)

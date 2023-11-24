@@ -18,7 +18,7 @@ function mix_timeout_verify(sd file)
     if err!=(noerror)
         return err
     endif
-    if filelength==newfilelength
+    if filelength=newfilelength
         str timeexpired="Timeout, stopped"
         call texter(timeexpired)
         data dialog#1
@@ -38,7 +38,7 @@ function mix_timeout(sd *data)
     #terminates this loop if pipe was unset
     data pipe#1
     const ptr_pipe_for_timeout^pipe
-    if pipe==0
+    if pipe=0
         return 0
     endif
 
@@ -66,7 +66,7 @@ function mix_timeout(sd *data)
 	char onedot={Period,0}
 	import "slen" slen
 	setcall pos slen(text)
-	if pos==3
+	if pos=3
 		call texter(#onedot)
 		return 1
 	endif
@@ -110,7 +110,7 @@ function mix_launch_got_command(sd command)
     setcall ptr_pipe_tm# launch_pipe_start(command)
     sd pipe
     set pipe ptr_pipe_tm#
-    if pipe==0
+    if pipe=0
         return 0
     endif
     sd ptr_pipe%ptr_pipe
@@ -126,7 +126,7 @@ function mix_launch_got_command(sd command)
     setcall text gtk_entry_get_text(tm)
     sd bool
     setcall bool strtoint_positive(text,ptr_timeout)
-    if bool==0
+    if bool=0
         return 0
     endif
     mult timeout 1000

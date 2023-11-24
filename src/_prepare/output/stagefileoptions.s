@@ -125,7 +125,7 @@ function stage_file_options_output()
 endfunction
 function stage_file_options_info_message(sd action,sd value)
     data flag#1
-    if action==(value_set)
+    if action=(value_set)
         set flag value
     else
         return flag
@@ -178,7 +178,7 @@ function stage_file_options_structure(sd start,sd arg1)
 
     sd ptr_out
     setcall ptr_out stage_file_options_output_pointer()
-    if start==true
+    if start=true
         sd vbox
         set vbox arg1
         importx "_gtk_frame_new" gtk_frame_new
@@ -295,7 +295,7 @@ function stage_file_options_structure(sd start,sd arg1)
         setcall update_toggle gtk_check_button_new_with_label(up_txt)
         sd update
         setcall update update_mem()
-        if update#==(TRUE)
+        if update#=(TRUE)
             call gtk_toggle_button_set_active(update_toggle,1)
         endif
         call packstart_default(vbox,update_toggle)
@@ -485,7 +485,7 @@ endfunction
 function forward_in_sys_folder(sd action,sd fname,sd frw)
     data filename#1
     data forward#1
-    if action==(value_set)
+    if action=(value_set)
         set filename fname
         set forward frw
     else
@@ -536,10 +536,10 @@ function stage_properties_enc(sd *button,sd *data)
     setcall options stage_properties_enc_get_options_format()
 
     import "dialogfield_size" dialogfield_size
-    if options==(options_jpg)
+    if options=(options_jpg)
         call jpeg_dialog()
         return 1
-    elseif options==(options_mpg)
+    elseif options=(options_mpg)
         import "mpeg_settings_init" mpeg_settings_init
         import "mpeg_settings_set" mpeg_settings_set
         data mpeg_i_f^mpeg_settings_init
@@ -562,27 +562,27 @@ function stage_properties_enc_get_options_format()
     setcall format stage_file_get_format()
     str mk="mkv"
     setcall cmp cmpmem(format,mk,3)
-    if cmp==(equalCompare)
+    if cmp=(equalCompare)
         setcall encoder stage_file_get_mkv_encoder()
-        if encoder==(format_mkv_mjpg)
+        if encoder=(format_mkv_mjpg)
             return (options_jpg)
-        elseif encoder==(format_mkv_xvid)
+        elseif encoder=(format_mkv_xvid)
             return (options_mpg)
         endelseif
     endif
     str avi="avi"
     setcall cmp cmpmem(format,avi,3)
-    if cmp==(equalCompare)
+    if cmp=(equalCompare)
         setcall encoder stage_file_get_avi_encoder()
-        if encoder==(format_avi_mjpg)
+        if encoder=(format_avi_mjpg)
             return (options_jpg)
-        elseif encoder==(format_avi_xvid)
+        elseif encoder=(format_avi_xvid)
             return (options_mpg)
         endelseif
     endif
     str mp4="mp4"
     setcall cmp cmpmem(format,mp4,3)
-    if cmp==(equalCompare)
+    if cmp=(equalCompare)
         return (options_mpg)
     endif
     return (options_na)

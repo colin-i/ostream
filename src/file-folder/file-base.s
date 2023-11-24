@@ -22,7 +22,7 @@ import "strerrno" strerrno
 Function openfile(data pfile,str path,str fmode)
         data null=0
         SetCall pfile# fopen(path,fmode)
-        If pfile#==null
+        If pfile#=null
             str err="Cannot open a file. Error: "
             call strerrno(err)
             return err
@@ -82,7 +82,7 @@ endfunction
 #e
 function file_tell(sd file,sd p_sz)
     setcall p_sz# ftell(file)
-    if p_sz#==-1
+    if p_sz#=-1
         str ftellerr="File tell error: "
         call strerrno(ftellerr)
         return ftellerr
@@ -367,7 +367,7 @@ endfunction
 function file_write(sd buffer,sd size,sd file)
     data z=0
     data noe=noerror
-    if size==z
+    if size=z
         return noe
     endif
     data byte=1

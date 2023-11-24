@@ -13,7 +13,7 @@ function mp3_init()
     sd size=BUFFER_SIZE
     import "memalloc" memalloc
     setcall output memalloc(size)
-    if output==0
+    if output=0
         return 0
     endif
     call mp3_output((value_set),output)
@@ -114,7 +114,7 @@ function mp3_steptab_init()
         call fadd_quad(double)
         sd bool
         setcall bool fcom_quad_greater(const3)
-        if bool==1
+        if bool=1
             set steptabi# 0x7fFFffFF
         else
             call fadd_quad(const4)
