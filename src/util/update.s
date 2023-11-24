@@ -29,14 +29,14 @@ function update_async_callback(sd ses,sd msg) #,sd data
 	import "getSessionMessageBody" getSessionMessageBody
 	sd bool
 	setcall bool getSessionMessageBody(msg,#netmem,#netsize)
-	if bool==(TRUE)
+	if bool=(TRUE)
 		call move_to_share_v()
 		sd mem
 		sd size
 		import "file_get_content" file_get_content
 		sd err
 		setcall err file_get_content("version.txt",#size,#mem)
-		if err==(noerror)
+		if err=(noerror)
 			call update_got_netversion(mem,size,netmem,netsize)
 			call free(mem)
 		endif
@@ -65,7 +65,7 @@ function update_got_netversion(sd mem,sd size,sd netmem,ss netsize)
 		add netsize newmem
 		set netsize# 0
 
-		if compare==(differentCompare)
+		if compare=(differentCompare)
 			call update_got_new(newmem)
 		else
 			call printf("version: %s\n",newmem)
@@ -77,7 +77,7 @@ endfunction
 function update()
 	sd up
 	setcall up update_get()
-	if up==(FALSE)
+	if up=(FALSE)
 		return (void)
 	endif
 

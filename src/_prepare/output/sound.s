@@ -18,7 +18,7 @@ import "texter" texter
 
 function stage_sound_file_entry(sd action,sd value)
     data file_entry#1
-    if action==(value_set)
+    if action=(value_set)
         set file_entry value
     else
         return file_entry
@@ -26,7 +26,7 @@ function stage_sound_file_entry(sd action,sd value)
 endfunction
 function stage_sound_file_path(sd action,sd value)
     data path#1
-    if action==(value_set)
+    if action=(value_set)
         set path value
     else
         return path
@@ -34,7 +34,7 @@ function stage_sound_file_path(sd action,sd value)
 endfunction
 function stage_sound_pipe(sd action,sd value)
     data pipe#1
-    if action==(value_set)
+    if action=(value_set)
         set pipe value
     else
         return pipe
@@ -42,7 +42,7 @@ function stage_sound_pipe(sd action,sd value)
 endfunction
 function stage_sound_dialog(sd action,sd value)
     data dialog#1
-    if action==(value_set)
+    if action=(value_set)
         set dialog value
     else
         return dialog
@@ -63,7 +63,7 @@ function stage_sound()
         import "sound_preview_end_and_no_errors" sound_preview_end_and_no_errors
 
         setcall bool sound_preview_end_and_no_errors()
-        if bool==(FALSE)
+        if bool=(FALSE)
             str er="The sound is on, stop the stage preview first"
             call texter(er)
             return (void)
@@ -107,7 +107,7 @@ function stage_sound()
 
     importx "_gtk_widget_destroy" gtk_widget_destroy
 
-    if response==(GTK_RESPONSE_OK)
+    if response=(GTK_RESPONSE_OK)
         call stage_sound_set()
         call gtk_widget_destroy(dialog)
         sd filepath
@@ -116,7 +116,7 @@ function stage_sound()
                 #for not messing the sound
             import "mass_remove_job" mass_remove_job
             setcall bool mass_remove_job()
-            if bool==1
+            if bool=1
             #sound import
                 call stage_sound_init_appsink(filepath)
             endif
@@ -161,7 +161,7 @@ function stage_sound_init_appsink(sd filepath)
 
 		sd err
 		setcall err allocsum_null(sound_format,p_command)
-		if err==(noerror)
+		if err=(noerror)
 			#concatenate the command
 			importx "_sprintf" sprintf
 			call sprintf(command,launchformat,flocation,bin,caps)
@@ -390,7 +390,7 @@ function stage_sound_copy()
     sd filename
     setcall filename file_chooser_get_fname(fileentry)
 
-    if filename==0
+    if filename=0
         return 0
     endif
 
@@ -407,7 +407,7 @@ function stage_sound_set()
     sd filename
     setcall filename file_chooser_get_fname(fileentry)
 
-    if filename==0
+    if filename=0
         str no_f="No file name selected"
         call texter(no_f)
         return 0
@@ -453,7 +453,7 @@ function stage_sound_fade()
         setcall channels stage_sound_channels((value_get))
         while channels!=0
             sd pos
-            if BYps==1
+            if BYps=1
                 set value bytes#
                 sub value 0x80
             else
@@ -481,7 +481,7 @@ function stage_sound_fade()
             call fdiv_quad(double)
             call fistp(p_value)
 
-            if BYps==1
+            if BYps=1
                 add value 0x80
                 set bytes# value
             else
@@ -534,7 +534,7 @@ function stage_amplify(sd *widget,sd entry)
     while pos<all_samples
         sd chn=0
         while chn<channels
-            if bits_per_sample==8
+            if bits_per_sample=8
                 set item buf#
                 if item<0x80
                     set value 0x80
@@ -543,7 +543,7 @@ function stage_amplify(sd *widget,sd entry)
                     set value item
                     sub value 0x80
                 endelse
-            elseif bits_per_sample==16
+            elseif bits_per_sample=16
                 setcall value short_get_to_int(buf)
             else
                 call texter("wrong bits-per-sample")
@@ -553,7 +553,7 @@ function stage_amplify(sd *widget,sd entry)
             call fmul_quad(#multp)
             call fistp(#value)
             sd res_value
-            if bits_per_sample==8
+            if bits_per_sample=8
                 if item<0x80
                     set res_value 0x80
                     sub res_value value
@@ -616,7 +616,7 @@ endfunction
 
 function stage_sound_subsize(sd action,sd value)
     data subsize#1
-    if action==(value_set)
+    if action=(value_set)
         set subsize value
     else
         return subsize
@@ -628,28 +628,28 @@ function stage_sound_alloc(sd action,sd newblock,sd newblock_size)
     data p_alloc^alloc
     data size#1
 
-    if action==(stage_sound_alloc_init)
+    if action=(stage_sound_alloc_init)
     #init the memory
         set alloc 0
         set size 0
         call stage_sound_subsize((value_set),0)
         call memoryrealloc(p_alloc,size)
         return 0
-    elseif action==(stage_sound_alloc_getremainingsize)
+    elseif action=(stage_sound_alloc_getremainingsize)
     #get the remaining size
         sd sz
         setcall sz stage_sound_subsize((value_get))
         subcall sz stage_sound_sizedone((value_get))
         return sz
-    elseif action==(stage_sound_alloc_getbytes)
+    elseif action=(stage_sound_alloc_getbytes)
         return alloc
     endelseif
-    if alloc==0
+    if alloc=0
         return 0
     endif
-    if action==(stage_sound_alloc_free)
+    if action=(stage_sound_alloc_free)
         call free(alloc)
-    elseif action==(stage_sound_alloc_expand)
+    elseif action=(stage_sound_alloc_expand)
         sd newsubsize
         setcall newsubsize stage_sound_subsize((value_get))
         add newsubsize newblock_size
@@ -678,7 +678,7 @@ function stage_sound_alloc(sd action,sd newblock,sd newblock_size)
     #stage_sound_alloc_printdialog_time
         sd stop_flag
         setcall stop_flag sound_stop_flag()
-        if stop_flag#==1
+        if stop_flag#=1
             #safe close the main thread if stop pressed
             call sound_global_flag_set(0)
             return (void)
@@ -707,7 +707,7 @@ function stage_sound_alloc(sd action,sd newblock,sd newblock_size)
         char datastring#!-sountformbufstart-2-2+modal_texter_mark
         vstr print^datastring
         call sprintf(print,#format,seconds,sec_rest)
-        if action==(stage_sound_alloc_printtexter_time)
+        if action=(stage_sound_alloc_printtexter_time)
             import "dialog_modal_texter_draw" dialog_modal_texter_draw
             call dialog_modal_texter_draw(print)
         else
@@ -731,7 +731,7 @@ endfunction
 
 function stage_sound_sizedone(sd action,sd value)
     data done#1
-    if action==(value_set)
+    if action=(value_set)
         set done value
     else
         return done
@@ -804,7 +804,7 @@ endfunction
 
 function stage_sound_channels(sd action,sd value)
     data channels=2
-    if action==(value_set)
+    if action=(value_set)
         set channels value
     else
         return channels
@@ -812,7 +812,7 @@ function stage_sound_channels(sd action,sd value)
 endfunction
 function stage_sound_rate(sd action,sd value)
     data rate=48000
-    if action==(value_set)
+    if action=(value_set)
         set rate value
     else
         return rate
@@ -820,7 +820,7 @@ function stage_sound_rate(sd action,sd value)
 endfunction
 function stage_sound_bps(sd action,sd value)
     data bps=16
-    if action==(value_set)
+    if action=(value_set)
         set bps value
     else
         return bps

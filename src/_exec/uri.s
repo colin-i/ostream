@@ -99,7 +99,7 @@ function gstplayinit(data videowidget)
     data playbin2#1
     set playbin2 playbin2ptr#
 
-    if playbin2==null
+    if playbin2=null
         str factoryerr="Not all elements could be created."
         call texter(factoryerr)
         return factoryerr
@@ -127,7 +127,7 @@ function widget_gdk_window_native_get(sd widget)
 	setcall window gtk_widget_get_window(widget)
 	sd bool
 	setcall bool gdk_window_ensure_native(window)
-	if bool==(TRUE)
+	if bool=(TRUE)
 		return window
 	endif
 	str noNative="Couldn't create native window needed for GstXOverlay!"

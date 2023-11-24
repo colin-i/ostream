@@ -19,9 +19,9 @@ function movetoScriptfolder(data forward)
 	sd f
 	sd err
 	setcall f share_folder(#err,(NULL))
-	if err==(noerror)
+	if err=(noerror)
 		setcall err move_to_folder(f)
-		if err==(noerror)
+		if err=(noerror)
 			call forward()
 			return (void)
 		endif
@@ -131,7 +131,7 @@ endfunction
 
 function term_toggle(sd action,sd value)
     data term_entry#1
-    if action==(value_set)
+    if action=(value_set)
         set term_entry value
     else
         return term_entry
@@ -178,7 +178,7 @@ function capture_alternative_prepare()
     data forward^capture_alt_thread_proc
     sd thread
     setcall thread g_thread_create(forward,0,1,ptrgerr)
-    if thread==0
+    if thread=0
         import "gerrtoerr" gerrtoerr
         call gerrtoerr(ptrgerr)
         call capture_alt_showback()
@@ -215,7 +215,7 @@ function capture_alt_ev(sd action)
     #sem_t is required to keep it at even(?)(at 4?) address (something about to share it by processes and threads)
     data ev#2*8+4
     data event^ev
-    if action==(value_set)
+    if action=(value_set)
         import "multiple_of_nr" multiple_of_nr
         setcall event multiple_of_nr(event,4)
         call createevent(event)
@@ -256,7 +256,7 @@ endfunction
 
 function capture_alt_thread(sd action,sd value)
     data thread#1
-    if action==(value_set)
+    if action=(value_set)
         set thread value
     else
         return thread
@@ -264,7 +264,7 @@ function capture_alt_thread(sd action,sd value)
 endfunction
 function capture_alt_thread_dup(sd action,sd value)
     data thread#1
-    if action==(value_set)
+    if action=(value_set)
         set thread value
     else
         return thread
@@ -302,7 +302,7 @@ function fd_elt(sd d)
     return elt
 endfunction
 function capture_alt_thread_proc(sd *noArg)
-    while 1==1
+    while 1=1
         const STDIN_FILENO=0
         const fd_set_size=128
         char filedescriptor_set#fd_set_size
@@ -336,7 +336,7 @@ function capture_alt_thread_proc(sd *noArg)
         endif
         sd thread_dup
         setcall thread_dup capture_alt_thread_dup((value_get))
-        if thread_dup==0
+        if thread_dup=0
             return 0
         endif
     endwhile
@@ -404,7 +404,7 @@ function sound_preview_init()
     sd bool
     setcall bool sound_preview_initialize(handle#,hw_params)
     call snd_pcm_hw_params_free(hw_params)
-    if bool==0
+    if bool=0
         call sound_preview_free()
     endif
 	#set buffer size 0 needed for write
@@ -451,7 +451,7 @@ function sound_preview_initialize(sd handle,sd hw_params)
     import "stage_sound_bps" stage_sound_bps
     sd bps
     setcall bps stage_sound_bps((value_get))
-    if bps==8
+    if bps=8
         setcall err snd_pcm_hw_params_set_format(handle,hw_params,(SND_PCM_FORMAT_U8))
     else
         setcall err snd_pcm_hw_params_set_format(handle,hw_params,(SND_PCM_FORMAT_S16_LE))
@@ -501,13 +501,13 @@ function alsa_write(sd procedure,sd random_key,sd bf_pos,sd all_buffer_size)
     #values
     sd handle
     setcall handle sound_preview_playback_handle()
-    if handle#==0
+    if handle#=0
         return (void)
     endif
     data pos#1
     data buffer_size#1
     data wait_bufferfull_timeout#1
-    if procedure==(value_extra)
+    if procedure=(value_extra)
         set buffer_size 0
         set wait_bufferfull_timeout 0
         call alsa_full_set((value_set),#wait_bufferfull_timeout)
@@ -521,11 +521,11 @@ function alsa_write(sd procedure,sd random_key,sd bf_pos,sd all_buffer_size)
     import "stage_sound_blockalign" stage_sound_blockalign
     sd blockalign
     setcall blockalign stage_sound_blockalign()
-    if procedure==(value_set)
+    if procedure=(value_set)
         if buffer_size!=0
             div all_buffer_size blockalign
             add buffer_size all_buffer_size
-            if wait_bufferfull_timeout==1
+            if wait_bufferfull_timeout=1
                 #a timeout will resolve the new sound
                 return (void)
             endif
@@ -537,7 +537,7 @@ function alsa_write(sd procedure,sd random_key,sd bf_pos,sd all_buffer_size)
     endif
     sd low_size
     setcall low_size alsa_low_size(pos,buffer_size)
-    if low_size==1
+    if low_size=1
         return (void)
     endif
     #get available size
@@ -602,7 +602,7 @@ endfunction
 
 function alsa_full_set(sd procedure,sd ptr)
     data p#1
-    if procedure==(value_set)
+    if procedure=(value_set)
         set p ptr
     else
         return p
@@ -644,7 +644,7 @@ function alsa_write_and_verify_key(sd key)
     sd k
     import "sound_random_key" sound_random_key
     setcall k sound_random_key()
-    if k#==key
+    if k#=key
         #k#!=key means another frame pressed
         call alsa_write((value_run),key)
     endif
@@ -703,7 +703,7 @@ function sound_preview_end_and_no_errors_continuation(sd handle,sd status)
     endif
     sd state
     setcall state snd_pcm_status_get_state(status)
-    if state==(SND_PCM_STATE_RUNNING)
+    if state=(SND_PCM_STATE_RUNNING)
         return (FALSE)
     endif
     return (TRUE)
@@ -755,9 +755,9 @@ function move_to_home()
 	sd f
 	sd er
 	setcall er home_folder(#f,(NULL))
-	if er==(noerror)
+	if er=(noerror)
 		setcall er init_dir(f)
-		if er==(noerror)
+		if er=(noerror)
 			setcall er move_to_folder(f)
 		endif
 	endif
@@ -781,7 +781,7 @@ function move_to_home_core(sv p)
 		if f!=(NULL)
 			sd b
 			setcall b cat_absolute_verif(mem,h,f,p#)
-			if b==(TRUE)
+			if b=(TRUE)
 				set p# mem
 			endif
 		endif
@@ -791,7 +791,7 @@ function move_to_share_v()
 	sd f
 	sd err
 	setcall f share_folder(#err,(NULL))
-	if err==(noerror)
+	if err=(noerror)
 		call dirch(f)
 	endif
 endfunction
@@ -804,10 +804,10 @@ function move_to_share_core(sv p)
 		sd err
 		ss prefix=""
 		setcall f share_folder(#err,#prefix)
-		if err==(noerror)
+		if err=(noerror)
 			sd b
 			setcall b cat_absolute_verif(mem,prefix,f,p#)
-			if b==(TRUE)
+			if b=(TRUE)
 				set p# mem
 			endif
 		endif
@@ -819,9 +819,9 @@ function uninit_start()
 	sd f
 	sd er
 	setcall er home_folder(#f,(NULL))
-	if er==(noerror)
+	if er=(noerror)
 		sd a;setcall a access(f,(F_OK))
-		if a==0
+		if a=0
 			setcall er move_to_folder(f)
 		else
 			return (error)
@@ -842,7 +842,7 @@ function home_folder(sv pf,sv ph)
 	setcall envpath getenv("HOME")
 	if envpath!=(NULL)
 		vstr a="ovideo"
-		if ph==(NULL)
+		if ph=(NULL)
 			sd err
 			setcall err move_to_folder(envpath)
 			if err!=(noerror)
@@ -862,7 +862,7 @@ function home_folder_r(sd p)
 	sd er
 	sd f
 	setcall er home_folder(#f,p)
-	if er==(noerror)
+	if er=(noerror)
 		return f
 	endif
 	call texter(er)
@@ -885,7 +885,7 @@ function init_args(sd argc,sv argv)
 	setcall cmp strcmp(argv#,"d")
 	if cmp!=0
 		setcall cmp strcmp(argv#,"--help")
-		if cmp==0
+		if cmp=0
 			call puts("ovideo --help              This help
 ovideo --remove-config     Remove configuration files
 ovideo PATH_NAME           PATH_NAME=\"path to share folder\"
@@ -893,9 +893,9 @@ ovideo d PATH_NAME         same")
 			return (FALSE)
 		endif
 		setcall cmp strcmp(argv#,"--remove-config")
-		if cmp==0
+		if cmp=0
 			sd er;setcall er uninit_start()
-			if er==(noerror)
+			if er=(noerror)
 				import "uninit_print" uninit_print
 				import "uninit_print_entry" uninit_print_entry
 				sv c;sv s;setcall s uninit_print(#c)
@@ -903,7 +903,7 @@ ovideo d PATH_NAME         same")
 				call uninit_print_entry(current_folder)
 				import "uninit_decision" uninit_decision
 				sd b;setcall b uninit_decision()
-				if b==(TRUE)
+				if b=(TRUE)
 					import "uninit_delete" uninit_delete
 					call uninit_delete(s,c)
 					import "uninit_delete_folder" uninit_delete_folder
@@ -914,7 +914,7 @@ ovideo d PATH_NAME         same")
 		endif
 	else
 	#share folder can be a reserved word. example: --help
-		if argc==2
+		if argc=2
 			call puts("Missing PATH_NAME")
 			return (FALSE)
 		endif
@@ -926,11 +926,11 @@ endfunction
 #string
 function share_folder(sv p_err,sv prefix)
 	value a%shareprefix_p
-	if a#==(NULL)
+	if a#=(NULL)
 		set p_err# (noerror)
 		include "share.txt"
 	endif
-	if prefix==(NULL)
+	if prefix=(NULL)
 		setcall p_err# move_to_folder(a#)
 	else
 		set prefix# a#
@@ -1100,7 +1100,7 @@ function iterate_next_forward_free(sd iter,sd forward)
 	call setmemzero(ptr_elem,(gvalue_sz)) #this is G_VALUE_INIT,elem must have been initialized to the type of the iterator or initialized to zeroes
 	sd ret
 	setcall ret gst_iterator_next(iter,ptr_elem)
-	if ret==(GST_ITERATOR_OK)
+	if ret=(GST_ITERATOR_OK)
 		sd obj
 		setcall obj g_value_get_object(ptr_elem)
 		call forward(obj)
@@ -1141,7 +1141,7 @@ function stage_sound_buffer(sd gstappsink,sd *user_data)
 	const GST_MAP_READ=1
 	sd bool
 	setcall bool gst_buffer_map(b,#map,(GST_MAP_READ)) #this is bool, but
-	if bool==(TRUE)
+	if bool=(TRUE)
 		import "stage_sound_expand" stage_sound_expand
 		call stage_sound_expand(#map,(2*:),(3*:))
 		importx "gst_buffer_unmap" gst_buffer_unmap

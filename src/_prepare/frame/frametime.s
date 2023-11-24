@@ -10,7 +10,7 @@ function stage_frame_time()
     import "stage_get_sel" stage_get_sel
     sd img
     setcall img stage_get_sel()
-    if img==0
+    if img=0
         return 0
     endif
 
@@ -65,7 +65,7 @@ function stage_frame_time_set()
     sd ptr_value^value
     sd bool
     setcall bool strtoint_positive_not_zero(text,ptr_value)
-    if bool==0
+    if bool=0
         return 0
     endif
 
@@ -83,7 +83,7 @@ endfunction
 #method is defined at olang.h
 
 function stage_frame_time_numbers(sd method,sd index,sd newvalue,sd numberoftimes)
-    if method==(stage_frame_time_init)
+    if method=(stage_frame_time_init)
         #const stage_frame_time_init=0
         data frames#1
         data size#1
@@ -91,13 +91,13 @@ function stage_frame_time_numbers(sd method,sd index,sd newvalue,sd numberoftime
         set size 0
         set frames 0
         return 1
-    elseif method==(stage_frame_time_append)
+    elseif method=(stage_frame_time_append)
         #const stage_frame_time_append=1
         import "memoryrealloc" memoryrealloc
         add size 4
         sd err
         setcall err memoryrealloc(ptr_frames,size)
-        if err==(noerror)
+        if err=(noerror)
             sd pointer
             set pointer frames
             add pointer size
@@ -105,14 +105,14 @@ function stage_frame_time_numbers(sd method,sd index,sd newvalue,sd numberoftime
             set pointer# index
         endif
         return 1
-    elseif method==(stage_frame_time_free)
+    elseif method=(stage_frame_time_free)
         #const stage_frame_time_free=2
         importx "_free" free
         if frames!=0
             call free(frames)
         endif
         return 1
-    elseif method==(stage_frame_time_get_at_index)
+    elseif method=(stage_frame_time_get_at_index)
     #get the index from the created database
         mult index 4
         if index>=size
@@ -122,7 +122,7 @@ function stage_frame_time_numbers(sd method,sd index,sd newvalue,sd numberoftime
         set value frames
         add value index
         return value#
-    elseif method==(stage_frame_time_set_frame_length)
+    elseif method=(stage_frame_time_set_frame_length)
     #modify a frame length
         mult index 4
         if index>=size
@@ -133,14 +133,14 @@ function stage_frame_time_numbers(sd method,sd index,sd newvalue,sd numberoftime
         add loc index
         set loc# newvalue
         return 1
-    elseif method==(stage_frame_time_insert)
+    elseif method=(stage_frame_time_insert)
     #insert at index newvalue and numberoftimes
         sd newzone
         set newzone numberoftimes
         mult newzone 4
         add size newzone
         setcall err memoryrealloc(ptr_frames,size)
-        if err==(noerror)
+        if err=(noerror)
             #take cursor for adding frames
             sd walker
             set walker index
@@ -170,7 +170,7 @@ function stage_frame_time_numbers(sd method,sd index,sd newvalue,sd numberoftime
             endwhile
         endif
         return 1
-    elseif method==(stage_frame_time_delete_frame)
+    elseif method=(stage_frame_time_delete_frame)
     #a frame was deleted
         mult index 4
         if index>=size
@@ -194,7 +194,7 @@ function stage_frame_time_numbers(sd method,sd index,sd newvalue,sd numberoftime
         endwhile
         sub size 4
         return 1
-    elseif method==(stage_frame_time_sum_at_index)
+    elseif method=(stage_frame_time_sum_at_index)
     #length at pos returned
         mult index 4
         if index>=size
@@ -257,7 +257,7 @@ importx "_gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
 function stage_split_frame()
     sd framebarpixbuf
     setcall framebarpixbuf stage_sel_framebar_pixbuf()
-    if framebarpixbuf==0
+    if framebarpixbuf=0
         return 0
     endif
 
@@ -267,7 +267,7 @@ function stage_split_frame()
     sd length
     setcall length stage_frame_time_numbers((stage_frame_time_get_at_index),pos)
 
-    if length==1
+    if length=1
         import "texter" texter
         ss lengthlow="Frame length must be greater than 1."
         call texter(lengthlow)
@@ -295,7 +295,7 @@ function stage_split_frame()
         import "cmpmem" cmpmem
         sd memcmp
         setcall memcmp cmpmem(cursor,unit_color,3)
-        if memcmp==(equalCompare)
+        if memcmp=(equalCompare)
             sub cursor pixels
             div cursor 3
             set terminator cursor
@@ -305,14 +305,14 @@ function stage_split_frame()
         endelse
     endwhile
 
-    if noselection==0
+    if noselection=0
         str selerr="Press on the selection to create a frame slot."
         call texter(selerr)
         return 0
     endif
 
     div cursor unit_size
-    if cursor==0
+    if cursor=0
         str notatzero="Split the selection not from the first frame."
         call texter(notatzero)
         return 0
@@ -452,7 +452,7 @@ function set_frame_length_and_redraw(sd pos,sd nr)
     setcall ebox stage_nthwidgetFromcontainer(pos)
     sd selpos
     setcall selpos stage_get_sel_pos()
-    if selpos==pos
+    if selpos=pos
         import "stage_sel_img" stage_sel_img
         call stage_sel_img(ebox)
     else
