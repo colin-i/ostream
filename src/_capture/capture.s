@@ -157,7 +157,7 @@ endfunction
 function capture_format()
     sd raw_flag
     setcall raw_flag capture_raw_option((value_get))
-    if raw_flag==1
+    if raw_flag=1
         return 1
     endif
     import "stage_file_options_output" stage_file_options_output
@@ -182,7 +182,7 @@ function capture_format()
             endif
         endelse
     endelse
-    if capture_bool==0
+    if capture_bool=0
         import "message_dialog" message_dialog
         str txt="Capture with MKV(I420,MJPEG,RGB24) selected at Stage Options"
         call message_dialog(txt)
@@ -193,7 +193,7 @@ endfunction
 
 function capture_files_loop(sd action)
     data loop#1
-    if action==(value_set)
+    if action=(value_set)
         set loop 1
     else
         set loop 1
@@ -218,13 +218,13 @@ function capture_files_loop(sd action)
 
         #get the time and start the loop files
         call capture_time((value_set))
-        while loop==1
+        while loop=1
             #loop 1 can be if max size detected
             set loop 0
 
             # can be temp/raw
             setcall bool capture_direct((value_run))
-            if bool==1
+            if bool=1
             #mkv
                 import "mkvfile" mkvfile
                 call mkvfile((capture_flag_on),file_index)
@@ -258,17 +258,17 @@ function capture_split(sd action,sd value)
     data maxsize#1
 
     data p_maxsize^maxsize
-    if action==(value_set)
+    if action=(value_set)
         set split_entry value
-    elseif action==(value_get)
+    elseif action=(value_get)
         return split_entry
-    elseif action==(value_write)
+    elseif action=(value_write)
         sd bool
         setcall bool entry_to_int_min_N_max_M(split_entry,p_maxsize,1,(max_file_size))
         if bool!=1
             set maxsize (max_file_size)
         endif
-    elseif action==(split_maxsize_value)
+    elseif action=(split_maxsize_value)
         return maxsize
     else
     #bool: 0 stop, 1 continue
@@ -308,24 +308,24 @@ function capture_rect(sd action,sd index,sd value)
     data temporary#1
     data raw#1
 
-    if action==(value_set)
-        if index==(left_coord)
+    if action=(value_set)
+        if index=(left_coord)
             set left value
-        elseif index==(top_coord)
+        elseif index=(top_coord)
             set top value
-        elseif index==(width_coord)
+        elseif index=(width_coord)
             set width value
-        elseif index==(height_coord)
+        elseif index=(height_coord)
             set height value
-        elseif index==(capture_cursor)
+        elseif index=(capture_cursor)
             set cursor value
-        elseif index==(capture_temporary)
+        elseif index=(capture_temporary)
             set temporary value
         else
         #if index==(capture_raw)
             set raw value
         endelse
-    elseif action==(value_get)
+    elseif action=(value_get)
         return #left
     else
     #if action==(value_setrect)
@@ -507,7 +507,7 @@ function capture_time(sd action)
     import "stage_file_options_fps" stage_file_options_fps
     sd fps
     setcall fps stage_file_options_fps()
-    if action==(value_set)
+    if action=(value_set)
         setcall starttime get_time()
         set totalframes 0
         set timeincrement 1000
@@ -574,14 +574,14 @@ function capture_rect_screenshot(sd action)
     data *raw_option#1
 
     data values_rect^x
-    if action==(value_init)
+    if action=(value_init)
     #get the pointer
         return values_rect
     else
     #if action==(value_screenshot)
         sd temporary_flag
         setcall temporary_flag capture_temp_flag((value_get))
-        if temporary_flag==0
+        if temporary_flag=0
         #live screenshot
             call capture_pixbuf((value_append),x,y,wdt,hgt,cursor_option)
         else
@@ -608,7 +608,7 @@ endfunction
 
 function capture_terminal(sd action,sd value)
     data terminal#1
-    if action==(value_set)
+    if action=(value_set)
         set terminal value
     else
         return terminal
@@ -616,7 +616,7 @@ function capture_terminal(sd action,sd value)
 endfunction
 
 function capture_free_stuff(sd cairo_flag,sd cairo,sd surface,sd mem)
-    if cairo_flag==1
+    if cairo_flag=1
         #use cairo
         call capture_free_cairo_and_mem(cairo,surface,mem)
     else
@@ -638,7 +638,7 @@ function capture_pixbuf(sd action,sd x,sd y,sd pix_width,sd pix_height,sd cursor
     data cairo#1
     data surface#1
 
-    if action==(value_set)
+    if action=(value_set)
     #bool
         sd bool
         #init capture mem
@@ -656,14 +656,14 @@ function capture_pixbuf(sd action,sd x,sd y,sd pix_width,sd pix_height,sd cursor
         set cairo_flag 1
         sd p_flag^cairo_flag
         call capture_alternative_set(p_flag,p_term)
-        if cairo_flag==1
+        if cairo_flag=1
         #cairo is default
             #cairo surface and cairo context
             sd root
             setcall root gdk_get_default_root_window()
             importx "_cairo_image_surface_create" cairo_image_surface_create
             setcall surface cairo_image_surface_create((CAIRO_FORMAT_RGB24),width,height)
-            if surface==0
+            if surface=0
                 str surf="Image surface error"
                 call texter(surf)
                 return 0
@@ -693,7 +693,7 @@ function capture_pixbuf(sd action,sd x,sd y,sd pix_width,sd pix_height,sd cursor
             call gdk_cairo_set_source_window(cairo,root,double_x_low,double_x_high,double_y_low,double_y_high)
             #memory
             setcall mem memalloc(sz)
-            if mem==0
+            if mem=0
                 call capture_free_cairo(cairo,surface)
                 return 0
             endif
@@ -706,11 +706,11 @@ function capture_pixbuf(sd action,sd x,sd y,sd pix_width,sd pix_height,sd cursor
         endelse
         importx "_gdk_pixbuf_new_from_data" gdk_pixbuf_new_from_data
         setcall pixbuf gdk_pixbuf_new_from_data(mem,(GDK_COLORSPACE_RGB),(FALSE),8,width,height,rowstr,0,0)
-        if pixbuf==0
+        if pixbuf=0
             call capture_free_stuff(cairo_flag,cairo,surface,mem)
             return 0
         endif
-        if term==1
+        if term=1
             setcall bool capture_alternative_prepare()
             if bool!=1
                 call capture_free_more_stuff(cairo_flag,cairo,surface,mem,pixbuf)
@@ -719,19 +719,19 @@ function capture_pixbuf(sd action,sd x,sd y,sd pix_width,sd pix_height,sd cursor
             call capture_terminal((value_set),1)
         endif
         return 1
-    elseif action==(value_get)
+    elseif action=(value_get)
         return pixbuf
-    elseif action==(value_unset)
+    elseif action=(value_unset)
         call capture_free_more_stuff(cairo_flag,cairo,surface,mem,pixbuf)
         sd t
         setcall t capture_terminal((value_get))
-        if t==1
+        if t=1
             call capture_alternative_free()
             call capture_terminal((value_set),0)
         endif
     else
     #if action==(value_append)
-        if cairo_flag==1
+        if cairo_flag=1
             #use cairo
             call capture_get_cairo_pixbuf(x,y,pix_width,pix_height,cursor_flag,cairo,surface)
         else
@@ -739,7 +739,7 @@ function capture_pixbuf(sd action,sd x,sd y,sd pix_width,sd pix_height,sd cursor
         endelse
         sd raw_flag
         setcall raw_flag capture_raw_option((value_get))
-        if raw_flag==0
+        if raw_flag=0
             sd encoder
             setcall encoder stage_file_get_mkv_encoder()
             if encoder!=(format_mkv_rgb24)
@@ -755,7 +755,7 @@ function capture_cursor_option(sd action,sd value)
     sd capture_set
     setcall capture_set capture_rect_screenshot((value_set))
     add capture_set (cursor_flag_pointer)
-    if action==(value_set)
+    if action=(value_set)
         set capture_set# value
     else
         return capture_set#
@@ -765,7 +765,7 @@ function capture_temp_option(sd action,sd value)
     sd capture_set
     setcall capture_set capture_rect_screenshot((value_set))
     add capture_set (cursor_temp_pointer)
-    if action==(value_set)
+    if action=(value_set)
         set capture_set# value
     else
         return capture_set#
@@ -775,7 +775,7 @@ function capture_raw_option(sd action,sd value)
     sd capture_set
     setcall capture_set capture_rect_screenshot((value_set))
     add capture_set (cursor_raw_pointer)
-    if action==(value_set)
+    if action=(value_set)
         set capture_set# value
     else
         return capture_set#
@@ -787,7 +787,7 @@ endfunction
 
 function capture_temp_flag(sd action,sd value)
     data temp_flag#1
-    if action==(value_set)
+    if action=(value_set)
         set temp_flag value
     else
         return temp_flag
@@ -796,23 +796,23 @@ endfunction
 
 function capture_direct(sd action)
     data temp_viewed#1
-    if action==(value_set)
+    if action=(value_set)
         set temp_viewed 0
         call capture_temp_flag((value_set),0)
     else
     #bool
     #value_run
-        if temp_viewed==1
+        if temp_viewed=1
             return 1
         endif
         set temp_viewed 1
 
         sd direct_way
         setcall direct_way capture_temp_option((value_get))
-        if direct_way==0
+        if direct_way=0
             setcall direct_way capture_raw_option((value_get))
         endif
-        if direct_way==0
+        if direct_way=0
             return 1
         endif
 
@@ -831,7 +831,7 @@ endfunction
 
 function capture_temp_file(sd action,sd value)
     data temp_file#1
-    if action==(value_set)
+    if action=(value_set)
         set temp_file value
     else
         return temp_file
@@ -839,9 +839,9 @@ function capture_temp_file(sd action,sd value)
 endfunction
 function capture_direct_frames(sd action,sd value)
     data temp_frames#1
-    if action==(value_set)
+    if action=(value_set)
         set temp_frames value
-    elseif action==(value_append)
+    elseif action=(value_append)
         inc temp_frames
     else
         #if action==(value_get)
@@ -876,7 +876,7 @@ function capture_direct_start(sd *data)
     ss method
     sd raw_flag
     setcall raw_flag capture_raw_option((value_get))
-    if raw_flag==0
+    if raw_flag=0
 #these formats are related to format_max
         ss temp_format="temp"
         ss temp_method="w+Db"
@@ -894,7 +894,7 @@ function capture_direct_start(sd *data)
     sd bool
     setcall bool capture_direct_run(output_file,method)
 
-    if raw_flag==1
+    if raw_flag=1
     #here all raw files will be processed
         call capture_raw_files(output_file)
         set bool 0
@@ -936,11 +936,11 @@ function capture_direct_run(sd output_file,sd method)
     import "dialog_modal_texter_draw" dialog_modal_texter_draw
     call dialog_modal_texter_draw("Recording..")
     #loop the screenshots
-    while 1==1
+    while 1=1
         #take screenshot
         sd pixbuf
         setcall pixbuf capture_obtain_screenshot()
-        if pixbuf==0
+        if pixbuf=0
             return 0
         endif
         #write screenshot
@@ -965,7 +965,7 @@ function capture_direct_run(sd output_file,sd method)
         import "av_dialog_stop" av_dialog_stop
         sd stop
         setcall stop av_dialog_stop((value_get))
-        if stop==1
+        if stop=1
             #seek at the start for reading
             import "file_seek_set" file_seek_set
             setcall er file_seek_set(file,0)
@@ -1007,7 +1007,7 @@ function capture_get_cairo_pixbuf(sd x,sd y,sd wdt,sd hgt,sd cursor_flag,sd cair
     importx "_cairo_paint" cairo_paint
     call cairo_paint(cairo)
 
-    if cursor_flag==1
+    if cursor_flag=1
         sd root
         setcall root gdk_get_default_root_window()
         call draw_default_cursor(root,x,y,wdt,hgt,cairo)
@@ -1089,9 +1089,9 @@ const raw_get_value=value_extra
 
 function raw_structure(sd action,sd value)
     data structure#1
-    if action==(value_set)
+    if action=(value_set)
         set structure value
-    elseif action==(value_get)
+    elseif action=(value_get)
         return structure
     else
         sd member
@@ -1123,7 +1123,7 @@ function capture_raw_files(sd output_file)
     add frame_size 4
     set frames_per_file maxsize
     div frames_per_file frame_size
-    if frames_per_file==0
+    if frames_per_file=0
         set frames_per_file 1
     endif
 
@@ -1254,13 +1254,13 @@ function capture_raw_read_filedata(sd file)
     while i!=nr_of_frames
         sd stop
         setcall stop av_dialog_stop((value_get))
-        if stop==1
+        if stop=1
             return 0
         endif
 
         sd mem
         setcall mem memalloc(rgb_size)
-        if mem==0
+        if mem=0
             return 0
         endif
 

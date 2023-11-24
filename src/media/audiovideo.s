@@ -6,7 +6,7 @@ include "../_include/include.h"
 
 function av_readwrite_value(sd action,sd value)
     data readwrite_value#1
-    if action==(value_set)
+    if action=(value_set)
         set readwrite_value value
     else
         return readwrite_value
@@ -27,7 +27,7 @@ function av_chunk_readwrite(sd file,sd forward,ss riff)
     sd chunk_size
     sd p_chunk^chunk_id
 
-    if io==(write_file)
+    if io=(write_file)
         import "cpymem" cpymem
         call cpymem(p_chunk,riff,4)
 
@@ -69,7 +69,7 @@ function av_chunk_readwrite(sd file,sd forward,ss riff)
     #io again if changed inside the riff
     setcall io av_readwrite_value((value_get))
 
-    if io==(write_file)
+    if io=(write_file)
     #set the size at write
         sd seg_size_after
         sd ptr_seg_size_after^seg_size_after
@@ -100,7 +100,7 @@ function av_writeseek(sd mem,sd size,sd file)
     sd err
     sd io
     setcall io av_readwrite_value((value_get))
-    if io==(write_file)
+    if io=(write_file)
         setcall err file_write(mem,size,file)
         if err!=(noerror)
             return 0
@@ -186,7 +186,7 @@ function av_dialog_run(sd forward,sd data)
     import "capture_terminal" capture_terminal
     sd term
     setcall term capture_terminal((value_get))
-    if term==0
+    if term=0
         #initiate the dialog
         import "dialogfield_modal_texter_core" dialogfield_modal_texter_core
         ss title="Audio Video Dialog"
@@ -207,11 +207,11 @@ function av_dialog_run(sd forward,sd data)
     importx "_g_thread_create" g_thread_create
     sd thread
     setcall thread g_thread_create(forward,data,1,ptrgerr)
-    if thread==0
+    if thread=0
         import "gerrtoerr" gerrtoerr
         call gerrtoerr(ptrgerr)
     else
-        if term==0
+        if term=0
             #dialog run
             importx "_gtk_dialog_run" gtk_dialog_run
             sd response=GTK_RESPONSE_OK+1
@@ -223,7 +223,7 @@ function av_dialog_run(sd forward,sd data)
                     set stop_click 1
                 endif
             endwhile
-            if stop_click==0
+            if stop_click=0
                 #keep the dialog for viewing informations
                 sd toggle
                 setcall toggle av_results((value_get))
@@ -234,7 +234,7 @@ function av_dialog_run(sd forward,sd data)
                     setcall toggle_button av_results_toggle_button((value_get))
                     importx "_gtk_toggle_button_get_active" gtk_toggle_button_get_active
                     setcall toggle gtk_toggle_button_get_active(toggle_button)
-                    if toggle==1
+                    if toggle=1
                         call stage_file_options_info_message((value_set),0)
                     endif
                 endif
@@ -279,7 +279,7 @@ function av_dialog_close()
 endfunction
 function av_dialog_stop(sd action,sd value)
     data x#1
-    if action==(value_set)
+    if action=(value_set)
         set x value
     else
         return x
@@ -292,11 +292,11 @@ import "slen" slen
 function av_dialog_multiline_info(sd action,sd arg)
     data view#1
     sd buffer
-    if action==(value_set)
+    if action=(value_set)
         set view arg
     else
     #if action==(value_insert)
-        if view==0
+        if view=0
             return 0
         endif
         importx "_gtk_text_view_get_buffer" gtk_text_view_get_buffer
@@ -333,7 +333,7 @@ endfunction
 function av_results(sd action,sd scroll,sd vbox)
     data scroll_entry#1
     data vbox_entry#1
-    if action==(value_set)
+    if action=(value_set)
         set scroll_entry scroll
         set vbox_entry vbox
     else
@@ -346,7 +346,7 @@ function av_results(sd action,sd scroll,sd vbox)
         #info message flag
         sd toggle
         setcall toggle stage_file_options_info_message((value_get))
-        if toggle==0
+        if toggle=0
             return 0
         endif
         importx "_gtk_check_button_new_with_label" gtk_check_button_new_with_label
@@ -364,7 +364,7 @@ endfunction
 
 function av_results_toggle_button(sd action,sd value)
     data toggle#1
-    if action==(value_set)
+    if action=(value_set)
         set toggle value
     else
         return toggle
@@ -383,7 +383,7 @@ function av_display_progress(sd image_nr,sd flag_simple)
 	vstr string^data
 	char format_capture="Processed images: %u"
     importx "_sprintf" sprintf
-    if flag_simple==(av_info_all)
+    if flag_simple=(av_info_all)
         import "stage_get_frames" stage_get_frames
         sd totalframes
         setcall totalframes stage_get_frames()
@@ -409,10 +409,10 @@ function av_display_info(sd action,sd file,sd nr,sd frame_size)
     data p_start^start
     data p_end^end
     data read_counter#1
-    if action==(value_set)
+    if action=(value_set)
         #set read counter
         set read_counter 0
-    elseif action==(value_get)
+    elseif action=(value_get)
         call file_tell(file,p_start)
         #get start pointer
     else
@@ -528,7 +528,7 @@ endfunction
 function combo_location(sd bool,sd data)
     import "stage_get_output_container" stage_get_output_container
     sd location
-    if bool==0
+    if bool=0
         setcall location stage_get_output_container()
     else
         import "capture_path" capture_path
@@ -552,7 +552,7 @@ function av_expand()
     import "filechooserfield" filechooserfield
     sd filename
     setcall filename filechooserfield()
-    if filename==0
+    if filename=0
         return 0
     endif
 
@@ -578,7 +578,7 @@ function av_expand_go(ss filename)
     setcall frm_len slen(a)
     inc frm_len
     setcall compare cmpmem_s(extension,length,a,frm_len)
-    if compare==(equalCompare)
+    if compare=(equalCompare)
         call avi_write_fname(filename,(avi_expand))
         return (void)
     endif
@@ -586,7 +586,7 @@ function av_expand_go(ss filename)
     setcall frm_len slen(m)
     inc frm_len
     setcall compare cmpmem_s(extension,length,m,frm_len)
-    if compare==(equalCompare)
+    if compare=(equalCompare)
         import "mp4_extend" mp4_extend
         call mp4_extend(filename)
         return (void)

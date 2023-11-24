@@ -28,7 +28,7 @@ endfunction
 
 
 function stage_reveal_shape_data(sd action,sd value)
-    if action==0
+    if action=0
         data shape#1
         set shape value
     else
@@ -57,11 +57,11 @@ endfunction
 
 function stage_reveal_shape_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd rowstride,sd animpixels,sd *animpixbuf,sd in_out)
     data init#1
-    if part==0
+    if part=0
         set init 0
         return 0
     endif
-    if init==0
+    if init=0
         data last_frame#1
         set last_frame nr
         dec last_frame
@@ -71,7 +71,7 @@ function stage_reveal_shape_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd rowst
         data start_height#1
         data end_height#1
 
-        if in_out==(uncover)
+        if in_out=(uncover)
             set start_width 0
             set end_width w
             set start_height 0
@@ -118,7 +118,7 @@ function stage_reveal_shape_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd rowst
     sd i
     sd j
     sd value
-    if shape==(stage_reveal_shape_rectangle)
+    if shape=(stage_reveal_shape_rectangle)
         set j top
         while j!=bottom
             set i left
@@ -135,13 +135,13 @@ function stage_reveal_shape_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd rowst
         sd half_width
         set half_width frame_width
         div half_width 2
-        if half_width==0
+        if half_width=0
             return 0
         endif
         sd half_height
         set half_height frame_height
         div half_height 2
-        if half_height==0
+        if half_height=0
             return 0
         endif
 
@@ -168,7 +168,7 @@ function stage_reveal_shape_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd rowst
         while j!=diamond_bottom
             sd bool
             setcall bool stage_reveal_diamond_row(j,h)
-            if bool==1
+            if bool=1
                 sd start_x
                 sd end_x
                 sd start_y
@@ -199,7 +199,7 @@ function stage_reveal_shape_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd rowst
                 endelse
                 setcall i rule3_two_offsets(start_y,j,end_y,start_x,end_x)
 
-                if shape==(stage_reveal_shape_curve)
+                if shape=(stage_reveal_shape_curve)
                 #curve
                     if j<diamond_part_bottom
                         setcall i rule3_two_offsets(diamond_part_top,j,diamond_part_bottom,i,diamond_part_left)

@@ -22,7 +22,7 @@ function mpeg_frame_block(sd max_y,sd max_x,sd type)
         sd x=0
         while x!=max_x
             sd mode=INTRA
-            if type==(P_VOP)
+            if type=(P_VOP)
                 import "mpeg_compare_block" mpeg_compare_block
                 setcall mode mpeg_compare_block(x,y)
             endif
@@ -32,7 +32,7 @@ function mpeg_frame_block(sd max_y,sd max_x,sd type)
             mult mbpos max_x
             add mbpos x
             call macro_blocks_mode((value_set),mbpos,mode)
-            if mode==(INTRA)
+            if mode=(INTRA)
                 call mpeg_mb_trans_quant(x,y,p_dct_codes,p_qcoeff)
 
                 import "mpeg_mb_prediction" mpeg_mb_prediction

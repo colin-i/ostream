@@ -38,7 +38,7 @@ function is_local_avi()
     str avi="avi"
     sd cmp
     setcall cmp cmpmem(format,avi,3)
-    if cmp==(equalCompare)
+    if cmp=(equalCompare)
         sd encoder
         setcall encoder stage_file_get_avi_encoder()
         if encoder!=(format_avi_raw)
@@ -64,7 +64,7 @@ function avi_write_fname(ss location,sd expand)
     #new file or expand file
     call avi_expandvalue((value_set),expand)
     sd method
-    if expand==(avi_new)
+    if expand=(avi_new)
         str w="w+b"
         set method w
     else
@@ -81,7 +81,7 @@ function avi_write_fname(ss location,sd expand)
     #inits
     sd bool
     setcall bool avi_index_mem((value_set))
-    if bool==0
+    if bool=0
         return 0
     endif
 
@@ -95,7 +95,7 @@ function avi_write_fname(ss location,sd expand)
     call avi_index_mem((value_unset))
 
     #
-    if err==(noerror)
+    if err=(noerror)
         import "save_inform_saved" save_inform_saved
         call save_inform_saved(location)
     endif
@@ -131,7 +131,7 @@ endfunction
 
 function avi_expandvalue(sd action,sd value)
     data expandvalue#1
-    if action==(value_set)
+    if action=(value_set)
         set expandvalue value
     else
         return expandvalue
@@ -193,9 +193,9 @@ function aviriff(sd file)
     sd io
     sd encoder
     setcall io av_readwrite_value((value_get))
-    if io==(write_file)
+    if io=(write_file)
         setcall encoder stage_write_avi_encoder((value_get))
-        if encoder==(format_avi_xvid)
+        if encoder=(format_avi_xvid)
             import "stage_mpeg_init" stage_mpeg_init
             setcall bool stage_mpeg_init(file)
             if bool!=1
@@ -204,8 +204,8 @@ function aviriff(sd file)
         endif
     endif
     setcall bool avi_movi_index(file)
-    if io==(write_file)
-        if encoder==(format_avi_xvid)
+    if io=(write_file)
+        if encoder=(format_avi_xvid)
             import "mpeg_release" mpeg_release
             call mpeg_release()
         endif
@@ -222,10 +222,10 @@ function avi_movi_index(sd file)
     sd io
     setcall io av_readwrite_value((value_get))
     call avi_movi_flag((value_set),io)
-    if io==(write_file)
+    if io=(write_file)
         sd expand
         setcall expand avi_expandvalue((value_get))
-        if expand==(avi_expand)
+        if expand=(avi_expand)
             call av_readwrite_value((value_set),(read_file))
         endif
     endif
@@ -252,7 +252,7 @@ function avi_hdrl(sd file)
 
     ss hdrl="hdrl"
     setcall bool riff_w_r_name(file,hdrl)
-    if bool==0
+    if bool=0
         return 0
     endif
     #
@@ -261,7 +261,7 @@ function avi_hdrl(sd file)
     ss avih="avih"
     data h_f^avi_avih
     setcall bool riff_chunk_w_r(file,h_f,avih)
-    if bool==0
+    if bool=0
         return 0
     endif
 
@@ -269,7 +269,7 @@ function avi_hdrl(sd file)
     ss list="LIST"
     data strl_f^avi_streamlist
     setcall bool riff_chunk_w_r(file,strl_f,list)
-    if bool==0
+    if bool=0
         return 0
     endif
 
@@ -278,10 +278,10 @@ function avi_hdrl(sd file)
     sd is_from_read=1
     sd w_r
     setcall w_r av_readwrite_value((value_get))
-    if w_r==(write_file)
+    if w_r=(write_file)
         sd expand
         setcall expand avi_expandvalue((value_get))
-        if expand==(avi_new)
+        if expand=(avi_new)
             sd sz
             setcall sz stage_sound_alloc_getremainingsize()
             if sz!=0
@@ -290,14 +290,14 @@ function avi_hdrl(sd file)
             set is_from_read 0
         endif
     endif
-    if is_from_read==1
+    if is_from_read=1
         sd streams
         setcall streams avi_read_streams((value_get))
-        if streams==2
+        if streams=2
             set audio 1
         endif
     endif
-    if audio==1
+    if audio=1
         data f_audio^avi_strl_audio
         setcall bool riff_chunk_w_r(file,f_audio,list)
         if bool!=1
@@ -308,7 +308,7 @@ function avi_hdrl(sd file)
     #odml header
     data odml_f^avi_odml
     setcall bool riff_chunk_w_r(file,odml_f,list)
-    if bool==0
+    if bool=0
         return 0
     endif
 
@@ -352,13 +352,13 @@ function avi_avih(sd file)
     sd err
     setcall w_r av_readwrite_value((value_get))
 
-    if w_r==(write_file)
+    if w_r=(write_file)
         #sound init
         call stage_sound_sizedone((value_set),0)
 
         sd expand
         setcall expand avi_expandvalue((value_get))
-        if expand==(avi_new)
+        if expand=(avi_new)
             set dwPaddingGranularity 0
             set dwInitialFrames 0
 
@@ -393,7 +393,7 @@ function avi_avih(sd file)
                 return 0
             endif
             #flags
-            if dwStreams==2
+            if dwStreams=2
                 or dwFlags (AVIF_ISINTERLEAVED)
             endif
             #set the number of streams
@@ -425,21 +425,21 @@ function avi_streamlist(sd file)
 
     ss strl="strl"
     setcall bool riff_w_r_name(file,strl)
-    if bool==0
+    if bool=0
         return 0
     endif
     #
     ss strh="strh"
     data strh_f^avi_streamheader
     setcall bool riff_chunk_w_r(file,strh_f,strh)
-    if bool==0
+    if bool=0
         return 0
     endif
 
     ss strf="strf"
     data strf_f^avi_streamformat
     setcall bool riff_chunk_w_r(file,strf_f,strf)
-    if bool==0
+    if bool=0
         return 0
     endif
 
@@ -482,10 +482,10 @@ function avi_streamheader(sd file)
     sd w_r
     setcall w_r av_readwrite_value((value_get))
 
-    if w_r==(write_file)
+    if w_r=(write_file)
         sd expand
         setcall expand avi_expandvalue((value_get))
-        if expand==(avi_new)
+        if expand=(avi_new)
             str vds="vids"
             call cpymem(AVISTREAMHEADER,vds,4)
 
@@ -520,7 +520,7 @@ function avi_streamheader(sd file)
             setcall enc avi_video_fcc((value_get),fcc)
         endelse
         call stage_write_avi_encoder((value_set),enc)
-        if expand==(avi_new)
+        if expand=(avi_new)
             call avi_video_fcc((value_set),fcc)
         endif
 
@@ -548,7 +548,7 @@ function avi_streamheader(sd file)
 endfunction
 
 function avi_video_fcc(sd action,ss fcc)
-    if action==(value_set)
+    if action=(value_set)
         str i420="I420"
         str jpg="MJPG"
         str xvid="XVID"
@@ -556,9 +556,9 @@ function avi_video_fcc(sd action,ss fcc)
         sd encoder
 
         setcall encoder stage_write_avi_encoder((value_get))
-        if encoder==(format_avi_i420)
+        if encoder=(format_avi_i420)
             call cpymem(fcc,i420,4)
-        elseif encoder==(format_avi_mjpg)
+        elseif encoder=(format_avi_mjpg)
             call cpymem(fcc,jpg,4)
         else
         #if encoder==(format_avi_xvid)
@@ -568,11 +568,11 @@ function avi_video_fcc(sd action,ss fcc)
         sd compare
 
         setcall compare cmpmem(fcc,i420,4)
-        if compare==(equalCompare)
+        if compare=(equalCompare)
             return (format_avi_i420)
         endif
         setcall compare cmpmem(fcc,jpg,4)
-        if compare==(equalCompare)
+        if compare=(equalCompare)
             return (format_avi_mjpg)
         endif
         return (format_avi_xvid)
@@ -602,7 +602,7 @@ function avi_streamformat(sd file)
     sd w_r
     setcall w_r av_readwrite_value((value_get))
 
-    if w_r==(write_file)
+    if w_r=(write_file)
         data fcc^biCompression
         call avi_video_fcc((value_set),fcc)
 
@@ -611,7 +611,7 @@ function avi_streamformat(sd file)
 
         sd encoder
         setcall encoder stage_write_avi_encoder((value_get))
-        if encoder==(format_avi_i420)
+        if encoder=(format_avi_i420)
             set biBitCount 12
             import "yuv_get_size" yuv_get_size
             setcall biSizeImage yuv_get_size(biWidth,biHeight)
@@ -641,14 +641,14 @@ function avi_strl_audio(sd file)
     ss strh="strh"
     data strh_f^avi_streamheader_audio
     setcall bool riff_chunk_w_r(file,strh_f,strh)
-    if bool==0
+    if bool=0
         return 0
     endif
 
     ss strf="strf"
     data strf_f^avi_streamformat_audio
     setcall bool riff_chunk_w_r(file,strf_f,strf)
-    if bool==0
+    if bool=0
         return 0
     endif
 
@@ -683,7 +683,7 @@ function avi_streamheader_audio(sd file)
     sd w_r
     setcall w_r av_readwrite_value((value_get))
 
-    if w_r==(write_file)
+    if w_r=(write_file)
         import "stage_sound_blockalign" stage_sound_blockalign
         setcall dwScale stage_sound_blockalign()
         set dwSampleSize dwScale
@@ -700,7 +700,7 @@ function avi_streamheader_audio(sd file)
         #add new expand bytes
         sd expand
         setcall expand avi_expandvalue((value_get))
-        if expand==(avi_expand)
+        if expand=(avi_expand)
             setcall err file_read_and_back_with_intervening_call(AVISTREAMHEADER_audio,size,file)
             if err!=(noerror)
                 return 0
@@ -742,7 +742,7 @@ function avi_streamformat_audio(sd file)
     sd w_r
     setcall w_r av_readwrite_value((value_get))
 
-    if w_r==(write_file)
+    if w_r=(write_file)
         import "stage_sound_channels" stage_sound_channels
         import "stage_sound_rate" stage_sound_rate
         import "stage_sound_bps" stage_sound_bps
@@ -779,12 +779,12 @@ function avi_odml(sd file)
 
     sd w_r
     setcall w_r av_readwrite_value((value_get))
-    if w_r==(write_file)
+    if w_r=(write_file)
         sd err
         set value 0
         sd expand
         setcall expand avi_expandvalue((value_get))
-        if expand==(avi_expand)
+        if expand=(avi_expand)
             setcall err file_read_and_back_with_intervening_call(DMLH,odml_sz,file)
             if err!=(noerror)
                 return 0
@@ -810,17 +810,17 @@ function avi_movi(sd file,sd offset,ss *name,sd size)
     sd expand=avi_new
     sd w_r
     setcall w_r av_readwrite_value((value_get))
-    if w_r==(write_file)
+    if w_r=(write_file)
         setcall expand avi_expandvalue((value_get))
         #here, if it is expanding, jump over the current data, get the previous index, and continue
-        if expand==(avi_expand)
+        if expand=(avi_expand)
             setcall bool avi_expanding(file,size,offset)
             if bool!=1
                 return 0
             endif
         endif
     endif
-    if expand==(avi_new)
+    if expand=(avi_new)
         ss mv="movi"
         setcall bool riff_w_r_name(file,mv)
         if bool!=1
@@ -828,7 +828,7 @@ function avi_movi(sd file,sd offset,ss *name,sd size)
         endif
     endif
 
-    if w_r==(write_file)
+    if w_r=(write_file)
         sd audio_sz
         setcall audio_sz stage_sound_alloc_getremainingsize()
         if audio_sz!=0
@@ -844,17 +844,17 @@ function avi_movi(sd file,sd offset,ss *name,sd size)
     endif
 
     sd loop=1
-    while loop==1
+    while loop=1
         sd stop
         setcall stop av_dialog_stop((value_get))
-        if stop==1
+        if stop=1
             set loop 0
         else
-            if w_r==(write_file)
+            if w_r=(write_file)
                 #verify for last frame
                 sd pixbuf
                 setcall pixbuf av_frames((get_buffer))
-                if pixbuf==0
+                if pixbuf=0
                     return 1
                 endif
                 #get the frame length
@@ -870,9 +870,9 @@ function avi_movi(sd file,sd offset,ss *name,sd size)
                     str video_id_p="00dc"
                     ss video_id
                     sd flags
-                    if i==0
+                    if i=0
                         set flags (AVIIF_KEYFRAME)
-                        if encoder==(format_avi_xvid)
+                        if encoder=(format_avi_xvid)
                             import "stage_mpeg_encode" stage_mpeg_encode
                             data is_keyframe#1
                             data p_is_keyframe^is_keyframe
@@ -880,20 +880,20 @@ function avi_movi(sd file,sd offset,ss *name,sd size)
                             if bool!=1
                                 return 0
                             endif
-                            if is_keyframe==(FALSE)
+                            if is_keyframe=(FALSE)
                                 set flags 0
                             endif
                         endif
                     else
                         set flags 0
                     endelse
-                    if flags==(AVIIF_KEYFRAME)
+                    if flags=(AVIIF_KEYFRAME)
                         set video_id video_id_key
                     else
                         set video_id video_id_p
                     endelse
                     setcall loop avi_index_mem((value_append),file,offset,i,video_id,forward_write_video,flags)
-                    if loop==0
+                    if loop=0
                         return 0
                     endif
                     #increment iter
@@ -905,12 +905,12 @@ function avi_movi(sd file,sd offset,ss *name,sd size)
                 import "av_display_progress" av_display_progress
                 call av_display_progress(currentframe,(capture_flag_off))
             else
-                if size==0
+                if size=0
                     set loop 0
                 else
                     data f_video^avi_read_entries
                     setcall loop riff_chunk_w_r(file,f_video,0)
-                    if loop==1
+                    if loop=1
                         import "file_tell" file_tell
 
                         sd off
@@ -921,7 +921,7 @@ function avi_movi(sd file,sd offset,ss *name,sd size)
                             return 0
                         endif
                         sub off offset
-                        if off==size
+                        if off=size
                             set loop 0
                         endif
                     endif
@@ -968,17 +968,17 @@ function avi_index_mem(sd action,sd file,sd offset,sd i,ss identifier,sd forward
 
     data p_size^size
 
-    if action==(value_set)
+    if action=(value_set)
     #bool
         set size 0
         setcall index_mem alloc_block((value_set))
-        if index_mem==0
+        if index_mem=0
             return 0
         endif
         return 1
-    elseif action==(value_unset)
+    elseif action=(value_unset)
         call alloc_block((value_unset),index_mem)
-    elseif action==(value_append)
+    elseif action=(value_append)
     #bool
         const avi_index_entry_size=0x10
 
@@ -1006,7 +1006,7 @@ function avi_index_mem(sd action,sd file,sd offset,sd i,ss identifier,sd forward
         set avi_oldindex_dwOffset seek_off
         sub avi_oldindex_dwOffset offset
 
-        if i==0
+        if i=0
             #write the frame
             setcall bool riff_chunk_w_r(file,forward,avi_oldindex)
             if bool!=1
@@ -1048,12 +1048,12 @@ function avi_index_mem(sd action,sd file,sd offset,sd i,ss identifier,sd forward
         set avi_oldindex_dwFlags flags
         #add to mem
         setcall index_mem alloc_block((value_append),index_mem,size,avi_oldindex,(avi_index_entry_size))
-        if index_mem==0
+        if index_mem=0
             return 0
         endif
         add size (avi_index_entry_size)
         return 1
-    elseif action==(value_expand)
+    elseif action=(value_expand)
     #bool
         import "file_seek_cursor" file_seek_cursor
         setcall err file_seek_cursor(file,4)
@@ -1067,7 +1067,7 @@ function avi_index_mem(sd action,sd file,sd offset,sd i,ss identifier,sd forward
         endif
 
         setcall index_mem alloc_block((value_append),index_mem,0,0,size)
-        if index_mem==0
+        if index_mem=0
             return 0
         endif
 
@@ -1091,7 +1091,7 @@ function avi_write_frame(sd file)
     #get the pixbuf
     sd pixbuf
     setcall pixbuf av_frames((get_buffer))
-    if pixbuf==0
+    if pixbuf=0
         return 0
     endif
 
@@ -1103,7 +1103,7 @@ function avi_write_frame(sd file)
     sd encoder
     sd bool
     setcall encoder stage_write_avi_encoder((value_get))
-    if encoder==(format_avi_i420)
+    if encoder=(format_avi_i420)
         importx "_gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
         import "pixbuf_get_wh" pixbuf_get_wh
         sd width
@@ -1119,7 +1119,7 @@ function avi_write_frame(sd file)
         if err!=(noerror)
             return 0
         endif
-    elseif encoder==(format_avi_mjpg)
+    elseif encoder=(format_avi_mjpg)
         import "stage_jpeg_write" stage_jpeg_write
         setcall bool stage_jpeg_write(file,pixbuf)
         if bool!=1
@@ -1164,7 +1164,7 @@ endfunction
 
 function avi_read_fps(sd action,sd value)
     data read_fps#1
-    if action==(value_set)
+    if action=(value_set)
         set read_fps value
     else
         return read_fps
@@ -1172,7 +1172,7 @@ function avi_read_fps(sd action,sd value)
 endfunction
 function avi_read_width(sd action,sd value)
     data read_width#1
-    if action==(value_set)
+    if action=(value_set)
         set read_width value
     else
         return read_width
@@ -1180,7 +1180,7 @@ function avi_read_width(sd action,sd value)
 endfunction
 function avi_read_height(sd action,sd value)
     data read_height#1
-    if action==(value_set)
+    if action=(value_set)
         set read_height value
     else
         return read_height
@@ -1188,7 +1188,7 @@ function avi_read_height(sd action,sd value)
 endfunction
 function avi_read_streams(sd action,sd value)
     data read_streams#1
-    if action==(value_set)
+    if action=(value_set)
         set read_streams value
     else
         return read_streams
@@ -1196,7 +1196,7 @@ function avi_read_streams(sd action,sd value)
 endfunction
 function avi_read_buffer(sd action,sd value)
     data read_buffer#1
-    if action==(value_set)
+    if action=(value_set)
         set read_buffer value
     else
         return read_buffer
@@ -1204,7 +1204,7 @@ function avi_read_buffer(sd action,sd value)
 endfunction
 function avi_read_encoder(sd action,sd value)
     data read_encoder#1
-    if action==(value_set)
+    if action=(value_set)
         set read_encoder value
     else
         return read_encoder
@@ -1218,17 +1218,17 @@ function avi_read_entries(sd file,sd *file_pos,ss chunk_id,sd chunk_size)
     ss video_iframe="00db"
     sd compare
     setcall compare cmpmem(chunk_id,video_iframe,4)
-    if compare==(equalCompare)
+    if compare=(equalCompare)
         set is_video 1
     endif
     ss video_pframe="00dc"
     setcall compare cmpmem(chunk_id,video_pframe,4)
-    if compare==(equalCompare)
+    if compare=(equalCompare)
         set is_video 1
     endif
 
-    if is_video==1
-        if chunk_size==0
+    if is_video=1
+        if chunk_size=0
         #extend previous frame length
             setcall bool stage_read_values((value_custom))
             if bool!=1
@@ -1250,21 +1250,21 @@ function avi_read_entries(sd file,sd *file_pos,ss chunk_id,sd chunk_size)
         #alloc buffer
         sd rgbbuffer
         setcall rgbbuffer memalloc(size)
-        if rgbbuffer==0
+        if rgbbuffer=0
             return 0
         endif
         call avi_read_buffer((value_set),rgbbuffer)
         #read
         sd encoder
         setcall encoder avi_read_encoder((value_get))
-        if encoder==(format_avi_i420)
+        if encoder=(format_avi_i420)
             #read yuv
             import "yuv_to_rgb_from_file" yuv_to_rgb_from_file
             sd yuvbuffer
             sd yuvsize
             setcall yuvsize yuv_get_size(width,height)
             setcall yuvbuffer memalloc(yuvsize)
-            if yuvbuffer==0
+            if yuvbuffer=0
                 return 0
             endif
             setcall bool yuv_to_rgb_from_file(file,yuvbuffer,rgbbuffer,width,height)
@@ -1342,7 +1342,7 @@ endfunction
 
 function avi_movi_flag(sd action,sd value)
     data movi_flag#1
-    if action==(value_set)
+    if action=(value_set)
         set movi_flag value
     else
         return movi_flag
@@ -1376,7 +1376,7 @@ endfunction
 
 function stage_write_avi_encoder(sd action,sd value)
     data enc#1
-    if action==(value_set)
+    if action=(value_set)
         set enc value
     else
         return enc

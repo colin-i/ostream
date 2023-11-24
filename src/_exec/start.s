@@ -163,7 +163,7 @@ function callbackprocessfolder()
 
 	sd err
 	setcall err init_user()
-	if err==(noerror)
+	if err=(noerror)
 		#move to settings
 		data sysforward^setsystems
 		call sys_folder_enterleave(sysforward)

@@ -112,7 +112,7 @@ endfunction
 function mp3_ResvFrameEnd(sd ResvSize,sd ResvMax,sd mean_bits)
     #just in case mean_bits is odd, this is necessary...
     sd value
-    if (mp3_channels)==2
+    if (mp3_channels)=2
         set value mean_bits
         and value 1
         if value!=0
@@ -155,7 +155,7 @@ function mp3_search_StepSize(sd l3enc_tt,sd gr_info,sd desired_rate)
 
     set next top
     sd loop=1
-    while loop==1
+    while loop=1
         set last next
         set next top
         add next bot
@@ -279,7 +279,7 @@ function mp3_inner_loop(sd l3enc_tt,sd gr_info,sd max_bits)
         call mp3_gr_info_itemSet(gr_info,(gr_info_quantizerStepSize),quantizerStepSize)
     endif
     sd loop=1
-    while loop==1
+    while loop=1
         sd value=8192+1
         while value>8192
             setcall quantizerStepSize mp3_gr_info_itemGet(gr_info,(gr_info_quantizerStepSize))

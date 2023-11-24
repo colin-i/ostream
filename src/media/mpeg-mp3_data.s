@@ -6,7 +6,7 @@ include "../_include/include.h"
 
 function mp3_output(sd way,sd value)
     data output#1
-    if way==(value_set)
+    if way=(value_set)
         set output value
     else
         return output
@@ -14,7 +14,7 @@ function mp3_output(sd way,sd value)
 endfunction
 function mp3_allsize(sd way,sd value)
     data allsize#1
-    if way==(value_set)
+    if way=(value_set)
         set allsize value
     else
         return allsize
@@ -22,7 +22,7 @@ function mp3_allsize(sd way,sd value)
 endfunction
 function mp3_output_size(sd way,sd value)
     data output_size#1
-    if way==(value_set)
+    if way=(value_set)
         set output_size value
     else
         return output_size
@@ -30,7 +30,7 @@ function mp3_output_size(sd way,sd value)
 endfunction
 function mp3_output_pos(sd way,sd value)
     data output_pos#1
-    if way==(value_set)
+    if way=(value_set)
         set output_pos value
     else
         return output_pos

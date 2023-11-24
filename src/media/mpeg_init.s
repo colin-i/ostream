@@ -20,7 +20,7 @@ function vlc_tables_intra(sd action,sd name,sd last,sd run,sd level)
     #data code
     #char len
     char vlc_data#vlc_array_size
-    if action==(value_set)
+    if action=(value_set)
         #set tables to 0 or bad code can be written
         import "setmem" setmem
         sd vlc_init^vlc_data
@@ -200,8 +200,8 @@ function vlc_coeff_tab_intra(sd i,sd block,sd subblock)
     add value subblock
     add value coeff_tab
 
-    if block==(coeff_tab_vlc)
-        if subblock==(coeff_tab_vlc_code)
+    if block=(coeff_tab_vlc)
+        if subblock=(coeff_tab_vlc_code)
             return value#
         endif
     endif
@@ -264,7 +264,7 @@ function vlc_tables_intra_maxrun(sd last,sd pos)
     char *    ={0, 0,  0, 0, 0, 0, 0, 0}
     char *    ={0, 0,  0, 0, 0, 0, 0, 0}
 
-    if last==0
+    if last=0
         ss max0^last0
         add max0 pos
         return max0#
@@ -295,7 +295,7 @@ function vlc_tables_intra_maxlevel(sd last,sd pos)
     char *    ={0, 0, 0, 0, 0, 0, 0, 0}
     char *    ={0, 0, 0, 0, 0, 0, 0, 0}
 
-    if last==0
+    if last=0
         ss max0^last0
         add max0 pos
         return max0#
@@ -325,7 +325,7 @@ function vlc_tables_len_init3()
                         set condition 1
                     endif
                 endif
-                if condition==0
+                if condition=0
                     sd continuation=1
 
                     sd level_esc
@@ -346,7 +346,7 @@ function vlc_tables_len_init3()
                     endif
                     sd escape
                     sd escape_len
-                    if condition==1
+                    if condition=1
                         set escape (ESCAPE1)
                         set escape_len (7+1)
                         set run_esc run
@@ -363,7 +363,7 @@ function vlc_tables_len_init3()
                                 set condition 1
                             endif
                         endif
-                        if condition==1
+                        if condition=1
                             set escape (ESCAPE2)
                             set escape_len (7+2)
                             set level_esc level
@@ -372,7 +372,7 @@ function vlc_tables_len_init3()
                         endelse
                     endelse
 
-                    if continuation==1
+                    if continuation=1
                         ss vlc_len_src
                         setcall vlc_len_src vlc_tables_intra((value_get),(VLC_len),last,level_esc,run_esc)
                         sd len

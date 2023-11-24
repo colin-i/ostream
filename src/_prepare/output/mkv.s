@@ -65,7 +65,7 @@ function mkvfile_encoders(sd file)
     sd bool
     sd encoder
     setcall encoder stage_file_get_mkv_encoder()
-    if encoder==(format_mkv_xvid)
+    if encoder=(format_mkv_xvid)
         import "av_frames" av_frames
         call av_frames((value_set),0)
         import "stage_mpeg_init" stage_mpeg_init
@@ -77,7 +77,7 @@ function mkvfile_encoders(sd file)
 
     call mkvfile_headers(file)
 
-    if encoder==(format_mkv_xvid)
+    if encoder=(format_mkv_xvid)
         import "mpeg_release" mpeg_release
         call mpeg_release()
     endif
@@ -86,7 +86,7 @@ endfunction
 function mkv_capture(sd action,sd value)
     data capture#1
     #bool value, true for capture, or false
-    if action==(value_set)
+    if action=(value_set)
         set capture value
     else
         return capture
@@ -147,7 +147,7 @@ function mkv_segment(sd file,sd read_size,sd file_pos)
     sd io
     setcall io mkv_write_read_get()
     #get the offset for seek head positions at write
-    if io==(mkv_write)
+    if io=(mkv_write)
         data segment_base#1
         const ptr_segment_base^segment_base
         data ptr_segment_base^segment_base
@@ -169,15 +169,15 @@ function mkv_segment(sd file,sd read_size,sd file_pos)
 
     sd bool
     setcall bool mkv_size_pass(file,f,start1,end1)
-    if bool==0
+    if bool=0
         return 0
     endif
 
-    if io==(mkv_write)
+    if io=(mkv_write)
         #info
         #set the information at seek head for Info
         setcall bool mkv_seekhead_fn(1,file)
-        if bool==0
+        if bool=0
             return 0
         endif
     endif
@@ -190,17 +190,17 @@ function mkv_segment(sd file,sd read_size,sd file_pos)
     data start2^Info
     data end2^fn
     setcall bool mkv_size_pass(file,fn,start2,end2)
-    if bool==0
+    if bool=0
         return 0
     endif
 
     #tracks
-    if io==(mkv_write)
+    if io=(mkv_write)
         #reset frames index; init here for calling at tracks, get width/height based on first frame
         call mkv_frames(0)
         #set the information at seek head for Tracks
         setcall bool mkv_seekhead_fn(2,file)
-        if bool==0
+        if bool=0
             return 0
         endif
     endif
@@ -213,7 +213,7 @@ function mkv_segment(sd file,sd read_size,sd file_pos)
     data start_data^Tracks
     data end_data^fnc
     setcall bool mkv_size_pass(file,fnc,start_data,end_data)
-    if bool==0
+    if bool=0
         return 0
     endif
 
@@ -232,16 +232,16 @@ function mkv_segment(sd file,sd read_size,sd file_pos)
 
     sd loop
     set loop 1
-    while loop==1
+    while loop=1
         setcall loop mkv_size_pass(file,p_fn,p_start,p_end)
         #stop if error or no more frames
-        if loop==1
-            if io==(mkv_read)
+        if loop=1
+            if io=(mkv_read)
                 setcall err mkv_read_cluster_verify_end(file,read_size,file_pos,p_nomoreframes)
                 if err!=(noerror)
                     return 0
                 endif
-                if no_more_frames==1
+                if no_more_frames=1
                     set loop 0
                 endif
             endif
@@ -250,7 +250,7 @@ function mkv_segment(sd file,sd read_size,sd file_pos)
     sd allframes
     setcall allframes mkv_fr_get()
 
-    if io==(mkv_write)
+    if io=(mkv_write)
         sd fileduration
         setcall fileduration mkv_timecodes(allframes)
         call mkv_set_duration(file,fileduration)
@@ -265,7 +265,7 @@ endfunction
 
 #bool
 function mkv_seekhead_fn(sd action,sd file)
-    if action==0
+    if action=0
         #seek entry KaxInfo
         data info#1
         data ptr_info^info
@@ -274,7 +274,7 @@ function mkv_seekhead_fn(sd action,sd file)
 
         sd bool
         setcall bool seek_entry(todata#,file,ptr_info)
-        if bool==0
+        if bool=0
             return 0
         endif
 
@@ -298,7 +298,7 @@ function mkv_seekhead_fn(sd action,sd file)
         sub position_value seg_base#
         setcall position_value dword_reverse(position_value)
         sd pos
-        if action==1
+        if action=1
             set pos info
         else
             set pos tracks
@@ -339,14 +339,14 @@ function seek_entry(sd value,sd file,sd ptr_pointer)
     #write/pass the seek entry
     sd bool
     setcall bool mkv_write_seek(wr,sz,file)
-    if bool==0
+    if bool=0
         return 0
     endif
 
     sd io
     setcall io mkv_write_read_get()
     #set the pointer entry if write
-    if io==(mkv_write)
+    if io=(mkv_write)
         sd err
         setcall err file_length(file,ptr_pointer)
         if err!=(noerror)
@@ -363,7 +363,7 @@ function mkv_info(sd file)
     sd io
     setcall io mkv_write_read_get()
 
-    if io==(mkv_write)
+    if io=(mkv_write)
         sd err
         #get the offset for Duration
         data offset#1
@@ -408,7 +408,7 @@ const App=!-_MuxingApp
     const Duration_offset=ptr_Duration-_SegmentUID
     data Dur_offset=Duration_offset
 
-    if io==(mkv_write)
+    if io=(mkv_write)
         #1 000 000 nanoseconds=1 millisecond
         setcall TimecodeScale_value dword_reverse((1000*1000))
 
@@ -497,21 +497,21 @@ function mkv_track(sd file,sd size,sd filepos)
     data end^f
     sd bool
     setcall bool mkv_size_pass(file,f,start,end)
-    if bool==0
+    if bool=0
         return 0
     endif
 
     #verify for sound
     sd io
     setcall io mkv_write_read_get()
-    if io==(mkv_write)
+    if io=(mkv_write)
         #at write check the sound memory
         #set remaining size to 0
         call stage_sound_sizedone((value_set),0)
         #get the size
         sd sz
         setcall sz stage_sound_alloc_getremainingsize()
-        if sz==0
+        if sz=0
             return 1
         endif
     else
@@ -524,7 +524,7 @@ function mkv_track(sd file,sd size,sd filepos)
         if err!=(noerror)
             return 0
         endif
-        if sizeofseek==0
+        if sizeofseek=0
             return 1
         endif
     endelse
@@ -555,7 +555,7 @@ function mkv_track_entry(sd file,sd *size,sd *filepos)
     sd bool
 
     setcall bool mkv_size_pass(file,f,start,end)
-    if bool==0
+    if bool=0
         return 0
     endif
 
@@ -605,9 +605,9 @@ const track_last_=!
     sd encoder
     sd io
     setcall io mkv_write_read_get()
-    if io==(mkv_write)
+    if io=(mkv_write)
         setcall encoder stage_file_get_mkv_encoder()
-        if encoder==(format_mkv_rgb24)
+        if encoder=(format_mkv_rgb24)
             sd p_wh^biWidth
             call mkv_get_video_width_height(p_wh)
             #add here the bmp header
@@ -618,7 +618,7 @@ const track_last_=!
     else
         setcall encoder mkv_read_encoder((value_get))
     endelse
-    if encoder==(format_mkv_rgb24)
+    if encoder=(format_mkv_rgb24)
         add track_sz rgb_privdata_size
     endif
 
@@ -633,7 +633,7 @@ const track_last_=!
     data start_vd^Video
     data end_vd^f_vd
     setcall bool mkv_size_pass(file,f_vd,start_vd,end_vd)
-    if bool==0
+    if bool=0
         return 0
     endif
     return 1
@@ -665,7 +665,7 @@ const video_track_last_=!
     sd err
     sd io
     setcall io mkv_write_read_get()
-    if io==(mkv_write)
+    if io=(mkv_write)
         const _video_track^PixelWidth
         const video_track_=video_track_last_+4
         data video_track^PixelWidth
@@ -675,7 +675,7 @@ const video_track_last_=!
 
         sd encoder
         setcall encoder stage_file_get_mkv_encoder()
-        if encoder==(format_mkv_i420)
+        if encoder=(format_mkv_i420)
             const color_size=3+1+4
             add video_track_sz (color_size)
         endif
@@ -770,7 +770,7 @@ function mkv_codecid(sd file,sd size,sd *filepos)
     sd bool
     sd io
     setcall io mkv_write_read_get()
-    if io==(mkv_write)
+    if io=(mkv_write)
         setcall bool mkv_codecid_data(io,file)
         return bool
     else
@@ -804,7 +804,7 @@ function mkv_cluster(sd file,sd read_size,sd file_pos)
     sd allframes
     setcall allframes mkv_fr_get()
 
-    if io==(mkv_write)
+    if io=(mkv_write)
         setcall Timecode_value mkv_timecodes(allframes)
         setcall Timecode_value dword_reverse(Timecode_value)
 
@@ -824,7 +824,7 @@ function mkv_cluster(sd file,sd read_size,sd file_pos)
         sd newframes_read
         sd p_newframes_read^newframes_read
         setcall bool mkv_readentry(allframes,Timecode_value,p_newframes_read)
-        if bool==0
+        if bool=0
             return 0
         endif
         #set the elapsed frames
@@ -837,10 +837,10 @@ function mkv_cluster(sd file,sd read_size,sd file_pos)
     sd stop
     sd loop
     set loop 1
-    while loop==1
+    while loop=1
         #aborted?
         setcall stop av_dialog_stop((value_get))
-        if stop==1
+        if stop=1
             #this is the point where user abort is checked
             #direct capture required only: verify to not be the first frame to not let an empty cluster
             sd s
@@ -857,13 +857,13 @@ function mkv_cluster(sd file,sd read_size,sd file_pos)
             setcall loop mkv_size_pass(file,f,start,end)
 
             #stop if error or no more frames or cluster time exceeded
-            if io==(mkv_read)
-                if loop==1
+            if io=(mkv_read)
+                if loop=1
                     setcall err mkv_read_cluster_verify_end(file,read_size,file_pos,p_timecodemax)
                     if err!=(noerror)
                         return 0
                     endif
-                    if timecode_max==1
+                    if timecode_max=1
                         set loop 0
                     endif
                 endif
@@ -878,7 +878,7 @@ function mkv_cluster(sd file,sd read_size,sd file_pos)
     call mkv_fr_set(newframes)
     #
 
-    if timecode_max==1
+    if timecode_max=1
         return 1
     else
         #p_nomoreframes#==1 or an error or abort
@@ -956,7 +956,7 @@ function mkv_simpleblock(sd file,sd size,sd filepos)
     sd bool
 
     sd encoder
-    if io==(mkv_write)
+    if io=(mkv_write)
         setcall encoder stage_file_get_mkv_encoder()
 
         set Track_Number 0x80
@@ -1004,7 +1004,7 @@ function mkv_simpleblock(sd file,sd size,sd filepos)
 
         setcall pixbuf mkv_frames(1,1)
 
-        if encoder==(format_mkv_xvid)
+        if encoder=(format_mkv_xvid)
             import "stage_mpeg_encode" stage_mpeg_encode
             data is_keyframe#1
             data p_is_keyframe^is_keyframe
@@ -1012,7 +1012,7 @@ function mkv_simpleblock(sd file,sd size,sd filepos)
             if bool!=1
                 return 0
             endif
-            if is_keyframe==(FALSE)
+            if is_keyframe=(FALSE)
                 set Flags 0
             endif
         endif
@@ -1030,7 +1030,7 @@ function mkv_simpleblock(sd file,sd size,sd filepos)
 		#info prepare
 		import "av_display_info" av_display_info
 		call av_display_info((value_get),file)
-		if encoder==(format_mkv_i420)
+		if encoder=(format_mkv_i420)
 		    sd pixels
 		    sd width
 		    sd height
@@ -1043,13 +1043,13 @@ function mkv_simpleblock(sd file,sd size,sd filepos)
 		    if err!=(noerror)
 		        return 0
 		    endif
-		elseif encoder==(format_mkv_mjpg)
+		elseif encoder=(format_mkv_mjpg)
 		    import "stage_jpeg_write" stage_jpeg_write
 		    setcall bool stage_jpeg_write(file,pixbuf)
 		    if bool!=1
 		        return 0
 		    endif
-		elseif encoder==(format_mkv_xvid)
+		elseif encoder=(format_mkv_xvid)
 		    import "mpeg_file_mem" mpeg_file_mem
 		    setcall bool mpeg_file_mem((value_filewrite))
 		    if bool!=1
@@ -1069,7 +1069,7 @@ function mkv_simpleblock(sd file,sd size,sd filepos)
 
 		    sd capture_flag
 		    setcall capture_flag mkv_capture((value_get))
-		    if capture_flag==0
+		    if capture_flag=0
 		        sd reverse_pixbuf
 		        setcall reverse_pixbuf pixbuf_from_pixbuf_reverse(pixbuf)
 		        setcall rgb_pixels gdk_pixbuf_get_pixels(reverse_pixbuf)
@@ -1077,7 +1077,7 @@ function mkv_simpleblock(sd file,sd size,sd filepos)
 		    #
 		    setcall err file_write(rgb_pixels,rgb_sz,file)
 		    #
-		    if capture_flag==0
+		    if capture_flag=0
 		        importx "_g_object_unref" g_object_unref
 		        call g_object_unref(reverse_pixbuf)
 		    endif
@@ -1092,7 +1092,7 @@ function mkv_simpleblock(sd file,sd size,sd filepos)
 
         setcall pixbuf mkv_frames(1,0,file)
 
-        if pixbuf==0
+        if pixbuf=0
         #no more frames
             data p%ptr_nomoreframes
             set p# 1
@@ -1102,7 +1102,7 @@ function mkv_simpleblock(sd file,sd size,sd filepos)
             return 0
         endif
         data time_max%ptr_timecodemax
-        if time_max#==1
+        if time_max#=1
         #cluster is full
             return 0
         endif
@@ -1120,7 +1120,7 @@ function mkv_simpleblock(sd file,sd size,sd filepos)
         set Track_Number harvest_blocktime
         and Track_Number 0x7f
         #add if it is audio to the prepared music
-        if Track_Number==(TrackNumber_audio)
+        if Track_Number=(TrackNumber_audio)
             sd audioframesize
             sd p_audioframesize^audioframesize
             setcall err file_sizeofseek_offset_plus_size(file,size,filepos,p_audioframesize)
@@ -1144,12 +1144,12 @@ function mkv_simpleblock(sd file,sd size,sd filepos)
         and harvest_blocktime 0xffFFff
         div harvest_blocktime 0x100
         setcall bool mkv_readentry(frames,harvest_blocktime,p_newframes_read)
-        if bool==0
+        if bool=0
             return 0
         endif
         call mkv_cluster_fr_set(newframes_read)
 
-        if encoder==(format_mkv_i420)
+        if encoder=(format_mkv_i420)
             sd yuv
             setcall yuv mkv_rgb_yuv_functions((mkv_yuv_get_bytes))
             sd sizeofyuv
@@ -1159,12 +1159,12 @@ function mkv_simpleblock(sd file,sd size,sd filepos)
             if err!=(noerror)
                 return 0
             endif
-        elseif encoder==(format_mkv_mjpg)
+        elseif encoder=(format_mkv_mjpg)
             import "read_jpeg" read_jpeg
             data f_readjpeg^mkv_read_mjpeg
 
             setcall bool read_jpeg(file,f_readjpeg)
-            if bool==0
+            if bool=0
                 return 0
             endif
             #the read function let the cursor somewhere after the frame size
@@ -1191,7 +1191,7 @@ endfunction
 function mkv_get_video_width_height(sd p_wh)
     sd capture_flag
     setcall capture_flag mkv_capture((value_get))
-    if capture_flag==0
+    if capture_flag=0
         sd pixbuf
         setcall pixbuf mkv_frames(1,0)
         setcall p_wh# gdk_pixbuf_get_width(pixbuf)
@@ -1205,21 +1205,21 @@ endfunction
 
 function mkv_frames(sd action,sd addatframes,sd file)
     data image_nr#1
-    if action==0
+    if action=0
         #0
         set image_nr 0
-    elseif action==1
+    elseif action=1
     #0 is no more frames or error
         #1
         sd capture
         sd temp_flag
         sd pix
         setcall capture mkv_capture((value_get))
-        if capture==0
+        if capture=0
             #save the stage
             sd eventbox
             setcall eventbox stage_nthwidgetFromcontainer(image_nr)
-            if eventbox==0
+            if eventbox=0
                 return 0
             endif
             setcall pix object_get_dword_name(eventbox)
@@ -1227,10 +1227,10 @@ function mkv_frames(sd action,sd addatframes,sd file)
             #capture file
             import "capture_temp_flag" capture_temp_flag
             setcall temp_flag capture_temp_flag((value_get))
-            if addatframes==0
+            if addatframes=0
                 #test for end of frames/last frame
                 import "capture_split" capture_split
-                if temp_flag==0
+                if temp_flag=0
                     #test for split max size(end of frames)
                     setcall pix capture_split((value_get),file)
                 else
@@ -1238,13 +1238,13 @@ function mkv_frames(sd action,sd addatframes,sd file)
                     import "capture_direct_frames" capture_direct_frames
                     sd temp_frames
                     setcall temp_frames capture_direct_frames((value_get))
-                    if temp_frames==image_nr
+                    if temp_frames=image_nr
                         #last frame
                         set pix 0
                     else
                         #test for split max size(end of frames)
                         setcall pix capture_split((value_get),file)
-                        if pix==0
+                        if pix=0
                         #substract for next file
                             sub temp_frames image_nr
                             call capture_direct_frames((value_set),temp_frames)
@@ -1268,11 +1268,11 @@ function mkv_frames(sd action,sd addatframes,sd file)
             #frames number is rising
             sd frames_rise
             #the frame length
-            if capture==0
+            if capture=0
                 import "stage_get_fr_length" stage_get_fr_length
                 setcall frames_rise stage_get_fr_length(eventbox)
             else
-                if temp_flag==0
+                if temp_flag=0
                     import "capture_time" capture_time
                     setcall frames_rise capture_time((value_get))
                 else
@@ -1318,11 +1318,11 @@ function mkv_size_pass(sd file,sd forward,sd start,sd end)
 
     #write the start/pass the start
     setcall bool mkv_write_seek(start,size,file)
-    if bool==0
+    if bool=0
         return 0
     endif
 
-    if io==(mkv_write)
+    if io=(mkv_write)
         #write the size
         sd ebmlsize_high
         sd *ebmlsize_low
@@ -1354,7 +1354,7 @@ function mkv_size_pass(sd file,sd forward,sd start,sd end)
     if err!=(noerror)
         return 0
     endif
-    if io==(mkv_write)
+    if io=(mkv_write)
         sd writepoint
         set writepoint file_pos
         sub writepoint 4
@@ -1363,7 +1363,7 @@ function mkv_size_pass(sd file,sd forward,sd start,sd end)
     setcall bool forward(file,ebmlblocksize,file_pos)
 
     #set the size at write
-    if io==(mkv_write)
+    if io=(mkv_write)
         sd seg_size_after
         sd ptr_seg_size_after^seg_size_after
         setcall err file_length(file,ptr_seg_size_after)
@@ -1403,7 +1403,7 @@ function mkv_write_seek(sd mem,sd size,sd file)
     sd err
     sd io
     setcall io mkv_write_read_get()
-    if io==(mkv_write)
+    if io=(mkv_write)
         setcall err file_write(mem,size,file)
         if err!=(noerror)
             return 0
@@ -1484,7 +1484,7 @@ function mkv_rgb_yuv_functions(sd method,sd sz)
     data rgb_size#1
     data p_rgb^rgb
 
-    if method==(mkv_yuv_init)
+    if method=(mkv_yuv_init)
         set yuv 0
         set rgb 0
 
@@ -1501,22 +1501,22 @@ function mkv_rgb_yuv_functions(sd method,sd sz)
         endif
 
         return (noerror)
-    elseif method==(mkv_yuv_p_bytes)
+    elseif method=(mkv_yuv_p_bytes)
         return p_yuv
-    elseif method==(mkv_yuv_set_size)
+    elseif method=(mkv_yuv_set_size)
         set size sz
-    elseif method==(mkv_yuv_get_size)
+    elseif method=(mkv_yuv_get_size)
         return size
-    elseif method==(mkv_yuv_get_bytes)
+    elseif method=(mkv_yuv_get_bytes)
         return yuv
-    elseif method==(mkv_yuv_free)
+    elseif method=(mkv_yuv_free)
         call free(yuv)
         if rgb!=0
             call free(rgb)
         endif
-    elseif method==(mkv_rgb_get_p_bytes)
+    elseif method=(mkv_rgb_get_p_bytes)
         return p_rgb
-    elseif method==(mkv_rgb_set_size)
+    elseif method=(mkv_rgb_set_size)
         set rgb_size sz
     else
     #if method==(mkv_rgb_get_size)
@@ -1591,7 +1591,7 @@ function mkv_readentry(sd frames,sd newtime,sd p_resultedframes)
 
     set p_resultedframes# nt_frames
     sub nt_frames frames
-    if nt_frames==0
+    if nt_frames=0
         return 1
     elseif nt_frames<0
         str timeerr="Wrong timecodes."
@@ -1610,7 +1610,7 @@ function mkv_readentry(sd frames,sd newtime,sd p_resultedframes)
 
     sd encoder
     setcall encoder mkv_read_encoder((value_get))
-    if encoder==(format_mkv_i420)
+    if encoder=(format_mkv_i420)
         #convert yuv to rgb
         sd yuv
         setcall yuv mkv_rgb_yuv_functions((mkv_yuv_get_bytes))
@@ -1629,10 +1629,10 @@ function mkv_readentry(sd frames,sd newtime,sd p_resultedframes)
     #keep the pixbuf
     import "pixbuf_copy" pixbuf_copy
     setcall px pixbuf_copy(pixbuf)
-    if px==0
+    if px=0
         return 0
     endif
-    if encoder==(format_mkv_rgb24)
+    if encoder=(format_mkv_rgb24)
         #bitmap is right to left from file
         import "rgb_color_swap" rgb_color_swap
         sd newbytes
@@ -1658,7 +1658,7 @@ endfunction
 
 
 function mkv_codecid_data(sd io,sd arg,sd size)
-    if io==(mkv_write)
+    if io=(mkv_write)
         sd file
         set file arg
     #bool
@@ -1667,21 +1667,21 @@ function mkv_codecid_data(sd io,sd arg,sd size)
 
         sd encoder
         setcall encoder stage_file_get_mkv_encoder()
-        if encoder==(format_mkv_i420)
+        if encoder=(format_mkv_i420)
                 const codecid_i420_sz=1+1+1+1+1+1+1+1+1+1+1+1+1+1
             char CodecID_i420_value={V,_,U,N,C,O,M,P,R,E,S,S,E,D}
             data p_uncomp^CodecID_i420_value
 
             set codec_ptr p_uncomp
             set codec_sz (codecid_i420_sz)
-        elseif encoder==(format_mkv_mjpg)
+        elseif encoder=(format_mkv_mjpg)
                 const codecid_mjpg_sz=1+1+1+1+1+1+1
             char CodecID_mjpg_value={V,_,M,J,P,E,G}
             data p_mjpg^CodecID_mjpg_value
 
             set codec_ptr p_mjpg
             set codec_sz (codecid_mjpg_sz)
-        elseif encoder==(format_mkv_xvid)
+        elseif encoder=(format_mkv_xvid)
                 const codecid_xvid_sz=1+1+1+1+1+1+ 1+1+    1+1+1+1+    1+1+1
             char CodecID_xvid_value={V,_,M,P,E,G,_4,Slash,I,S,O,Slash,A,S,P}
             data p_xvid^CodecID_xvid_value
@@ -1713,12 +1713,12 @@ function mkv_codecid_data(sd io,sd arg,sd size)
         sd compare
 
         setcall compare cmpmem_s(mem,size,p_uncomp,(codecid_i420_sz))
-        if compare==(equalCompare)
+        if compare=(equalCompare)
             call mkv_read_encoder(0,(format_mkv_i420))
             return (void)
         endif
         setcall compare cmpmem_s(mem,size,p_mjpg,(codecid_mjpg_sz))
-        if compare==(equalCompare)
+        if compare=(equalCompare)
             call mkv_read_encoder(0,(format_mkv_mjpg))
             return (void)
         endif
@@ -1735,7 +1735,7 @@ endfunction
 
 function mkv_read_encoder(sd action,sd value)
     data encoder#1
-    if action==(value_set)
+    if action=(value_set)
     #void
         set encoder value
     else
@@ -1745,7 +1745,7 @@ endfunction
 
 function mkv_read_fps(sd action,sd value)
     data fps#1
-    if action==(value_set)
+    if action=(value_set)
         set fps value
     else
         return fps
@@ -1829,7 +1829,7 @@ const audiospec_=!
 
     sd io
     setcall io mkv_write_read_get()
-    if io==(mkv_write)
+    if io=(mkv_write)
         const audiospec_@=audiospec_+4
         const audiospec_size=audiospec_@-_audiospec
         or Audio_size (audiospec_size)

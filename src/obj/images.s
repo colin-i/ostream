@@ -255,11 +255,11 @@ function rgb_to_yuvi420(ss bitmap_rgb,ss yuv,sd width,sd height)
             sd uv_j
             set uv_j j
             and uv_j 1
-            if uv_j==0
+            if uv_j=0
                 sd uv_i
                 set uv_i i
                 and uv_i 1
-                if uv_i==0
+                if uv_i=0
                     call rgb_yuv(bitmap_rgb,planeU,-17,-33,50,128)
                     inc planeU
                     call rgb_yuv(bitmap_rgb,planeV,50,-42,-8,128)
@@ -602,7 +602,7 @@ function rgb_get_set(ss pointerOut,ss bytes,sd x,sd y,sd bps,sd n_chan,sd rowstr
     sd i=0
     sd n=3
     while i<n
-        if getORset==(get_rgb)
+        if getORset=(get_rgb)
             set pointerOut# bytes#
         else
             set bytes# pointerOut#
@@ -611,7 +611,7 @@ function rgb_get_set(ss pointerOut,ss bytes,sd x,sd y,sd bps,sd n_chan,sd rowstr
         inc pointerOut
         inc bytes
     endwhile
-    if getORset==(get_rgb)
+    if getORset=(get_rgb)
         set pointerOut# 0
     endif
 endfunction
@@ -749,7 +749,7 @@ function pixbuf_draw_text(sd pixbuf,ss text,sd x,sd y,sd size,sd color,sd coordi
     call pango_layout_set_markup(pangolayout,markup,-1)
 
     #determine the positioning method: coordinates(x,y) or location(x factor,y factor)
-    if coordinates_flag==0
+    if coordinates_flag=0
         #location
         importx "_pango_layout_get_pixel_size" pango_layout_get_pixel_size
         sd text_width
@@ -804,7 +804,7 @@ function draw_default_cursor(sd root,sd def_x,sd def_y,sd width,sd height,sd cai
     importx "_gdk_display_get_default" gdk_display_get_default
     sd display
     setcall display gdk_display_get_default()
-    if display==0
+    if display=0
         str disp_err="No default display found"
         call texter(disp_err)
         return 0
@@ -821,7 +821,7 @@ endfunction
 function draw_cursor(sd Cursor,sd x,sd y,sd width,sd height,sd cairo)
     sd cPixbuf
     setcall cPixbuf gdk_cursor_get_image(Cursor)
-    if cPixbuf==0
+    if cPixbuf=0
         str pxerr="The cursor image data can't be retrived"
         call texter(pxerr)
         return 0
@@ -840,7 +840,7 @@ function draw_pixbuf_cursor(sd cPixbuf,sd x,sd y,sd width,sd height,sd cairo)
 
     sd bool
     setcall bool cursor_tests(cPixbuf,x,y,width,height,rect)
-    if bool==0
+    if bool=0
         return 0
     endif
 

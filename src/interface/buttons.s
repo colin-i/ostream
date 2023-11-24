@@ -59,7 +59,7 @@ function buttons_group_ex(sd ptr,sd container,sd match,sd forward)
         import "connect_signal" connect_signal
         call connect_signal(button,clicked,ptr#)
 
-        if match==ptr#
+        if match=ptr#
             call forward(button,match)
         endif
 

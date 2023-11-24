@@ -34,7 +34,7 @@ function video_realize(data widget)
 	data false=0
 	sd bool
 	setcall bool gdk_window_ensure_native(window)
-	if bool==false
+	if bool=false
 		str noNative="Couldn't create native window needed for GstXOverlay!"
 		call texter(noNative)
 	endif
@@ -47,7 +47,7 @@ function video_realize(data widget)
 	sd overlaytype
 	setcall overlaytype gst_x_overlay_get_type()
 	setcall bool gst_element_implements_interface(playbin2,overlaytype)
-	if bool==(TRUE)
+	if bool=(TRUE)
 		sd interfacecast
 		setcall interfacecast gst_implements_interface_cast(playbin2,overlaytype)
 		sd drawablehandle
@@ -136,7 +136,7 @@ function gstplayinit(data videowidget)
     data playbin2#1
     set playbin2 playbin2ptr#
 
-    if playbin2==null
+    if playbin2=null
         str factoryerr="Not all elements could be created."
         call texter(factoryerr)
         return factoryerr

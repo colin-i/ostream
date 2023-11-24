@@ -86,7 +86,7 @@ function macro_blocks_core(sd action,sd mbpos,sd sector,sd item)
     import "mpeg_image_h" mpeg_image_h
     import "multiple_of_nr" multiple_of_nr
 
-    if action==(value_set)
+    if action=(value_set)
     #bool
         setcall mb_width mpeg_image_w()
         setcall mb_height mpeg_image_h()
@@ -112,11 +112,11 @@ function macro_blocks_core(sd action,sd mbpos,sd sector,sd item)
         add size modes_size
 
         setcall mem memalloc(size)
-        if mem==0
+        if mem=0
             return 0
         endif
         return 1
-    elseif action==(value_unset)
+    elseif action=(value_unset)
         call free(mem)
     else
     #if action==(value_get)
@@ -129,10 +129,10 @@ function macro_blocks_core(sd action,sd mbpos,sd sector,sd item)
         endif
 
         #set mbpos and sector
-        if item==(mb_pred_values)
+        if item=(mb_pred_values)
             mult mbpos (pred_values_size)
             mult sector (mbpred_block_size)
-        elseif item==(mb_mode)
+        elseif item=(mb_mode)
             mult mbpos 4
         endelseif
 
@@ -152,7 +152,7 @@ endfunction
 function macro_blocks_mode(sd action,sd mbpos,sd value)
     sd mode
     setcall mode macro_blocks_core((value_get),mbpos,0,(mb_mode))
-    if action==(value_set)
+    if action=(value_set)
         set mode# value
     else
         return mode#
@@ -198,11 +198,11 @@ function mpeg_predict_acdc(sd x,sd mb_width,sd mbpos,sd block,sd predictors,sd a
             set condition 1
         endif
     endif
-    if condition==1
+    if condition=1
         set index mbpos
         dec index
         setcall mode macro_blocks_mode((value_get),index)
-        if mode==(INTRA)
+        if mode=(INTRA)
             setcall left macro_blocks((value_get),index,0)
         endif
     endif
@@ -211,7 +211,7 @@ function mpeg_predict_acdc(sd x,sd mb_width,sd mbpos,sd block,sd predictors,sd a
         set index mbpos
         sub index mb_width
         setcall mode macro_blocks_mode((value_get),index)
-        if mode==(INTRA)
+        if mode=(INTRA)
             setcall top macro_blocks((value_get),index,0)
         endif
     endif
@@ -224,12 +224,12 @@ function mpeg_predict_acdc(sd x,sd mb_width,sd mbpos,sd block,sd predictors,sd a
             set condition 1
         endif
     endif
-    if condition==1
+    if condition=1
         set index mbpos
         sub index mb_width
         dec index
         setcall mode macro_blocks_mode((value_get),index)
-        if mode==(INTRA)
+        if mode=(INTRA)
             setcall diag macro_blocks((value_get),index,0)
         endif
     endif
@@ -237,7 +237,7 @@ function mpeg_predict_acdc(sd x,sd mb_width,sd mbpos,sd block,sd predictors,sd a
     #pLeft, pTop, pDiag blocks
     sd current
     setcall current macro_blocks((value_get),mbpos,0)
-    if block==0
+    if block=0
         if left!=0
             set p_left left
             add p_left (mbpred_block_size)
@@ -250,7 +250,7 @@ function mpeg_predict_acdc(sd x,sd mb_width,sd mbpos,sd block,sd predictors,sd a
             set p_diag diag
             add p_diag (mbpred_block_size*3)
         endif
-    elseif block==1
+    elseif block=1
         set p_left current
         #set left_quant
         if top!=0
@@ -259,7 +259,7 @@ function mpeg_predict_acdc(sd x,sd mb_width,sd mbpos,sd block,sd predictors,sd a
             set p_diag top
             add p_diag (mbpred_block_size*2)
         endif
-    elseif block==2
+    elseif block=2
         if left!=0
             set p_left left
             add p_left (mbpred_block_size*3)
@@ -267,13 +267,13 @@ function mpeg_predict_acdc(sd x,sd mb_width,sd mbpos,sd block,sd predictors,sd a
             add p_diag (mbpred_block_size)
         endif
         set p_top current
-    elseif block==3
+    elseif block=3
         set p_left current
         add p_left (mbpred_block_size*2)
         set p_top current
         add p_top (mbpred_block_size)
         set p_diag current
-    elseif block==4
+    elseif block=4
         if left!=0
             set p_left left
             add p_left (mbpred_block_size*4)
@@ -286,7 +286,7 @@ function mpeg_predict_acdc(sd x,sd mb_width,sd mbpos,sd block,sd predictors,sd a
             set p_diag diag
             add p_diag (mbpred_block_size*4)
         endif
-    elseif block==5
+    elseif block=5
         if left!=0
             set p_left left
             add p_left (mbpred_block_size*5)
@@ -400,7 +400,7 @@ function calc_acdc_bits(sd acpred_direction,sd mbpos,sd sector,sd qcoeff,sd pred
     data temp^tmp
     set i 1
     #apply ac prediction & calc cost
-    if direction==1
+    if direction=1
         while i<8
             setcall value array_get_int16(qcoeff,i)
             call array_set_word_off(temp,value,i)
@@ -441,7 +441,7 @@ function calc_acdc_bits(sd acpred_direction,sd mbpos,sd sector,sd qcoeff,sd pred
 
     set i 1
     #undo prediction
-    if direction==1
+    if direction=1
         while i<8
             setcall value array_get_int16(temp,i)
             call array_set_word_off(qcoeff,value,i)
@@ -478,12 +478,12 @@ function coef_intra_calc(sd qcoeff,sd index)
     sd i=1
     sd run=0
     sd level=0
-    while level==0
+    while level=0
         setcall level array_get_int(scan_table,i)
         inc i
         setcall level array_get_int16(qcoeff,level)
-        if level==0
-            if i==64
+        if level=0
+            if i=64
                 #empty block
                 return 0
             endif
@@ -575,9 +575,9 @@ function mpeg_scan_tables(sd table)
     data zig_zag^zig_zag_data
     data horizontal^horizontal_data
     data vertical^vertical_data
-    if table==(zig_zag)
+    if table=(zig_zag)
         return zig_zag
-    elseif table==(horizontal)
+    elseif table=(horizontal)
         return horizontal
     else
         #vertical
@@ -589,7 +589,7 @@ endfunction
 function mpeg_apply_acdc(sd qcoeff,sd predictors,sd direction)
     sd i=1
     sd value
-    if direction#==1
+    if direction#=1
         while i<8
             setcall value array_get_int16(predictors,i)
             call array_set_word_off(qcoeff,value,i)

@@ -26,7 +26,7 @@ function stage_screenshot()
     importx "_gdk_pixbuf_get_from_drawable" gdk_pixbuf_get_from_drawable
     sd pixbuf
     setcall pixbuf gdk_pixbuf_get_from_drawable((NULL),root,(NULL),x_orig,y_orig,0,0,width,height)
-    if pixbuf==0
+    if pixbuf=0
         import "texter" texter
         str er="Pixbuf error"
         call texter(er)

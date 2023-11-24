@@ -12,7 +12,7 @@ import "strerrno" strerrno
 function memrealloc(sd block,sd size)
     sd newblock
     SetCall newblock realloc(block,size)
-    If newblock==0
+    If newblock=0
             char newmem="Realloc failed with error: "
             str pnewmem^newmem
             call strerrno(pnewmem)
@@ -36,7 +36,7 @@ Function memoryrealloc(data ptrpointer,data size)
         Set oldpointer ptrpointer#
 
         SetCall newpointer memrealloc(oldpointer,size)
-        If newpointer==0
+        If newpointer=0
                 Return (error)
         EndIf
         Set ptrpointer# newpointer
@@ -94,7 +94,7 @@ endfunction
 
 function alloc_block(sd action,sd mem,sd size,sd append,sd append_size)
     sd err
-    if action==(value_set)
+    if action=(value_set)
     #0/block
         sd value=0
         sd p_value^value
@@ -103,7 +103,7 @@ function alloc_block(sd action,sd mem,sd size,sd append,sd append_size)
             return 0
         endif
         return value
-    elseif action==(value_unset)
+    elseif action=(value_unset)
         importx "_free" free
         call free(mem)
     else
@@ -112,7 +112,7 @@ function alloc_block(sd action,sd mem,sd size,sd append,sd append_size)
         import "multiple_of_nr" multiple_of_nr
         sd page=0x1000
         sd currentsize
-        if size==0
+        if size=0
             set currentsize 0
         else
             setcall currentsize multiple_of_nr(size,page)

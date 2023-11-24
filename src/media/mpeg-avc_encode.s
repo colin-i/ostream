@@ -33,11 +33,11 @@ function avc_encode(sd file,sd settype,sd pixbuf)
     call avc_output_size((value_set),0)
     call avc_output_pos((value_set),8)
 
-    if settype==(avc_sequence_param)
+    if settype=(avc_sequence_param)
         call avc_sequenceParameterSet()
-    elseif settype==(avc_picture_param)
+    elseif settype=(avc_picture_param)
         call avc_pictureParameterSet()
-    elseif settype==(avc_frame0_headers)
+    elseif settype=(avc_frame0_headers)
         call avc_ini_headers()
     else
         call avc_enc_frame(pixbuf)
@@ -68,7 +68,7 @@ function avc_write(sd file)
         if nal_size!=allsize
             sd src_byte
             set src_byte mem#
-            if count==2
+            if count=2
                 if src_byte<=0x3
                     set nal_mem# 0x3
                     set count 0
@@ -76,7 +76,7 @@ function avc_write(sd file)
                     inc nal_size
                 endif
             endif
-            if src_byte==0
+            if src_byte=0
                 inc count
             else
                 set count 0
@@ -165,7 +165,7 @@ function avc_sequenceParameterSet()
     #i_log2_max_frame_num
     sd i_log2_max_frame_num=4
     sd loop=1
-    while loop==1
+    while loop=1
         sd nr
         setcall nr shl(1,i_log2_max_frame_num)
         if nr<=(avc_keyint_max)
@@ -240,7 +240,7 @@ function avc_sequenceParameterSet()
         set b_crop 1
     endelseif
     call avc_bs_write(b_crop,1)
-    if b_crop==1
+    if b_crop=1
         #left
         call avc_bs_write_ue(0)
         #right
@@ -399,7 +399,7 @@ function avc_enc_frame_header()
     #-1 if nal_type != 5
     sd idr_pic_id
     setcall idr_pic_id avc_idr_pic_id((value_get))
-    if frame_num==(avc_keyint_max)
+    if frame_num=(avc_keyint_max)
         set nal_slice_type (NAL_SLICE_IDR)
         set nal_priority (NAL_PRIORITY_HIGHEST)
         set type (X264_TYPE_I)
@@ -586,11 +586,11 @@ function avc_enc_frame_content()
                 import "mpeg_block_iteration_compare" mpeg_block_iteration_compare
                 sd mode
                 setcall mode mpeg_block_iteration_compare(Y_area,Y_area_pre,U_area,U_area_pre,V_area,V_area_pre,strideY,strideUV,x,y)
-                if mode==(SKIP)
+                if mode=(SKIP)
                     set mb_type (avc_P_SKIP)
                 endif
             endif
-            if mb_type==(avc_I_16x16)
+            if mb_type=(avc_I_16x16)
                 #get the block bytes on the current input
                 import "mpeg_block_iteration_copy" mpeg_block_iteration_copy
                 call mpeg_block_iteration_copy(Y_area,Y_area_pre,U_area,U_area_pre,V_area,V_area_pre,strideY,strideUV,x,y)
@@ -601,16 +601,16 @@ function avc_enc_frame_content()
             call avc_mb_cache_init(x,y,mb_type)
 
             sd call_terminal=1
-            if y==0
-                if x==0
+            if y=0
+                if x=0
                     set call_terminal 0
                 endif
             endif
-            if call_terminal==1
+            if call_terminal=1
                 import "avc_cabac_terminal" avc_cabac_terminal
                 call avc_cabac_terminal(0)
             endif
-            if mb_type==(avc_P_SKIP)
+            if mb_type=(avc_P_SKIP)
                 call avc_cabac_skip(1,x,y)
             else
                 import "avc_block" avc_block

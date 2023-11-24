@@ -33,7 +33,7 @@ function viewport_test(sd container,sd widget)
     set obj obj#
     ss typename
     setcall typename g_type_name(obj)
-    if typename==null
+    if typename=null
         return container
     endif
 

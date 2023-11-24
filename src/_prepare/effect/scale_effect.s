@@ -46,7 +46,7 @@ importx "_gtk_toggle_button_get_active" gtk_toggle_button_get_active
 function stage_effect_scale_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd rowstride,sd *animpixels,sd animpixbuf,sd in_out)
     data orientation_left_mult#1
     data orientation_top_mult#1
-    if part==0
+    if part=0
         data init#1
         set init 0
         sd p_orientation_top_mult^orientation_top_mult
@@ -54,14 +54,14 @@ function stage_effect_scale_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd rowst
 
         return 0
     endif
-    if init==0
+    if init=0
         data start_rect_width#1
         data start_rect_height#1
 
         data end_rect_width#1
         data end_rect_height#1
 
-        if in_out==(start_from_image)
+        if in_out=(start_from_image)
             set start_rect_width w
             set start_rect_height h
             set end_rect_width 0
@@ -86,12 +86,12 @@ function stage_effect_scale_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd rowst
 
         data subpixels#1
         set subpixels 0
-        if in_out==(start_from_image)
-            if smaller_greater==(greater)
+        if in_out=(start_from_image)
+            if smaller_greater=(greater)
                 set subpixels 1
             endif
         else
-            if smaller_greater==(smaller)
+            if smaller_greater=(smaller)
                 set subpixels 1
             endif
         endelse
@@ -137,13 +137,13 @@ function stage_effect_scale_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd rowst
     import "pixbuf_scale" pixbuf_scale
     importx "_g_object_unref" g_object_unref
 
-    if subpixels==0
+    if subpixels=0
         setcall newpixbuf pixbuf_scale(animpixbuf,frame_width,frame_height)
     else
         importx "_gdk_pixbuf_new_subpixbuf" gdk_pixbuf_new_subpixbuf
         sd croppixbuf
         setcall croppixbuf gdk_pixbuf_new_subpixbuf(animpixbuf,left,top,frame_width,frame_height)
-        if croppixbuf==0
+        if croppixbuf=0
             return 0
         endif
         setcall newpixbuf pixbuf_scale(croppixbuf,w,h)
@@ -153,7 +153,7 @@ function stage_effect_scale_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd rowst
         set frame_width w
         set frame_height h
     endelse
-    if newpixbuf==0
+    if newpixbuf=0
         return 0
     endif
 

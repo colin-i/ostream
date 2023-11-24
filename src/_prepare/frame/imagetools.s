@@ -22,7 +22,7 @@ function stage_color_under_image_set()
     import "stage_frame_form_data" stage_frame_form_data
     sd newpixbuf
     setcall newpixbuf stage_frame_form_data((stage_frame_form_data_pixbuf))
-    if newpixbuf==0
+    if newpixbuf=0
         return 0
     endif
 
@@ -72,12 +72,12 @@ function headline_dialog()
     call gtk_widget_show_all(dialog)
 
     sd loop=1
-    while loop==1
+    while loop=1
         importx "_gtk_dialog_run" gtk_dialog_run
         sd resp
         setcall resp gtk_dialog_run(dialog)
         set loop 0
-        if resp==(GTK_RESPONSE_OK)
+        if resp=(GTK_RESPONSE_OK)
             sd err
             setcall err headline_dlg((value_get))
             if err!=(noerror)
@@ -93,7 +93,7 @@ function headline_dialog()
 endfunction
 
 function headline_dlg(sd action,sd vbox)
-    if action==(value_set)
+    if action=(value_set)
         data headline_txt#1
         data headline_entry#1
 
@@ -262,7 +262,7 @@ function headline_dlg(sd action,sd vbox)
         sd y
         sd p_y^y
 
-        if coordinates_flag==1
+        if coordinates_flag=1
             #test on coordinates
             import "pixbuf_get_wh" pixbuf_get_wh
             sd w
@@ -278,7 +278,7 @@ function headline_dlg(sd action,sd vbox)
             setcall x gtk_entry_get_text(left_entry)
             sd bool
             setcall bool strtoint(x,p_x)
-            if bool==0
+            if bool=0
                 return integer_err
             endif
             if x<0
@@ -290,7 +290,7 @@ function headline_dlg(sd action,sd vbox)
 
             setcall y gtk_entry_get_text(top_entry)
             setcall bool strtoint(y,p_y)
-            if bool==0
+            if bool=0
                 return integer_err
             endif
             if y<0
@@ -327,7 +327,7 @@ function headline_dlg(sd action,sd vbox)
         setcall pos stage_get_sel_pos()
         setcall nr_text gtk_entry_get_text(frames_entry)
         setcall bool strtoint(nr_text,p_frames)
-        if bool==1
+        if bool=1
             if frames<=0
                 str moreframes="More frames expected"
                 return moreframes
@@ -516,7 +516,7 @@ function stage_lines_set()
     sd nr
     setcall nr stage_lines_number()
     setcall bool entry_to_int_min_N(entry#,nr,1)
-    if bool==(FALSE)
+    if bool=(FALSE)
         return (void)
     endif
     #get add/remove
@@ -557,11 +557,11 @@ function stage_lines_set()
     setcall end stage_lines_end()
     sd value
     setcall bool entry_to_int_min_N(start_entry#,#value,0)
-    if bool==(TRUE)
+    if bool=(TRUE)
         set start# value
     endif
     setcall bool entry_to_int_min_N(end_entry#,#value,0)
-    if bool==(TRUE)
+    if bool=(TRUE)
         set end# value
     endif
     #handle the selection first for conflicts with expose event
@@ -597,10 +597,10 @@ function stage_lines_thread_loop()
     sd nr_frames
     setcall nr_frames stage_get_frames()
     #loop
-    while 1==1
+    while 1=1
         sd stop
         setcall stop av_dialog_stop((value_get))
-        if stop==1
+        if stop=1
             return (void)
         endif
         #
@@ -609,7 +609,7 @@ function stage_lines_thread_loop()
         endif
         #
         inc img_nr
-        if img_nr==nr_frames
+        if img_nr=nr_frames
             return (void)
         endif
         #
@@ -639,7 +639,7 @@ function stage_lines_modify_img(sd img_nr)
     #
     sd pixbuf
     setcall pixbuf stage_nthPixbufFromContainer(img_nr)
-    if pixbuf==0
+    if pixbuf=0
         return (void)
     endif
     #
@@ -666,20 +666,20 @@ function stage_lines_modify_img(sd img_nr)
     setcall row_col stage_line_row_col()
     sd add_rem
     setcall add_rem stage_lines_add_remove()
-    if add_rem#==0
-        if row_col#==0
+    if add_rem#=0
+        if row_col#=0
             call img_row_add(#newmem,w,#h,number,stride,bytes,size)
         else
             call img_col_add(#newmem,#w,h,number,#stride,bytes)
         endelse
     else
-        if row_col#==0
+        if row_col#=0
             call img_row_remove(#newmem,#h,number,stride,bytes)
         else
             call img_col_remove(#newmem,#w,h,number,#stride,bytes)
         endelse
     endelse
-    if newmem==0
+    if newmem=0
         return (void)
     endif
     #
@@ -688,7 +688,7 @@ function stage_lines_modify_img(sd img_nr)
     data free_callback^free
     sd newpixbuf
     setcall newpixbuf gdk_pixbuf_new_from_data(newmem,(GDK_COLORSPACE_RGB),(FALSE),8,w,h,stride,free_callback,newmem)
-    if newpixbuf==0
+    if newpixbuf=0
         call free(newmem)
         return (void)
     endif
@@ -720,7 +720,7 @@ function img_row_add(sd p_newmem,sd w,sd p_h,sd number,sd stride,ss bytes,sd siz
     #
     sd newmem
     setcall newmem memalloc(newsize)
-    if newmem==0
+    if newmem=0
         return (void)
     endif
     set p_newmem# newmem
@@ -774,7 +774,7 @@ function img_col_add(sd p_newmem,sd p_w,sd h,sd number,sd p_stride,ss prevpixels
     #
     sd newmem
     setcall newmem memalloc(newsize)
-    if newmem==0
+    if newmem=0
         return (void)
     endif
     set p_newmem# newmem
@@ -832,7 +832,7 @@ function img_row_remove(sd p_newmem,sd p_h,sd number,sd stride,ss prevpixels)
 
     sd newmem
     setcall newmem memalloc(newsize)
-    if newmem==0
+    if newmem=0
         return (void)
     endif
     set p_newmem# newmem
@@ -864,7 +864,7 @@ function img_col_remove(sd p_newmem,sd p_w,sd h,sd number,sd p_stride,ss prevpix
     #
     sd newmem
     setcall newmem memalloc(newsize)
-    if newmem==0
+    if newmem=0
         return (void)
     endif
     set p_newmem# newmem

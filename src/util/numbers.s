@@ -88,20 +88,20 @@ EndFunction
 #bool
 Function memtoint(str content,data size,data outvalue)
     set outvalue# 0
-    if size==0
+    if size=0
         return (FALSE)
     endif
     sd minusbool=FALSE
     char negsign="-"
-    If content#==negsign
+    If content#=negsign
         Inc content;Dec size
-        If size==0
+        If size=0
             Return (FALSE)
         EndIf
         set minusbool (TRUE)
     EndIf
     sd b;setcall b memtoint_add(content,size,outvalue,minusbool)
-    if minusbool==(TRUE)
+    if minusbool=(TRUE)
         if outvalue#>0
 #will go also at 4.294.967.296-6.442.450.943
 #                8.589.934.592-9.999.999.999
@@ -125,7 +125,7 @@ Function memtoint_add(str content,data size,data outvalue,data minusbool)
         char byte#1
         Set byte content#
         SetCall bool numeric(byte)
-        If bool==(FALSE)
+        If bool=(FALSE)
             Return (FALSE)
         EndIf
         Sub byte (_0)
@@ -139,7 +139,7 @@ Function memtoint_add(str content,data size,data outvalue,data minusbool)
         const bil_2=2*bil_1
         const max_int=0x80*0x100*0x100*0x100
         const max_int_bil_2_rest=max_int-bil_2
-        if multx==(bil_1)
+        if multx=(bil_1)
             if size!=0
                 #(...)x xxx xxx xxx
                 while size!=0
@@ -152,12 +152,12 @@ Function memtoint_add(str content,data size,data outvalue,data minusbool)
             if number>2
                 #3 xxx xxx xxx-9 xxx xxx xxx
                 return (FALSE)
-            elseif number==2
+            elseif number=2
                 if value>(max_int_bil_2_rest)
                     #2 147 483 649-2 999 999 999
                     return (FALSE)
-                elseif value==(max_int_bil_2_rest)
-                    if minusbool==(FALSE)
+                elseif value=(max_int_bil_2_rest)
+                    if minusbool=(FALSE)
                         #2 147 483 648 is the first positive overflow
                         return (FALSE)
                     endif
@@ -187,7 +187,7 @@ function strtoint_positive(ss str,sd ptr_out)
     sd bool
     setcall bool strtoint(str,ptr_out)
     str posint="Positive integer number expected"
-    if bool==0
+    if bool=0
         call texter(posint)
         return 0
     endif
@@ -202,9 +202,9 @@ endfunction
 function strtoint_positive_not_zero(ss str,sd ptr_out)
     sd bool
     setcall bool strtoint_positive(str,ptr_out)
-    if bool==0
+    if bool=0
         return 0
-    elseif ptr_out#==0
+    elseif ptr_out#=0
         str notzero="Unexpected 0(zero) number"
         call texter(notzero)
         return 0
@@ -216,7 +216,7 @@ endfunction
 function strtoint_positive_twoorgreater(ss str,sd ptr_out)
     sd bool
     setcall bool strtoint_positive(str,ptr_out)
-    if bool==0
+    if bool=0
         return 0
     elseif ptr_out#<2
         str errnr="A number equal or greater than 2 expected"
@@ -230,7 +230,7 @@ endfunction
 function strtoint_positive_N_or_Greater(ss str,sd ptr_out,sd n)
     sd bool
     setcall bool strtoint_positive(str,ptr_out)
-    if bool==0
+    if bool=0
         return 0
     elseif ptr_out#<n
         import "strdworddisp" strdworddisp
@@ -352,7 +352,7 @@ function multiple_of_nr(sd value,sd nr)
     set result value
     div value nr
     mult value nr
-    if value==result
+    if value=result
         return result
     endif
     div result nr
@@ -545,7 +545,7 @@ endfunction
 
 #pos/-1
 function int_in_set(sd int,sd set,sd set_count)
-    if set_count==0
+    if set_count=0
         return -1
     endif
     sd start
@@ -553,7 +553,7 @@ function int_in_set(sd int,sd set,sd set_count)
     while set#!=int
         add set (DWORD)
         dec set_count
-        if set_count==0
+        if set_count=0
             return -1
         endif
     endwhile

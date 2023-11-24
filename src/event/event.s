@@ -24,13 +24,13 @@ function recoverEnter(data *GtkWidget,data GdkEventKey,data gpointer)
     data GDK_Return=0xff0d
     data GDK_KP_Enter=0xff8d
 
-    if pressedkey==GDK_Return
+    if pressedkey=GDK_Return
             set enterkey true
-    elseif pressedkey==GDK_KP_Enter
+    elseif pressedkey=GDK_KP_Enter
             set enterkey true
     endelseif
 
-    if enterkey==true
+    if enterkey=true
         import "editWidgetBufferForward" editWidgetBufferForward
         call editWidgetBufferForward(gpointer)
     endif

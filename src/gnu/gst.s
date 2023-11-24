@@ -41,7 +41,7 @@ function launch_pipe(ss mem)
     setcall pipe gst_parse_launch(mem,ptrgerr)
 
     data n=0
-    if pipe==n
+    if pipe=n
         call gerrtoerr(ptrgerr)
     endif
     call add_bus_signal_watch(pipe)
@@ -74,7 +74,7 @@ function launch_pipe_start(ss command)
     data n=0
 
     setcall pipeline launch_pipe(command)
-    if pipeline==n
+    if pipeline=n
         return n
     endif
 
@@ -242,7 +242,7 @@ function iterate_next_forward_data_free(sd iter,sd forward,sd data)
     sd ret
     setcall ret gst_iterator_next(iter,ptr_elem)
     data er=GST_ITERATOR_ERROR
-    if ret==er
+    if ret=er
         str e="Iterator error"
         call texter(e)
         return e

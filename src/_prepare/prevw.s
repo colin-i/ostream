@@ -9,7 +9,7 @@ function stage_preview()
     import "stage_get_sel" stage_get_sel
     sd img
     setcall img stage_get_sel()
-    if img==0
+    if img=0
         return 0
     endif
 
@@ -52,7 +52,7 @@ function stage_preview_next(sd random_key)
 
     #test next pos with the final one
     inc pos
-    if pos==total_pos
+    if pos=total_pos
         #stop if last pos
         return 0
     endif
@@ -79,7 +79,7 @@ endfunction
 function stage_preview_timeout(sd key)
     #pause or close
     sd pause%ptr_letplay
-    if pause#==0
+    if pause#=0
         return 0
     endif
 
@@ -171,25 +171,25 @@ function sound_ready(sd frame_pos,sd random_key)
     sd ptrbool
     setcall ptrbool sound_preview_bool()
     #condition to unset the previous player: if was created and has a different format, or another frame pressed
-    if ptrbool#==1
+    if ptrbool#=1
         sd bool
         setcall bool sound_format((value_get))
-        if bool==1
+        if bool=1
             inc logical_frame_pos
             if frame_pos!=logical_frame_pos
                 set bool 0
             endif
         endif
-        if bool==0
+        if bool=0
             #unset the previous player
             call sound_preview_free()
             set ptrbool# 0
         endif
     endif
     #condition to set the player: if isn't created
-    if ptrbool#==0
+    if ptrbool#=0
         setcall ptrbool# sound_preview_init()
-        if ptrbool#==1
+        if ptrbool#=1
             call sound_format((value_set))
             set logical_frame_pos frame_pos
             sd i=0
@@ -209,7 +209,7 @@ endfunction
 function sound_pause()
     sd prev
     setcall prev sound_preview_bool()
-    if prev#==1
+    if prev#=1
         call sound_preview_free()
         set prev# 0
     endif
@@ -239,7 +239,7 @@ function sound_prev_pos(sd frame_pos,sd random_key)
     #get logical sound position
     sd sum_at_point
     setcall sum_at_point stage_frame_time_numbers((stage_frame_time_sum_at_index),frame_pos)
-    if sum_at_point==0
+    if sum_at_point=0
         if frame_pos!=0
             #after the last frame, once
             return (void)
@@ -284,7 +284,7 @@ function sound_prev_pos(sd frame_pos,sd random_key)
         sd next_frame
         set next_frame frame_pos
         inc next_frame
-        if next_frame==all_frames
+        if next_frame=all_frames
             set next_size current_sound_size
         endif
     endelse
@@ -310,7 +310,7 @@ function sound_format(sd procedure)
     setcall current_sample_rate stage_sound_rate((value_get))
     setcall current_channels stage_sound_channels((value_get))
     setcall current_bits_per_sample stage_sound_bps((value_get))
-    if procedure==(value_set)
+    if procedure=(value_set)
         set sample_rate current_sample_rate
         set channels current_channels
         set bits_per_sample current_bits_per_sample
@@ -326,7 +326,7 @@ function sound_format(sd procedure)
         if bits_per_sample!=current_bits_per_sample
             set changed 1
         endif
-        if changed==1
+        if changed=1
             set sample_rate current_sample_rate
             set channels current_channels
             set bits_per_sample current_bits_per_sample

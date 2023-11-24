@@ -26,7 +26,7 @@ function stage_scale_set()
     sd ptr_width^width
     setcall text gtk_entry_get_text(entryw)
     setcall bool strtoint(text,ptr_width)
-    if bool==0
+    if bool=0
         call texter(valueserr)
         return valueserr
     endif
@@ -34,7 +34,7 @@ function stage_scale_set()
     sd ptr_height^height
     setcall text gtk_entry_get_text(entryh)
     setcall bool strtoint(text,ptr_height)
-    if bool==0
+    if bool=0
         call texter(valueserr)
         return valueserr
     endif
@@ -43,7 +43,7 @@ function stage_scale_set()
 
     sd newpixbuf
     setcall newpixbuf pixbuf_scale(currentpixbuf,width,height)
-    if newpixbuf==0
+    if newpixbuf=0
         return -1
     endif
 
@@ -167,7 +167,7 @@ endfunction
 
 function scale_width_entry(sd action,sd value)
     data width_entry#1
-    if action==(value_set)
+    if action=(value_set)
         set width_entry value
     else
         return width_entry
@@ -175,7 +175,7 @@ function scale_width_entry(sd action,sd value)
 endfunction
 function scale_height_entry(sd action,sd value)
     data height_entry#1
-    if action==(value_set)
+    if action=(value_set)
         set height_entry value
     else
         return height_entry
@@ -183,7 +183,7 @@ function scale_height_entry(sd action,sd value)
 endfunction
 function scale_toggle_entry(sd action,sd value)
     data toggle_entry#1
-    if action==(value_set)
+    if action=(value_set)
         set toggle_entry value
     else
         return toggle_entry
@@ -197,7 +197,7 @@ function scale_signal_changed(sd widget,sd data)
     setcall ch_button scale_toggle_entry((value_get))
     sd toggled
     setcall toggled gtk_toggle_button_get_active(ch_button)
-    if toggled==(FALSE)
+    if toggled=(FALSE)
         return 0
     endif
 
@@ -207,7 +207,7 @@ function scale_signal_changed(sd widget,sd data)
     import "slen" slen
     sd len
     setcall len slen(text)
-    if len==0
+    if len=0
         return 0
     endif
 
@@ -257,7 +257,7 @@ function scale_width_changed(sd width,sd height,sd wd_entry,sd hg_entry)
 
     sd newheight
     setcall newheight numbers_proportion(newwidth,height,width)
-    if newheight==0
+    if newheight=0
         set newheight 1
     endif
 
@@ -275,7 +275,7 @@ function scale_height_changed(sd width,sd height,sd wd_entry,sd hg_entry)
 
     sd newwidth
     setcall newwidth numbers_proportion(newheight,width,height)
-    if newwidth==0
+    if newwidth=0
         set newwidth 1
     endif
 

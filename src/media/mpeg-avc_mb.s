@@ -17,7 +17,7 @@ function avc_cabac_context_init()
     import "avc_slice_type" avc_slice_type
     sd slice_type
     setcall slice_type avc_slice_type((value_get))
-    if slice_type==(SLICE_TYPE_I)
+    if slice_type=(SLICE_TYPE_I)
         setcall cabac avc_cabac_context_init_I()
     else
         setcall cabac avc_cabac_context_init_P()
@@ -463,7 +463,7 @@ endfunction
 function avc_mb_type(sd slice_type)
     sd mb_nr_left
     sd mb_nr_top
-    if slice_type==(SLICE_TYPE_I)
+    if slice_type=(SLICE_TYPE_I)
         setcall mb_nr_left avc_mb_nr_left((value_get))
         setcall mb_nr_top avc_mb_nr_top((value_get))
         sd ctx=0
@@ -490,7 +490,7 @@ function avc_mb_type_intra(sd ctx0,sd ctx1,sd ctx2,sd ctx3,sd ctx4,sd ctx5)
     call avc_cabac_terminal(0)
     sd cbp_luma
     setcall cbp_luma avc_cbp_luma((value_get))
-    if cbp_luma==0
+    if cbp_luma=0
         call avc_cabac_decision(ctx1,0)
     else
         call avc_cabac_decision(ctx1,1)
@@ -498,11 +498,11 @@ function avc_mb_type_intra(sd ctx0,sd ctx1,sd ctx2,sd ctx3,sd ctx4,sd ctx5)
 
     sd cbp_chroma
     setcall cbp_chroma avc_cbp_chroma((value_get))
-    if cbp_chroma==0
+    if cbp_chroma=0
         call avc_cabac_decision(ctx2,0)
     else
         call avc_cabac_decision(ctx2,1)
-        if cbp_chroma==1
+        if cbp_chroma=1
             call avc_cabac_decision(ctx3,0)
         else
             call avc_cabac_decision(ctx3,1)
@@ -551,7 +551,7 @@ function avc_cabac_decision(sd ctx,sd b)
         add low range
         call avc_cabac_low((value_set),low)
         call avc_cabac_range((value_set),range_lps)
-        if state==0
+        if state=0
             set value 1
             sub value mps
             call avc_cabac_ctxstate_value_set(ctx,(avc_ctxstate_mps),value)

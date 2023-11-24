@@ -32,9 +32,9 @@ function strvaluedisp(str text,data part2,data formattype)
     set truncation notruncation
 
     str format#1
-    if formattype==si
+    if formattype=si
         set format int
-    elseif formattype==su
+    elseif formattype=su
         set format uint
     else
         set format str

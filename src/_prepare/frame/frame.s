@@ -11,7 +11,7 @@ function stage_frame_panel(sd action,sd button,sd backfn,sd panel)
 
     data panelwidget#1
 
-    if action==(buttons_panel_open)
+    if action=(buttons_panel_open)
         set openbutton button
         set panelwidget panel
         set backfunction backfn

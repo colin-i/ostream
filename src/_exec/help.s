@@ -16,7 +16,7 @@ function view_use_file_got_gappinfo_glist(sd gappinfo,sd glist)
     sd bool
     setcall bool g_app_info_launch(gappinfo,glist,launch_context,ptrgerr)
     sd z=0
-    if gappinfo==z
+    if gappinfo=z
         call gerrtoerr(ptrgerr)
     endif
 endfunction
@@ -39,7 +39,7 @@ function view_use_file_got_gfile(sd gfile)
     sd appinfo
     setcall appinfo g_file_query_default_handler(gfile,cancellable,ptrgerr)
     sd z=0
-    if appinfo==z
+    if appinfo=z
         call gerrtoerr(ptrgerr)
     endif
     call view_use_file_got_gfile_gappinfo(gfile,appinfo)

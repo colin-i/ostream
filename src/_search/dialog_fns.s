@@ -215,12 +215,12 @@ function setdisplay_setfile_search(sd method,sd argument,sd text)
     if method<setdisplay
         add method setdisplay
         set selection method
-        if method==setfile
+        if method=setfile
             data file#1
             set file argument
         endif
     else
-        if selection==setdisplay
+        if selection=setdisplay
             importx "_gtk_entry_set_text" gtk_entry_set_text
             call gtk_entry_set_text(argument,text)
         else

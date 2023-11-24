@@ -15,7 +15,7 @@ endfunction
 
 function stage_overlay_file(sd action,sd value)
     data file#1
-    if action==(value_set)
+    if action=(value_set)
         set file value
     else
         return file
@@ -43,7 +43,7 @@ function stage_overlay_set()
     sd filename
     setcall filename file_chooser_get_fname(file_entry)
 
-    if filename==0
+    if filename=0
         return 0
     endif
 
@@ -54,7 +54,7 @@ function stage_overlay_set()
     importx "_g_free" g_free
     call g_free(filename)
 
-    if overlay==0
+    if overlay=0
         return 0
     endif
 
@@ -85,13 +85,13 @@ function stage_overlay_set()
         set min_i 0
         set max_i lay_width
     else
-        if x_factor==-1
+        if x_factor=-1
             set min_i 0
         else
             sd x_space
             set x_space lay_width
             sub x_space over_width
-            if x_factor==0
+            if x_factor=0
                 div x_space 2
                 set min_i x_space
             else
@@ -108,13 +108,13 @@ function stage_overlay_set()
         set min_j 0
         set max_j lay_height
     else
-        if y_factor==-1
+        if y_factor=-1
             set min_j 0
         else
             sd y_space
             set y_space lay_height
             sub y_space over_height
-            if y_factor==0
+            if y_factor=0
                 div y_space 2
                 set min_j y_space
             else

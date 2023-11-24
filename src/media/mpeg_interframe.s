@@ -41,7 +41,7 @@ function mpeg_compare_block(sd mb_x,sd mb_y)
 
     sd mode
     setcall mode mpeg_block_iteration_compare(y_current,y_prev,u_current,u_prev,v_current,v_prev,lumstride,cromstride,mb_x,mb_y)
-    if mode==(INTRA)
+    if mode=(INTRA)
         return (INTRA)
     endif
 
@@ -53,15 +53,15 @@ endfunction
 function mpeg_block_iteration_compare(sd y_current,sd y_prev,sd u_current,sd u_prev,sd v_current,sd v_prev,sd lumstride,sd cromstride,sd mb_x,sd mb_y)
     sd mode
     setcall mode mpeg_block_iteration((compare),y_current,y_prev,lumstride,mb_x,mb_y,16)
-    if mode==(INTRA)
+    if mode=(INTRA)
         return (INTRA)
     endif
     setcall mode mpeg_block_iteration((compare),u_current,u_prev,cromstride,mb_x,mb_y,8)
-    if mode==(INTRA)
+    if mode=(INTRA)
         return (INTRA)
     endif
     setcall mode mpeg_block_iteration((compare),v_current,v_prev,cromstride,mb_x,mb_y,8)
-    if mode==(INTRA)
+    if mode=(INTRA)
         return (INTRA)
     endif
     return (SKIP)
@@ -105,7 +105,7 @@ function mpeg_block_iteration(sd action,ss current,ss prev,sd stride,sd x,sd y,s
         set current current_rowstart
         set prev prev_rowstart
         while i!=compareunit
-            if action==(compare)
+            if action=(compare)
                 sd dif
                 set dif current#
                 sub dif prev#

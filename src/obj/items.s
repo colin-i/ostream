@@ -350,7 +350,7 @@ function entry_to_nr_minValue(sd entry,sd p_out,sd min)
     setcall text gtk_entry_get_text(entry)
     sd bool
     setcall bool strtoint_positive_N_or_Greater(text,p_out,min)
-    if bool==0
+    if bool=0
         set p_out# min
     endif
 endfunction
@@ -386,7 +386,7 @@ endfunction
 function entry_to_int_min_N_max_M(sd entry,sd p_int,sd N,sd M)
     sd bool
     setcall bool entry_to_int_min_N(entry,p_int,N)
-    if bool==0
+    if bool=0
         return 0
     endif
     if p_int#>M
@@ -539,7 +539,7 @@ function new_pixbuf(sd width,sd height)
     importx "_gdk_pixbuf_new" gdk_pixbuf_new
     sd pixbuf
     setcall pixbuf gdk_pixbuf_new((GDK_COLORSPACE_RGB),0,8,width,height)
-    if pixbuf==0
+    if pixbuf=0
         str pxerr="Can't create a pixbuf"
         call texter(pxerr)
         return 0
@@ -551,7 +551,7 @@ endfunction
 function new_pixbuf_color(sd width,sd height,sd color)
     sd pixbuf
     setcall pixbuf new_pixbuf(width,height)
-    if pixbuf==0
+    if pixbuf=0
         return 0
     endif
     importx "_gdk_pixbuf_fill" gdk_pixbuf_fill
@@ -598,7 +598,7 @@ import "rgb_px_set" rgb_px_set
 function pixbuf_scale(sd pixbuf,sd w,sd h)
     sd newpixbuf
     setcall newpixbuf new_pixbuf(w,h)
-    if newpixbuf==0
+    if newpixbuf=0
         return 0
     endif
     sd old_w
@@ -609,13 +609,13 @@ function pixbuf_scale(sd pixbuf,sd w,sd h)
     sd w_ratio
     set w_ratio old_w
     div w_ratio w
-    if w_ratio==0
+    if w_ratio=0
         set w_ratio 1
     endif
     sd h_ratio
     set h_ratio old_h
     div h_ratio h
-    if h_ratio==0
+    if h_ratio=0
         set h_ratio 1
     endif
 
@@ -674,7 +674,7 @@ function pixbuf_scale(sd pixbuf,sd w,sd h)
                     sd value
                     setcall value rgb_px_get(old_pixels,x,y,8,3,old_stride)
 
-                    if number_of_colors==0
+                    if number_of_colors=0
                         call rgb_uint_to_colors(value,sum_colors)
                     else
                         call rgb_uint_to_colors(value,colors)
@@ -706,7 +706,7 @@ function pixbuf_scale_forward_data(sd pixbuf,sd scale_w,sd scale_h,sd forward,sd
     sd newpix
 
     setcall newpix pixbuf_scale(pixbuf,scale_w,scale_h)
-    if newpix==0
+    if newpix=0
         return (error)
     endif
 
@@ -728,11 +728,11 @@ function pixbuf_in_window_scale_forward(sd pixbuf,sd window,sd forward)
     importx "_gdk_window_get_height" gdk_window_get_height
 
     setcall W gdk_window_get_width(window)
-    if W==0
+    if W=0
         return 0
     endif
     setcall H gdk_window_get_height(window)
-    if H==0
+    if H=0
         return 0
     endif
     setcall w gdk_pixbuf_get_width(pixbuf)
@@ -775,7 +775,7 @@ function pixbuf_from_file_forward_data(ss filename,sd forward,sd data)
     sd pixbuf
     setcall pixbuf pixbuf_from_file(filename)
     sd null=0
-    if pixbuf==null
+    if pixbuf=null
         return null
     endif
     sd ret
@@ -793,7 +793,7 @@ importx "_gdk_pixbuf_copy" gdk_pixbuf_copy
 function pixbuf_copy(sd pixbuf)
     sd px
     setcall px gdk_pixbuf_copy(pixbuf)
-    if px==0
+    if px=0
         str er="Could not create a pixbuf"
         call texter(er)
         return 0
@@ -827,7 +827,7 @@ function pixbuf_new_subpixels(sd pixbuf,sd left,sd top,sd right,sd bottom)
 
     sd newpixbuf
     setcall newpixbuf new_pixbuf(w,h)
-    if newpixbuf==0
+    if newpixbuf=0
         return 0
     endif
 
@@ -960,7 +960,7 @@ function pixbuf_from_pixbuf_reverse(sd pixbuf_reverse)
 	#the new pixbuf
 	sd pixbuf
 	setcall pixbuf pixbuf_copy(pixbuf_reverse)
-	if pixbuf==0
+	if pixbuf=0
 		return 0
 	endif
 
@@ -1032,7 +1032,7 @@ endfunction
 function widget_redraw(sd widget)
     sd drawable
     setcall drawable gtk_widget_get_window(widget)
-    if drawable==0
+    if drawable=0
         str nodraw="No drawing area error."
         call texter(nodraw)
         return nodraw

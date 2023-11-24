@@ -8,7 +8,7 @@ const X264_SCAN8_SIZE=6*8
 
 function avc_pre_input(sd action,sd value)
     data mem#1
-    if action==(value_set)
+    if action=(value_set)
         set mem value
     else
         return mem
@@ -16,7 +16,7 @@ function avc_pre_input(sd action,sd value)
 endfunction
 function avc_input(sd action,sd value)
     data mem#1
-    if action==(value_set)
+    if action=(value_set)
         set mem value
     else
         return mem
@@ -24,7 +24,7 @@ function avc_input(sd action,sd value)
 endfunction
 function avc_input_dequant(sd action,sd value)
     data mem#1
-    if action==(value_set)
+    if action=(value_set)
         set mem value
     else
         return mem
@@ -32,7 +32,7 @@ function avc_input_dequant(sd action,sd value)
 endfunction
 function avc_output(sd action,sd value)
     data mem#1
-    if action==(value_set)
+    if action=(value_set)
         set mem value
     else
         return mem
@@ -40,7 +40,7 @@ function avc_output(sd action,sd value)
 endfunction
 function avc_output_size(sd action,sd value)
     data size#1
-    if action==(value_set)
+    if action=(value_set)
         set size value
     else
         return size
@@ -48,7 +48,7 @@ function avc_output_size(sd action,sd value)
 endfunction
 function avc_allsize(sd action,sd value)
     data allsize#1
-    if action==(value_set)
+    if action=(value_set)
         set allsize value
     else
         return allsize
@@ -56,7 +56,7 @@ function avc_allsize(sd action,sd value)
 endfunction
 function avc_output_pos(sd action,sd value)
     data pos#1
-    if action==(value_set)
+    if action=(value_set)
         set pos value
     else
         return pos
@@ -64,7 +64,7 @@ function avc_output_pos(sd action,sd value)
 endfunction
 function avc_nal_output(sd action,sd value)
     data mem#1
-    if action==(value_set)
+    if action=(value_set)
         set mem value
     else
         return mem
@@ -75,7 +75,7 @@ endfunction
 
 function avc_cabac_range(sd way,sd value)
     data range#1
-    if way==(value_set)
+    if way=(value_set)
         set range value
     else
         return range
@@ -83,7 +83,7 @@ function avc_cabac_range(sd way,sd value)
 endfunction
 function avc_cabac_low(sd way,sd value)
     data range#1
-    if way==(value_set)
+    if way=(value_set)
         set range value
     else
         return range
@@ -91,7 +91,7 @@ function avc_cabac_low(sd way,sd value)
 endfunction
 function avc_cabac_sym_cnt(sd way,sd value)
     data sym_cnt#1
-    if way==(value_set)
+    if way=(value_set)
         set sym_cnt value
     else
         return sym_cnt
@@ -99,7 +99,7 @@ function avc_cabac_sym_cnt(sd way,sd value)
 endfunction
 function avc_cabac_bits_outstanding(sd way,sd value)
     data bits_outstanding#1
-    if way==(value_set)
+    if way=(value_set)
         set bits_outstanding value
     else
         return bits_outstanding
@@ -107,7 +107,7 @@ function avc_cabac_bits_outstanding(sd way,sd value)
 endfunction
 function avc_cabac_first_bit(sd way,sd value)
     data first_bit#1
-    if way==(value_set)
+    if way=(value_set)
         set first_bit value
     else
         return first_bit
@@ -116,7 +116,7 @@ endfunction
 
 function avc_mb_nr_left(sd way,sd value)
     data nr_left#1
-    if way==(value_set)
+    if way=(value_set)
         set nr_left value
     else
         return nr_left
@@ -124,7 +124,7 @@ function avc_mb_nr_left(sd way,sd value)
 endfunction
 function avc_mb_nr_top(sd way,sd value)
     data nr_top#1
-    if way==(value_set)
+    if way=(value_set)
         set nr_top value
     else
         return nr_top
@@ -132,7 +132,7 @@ function avc_mb_nr_top(sd way,sd value)
 endfunction
 function avc_mb_width(sd action,sd value)
     data mb_width#1
-    if action==(value_set)
+    if action=(value_set)
         set mb_width value
     else
         return mb_width
@@ -140,7 +140,7 @@ function avc_mb_width(sd action,sd value)
 endfunction
 function avc_mb_height(sd action,sd value)
     data mb_height#1
-    if action==(value_set)
+    if action=(value_set)
         set mb_height value
     else
         return mb_height
@@ -148,7 +148,7 @@ function avc_mb_height(sd action,sd value)
 endfunction
 function avc_width(sd action,sd value)
     data width#1
-    if action==(value_set)
+    if action=(value_set)
         set width value
     else
         return width
@@ -156,7 +156,7 @@ function avc_width(sd action,sd value)
 endfunction
 function avc_height(sd action,sd value)
     data height#1
-    if action==(value_set)
+    if action=(value_set)
         set height value
     else
         return height
@@ -165,7 +165,7 @@ endfunction
 #
 function avc_cbp_luma(sd way,sd value)
     data cbp_luma#1
-    if way==(value_set)
+    if way=(value_set)
         set cbp_luma value
     else
         return cbp_luma
@@ -173,7 +173,7 @@ function avc_cbp_luma(sd way,sd value)
 endfunction
 function avc_cbp_chroma(sd way,sd value)
     data cbp_chroma#1
-    if way==(value_set)
+    if way=(value_set)
         set cbp_chroma value
     else
         return cbp_chroma
@@ -182,7 +182,7 @@ endfunction
 #
 function avc_ProfileIndication(sd action,sd value)
     data ProfileIndication#1
-    if action==(value_set)
+    if action=(value_set)
         set ProfileIndication value
     else
         return ProfileIndication
@@ -190,7 +190,7 @@ function avc_ProfileIndication(sd action,sd value)
 endfunction
 function avc_profile_compatibility(sd action,sd value)
     data profile_compatibility#1
-    if action==(value_set)
+    if action=(value_set)
         set profile_compatibility value
     else
         return profile_compatibility
@@ -198,7 +198,7 @@ function avc_profile_compatibility(sd action,sd value)
 endfunction
 function avc_LevelIndication(sd action,sd value)
     data LevelIndication#1
-    if action==(value_set)
+    if action=(value_set)
         set LevelIndication value
     else
         return LevelIndication
@@ -207,7 +207,7 @@ endfunction
 
 function avc_dct_sub_pred_index(sd way,sd value)
     data pred_index#1
-    if way==(value_set)
+    if way=(value_set)
         set pred_index value
     else
         return pred_index
@@ -216,7 +216,7 @@ endfunction
 
 function avc_frame_num(sd way,sd value)
     data frame_num#1
-    if way==(value_set)
+    if way=(value_set)
         set frame_num value
     else
         return frame_num
@@ -224,7 +224,7 @@ function avc_frame_num(sd way,sd value)
 endfunction
 function avc_log2_max_frame_num(sd way,sd value)
     data log2_max_frame_num#1
-    if way==(value_set)
+    if way=(value_set)
         set log2_max_frame_num value
     else
         return log2_max_frame_num
@@ -232,7 +232,7 @@ function avc_log2_max_frame_num(sd way,sd value)
 endfunction
 function avc_idr_pic_id(sd way,sd value)
     data idr_pic_id#1
-    if way==(value_set)
+    if way=(value_set)
         set idr_pic_id value
     else
         return idr_pic_id
@@ -240,7 +240,7 @@ function avc_idr_pic_id(sd way,sd value)
 endfunction
 function avc_log2_max_poc_lsb(sd way,sd value)
     data log2_max_poc_lsb#1
-    if way==(value_set)
+    if way=(value_set)
         set log2_max_poc_lsb value
     else
         return log2_max_poc_lsb
@@ -257,7 +257,7 @@ endfunction
 
 function avc_slice_type(sd way,sd value)
     data slice_type#1
-    if way==(value_set)
+    if way=(value_set)
         set slice_type value
     else
         return slice_type
@@ -344,7 +344,7 @@ function avc_mb_non_zero(sd way,sd index,sd value)
     sd non_zero_count^non_zero
     mult index (DWORD)
     add non_zero_count index
-    if way==(value_set)
+    if way=(value_set)
         set non_zero_count# value
     else
         return non_zero_count#
@@ -353,9 +353,9 @@ endfunction
 
 function avc_mb_data(sd way,sd arg,sd x,sd y,sd value,sd opt)
     data mem#1
-    if way==(value_set)
+    if way=(value_set)
         set mem arg
-    elseif way==(value_get)
+    elseif way=(value_get)
         return mem
     else
         sd item
@@ -369,14 +369,14 @@ function avc_mb_data(sd way,sd arg,sd x,sd y,sd value,sd opt)
         mult item_value (avc_mb_size)
         add item_value arg
         add item item_value
-        if arg==(avc_mb_cache_offset)
+        if arg=(avc_mb_cache_offset)
             mult value (DWORD)
             add item value
-            if way==(value_write)
+            if way=(value_write)
                 set value opt
             endif
         endif
-        if way==(value_write)
+        if way=(value_write)
             set item# value
         else
             return item#

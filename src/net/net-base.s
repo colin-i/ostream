@@ -100,7 +100,7 @@ function uri_get_content_forward_data(ss uri,sd forward,sd data)
 	setcall msg uri_get_content(uri)
 	sd bool
 	setcall bool getSessionMessageBody(msg,#body,#size)
-	if bool==(TRUE)
+	if bool=(TRUE)
 		call forward(body,size,data)
 	endif
 	call g_object_unref(msg)

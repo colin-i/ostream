@@ -20,7 +20,7 @@ function mpeg_mb_code(sd cbp,sd acpred_direction,sd qcoeff,sd type)
     import "mpeg_file_mem_append" mpeg_file_mem_append
     import "mpeg_mem_bit" mpeg_mem_bit
 
-    if type==(P_VOP)
+    if type=(P_VOP)
         #not skip
         setcall bool mpeg_mem_bit(0)
         if bool!=1
@@ -36,7 +36,7 @@ function mpeg_mb_code(sd cbp,sd acpred_direction,sd qcoeff,sd type)
     sd len
     set mcbpc (mb_mode)
     set mb_cbp cbp
-    if type==(I_VOP)
+    if type=(I_VOP)
         div mcbpc 2
         and mcbpc 3
 
@@ -146,7 +146,7 @@ function mcbpc_intra_tab(sd x,sd block)
 
     sd mcbpc_intra^mcbpc_intra_tab_data
     add mcbpc_intra ind
-    if block==(VLC_code)
+    if block=(VLC_code)
         return mcbpc_intra#
     else
         ss byte
@@ -171,7 +171,7 @@ function mcbpc_inter_tab(sd x,sd block)
 
     sd mcbpc_inter^mcbpc_inter_tab_data
     add mcbpc_inter ind
-    if block==(VLC_code)
+    if block=(VLC_code)
         return mcbpc_inter#
     else
         ss byte
@@ -191,7 +191,7 @@ function cbpy_tab(sd x,sd block)
 
     sd cbpy^cbpy_data
     add cbpy ind
-    if block==(VLC_code)
+    if block=(VLC_code)
         return cbpy#
     else
         ss byte
@@ -337,7 +337,7 @@ function dcy_tab(sd x,sd block)
 
     sd dcy^dcy_tab_data
     add dcy ind
-    if block==(VLC_code)
+    if block=(VLC_code)
         return dcy#
     else
         ss byte
@@ -483,7 +483,7 @@ function dcc_tab(sd x,sd block)
 
     sd dcc^dcc_tab_data
     add dcc ind
-    if block==(VLC_code)
+    if block=(VLC_code)
         return dcc#
     else
         ss byte
@@ -505,7 +505,7 @@ function coef_intra_calc_code(sd qcoeff,sd index)
     sd run=0
     sd level
     sd loop=1
-    while loop==1
+    while loop=1
         setcall level array_get_int(scan_table,i)
         setcall level array_get_int16(qcoeff,level)
         inc i

@@ -114,7 +114,7 @@ function stage_effect_new(sd forward,sd data)
     sd p_nr^nr
     import "strtoint_positive_twoorgreater" strtoint_positive_twoorgreater
     setcall bool strtoint_positive_twoorgreater(nr_text,p_nr)
-    if bool==0
+    if bool=0
         set nr 2
     endif
 
@@ -189,17 +189,17 @@ function stage_effect_new(sd forward,sd data)
     import "new_pixbuf_color" new_pixbuf_color
     sd filename
     setcall filename file_chooser_get_fname(newimage_entry)
-    if filename==0
+    if filename=0
         set animpixbuf pixbuf
     else
         setcall animpixbuf new_pixbuf_color(w,h,uint_color)
-        if animpixbuf==0
+        if animpixbuf=0
             return 0
         endif
         import "pixbuf_from_file" pixbuf_from_file
         sd filepixbuf
         setcall filepixbuf pixbuf_from_file(filename)
-        if filepixbuf==0
+        if filepixbuf=0
             return 0
         endif
         import "stage_pixbuf_in_container_pixbuf" stage_pixbuf_in_container_pixbuf
@@ -223,7 +223,7 @@ function stage_effect_new(sd forward,sd data)
     while k!=nr
         sd ebox
         sd p_ebox^ebox
-        if k==0
+        if k=0
             call stage_get_sel_parent(p_ebox)
         else
             setcall ebox stage_new_click_area()
@@ -234,7 +234,7 @@ function stage_effect_new(sd forward,sd data)
             endif
         endelse
 
-        if filename==0
+        if filename=0
             #background is color
             setcall effectpixbuf new_pixbuf_color(w,h,uint_color)
         else
@@ -242,7 +242,7 @@ function stage_effect_new(sd forward,sd data)
             import "pixbuf_copy" pixbuf_copy
             setcall effectpixbuf pixbuf_copy(pixbuf)
         endelse
-        if effectpixbuf==0
+        if effectpixbuf=0
             return 0
         endif
 
@@ -255,7 +255,7 @@ function stage_effect_new(sd forward,sd data)
         #function stage_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd rowstride,sd animpixels,sd animpixbuf,sd in_out)
         call forward(data,k,nr,pixels,w,h,rowstride,animpix,animpixbuf,in_out)
 
-        if k==0
+        if k=0
             #set the transformed pixbuf and display it
             import "object_set_dword_name" object_set_dword_name
             call object_set_dword_name(ebox,effectpixbuf)
@@ -289,7 +289,7 @@ endfunction
 
 function stage_effect_inout(sd part,sd value)
     data in_out#1
-    if part==0
+    if part=0
         set in_out value
     else
         return in_out
@@ -299,7 +299,7 @@ endfunction
 
 
 function stage_effect_orientation(sd part,sd argument,sd use_center_bool,sd text)
-    if part==0
+    if part=0
     #returns the frame
         data use_center#1
         set use_center use_center_bool
@@ -345,14 +345,14 @@ function stage_effect_orientation(sd part,sd argument,sd use_center_bool,sd text
             while o_x!=3
                 sd skip
                 set skip (FALSE)
-                if use_center==(FALSE)
-                    if o_y==1
-                        if o_x==1
+                if use_center=(FALSE)
+                    if o_y=1
+                        if o_x=1
                             set skip (TRUE)
                         endif
                     endif
                 endif
-                if skip==(FALSE)
+                if skip=(FALSE)
                     if radio!=0
                         setcall radio gtk_radio_button_get_group(radio)
                     endif
@@ -379,51 +379,51 @@ function stage_effect_orientation(sd part,sd argument,sd use_center_bool,sd text
 
         #top-left
         setcall bool gtk_toggle_button_get_active(o_top_left)
-        if bool==1
+        if bool=1
             set p_top# -1
             return -1
         endif
         #top
         setcall bool gtk_toggle_button_get_active(o_top)
-        if bool==1
+        if bool=1
             set p_top# -1
             return 0
         endif
         #top-right
         setcall bool gtk_toggle_button_get_active(o_top_right)
-        if bool==1
+        if bool=1
             set p_top# -1
             return 1
         endif
         #left
         setcall bool gtk_toggle_button_get_active(o_left)
-        if bool==1
+        if bool=1
             set p_top# 0
             return -1
         endif
         #center
-        if use_center==(TRUE)
+        if use_center=(TRUE)
             setcall bool gtk_toggle_button_get_active(o_center)
-            if bool==1
+            if bool=1
                 set p_top# 0
                 return 0
             endif
         endif
         #right
         setcall bool gtk_toggle_button_get_active(o_right)
-        if bool==1
+        if bool=1
             set p_top# 0
             return 1
         endif
         #bottom-left
         setcall bool gtk_toggle_button_get_active(o_bottom_left)
-        if bool==1
+        if bool=1
             set p_top# 1
             return -1
         endif
         #bottom
         setcall bool gtk_toggle_button_get_active(o_bottom)
-        if bool==1
+        if bool=1
             set p_top# 1
             return 0
         endif

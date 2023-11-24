@@ -14,16 +14,16 @@ importx "_free" free
 function write_jpeg(sd file,sd pixbuf,sd quality)
     sd bool
     setcall bool jpeg_file_mem((value_set))
-    if bool==0
+    if bool=0
         return 0
     endif
     setcall bool write_jpeg_file(pixbuf,quality)
-    if bool==0
+    if bool=0
         return 0
     endif
 
     setcall bool jpeg_file_mem((value_filewrite),file)
-    if bool==0
+    if bool=0
         return 0
     endif
 
@@ -36,7 +36,7 @@ endfunction
 function write_jpeg_file(sd pixbuf,sd quality)
     sd bool
     setcall bool write_jpeg_headers(pixbuf,quality)
-    if bool==0
+    if bool=0
         return 0
     endif
 
@@ -49,23 +49,23 @@ endfunction
 function write_jpeg_headers(sd pixbuf,sd quality)
     sd bool
     setcall bool write_jpeg_headers_appinfo()
-    if bool==0
+    if bool=0
         return 0
     endif
     setcall bool write_jpeg_quantizationTables(quality)
-    if bool==0
+    if bool=0
         return 0
     endif
     setcall bool write_jpeg_sof(pixbuf)
-    if bool==0
+    if bool=0
         return 0
     endif
     setcall bool write_jpeg_Huffman()
-    if bool==0
+    if bool=0
         return 0
     endif
     setcall bool write_jpeg_sos()
-    if bool==0
+    if bool=0
         return 0
     endif
     return 1
@@ -75,16 +75,16 @@ endfunction
 function jpeg_encode_main(sd pixbuf)
     sd bool
     setcall bool jpeg_category((value_set))
-    if bool==0
+    if bool=0
         return 0
     endif
     setcall bool jpeg_length((value_set))
-    if bool==0
+    if bool=0
         call jpeg_category((value_unset))
         return 0
     endif
     setcall bool jpeg_value((value_set))
-    if bool==0
+    if bool=0
         call jpeg_category((value_unset))
         call jpeg_length((value_unset))
         return 0
@@ -201,23 +201,23 @@ endfunction
 function jpeg_file_mem(sd action,sd arg,sd append_size)
     data mem#1
     data size#1
-    if action==(value_set)
+    if action=(value_set)
     #bool
         setcall mem alloc_block((value_set))
-        if mem==0
+        if mem=0
             return 0
         endif
         set size 0
         return 1
-    elseif action==(value_unset)
+    elseif action=(value_unset)
         call free(mem)
-    elseif action==(value_append)
+    elseif action=(value_append)
     #bool
         sd append
         set append arg
         sd appendresult
         setcall appendresult alloc_block((value_append),mem,size,append,append_size)
-        if appendresult==0
+        if appendresult=0
             return 0
         endif
         set mem appendresult
@@ -416,7 +416,7 @@ function jpeg_ZigZag(sd action,ss table,sd i,sd value)
     setcall jump jpeg_ZigZag_get(i)
     add table jump
 
-    if action==(value_set)
+    if action=(value_set)
         set table# value
     else
         return table#
@@ -505,22 +505,22 @@ function write_jpeg_Huffman()
     endif
 
     setcall bool Huffman_DC_Luminance((Huffman_init))
-    if bool==0
+    if bool=0
         return 0
     endif
 
     setcall bool Huffman_AC_Luminance((Huffman_init))
-    if bool==0
+    if bool=0
         return 0
     endif
 
     setcall bool Huffman_DC_Chromiance((Huffman_init))
-    if bool==0
+    if bool=0
         return 0
     endif
 
     setcall bool Huffman_AC_Chromiance((Huffman_init))
-    if bool==0
+    if bool=0
         return 0
     endif
 
@@ -551,7 +551,7 @@ function Huffman_DC_Luminance(sd action,sd ptr_values)
     sd p_NRCodes^NRCodes
     sd p_Values^Values
 
-    if action==(Huffman_init)
+    if action=(Huffman_init)
     #bool
         inc p_NRCodes
         sd NRCodes_size=YDC_Values-YDC_NRCodes
@@ -602,7 +602,7 @@ function Huffman_AC_Luminance(sd action,sd ptr_values)
     sd p_NRCodes^NRCodes
     sd p_Values^Values
 
-    if action==(Huffman_init)
+    if action=(Huffman_init)
     #bool
         inc p_NRCodes
         sd NRCodes_size=YAC_Values-YAC_NRCodes
@@ -632,7 +632,7 @@ function Huffman_DC_Chromiance(sd action,sd ptr_values)
     sd p_NRCodes^NRCodes
     sd p_Values^Values
 
-    if action==(Huffman_init)
+    if action=(Huffman_init)
     #bool
         inc p_NRCodes
         sd NRCodes_size=CbDC_Values-CbDC_NRCodes
@@ -682,7 +682,7 @@ function Huffman_AC_Chromiance(sd action,sd ptr_values)
     sd p_NRCodes^NRCodes
     sd p_Values^Values
 
-    if action==(Huffman_init)
+    if action=(Huffman_init)
     #bool
         inc p_NRCodes
         sd NRCodes_size=CbAC_Values-CbAC_NRCodes
@@ -778,7 +778,7 @@ function jpeg_YCbCr_256color(sd action,sd red,sd green,sd blue,sd p_Y,sd p_Cb,sd
     sd Cr_Blue_Table^Cr_Blue_Table_data
 
     sd variable
-    if action==(value_set)
+    if action=(value_set)
         sd color
         set color 0
         while color!=256
@@ -959,7 +959,7 @@ function jpeg_FDCT_Quantization_Tables(sd action,sd p_CbCr)
     sd FDCT_Y^FDCT_Y_Quantization
     data FDCT_CbCr_Quantization#64
     sd FDCT_CbCr^FDCT_CbCr_Quantization
-    if action==(value_set)
+    if action=(value_set)
         data CosineScaleFactor_data#8*2
         sd CosineScaleFactor^CosineScaleFactor_data
 
@@ -1007,7 +1007,7 @@ function jpeg_FDCT_Quantization_Tables(sd action,sd p_CbCr)
         while tabs!=2
             sd Table
             sd dest_table
-            if tabs==0
+            if tabs=0
                 setcall Table jpeg_Y_Table()
                 set dest_table FDCT_Y
             else
@@ -1066,7 +1066,7 @@ import "array_set_word_off" array_set_word_off
 
 #                                                    char        int16            float
 function jpeg_FDCT_Quantization_And_ZigZag(sd action,ss data8x8,sd out_DCT_Quant,sd FDCT_table)
-    if action==(value_set)
+    if action=(value_set)
         import "str_to_float" str_to_float
 
         str fstr="0.707106781"
@@ -1333,7 +1333,7 @@ function gettwofloats_offs_and_op(sd floats,sd offA,sd offB,sd offset,sd operati
 
     sd value
     #0=add,1=sub
-    if operation==0
+    if operation=0
         setcall value float_add(f1,f2#)
     else
         setcall value float_sub(f1,f2#)
@@ -1345,7 +1345,7 @@ endfunction
 #bool
 function jpeg_category(sd action)
     data category#1
-    if action==(value_set)
+    if action=(value_set)
         sd p_category^category
         sd err
         setcall err memoryalloc(65535,p_category)
@@ -1353,7 +1353,7 @@ function jpeg_category(sd action)
             return 0
         endif
         return 1
-    elseif action==(value_get)
+    elseif action=(value_get)
         return category
     else
         call free(category)
@@ -1362,7 +1362,7 @@ endfunction
 #bool
 function jpeg_length(sd action)
     data length#1
-    if action==(value_set)
+    if action=(value_set)
         sd p_length^length
         sd err
         setcall err memoryalloc(65535,p_length)
@@ -1370,7 +1370,7 @@ function jpeg_length(sd action)
             return 0
         endif
         return 1
-    elseif action==(value_get)
+    elseif action=(value_get)
         return length
     else
         call free(length)
@@ -1379,7 +1379,7 @@ endfunction
 #bool
 function jpeg_value(sd action)
     data value#1
-    if action==(value_set)
+    if action=(value_set)
         sd p_value^value
         sd err
         setcall err memoryalloc((2*65535),p_value)
@@ -1387,7 +1387,7 @@ function jpeg_value(sd action)
             return 0
         endif
         return 1
-    elseif action==(value_get)
+    elseif action=(value_get)
         return value
     else
         call free(value)
@@ -1434,7 +1434,7 @@ function jpeg_encode_Huffman(sd action,sd DCT_tab,sd lum_or_crom,sd prev_DC)
     setcall category jpeg_category((value_get))
     setcall bits_length jpeg_length((value_get))
     setcall bits_value jpeg_value((value_get))
-    if action==(value_set)
+    if action=(value_set)
         #init category and bitcodes
         import "array_set_byte_offsets" array_set_byte_offsets
         import "array_set_word_offsets" array_set_word_offsets
@@ -1540,7 +1540,7 @@ function jpeg_encode_Huffman(sd action,sd DCT_tab,sd lum_or_crom,sd prev_DC)
     sd HTDC_val
     sd HTAC_nr
     sd HTAC_val
-    if lum_or_crom==(lum)
+    if lum_or_crom=(lum)
         set HTDC_nr p_Lum_DC_nr
         set HTDC_val p_Lum_DC_val
         set HTAC_nr p_Lum_AC_nr
@@ -1563,12 +1563,12 @@ function jpeg_encode_Huffman(sd action,sd DCT_tab,sd lum_or_crom,sd prev_DC)
     sub Diff prev_DC#
     set prev_DC# DCT_tab_0
 
-    if Diff==0
+    if Diff=0
         setcall len array_get_byte(HTDC_nr,0)
         setcall value array_get_word(HTDC_val,0)
         sd bool
         setcall bool jpeg_write_data(len,value)
-        if bool==0
+        if bool=0
             return 0
         endif
     else
@@ -1581,14 +1581,14 @@ function jpeg_encode_Huffman(sd action,sd DCT_tab,sd lum_or_crom,sd prev_DC)
         setcall len array_get_byte(HTDC_nr,cat_value)
         setcall value array_get_word(HTDC_val,cat_value)
         setcall bool jpeg_write_data(len,value)
-        if bool==0
+        if bool=0
             return 0
         endif
 
         setcall len array_get_byte(bits_length,pos)
         setcall value array_get_word(bits_value,pos)
         setcall bool jpeg_write_data(len,value)
-        if bool==0
+        if bool=0
             return 0
         endif
     endelse
@@ -1599,8 +1599,8 @@ function jpeg_encode_Huffman(sd action,sd DCT_tab,sd lum_or_crom,sd prev_DC)
     sd endpos
     set endpos 63
     sd loop=1
-    while loop==1
-        if endpos==0
+    while loop=1
+        if endpos=0
             set loop 0
         else
             setcall DCT_val array_get_word(DCT_tab,endpos)
@@ -1616,7 +1616,7 @@ function jpeg_encode_Huffman(sd action,sd DCT_tab,sd lum_or_crom,sd prev_DC)
         set startpos i
         #advance i to first non zero
         set loop 1
-        while loop==1
+        while loop=1
             if i>endpos
                 set loop 0
             else
@@ -1646,7 +1646,7 @@ function jpeg_encode_Huffman(sd action,sd DCT_tab,sd lum_or_crom,sd prev_DC)
             set nr_marker 1
             while nr_marker<=nr_marker_max
                 setcall bool jpeg_write_data(len,value)
-                if bool==0
+                if bool=0
                     return 0
                 endif
                 inc nr_marker
@@ -1669,14 +1669,14 @@ function jpeg_encode_Huffman(sd action,sd DCT_tab,sd lum_or_crom,sd prev_DC)
         setcall len array_get_byte(HTAC_nr,coef)
         setcall value array_get_word(HTAC_val,coef)
         setcall bool jpeg_write_data(len,value)
-        if bool==0
+        if bool=0
             return 0
         endif
         #
         setcall len array_get_byte(bits_length,index)
         setcall value array_get_word(bits_value,index)
         setcall bool jpeg_write_data(len,value)
-        if bool==0
+        if bool=0
             return 0
         endif
         #
@@ -1687,7 +1687,7 @@ function jpeg_encode_Huffman(sd action,sd DCT_tab,sd lum_or_crom,sd prev_DC)
         setcall len array_get_byte(HTAC_nr,(EOB))
         setcall value array_get_word(HTAC_val,(EOB))
         setcall bool jpeg_write_data(len,value)
-        if bool==0
+        if bool=0
             return 0
         endif
     endif
@@ -1696,7 +1696,7 @@ endfunction
 
 function jpeg_bytenew(sd action,sd value)
     data bytenew#1
-    if action==(value_set)
+    if action=(value_set)
         set bytenew value
     else
         return bytenew
@@ -1704,7 +1704,7 @@ function jpeg_bytenew(sd action,sd value)
 endfunction
 function jpeg_bytepos(sd action,sd value)
     data bytepos#1
-    if action==(value_set)
+    if action=(value_set)
         set bytepos value
     else
         return bytepos
@@ -1743,7 +1743,7 @@ function jpeg_write_data(sd pos,sd data)
             if bool!=1
                 return 0
             endif
-            if bytenew==0xff
+            if bytenew=0xff
                 str null=""
                 setcall bool jpeg_file_mem_add(null,1)
                 if bool!=1
@@ -1849,7 +1849,7 @@ endfunction
 #quality
 function jpeg_quality(sd action,sd value)
     data quality#1
-    if action==(value_set)
+    if action=(value_set)
         set quality value
     else
         return quality
