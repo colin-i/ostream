@@ -11,7 +11,7 @@ if bool!=(FALSE)
 	call move_to_share_core(#testfile)
 	sd is
 	setcall is access(testfile,(F_OK))
-	if is==-1
+	if is=-1
 		call gst_init(0,(NULL))
 	else
 		#this is because fedora will wrong all plugin cache on 64 for 32

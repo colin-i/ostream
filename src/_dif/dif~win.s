@@ -956,7 +956,7 @@ function video_realize(data widget)
 		setcall overlaytype gst_x_overlay_get_type()
 		sd bool
 		setcall bool gst_element_implements_interface(playbin2,overlaytype)
-		if bool==(TRUE)
+		if bool=(TRUE)
 			sd interfacecast
 			setcall interfacecast gst_implements_interface_cast(playbin2,overlaytype)
 			sd drawablehandle
@@ -1019,7 +1019,7 @@ function iterate_next_forward_free(sd iter,sd forward)
 	sd ptr_elem^elem
 	sd ret
 	setcall ret gst_iterator_next(iter,ptr_elem)
-	if ret==(GST_ITERATOR_OK)
+	if ret=(GST_ITERATOR_OK)
 		call forward(elem)
 		call gst_object_unref(elem)
 		return (void)
