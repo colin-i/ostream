@@ -137,7 +137,7 @@ Function memtoint_add(str content,data size,data outvalue,data minusbool)
 
         const bil_1=1000*1000*1000
         const bil_2=2*bil_1
-        const max_int=0x80*0x100*0x100*0x100
+        const max_int=0x80<<8<<8<<8
         const max_int_bil_2_rest=max_int-bil_2
         if multx=(bil_1)
             if size!=0
