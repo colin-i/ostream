@@ -4,5 +4,5 @@
 if [ -z "${1}" ] || [ "$1" = "clean" ]; then
 	make platform=win $@
 else
-	make platform=win linkerflags= OFLAGSEXTRA="function_name 1" $@
+	make platform=win linkerflags= OFLAGSEXTRA="function_name 1 nul_res_pref 1" $@
 fi
