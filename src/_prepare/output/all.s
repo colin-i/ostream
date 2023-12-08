@@ -32,11 +32,11 @@ function stage_progress_dialog_inc(sd frame)
 	char b#1
 	char *=0
 	set b value
-	rem b 10
+	remu b 10
 	add b (_0)
 	set a value
-	div a 10
-	rem a 10
+	divu a 10
+	remu a 10
 	add a (_0)
     sd doublelow
     sd doublehigh
