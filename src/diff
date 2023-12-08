@@ -1,0 +1,6 @@
+
+objects=( `find -name "*.o" | xargs` )
+for var in "${objects[@]}"
+do
+	diff ${var} ${var}o
+done

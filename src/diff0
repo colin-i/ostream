@@ -1,0 +1,6 @@
+
+objects=( `find -name "*.o" | xargs` )
+for var in "${objects[@]}"
+do
+	mv ${var} ${var}o
+done
