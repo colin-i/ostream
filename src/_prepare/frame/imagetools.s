@@ -616,9 +616,9 @@ function stage_lines_thread_loop()
         import "dialog_modal_texter_draw" dialog_modal_texter_draw
         sd totalframes
         setcall totalframes stage_get_frames()
-        const imagetoolsbufstart=!
+        const imagetoolsbufstart=\
         ss format="Images: %u/%u"
-        char buf#!-imagetoolsbufstart-2-2+dword_max+dword_max
+        char buf#\-imagetoolsbufstart-2-2+dword_max+dword_max
         str buffer^buf
         call sprintf(buffer,format,img_nr,totalframes)
         call dialog_modal_texter_draw(buffer)

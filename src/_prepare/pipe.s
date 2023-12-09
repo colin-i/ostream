@@ -118,21 +118,21 @@ function stage_display_pixbuf(sd widget)
 endfunction
 
 function img_folder()
-const img_folder_start=!
+const img_folder_start=\
 	char img="img"
-const img_folder_size=!-img_folder_start-1
+const img_folder_size=\-img_folder_start-1
 	return #img
 endfunction
 function edit_folder()
-const edit_folder_start=!
+const edit_folder_start=\
 	char edit="edit"
-const edit_folder_size=!-edit_folder_start-1
+const edit_folder_size=\-edit_folder_start-1
 	return #edit
 endfunction
 function unselectedframe()
-const unselected_bmp_start=!
+const unselected_bmp_start=\
     vstr frame="frame.bmp"
-const unselected_bmp_size=!-unselected_bmp_start-1
+const unselected_bmp_size=\-unselected_bmp_start-1
     ss file
     setcall file stage_get_image(frame)
     return file

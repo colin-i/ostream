@@ -64,9 +64,9 @@ function recSignals(data bus,data dest)
 endfunction
 
 function capture_folder()
-const capture_char_start=!
+const capture_char_start=\
 	char folder="captures"
-const capture_char=!-capture_char_start-1
+const capture_char=\-capture_char_start-1
 	return #folder
 endfunction
 #ogg
