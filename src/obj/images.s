@@ -347,7 +347,7 @@ function convert_row_rgba_to_rgb(ss src,ss dest,sd width)
     hex 0xaa
 
     const jump_sz=1+ 1+3+ 1+3+ 1+ 2
-    hex 0xe2,-1*jump_sz
+    hex 0xe2,-jump_sz
 #
 
     hex 0x59,0x5e,0x5f
