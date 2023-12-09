@@ -377,9 +377,9 @@ const av_info_simple=1
 #at write
 function av_display_progress(sd image_nr,sd flag_simple)
     #capture_flag and read info both goes in flag_simple
-	const procimgstrstart=!
+	const procimgstrstart=\
 	char format_stage="Processed images: %u/%u"
-	char data#!-procimgstrstart-2-2+dword_max+dword_max
+	char data#\-procimgstrstart-2-2+dword_max+dword_max
 	vstr string^data
 	char format_capture="Processed images: %u"
     importx "_sprintf" sprintf

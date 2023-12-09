@@ -205,7 +205,7 @@ endfunction
 
 function record_got_file(sd file,sd thread_id)
 #const _RIFF^riff
-const _RIFF=!
+const _RIFF=\
     char riff={R,I,F,F}
     data riffsize#1
 
@@ -227,7 +227,7 @@ const _RIFF=!
     data datasize#1
 
 #const RIFF_^RIFF
-const RIFF_=!
+const RIFF_=\
 
     data RIFF^riff
     const RIFF_size=RIFF_-_RIFF

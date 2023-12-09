@@ -17,44 +17,44 @@ function search_preferences_set_init()
 
     #FIELDS
     #group1
-const search_structures=!
+const search_structures=\
     DATA *startlabel#1
     #
-const search_start_entry=!
+const search_start_entry=\
     DATA *startentry#1
     #
     const search_start=search_start_entry-search_structures
     #
     DATA *get_uri#1
-const search_end_entry=!
+const search_end_entry=\
     DATA *endentry#1
     #
     const search_end=search_end_entry-search_structures
     #
     DATA *endlabel#1
     #group2
-const search_group2=!
+const search_group2=\
     DATA *search_wrap_begin#1
     const search_start_wrap=0
     const search_fields_struct_size=search_group2-search_structures
     DATA *#3
-const search_end_wrap_entry=!
+const search_end_wrap_entry=\
     DATA *search_wrap_end#1
     const search_end_wrap=search_end_wrap_entry-search_group2
     #
 
     #VARS
     #group1
-const search_first_var_offset=!
+const search_first_var_offset=\
     DATA *search_preferences_uri_start#1
     #
     DATA *search_preferences_uri_end#1
     #group2
-const search_group2_vars=!
+const search_group2_vars=\
     DATA *search_preferences_wrap_start#1
     const search_vars_struct_size=search_group2_vars-search_first_var_offset
     #
-const search_last_var_offset=!
+const search_last_var_offset=\
     DATA *search_preferences_wrap_end#1
     const search_after_last_var_offset=search_last_var_offset+DWORD
     const search_vars_size=search_after_last_var_offset-search_first_var_offset

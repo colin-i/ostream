@@ -304,12 +304,12 @@ endfunction
 
 #bool
 function mp4_ftyp(sd file)
-const ftyp_start=!
+const ftyp_start=\
     char GF_ISOM_BRAND_ISOM={i,s,o,m}
     char *minorVersion={0,0,0,1}
     char *brand={i,s,o,m}
     char *brand_1={a,v,c,_1}
-const ftyp_size=!-ftyp_start
+const ftyp_size=\-ftyp_start
     data ftyp^GF_ISOM_BRAND_ISOM
     data ftyp_size=ftyp_size
 
@@ -367,7 +367,7 @@ import "file_get_dword" file_get_dword
 
 #bool
 function mp4_mvhd(sd file)
-const mvhd_start=!
+const mvhd_start=\
     #movie header
     char version_u8={0}
     char *flags_u24={0,0,0}
@@ -393,9 +393,9 @@ const mvhd_start=!
     data *selectionTime=0
     data *selectionDuration=0
     data *currentTime=0
-const off_to_nexttrack=!-mvhd_start
+const off_to_nexttrack=\-mvhd_start
     data nextTrackID#1
-const mvhd_size=!-mvhd_start
+const mvhd_size=\-mvhd_start
     data mvhd^version_u8
     data mvhd_size=mvhd_size
 
@@ -688,7 +688,7 @@ endfunction
 
 #bool
 function mp4_hdlr(sd file)
-const hdlr_start=!
+const hdlr_start=\
     char version_u8={0}
     char *flags_u24={0,0,0}
     data *reserved1=0
@@ -697,7 +697,7 @@ const hdlr_start=!
     #is null terminated
     #char *nameUTF8="GPAC ISO Video Handler"
     char *nameUTF8="OApplications Video"
-const hdlr_size=!-hdlr_start
+const hdlr_size=\-hdlr_start
     data hdlr^version_u8
     data hdlr_size=hdlr_size
 
@@ -875,11 +875,11 @@ endfunction
 
 #bool
 function mp4_stsd(sd file)
-const stsd_start=!
+const stsd_start=\
     char version_u8={0}
     char *flags_u24={0,0,0}
     char *entryCount={0,0,0,1}
-const stsd_size=!-stsd_start
+const stsd_size=\-stsd_start
     data stsd^version_u8
     data stsd_size=stsd_size
 
@@ -901,7 +901,7 @@ endfunction
 
 #bool
 function mp4_avc1(sd file)
-const avc1_start=!
+const avc1_start=\
     char reserved={0,0,0,0,0,0}
     char *dataReferenceIndex={0,videoId}
     char *version={0,0}
@@ -918,7 +918,7 @@ const avc1_start=!
     char *compressor_name={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
     char *bit_depth={0,0x18}
     char color_table_index#2
-const avc1_size=!-avc1_start
+const avc1_size=\-avc1_start
     data avc1^reserved
     data avc1_size=avc1_size
 
@@ -962,13 +962,13 @@ endfunction
 
 #bool
 function mp4_avcC(sd file)
-const avcC_start=!
+const avcC_start=\
     char configurationVersion=1
     char AVCProfileIndication#1
     char profile_compatibility#1
     char AVCLevelIndication#1
     char cfg_data#2
-const avcC_size=!-avcC_start
+const avcC_size=\-avcC_start
     data avcfg_main^configurationVersion
     data avcfg_main_size=avcC_size
 
@@ -1042,11 +1042,11 @@ import "mp4_video_bufferSz_get" mp4_video_bufferSz_get
 
 #bool
 function mp4_btrt(sd file)
-const btrt_start=!
+const btrt_start=\
     data bufferSizeDB#1
     data *maxBitrate=0
     data *avgBitrate#1
-const btrt_size=!-btrt_start
+const btrt_size=\-btrt_start
     data btrt^bufferSizeDB
     data btrt_size=btrt_size
 
@@ -1085,14 +1085,14 @@ import "file_seek_cursor_get_dword_reverse" file_seek_cursor_get_dword_reverse
 
 #bool
 function mp4_stts(sd file)
-const mp4_stts_start=!
+const mp4_stts_start=\
     char version_u8={0}
     char *flags_u24={0,0,0}
     char *list_count={0,0,0,1}
-const mp4_stts_sampleCount_offset=!-mp4_stts_start
+const mp4_stts_sampleCount_offset=\-mp4_stts_start
     data sampleCount#1
     data sampleDelta#1
-const mp4_stts_size=!-mp4_stts_start
+const mp4_stts_size=\-mp4_stts_start
 
     data stts^version_u8
     data stts_size=mp4_stts_size
@@ -1122,12 +1122,12 @@ endfunction
 
 #bool
 function mp4_stss(sd file)
-const stss_start=!
+const stss_start=\
     char version_u8={0}
     char *flags_u24={0,0,0}
     char *entryCount={0,0,0,1}
     char *sampleNumber={0,0,0,1}
-const stss_size=!-stss_start
+const stss_size=\-stss_start
     data stss^version_u8
     data stss_size=stss_size
 
@@ -1141,14 +1141,14 @@ endfunction
 
 #bool
 function mp4_stsc(sd file)
-const stsc_start=!
+const stsc_start=\
     char version={0}
     char *flags={0,0,0}
     char *list_count={0,0,0,1}
     char *firstChunk={0,0,0,1}
     data samplesPerChunk#1
     char *sampleDescriptionIndex={0,0,0,1}
-const stsc_size=!-stsc_start
+const stsc_size=\-stsc_start
     data stsc^version
     data stsc_size=stsc_size
 
@@ -1169,12 +1169,12 @@ endfunction
 
 #bool
 function mp4_stsz(sd file)
-const stsz_start=!
+const stsz_start=\
     char version={0}
     char *flags={0,0,0}
     data *sampleSize=0
     data sampleCount#1
-const stsz_size=!-stsz_start
+const stsz_size=\-stsz_start
     data stsz^version
     data stsz_size=stsz_size
 
@@ -1215,13 +1215,13 @@ import "mp4_video_offset_set" mp4_video_offset_set
 import "mp4_video_offset_get" mp4_video_offset_get
 #bool
 function mp4_stco(sd file)
-const stco_start=!
+const stco_start=\
     char version={0}
     char *flags={0,0,0}
     char *entries={0,0,0,1}
-const stco_offset_pos=!-stco_start
+const stco_offset_pos=\-stco_start
     data offset#1
-const stco_size=!-stco_start
+const stco_size=\-stco_start
     data stco^version
     data stco_size=stco_size
 
@@ -1645,9 +1645,9 @@ function mp4_mdat_sound(sd file)
             importx "_sprintf" sprintf
             sd bytesleft
             setcall bytesleft stage_sound_alloc_getremainingsize()
-            const soundbufstart=!
+            const soundbufstart=\
             char format="Sound Bytes Left: %u"
-            char buffer#!-soundbufstart-2+dword_max
+            char buffer#\-soundbufstart-2+dword_max
             vstr buf^buffer
             call sprintf(buf,#format,bytesleft)
             call dialog_modal_texter_draw(buf)
@@ -1742,7 +1742,7 @@ endfunction
 
 #bool
 function mp4_soundtkhd(sd file)
-const soundtkhd_start=!
+const soundtkhd_start=\
     char version_u8={0}
     char *flags_u24={0,0,enable_flag}
     data creationTime#1
@@ -1766,7 +1766,7 @@ const soundtkhd_start=!
     char *matrix8={0x40,0,0,0}
     data *width=0
     data *height=0
-const soundtkhd_size=!-soundtkhd_start
+const soundtkhd_size=\-soundtkhd_start
     data tkhd^version_u8
     data tkhd_size=soundtkhd_size
 
@@ -1814,17 +1814,17 @@ endfunction
 
 #bool
 function mp4_soundmdhd(sd file)
-const soundmdhd_start=!
+const soundmdhd_start=\
     char version_u8={0}
     char *flags_u24={0,0,0}
     data creationTime#1
     data *modificationTime#1
     data timeScale#1
-const soundmdhd_duration=!-soundmdhd_start
+const soundmdhd_duration=\-soundmdhd_start
     data duration#1
     char language#2
     char *reserved={0,0}
-const soundmdhd_size=!-soundmdhd_start
+const soundmdhd_size=\-soundmdhd_start
     data mdhd^version_u8
     data mdhd_size=soundmdhd_size
 
@@ -1857,7 +1857,7 @@ endfunction
 
 #bool
 function mp4_soundhdlr(sd file)
-const soundhdlr_start=!
+const soundhdlr_start=\
     char version_u8={0}
     char *flags_u24={0,0,0}
     data *reserved1=0
@@ -1866,7 +1866,7 @@ const soundhdlr_start=!
     #is null terminated
     #char *nameUTF8="GPAC ISO Audio Handler"
     char *nameUTF8="OApplications Audio"
-const soundhdlr_size=!-soundhdlr_start
+const soundhdlr_size=\-soundhdlr_start
     data hdlr^version_u8
     data hdlr_size=soundhdlr_size
 
@@ -1906,11 +1906,11 @@ endfunction
 
 #bool
 function mp4_smhd(sd file)
-const sound_smhd_start=!
+const sound_smhd_start=\
     char version=0
     char *flags={0,0,0}
     data *reserved=0
-const sound_smhd_size=!-sound_smhd_start
+const sound_smhd_size=\-sound_smhd_start
     data smhd^version
     data smhd_size=sound_smhd_size
 
@@ -1965,11 +1965,11 @@ endfunction
 
 #bool
 function mp4_soundstsd(sd file)
-const soundstsd_start=!
+const soundstsd_start=\
     char version_u8={0}
     char *flags_u24={0,0,0}
     char *entryCount={0,0,0,1}
-const soundstsd_size=!-soundstsd_start
+const soundstsd_size=\-soundstsd_start
     data stsd^version_u8
     data stsd_size=soundstsd_size
 
@@ -1991,7 +1991,7 @@ endfunction
 
 #bool
 function mp4_mp4a(sd file)
-const mp4a_start=!
+const mp4a_start=\
     char reserved={0,0,0,0,0,0}
     char *dataReferenceIndex={0,videoId}
     char *version={0,0}
@@ -2003,7 +2003,7 @@ const mp4a_start=!
     char *packet_size={0,0}
     char samplerate_hi#2
     char *samplerate_lo={0,0}
-const mp4a_size=!-mp4a_start
+const mp4a_size=\-mp4a_start
     data mp4a^reserved
     data mp4a_size=mp4a_size
     #
@@ -2037,7 +2037,7 @@ endfunction
 
 #bool
 function mp4_esds(sd file)
-const esds_start=!
+const esds_start=\
     char version=0
     char *flags={0,0,0}
     char *GF_ODF_ESD_TAG=3
@@ -2061,7 +2061,7 @@ const esds_start=!
         const streamType_shift_pack=reserved_shift*upstream_shift
         const streamType_pack=streamType_value*streamType_shift_pack
     char *info=streamType_pack|upstream_pack|reserved_value
-const sound_bufferSizeDB_offset=!-esds_start
+const sound_bufferSizeDB_offset=\-esds_start
     char bufferSizeDB#3
     data maxBitrate#1
     data *avgBitrate#1
@@ -2070,7 +2070,7 @@ const sound_bufferSizeDB_offset=!-esds_start
     char slc_size#1
         const SLPredef_MP4=2
     char predefined=SLPredef_MP4
-const esds_size=!-esds_start
+const esds_size=\-esds_start
     data esds^version
     data esds_size=esds_size
 
@@ -2143,13 +2143,13 @@ endfunction
 
 #bool
 function mp4_soundstts(sd file)
-const soundstts_start=!
+const soundstts_start=\
     char version_u8={0}
     char *flags_u24={0,0,0}
     char *list_count={0,0,0,1}
     data sampleCount#1
     data sampleDelta#1
-const soundstts_size=!-soundstts_start
+const soundstts_size=\-soundstts_start
     data stts^version_u8
     data stts_size=soundstts_size
 
@@ -2172,14 +2172,14 @@ endfunction
 
 #bool
 function mp4_soundstsc(sd file)
-const soundstsc_start=!
+const soundstsc_start=\
     char version={0}
     char *flags={0,0,0}
     char *list_count={0,0,0,1}
     char *firstChunk={0,0,0,1}
     data samplesPerChunk#1
     char *sampleDescriptionIndex={0,0,0,1}
-const soundstsc_size=!-soundstsc_start
+const soundstsc_size=\-soundstsc_start
     data stsc^version
     data stsc_size=soundstsc_size
 
@@ -2201,12 +2201,12 @@ endfunction
 
 #bool
 function mp4_soundstsz(sd file)
-const soundstsz_start=!
+const soundstsz_start=\
     char version={0}
     char *flags={0,0,0}
     data sampleSize#1
     data sampleCount#1
-const soundstsz_size=!-soundstsz_start
+const soundstsz_size=\-soundstsz_start
     data stsz^version
     data stsz_size=soundstsz_size
 
@@ -2241,13 +2241,13 @@ endfunction
 
 #bool
 function mp4_soundstco(sd file)
-const soundstco_start=!
+const soundstco_start=\
     char version={0}
     char *flags={0,0,0}
     char *entries={0,0,0,1}
-const soundstco_offset_pos=!-soundstco_start
+const soundstco_offset_pos=\-soundstco_start
     data offset#1
-const soundstco_size=!-soundstco_start
+const soundstco_size=\-soundstco_start
     data stco^version
     data stco_size=soundstco_size
 

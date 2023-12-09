@@ -375,7 +375,7 @@ function mkv_info(sd file)
         endif
     endif
 
-const _SegmentUID=!
+const _SegmentUID=\
     char SegmentUID={0x73,0xA4}
     char *SegmentUID_size=0x80|16
     data SegmentUID_value#4
@@ -385,7 +385,7 @@ const _SegmentUID=!
     char *Duration={0x44,0x89}
     #unsigned integer
     char *Duration_size=0x84
-const ptr_Duration=!
+const ptr_Duration=\
     data Duration_value#1
     char *DateUTC={0x44,0x61}
     char *DateUTC_size=0x80|8
@@ -393,9 +393,9 @@ const ptr_Duration=!
     data DateUTC_value_low#1
     char *MuxingApp={0x4D,0x80}
     char MuxingApp_size#1
-const _MuxingApp=!
+const _MuxingApp=\
     char *MuxingApp_value={O,A,p,p,l,i,c,a,t,i,o,n,s}
-const App=!-_MuxingApp
+const App=\-_MuxingApp
     char *WritingApp={0x57,0x41}
     char WritingApp_size#1
     char WritingApp_value={O,A,p,p,l,i,c,a,t,i,o,n,s}
@@ -576,7 +576,7 @@ function mkv_track_entry(sd file,sd *size,sd *filepos)
     #no lacing used
     char *Name={0x53,0x6E}
     char *Name_size=0x85
-const track_last_=!
+const track_last_=\
     char *Name_value={V,i,d,e,o}
 
     char *CodecPrivate={0x63,0xA2}
@@ -655,7 +655,7 @@ function mkv_track_video_entry(sd file,sd *size,sd *filepos)
     data DisplayHeight_value#1
     char *FrameRate={0x23,0x83,0xE3}
     char *FrameRate_size=0x84
-const video_track_last_=!
+const video_track_last_=\
     data FrameRate_value#1
 
     char *ColourSpace={0x2E,0xB5,0x24}
@@ -1791,7 +1791,7 @@ endfunction
 #sound entry
 #bool
 function mkv_sound(sd file,sd *size,sd *filepos)
-const _audio=!
+const _audio=\
     char CodecID=0x86
  char *CodecID_size=0x80+1+1+1+1+1+1+    1+1+1+1+    1+1+1
     char *CodecID_value={A,_,P,C,M,Slash,I,N,T,Slash,L,I,T}
@@ -1815,7 +1815,7 @@ const _audio=!
 
     char *Audio={0xE1}
     char Audio_size=0x80
-const _audiospec=!
+const _audiospec=\
     char *SamplingFrequency=0xB5
     char *SamplingFrequency_size=0x84
     data SamplingFrequency_value#1
@@ -1824,7 +1824,7 @@ const _audiospec=!
     data Channels_value#1
     char *BitDepth={0x62,0x64}
     char *BitDepth_size=0x84
-const audiospec_=!
+const audiospec_=\
     data BitDepth_value#1
 
     sd io
