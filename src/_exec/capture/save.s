@@ -124,9 +124,9 @@ function save_get_main_format()
     return mediaform
 endfunction
 function save_get_sec_format()
-const save_get_sec_format_a=!
+const save_get_sec_format_a=\
     char mediasecform=" %s ! queue ! %s ! mux."
-const save_get_sec_format_sz=!-save_get_sec_format_a-2-2-1
+const save_get_sec_format_sz=\-save_get_sec_format_a-2-2-1
     return #mediasecform
 endfunction
 function save_get_video_format()
@@ -135,10 +135,10 @@ function save_get_video_format()
     return video
 endfunction
 function save_get_audio_format()
-const save_get_audio_format_a=!
+const save_get_audio_format_a=\
 #plugins base
     char audio="vorbisenc"
-const save_get_audio_format_sz=!-save_get_audio_format_a-1
+const save_get_audio_format_sz=\-save_get_audio_format_a-1
     return #audio
 endfunction
 function save_get_ogg_dest()
