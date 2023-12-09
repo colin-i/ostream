@@ -52,22 +52,38 @@ items_prefix=
 projname=ovideo
 wprojname=ovideo.exe
 lshare=_dif/share.txt
-logs :=
-obs :=
 sharefolderpackage=$(prefix)/share/ovideo
 sharefolder=$(DESTDIR)${sharefolderpackage}
 
-all: compile lnk
+$(eval obs = )
+$(foreach var,$(items),$(eval obs += ${items_prefix}${var}.o))
+$(eval logs = )
+$(foreach var,$(items),$(eval logs += ${items_prefix}${var}.s.log))
 
-compile: share ${items} ounused
+ifeq (${platform},lin)
 
-ounused:
+all: ${projname}
+${projname}: ${lshare} ${obs}
 	ounused ${logs}
+	@echo
+	$(CC) -nostdlib ${linkerflags} ${obs} -o ${items_prefix}${projname} `pkg-config --libs gtk+-2.0 gstreamer-pbutils-0.10 gstreamer-interfaces-0.10 gstreamer-app-0.10` -lsoup-2.4 -ljpeg -lasound -lm -lpthread -lc
+${lshare}:
+	echo return \"${sharefolderpackage}\" > ${lshare}
 
-share:
-	if [ "${platform}" = "lin" ]; then \
-		echo return \"${sharefolderpackage}\" > ${lshare}; \
-	fi
+else
+
+all: ${wprojname}
+${wprojname}: ${obs}
+	ounused ${logs}
+	@echo
+	i686-w64-mingw32-ld --large-address-aware ${linkerflags} ${obs} -o ${wprojname} -entry _start --start-group \
+	`dpkg -L mingw-w64-i686-dev | grep '\.a' | sed 's/..$$//' | grep -o '[^\/]*$$' | sed 's/^lib/-l/' | xargs echo` \
+	--end-group -L`echo ~`/.wine/drive_c/gstreamer-sdk/0.10/x86/lib/ \
+	-lgtk-win32-2.0 -lgdk-win32-2.0 -lgdk_pixbuf-2.0 -lglib-2.0 -lgobject-2.0 -lgio-2.0 -lgthread-2.0 \
+	-lgstreamer-0.10 -lgstapp-0.10 -lgstinterfaces-0.10 -lgstpbutils-0.10 \
+	-lcairo -lpango-1.0 -lsoup-2.4 -ljpeg
+
+endif
 
 #at jammy libgtk2.0-dev:i386,libgstreamer-plugins-base1.0-dev:i386,libsoup2.4-dev:i386,libasound2-dev:i386
 
@@ -90,28 +106,18 @@ share:
 #		$(LD) ${linkerflags} -melf_i386 --dynamic-linker=/lib/ld-linux.so.2 ${obs} -o ${projname} -lc -lm `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lgthread-2.0; \
 #cc because -pthread not for ld
 #nostdlib because is complaining about main
-lnk:
-	if [ "${platform}" = "lin" ]; then \
-		$(CC) -nostdlib ${linkerflags} ${obs} -o ${items_prefix}${projname} `pkg-config --libs gtk+-2.0 gstreamer-pbutils-0.10 gstreamer-interfaces-0.10 gstreamer-app-0.10` -lsoup-2.4 -ljpeg -lasound -lm -lpthread -lc; \
-	else \
-		i686-w64-mingw32-ld --large-address-aware ${linkerflags} ${obs} -o ${wprojname} -entry _start --start-group \
-		`dpkg -L mingw-w64-i686-dev | grep '\.a' | sed 's/..$$//' | grep -o '[^\/]*$$' | sed 's/^lib/-l/' | xargs echo` \
-		--end-group -L`echo ~`/.wine/drive_c/gstreamer-sdk/0.10/x86/lib/ \
-		-lgtk-win32-2.0 -lgdk-win32-2.0 -lgdk_pixbuf-2.0 -lglib-2.0 -lgobject-2.0 -lgio-2.0 -lgthread-2.0 \
-		-lgstreamer-0.10 -lgstapp-0.10 -lgstinterfaces-0.10 -lgstpbutils-0.10 \
-		-lcairo -lpango-1.0 -lsoup-2.4 -ljpeg; \
-	fi
-fast:
-	$(eval obs = `printf ' ${items_prefix}%s.o' ${items}`)
-link: fast lnk
+
+#fast:
+#	$(eval obs = `printf ' ${items_prefix}%s.o' ${items}`)
+#link: fast lnk
 #snprintf with circular unresolved requirements
 #cos is in -lmingwex that will work with -lmingw32 -lmsvcrt
 #on win msvcr100 is old and at here is from old java-i586
 
-%: %.s
+%.o: %.s
 	${OCOMP} $< ${OFLAGS}
-	$(eval logs += $@.s.log)
-	$(eval obs += $@.o)
+#	$(eval logs += $@.s.log)
+#	$(eval obs += $@.o)
 
 clean:
 	-printf ' %s.s.log' ${items} | xargs rm -f
