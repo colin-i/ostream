@@ -241,7 +241,7 @@ function mpeg_mb_dct_block(sd dct_codes)
         setcall m0 dct_calc(m0,p_m3)
 
         #m3 m2 rotate
-        setcall m3 dct_rotate(m3,p_m2,(ROT6_C),(ROT6_SmC),(-1*ROT6_SpC),(FIX-FPASS),(2$pow_a))
+        setcall m3 dct_rotate(m3,p_m2,(ROT6_C),(ROT6_SmC),(-ROT6_SpC),(FIX-FPASS),(2$pow_a))
         #m2
         call array_set_word_off(dct_cursor,m3,2)
         #m3
@@ -263,9 +263,9 @@ function mpeg_mb_dct_block(sd dct_codes)
         set m2 m4
         add m2 m6
         #m2 m3 rotate
-        setcall m2 dct_rotate(m2,p_m3,(ROT17_C),(-1*ROT17_SpC),(-1*ROT17_SmC),(FIX-FPASS),(2$pow_a))
+        setcall m2 dct_rotate(m2,p_m3,(ROT17_C),(-ROT17_SpC),(-ROT17_SmC),(FIX-FPASS),(2$pow_a))
         #m4 m7
-        setcall m4 dct_rotate(m4,p_m7,(-1*ROT37_C),(ROT37_SpC),(ROT37_SmC),(FIX-FPASS),(2$pow_a))
+        setcall m4 dct_rotate(m4,p_m7,(-ROT37_C),(ROT37_SpC),(ROT37_SmC),(FIX-FPASS),(2$pow_a))
         #m7
         add m7 m3
         call array_set_word_off(dct_cursor,m7,1)
@@ -275,7 +275,7 @@ function mpeg_mb_dct_block(sd dct_codes)
         call array_set_word_off(dct_cursor,m4,7)
 
         #m5 m6
-        setcall m5 dct_rotate(m5,p_m6,(-1*ROT13_C),(ROT13_SmC),(ROT13_SpC),(FIX-FPASS),(2$pow_a))
+        setcall m5 dct_rotate(m5,p_m6,(-ROT13_C),(ROT13_SmC),(ROT13_SpC),(FIX-FPASS),(2$pow_a))
         #m5
         add m5 m3
         call array_set_word_off(dct_cursor,m5,5)
@@ -302,7 +302,7 @@ function mpeg_mb_dct_block(sd dct_codes)
         setcall m0 dct_calc(m0,p_m3)
 
         #m3 m2
-        setcall m3 dct_rotate(m3,p_m2,(ROT6_C),(ROT6_SmC),(-1*ROT6_SpC),0,(2$pow_b))
+        setcall m3 dct_rotate(m3,p_m2,(ROT6_C),(ROT6_SmC),(-ROT6_SpC),0,(2$pow_b))
         #m3
         setcall m3 sar(m3,(FIX+FPASS+3))
         call array_set_word_off(dct_cursor,m3,(2*8))
@@ -328,9 +328,9 @@ function mpeg_mb_dct_block(sd dct_codes)
         add m2 m6
 
         #m2 m3
-        setcall m2 dct_rotate(m2,p_m3,(ROT17_C),(-1*ROT17_SpC),(-1*ROT17_SmC),0,(2$pow_b))
+        setcall m2 dct_rotate(m2,p_m3,(ROT17_C),(-ROT17_SpC),(-ROT17_SmC),0,(2$pow_b))
         #m4 m7
-        setcall m4 dct_rotate_simple(m4,p_m7,(-1*ROT37_C),(ROT37_SpC),(ROT37_SmC))
+        setcall m4 dct_rotate_simple(m4,p_m7,(-ROT37_C),(ROT37_SpC),(ROT37_SmC))
         #m7
         add m7 m3
         setcall m7 sar(m7,(FIX+FPASS+3))
@@ -341,7 +341,7 @@ function mpeg_mb_dct_block(sd dct_codes)
         call array_set_word_off(dct_cursor,m4,(7*8))
 
         #m5 m6
-        setcall m5 dct_rotate_simple(m5,p_m6,(-1*ROT13_C),(ROT13_SmC),(ROT13_SpC))
+        setcall m5 dct_rotate_simple(m5,p_m6,(-ROT13_C),(ROT13_SmC),(ROT13_SpC))
         add m5 m3
         add m6 m2
         setcall m5 sar(m5,(FIX+FPASS+3))
