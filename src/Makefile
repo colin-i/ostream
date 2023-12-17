@@ -4,7 +4,8 @@ OCOMP=o
 endif
 
 ifndef linkerflags
-linkerflags=-O1 -s
+linkerflags=-O3 -s
+#           -O1
 endif
 
 platform = lin
