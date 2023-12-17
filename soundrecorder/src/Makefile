@@ -8,7 +8,7 @@ linkerflags=-O3 -s
 #             1
 endif
 
-OFLAGS = inplace_reloc 0
+OFLAGS = inplace_reloc 0 ${OFLAGSEXTRA}
 
 projname=soundrecorder
 objname=${projname}.o
