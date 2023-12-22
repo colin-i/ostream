@@ -279,7 +279,7 @@ endfunction
 importx "_free" free
 
 #e/forward
-function rgb_to_yuvi420_forward_data(sd rgb,sd width,sd height,sd forward,sd data)
+function rgb_to_yuvi420_forward_data(sd rgb,sd width,sd height,sv forward,sd data)
     sd size
     set size width
     mult size height

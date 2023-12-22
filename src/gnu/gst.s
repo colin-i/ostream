@@ -148,7 +148,7 @@ endfunction
 #
 
 #
-function bus_signals_data(sd element,sd forwardToSignals,sd forwardToSignalsData)
+function bus_signals_data(sd element,sv forwardToSignals,sd forwardToSignalsData)
     sd bus#1
     importx "_gst_element_get_bus" gst_element_get_bus
     setcall bus gst_element_get_bus(element)
@@ -200,7 +200,7 @@ function default_signals_for_modal(sd pipe,sd dialog)
     call bus_signals_data(pipe,f,dialog)
 endfunction
 #err at modal when dialog is not known, but function to close dialog
-function err_modal(sd *bus,sd message,sd closemodalForward)
+function err_modal(sd *bus,sd message,sv closemodalForward)
     call def_error(message)
     call closemodalForward()
     #sound flag if required
@@ -219,7 +219,7 @@ endfunction
 
 importx "_gst_bin_iterate_sinks" gst_bin_iterate_sinks
 importx "_gst_iterator_free" gst_iterator_free
-function iterate_sinks_data(sd pipe,sd forward,sd data)
+function iterate_sinks_data(sd pipe,sv forward,sd data)
     sd iter
     setcall iter gst_bin_iterate_sinks(pipe)
     call forward(iter,data)
@@ -236,7 +236,7 @@ function iterate_firstsink(sd pipe,sd forward)
 endfunction
 
 importx "_gst_iterator_next" gst_iterator_next
-function iterate_next_forward_data_free(sd iter,sd forward,sd data)
+function iterate_next_forward_data_free(sd iter,sv forward,sd data)
     sd elem
     sd ptr_elem^elem
     sd ret

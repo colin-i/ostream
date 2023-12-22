@@ -407,7 +407,7 @@ function fileiterate(ss foldername,ss spec,sd forward,sd data)
     call free(foldername)
 endfunction
 
-function fileiteration(sd p_foldername,ss spec,sd forward,sd data)
+function fileiteration(sd p_foldername,ss spec,sv forward,sd data)
     sd folderlen
     setcall folderlen slen(p_foldername#)
     inc folderlen
