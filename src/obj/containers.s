@@ -39,7 +39,7 @@ import "mainwidget" mainwidget
 ##########dialog
 importx "_gtk_widget_destroy" gtk_widget_destroy
 
-function non_modal_destroy(sd dialog,sd response_id,sd forward)
+function non_modal_destroy(sd dialog,sd response_id,sv forward)
     if forward!=0
         call forward(response_id)
     endif
@@ -47,7 +47,7 @@ function non_modal_destroy(sd dialog,sd response_id,sd forward)
 endfunction
 
 #dialog
-function dialogfield_size_button_core(ss title,sd modal_flag,sd forward_init,sd width,sd height,sd button,sd bresponse)
+function dialogfield_size_button_core(ss title,sd modal_flag,sv forward_init,sd width,sd height,sd button,sd bresponse)
     importx "_gtk_dialog_new_with_buttons" gtk_dialog_new_with_buttons
     sd window
     setcall window mainwidget()
@@ -83,7 +83,7 @@ function dialog_handle(sd action,sd value)
 endfunction
 
 #return: dialog(nonmodal case)
-function dialogfield_size_button(ss title,sd modal_flag,sd forward1,sd forward2,sd width,sd height,sd button,sd bresponse)
+function dialogfield_size_button(ss title,sd modal_flag,sd forward1,sv forward2,sd width,sd height,sd button,sd bresponse)
     sd dialog
     setcall dialog dialogfield_size_button_core(title,modal_flag,forward1,width,height,button,bresponse)
     call dialog_handle((value_set),dialog)
@@ -178,7 +178,7 @@ function dialogfield_modal_texter_init(sd vbox,sd dialog)
     #call the main init
     sd p%p_forward_init
     if p#!=0
-        sd forward_init
+        sv forward_init
         set forward_init p#
         call forward_init(vbox,dialog)
     endif
@@ -341,7 +341,7 @@ function filechooserfield_dialog(sd dialog)
     return filename
 endfunction
 
-function filechooserfield_forward(sd forward)
+function filechooserfield_forward(sv forward)
     sd dialog
     setcall dialog filechooserfield_core()
     sd resp

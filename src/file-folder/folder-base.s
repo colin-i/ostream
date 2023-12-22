@@ -22,7 +22,7 @@ function dirch(str value)
 endfunction
 
 #e
-function folder_enterleave_data(ss folder,sd forward,sd data)
+function folder_enterleave_data(ss folder,sv forward,sd data)
     sd err
     data noerr=noerror
     setcall err dirch(folder)

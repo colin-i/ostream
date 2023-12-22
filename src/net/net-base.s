@@ -95,7 +95,7 @@ endfunction
 
 
 #void
-function uri_get_content_forward_data(ss uri,sd forward,sd data)
+function uri_get_content_forward_data(ss uri,sv forward,sd data)
 #                        forward body and size
 	sd msg
 	sd body

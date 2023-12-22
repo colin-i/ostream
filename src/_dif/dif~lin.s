@@ -1091,7 +1091,7 @@ endfunction
 importx "gst_iterator_next" gst_iterator_next
 importx "g_value_get_object" g_value_get_object
 importx "g_value_unset" g_value_unset
-function iterate_next_forward_free(sd iter,sd forward)
+function iterate_next_forward_free(sd iter,sv forward)
 	#gvalue = one GType ul(QWORD) and two pointers
 	const gvalue_stacks=:&DWORD/DWORD*3+3
 	sd elem#gvalue_stacks

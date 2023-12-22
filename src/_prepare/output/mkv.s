@@ -1306,7 +1306,7 @@ endfunction
 import "file_tell" file_tell
 
 #bool
-function mkv_size_pass(sd file,sd forward,sd start,sd end)
+function mkv_size_pass(sd file,sv forward,sd start,sd end)
     sd size
     set size end
     sub size start

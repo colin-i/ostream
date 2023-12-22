@@ -400,7 +400,7 @@ function fileiterate(ss foldername,ss spec,sd forward,sd data)
     call free(foldername)
 endfunction
 
-function fileiteration(sd p_foldername,ss spec,sd forward,sd data)
+function fileiteration(sd p_foldername,ss spec,sv forward,sd data)
     sd folderlen
     setcall folderlen slen(p_foldername#)
     inc folderlen
@@ -1014,7 +1014,7 @@ endfunction
 
 importx "_gst_iterator_next" gst_iterator_next
 importx "_gst_object_unref" gst_object_unref
-function iterate_next_forward_free(sd iter,sd forward)
+function iterate_next_forward_free(sd iter,sv forward)
 	sd elem
 	sd ptr_elem^elem
 	sd ret

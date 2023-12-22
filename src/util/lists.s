@@ -20,7 +20,7 @@ function widget_get_children_number_count(sd list,sd *data)
 endfunction
 
 #returns what forward returns
-function widget_forward_children_data(sd widget,sd forward,sd data)
+function widget_forward_children_data(sd widget,sv forward,sd data)
     sd GList
     importx "_gtk_container_get_children" gtk_container_get_children
     setcall GList gtk_container_get_children(widget)

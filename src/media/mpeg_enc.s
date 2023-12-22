@@ -90,7 +90,7 @@ import "mpeg_input_lumstride" mpeg_input_lumstride
 import "mpeg_input_cromstride" mpeg_input_cromstride
 
 #########trans 8 to 16 for dct
-function mpeg_mb_trans(sd x,sd y,sd p_dct_codes,sd function)
+function mpeg_mb_trans(sd x,sd y,sd p_dct_codes,sv function)
     sd Y
     sd U
     sd V

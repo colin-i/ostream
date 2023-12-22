@@ -33,7 +33,7 @@ function buttons_group(sd ptr,sd container)
 endfunction
 
 #return: optional: ptr for next
-function buttons_group_ex(sd ptr,sd container,sd match,sd forward)
+function buttons_group_ex(sd ptr,sd container,sd match,sv forward)
     import "slen" slen
     data z=0
     data padgroups=5

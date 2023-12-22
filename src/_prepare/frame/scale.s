@@ -191,7 +191,7 @@ function scale_toggle_entry(sd action,sd value)
 endfunction
 
 
-function scale_signal_changed(sd widget,sd data)
+function scale_signal_changed(sd widget,sv data)
     importx "_gtk_toggle_button_get_active" gtk_toggle_button_get_active
     sd ch_button
     setcall ch_button scale_toggle_entry((value_get))

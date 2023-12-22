@@ -51,7 +51,7 @@ EndFunction
 
 
 
-function foreach_dword(sd size,sd vars,sd forward,sd data)
+function foreach_dword(sd size,sd vars,sv forward,sd data)
     sd last
     set last vars
     add last size

@@ -208,7 +208,7 @@ function mp4_content(sd file,sd name,sd forward,sd f_data,sd sizefield_bytes,sd 
 endfunction
 import "file_read" file_read
 #bool
-function mp4_wrap(sd file,sd name,sd forward,sd f_data,sd sizefield_bytes,sd substract,sd p_SizeOfSample)
+function mp4_wrap(sd file,sd name,sv forward,sd f_data,sd sizefield_bytes,sd substract,sd p_SizeOfSample)
     import "file_tell" file_tell
     sd err
     #get the point for calculations

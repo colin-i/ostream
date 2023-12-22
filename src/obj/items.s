@@ -577,7 +577,7 @@ function msgelement_pixbuf(sd msg)
     return pixbuf
 endfunction
 
-function msgelement_pixbuf_forward_data(sd msg,sd forward,sd data)
+function msgelement_pixbuf_forward_data(sd msg,sv forward,sd data)
     sd pixbuf
     setcall pixbuf msgelement_pixbuf(msg)
 
@@ -702,7 +702,7 @@ function pixbuf_scale(sd pixbuf,sd w,sd h)
     return newpixbuf
 endfunction
 
-function pixbuf_scale_forward_data(sd pixbuf,sd scale_w,sd scale_h,sd forward,sd data)
+function pixbuf_scale_forward_data(sd pixbuf,sd scale_w,sd scale_h,sv forward,sd data)
     sd newpix
 
     setcall newpix pixbuf_scale(pixbuf,scale_w,scale_h)
@@ -771,7 +771,7 @@ function pixbuf_from_file(ss filename)
 	return (NULL)
 endfunction
 #returns the forward or null
-function pixbuf_from_file_forward_data(ss filename,sd forward,sd data)
+function pixbuf_from_file_forward_data(ss filename,sv forward,sd data)
     sd pixbuf
     setcall pixbuf pixbuf_from_file(filename)
     sd null=0

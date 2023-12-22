@@ -137,7 +137,7 @@ function read_jpeg_prepare(sd file,sd forward)
     call jpeg_finish_decompress(jdestruct)
 endfunction
 
-function read_jpeg_scanlines(sd forward)
+function read_jpeg_scanlines(sv forward)
     sd jdestruct
     setcall jdestruct get_jdestruct()
 
@@ -160,7 +160,7 @@ function read_jpeg_scanlines(sd forward)
     mult filerowstride output_components
 
     #alloc for reading
-    sd alloc_sarray
+    sv alloc_sarray
     setcall alloc_sarray structure_get_int(jdestruct,4)
     setcall alloc_sarray structure_get_int(alloc_sarray,8)
 

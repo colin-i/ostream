@@ -103,7 +103,7 @@ endfunction
 
 ##effect loop function
 
-function stage_effect_new(sd forward,sd data)
+function stage_effect_new(sv forward,sd data)
     sd bool
     data nr#1
     #the effect frames

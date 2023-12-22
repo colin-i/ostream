@@ -151,7 +151,7 @@ endfunction
 ##forward simple
 
 #err/returns what forward returns
-function file_forward(ss path,sd method,sd forward)
+function file_forward(ss path,sd method,sv forward)
     sd returnvalue
     data noerr=noerror
     sd file
@@ -231,7 +231,7 @@ function file_get_content(str path,data ptrsize,data ptrmem)
     return err
 EndFunction
 
-function file_get_content_forward(ss filename,sd forward)
+function file_get_content_forward(ss filename,sv forward)
     sd err
     sd noerr=noerror
 
@@ -268,7 +268,7 @@ function file_read(sd mem,sd size,sd file)
     return (noerror)
 endfunction
 #e
-function file_get_size_forward(sd file,sd size,sd forward)
+function file_get_size_forward(sd file,sd size,sv forward)
     sd mem
     sd p_mem^mem
     sd err

@@ -133,7 +133,7 @@ importx "_free" free
 import "cpymem" cpymem
 
 #e
-function memtostrFw_data(sd mem,sd size,sd forward,sd data)
+function memtostrFw_data(sd mem,sd size,sv forward,sd data)
     sd err
     sd noerr=noerror
     ss alloc
