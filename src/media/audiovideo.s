@@ -15,7 +15,7 @@ endfunction
 
 #container read or write, little endian
 #bool
-function av_chunk_readwrite(sd file,sd forward,ss riff)
+function av_chunk_readwrite(sd file,sv forward,ss riff)
     sd bool
     sd err
     sd io

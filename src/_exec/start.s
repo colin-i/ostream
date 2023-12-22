@@ -118,7 +118,7 @@ function setimages()
     call stage_buttons()
 endfunction
 
-function stagebutton_forward(sd widget,sd function)
+function stagebutton_forward(sd widget,sv function)
     call function(widget)
 endfunction
 

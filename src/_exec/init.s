@@ -157,7 +157,7 @@ endfunction
 
 
 #d
-function uninit_folder(sd fn)
+function uninit_folder(sv fn)
 	sd d;sd a
 	setcall d fn()
 	setcall a access(d,(F_OK))
@@ -227,7 +227,7 @@ endfunction
 function uninit_delete_sys()
 	call init_user_sys(uninit_delete_file)
 endfunction
-function uninit_delete_entry(sd entry,sd function)
+function uninit_delete_entry(sd entry,sv function)
 	sd p;setcall p real_path(entry)
 	if p!=(NULL)
 		sd x;setcall x function(p)
