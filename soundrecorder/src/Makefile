@@ -12,13 +12,13 @@ OFLAGS = inplace_reloc 0 ${OFLAGSEXTRA}
 
 projname=soundrecorder
 objname=${projname}.o
-srcname=${projname}.s
+srcname=${projname}.oc
 logname=${srcname}.log
 wprojname=${projname}.exe
 
 all: ${wprojname}
 
-%.o: %.s
+%.o: %.oc
 	${OCOMP} $< ${OFLAGS}
 
 ${wprojname}: ${objname}

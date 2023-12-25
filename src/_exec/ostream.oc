@@ -10,7 +10,7 @@ importx "_gtk_main" gtk_main
 
 import "initfn" initfn
 
-include "../_dif/difl.s" "../_dif/difw.s"
+include "../_dif/difl.oc" "../_dif/difw.oc"
 
 call gtk_init(0,0)
 
@@ -44,4 +44,4 @@ call search_clear_memory()
 call prog_free()
 
 #normal return no, gtk_main problems (in this context)
-include "../_dif/lin.s" "../_dif/win.s"
+include "../_dif/lin.oc" "../_dif/win.oc"

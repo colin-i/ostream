@@ -55,7 +55,7 @@ items_prefix=
 $(eval obs = )
 $(foreach var,$(items),$(eval obs += ${items_prefix}${var}.o))
 $(eval logs = )
-$(foreach var,$(items),$(eval logs += ${items_prefix}${var}.s.log))
+$(foreach var,$(items),$(eval logs += ${items_prefix}${var}.oc.log))
 
 ifeq (${platform},lin)
 
@@ -121,9 +121,9 @@ linkapp:
 			-L/home/bc/v/ovideo-1/AppDir/usr/lib/i386-linux-gnu \
 			-l:libc.so.6 -l:libm.so.6 -l:libgtk-x11-2.0.so.0 -l:libgdk-x11-2.0.so.0 -l:libpangocairo-1.0.so.0 -l:libatk-1.0.so.0 -l:libcairo.so.2 -l:libgdk_pixbuf-2.0.so.0 -l:libgio-2.0.so.0 -l:libpangoft2-1.0.so.0 -l:libpango-1.0.so.0 -l:libfontconfig.so.1 -l:libfreetype.so.6 -l:libgstpbutils-1.0.so.0 -l:libgstaudio-1.0.so.0 -l:libgstvideo-1.0.so.0 -l:libgstapp-1.0.so.0 -l:libgstbase-1.0.so.0 -l:libgstreamer-1.0.so.0 -l:libgobject-2.0.so.0 -l:libglib-2.0.so.0 -l:libjpeg.so.8 -l:libsoup-2.4.so.1 -l:libasound.so.2 -l:libpthread.so.0 -l:libgthread-2.0.so.0
 
-%.o: %.s
+%.o: %.oc
 	${OCOMP} $< ${OFLAGS}
-#	$(eval logs += $@.s.log)
+#	$(eval logs += $@.oc.log)
 #	$(eval obs += $@.o)
 
 clean:
