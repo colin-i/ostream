@@ -59,7 +59,7 @@ sharefolder=$(DESTDIR)${sharefolderpackage}
 $(eval obs = )
 $(foreach var,$(items),$(eval obs += ${items_prefix}${var}.o))
 $(eval logs = )
-$(foreach var,$(items),$(eval logs += ${items_prefix}${var}.s.log))
+$(foreach var,$(items),$(eval logs += ${items_prefix}${var}.oc.log))
 
 ifeq (${platform},lin)
 
@@ -115,13 +115,13 @@ endif
 #cos is in -lmingwex that will work with -lmingw32 -lmsvcrt
 #on win msvcr100 is old and at here is from old java-i586
 
-%.o: %.s
+%.o: %.oc
 	${OCOMP} $< ${OFLAGS}
-#	$(eval logs += $@.s.log)
+#	$(eval logs += $@.oc.log)
 #	$(eval obs += $@.o)
 
 clean:
-	-printf ' %s.s.log' ${items} | xargs rm -f
+	-printf ' %s.oc.log' ${items} | xargs rm -f
 	-printf ' %s.o' ${items} | xargs rm -f
 	-rm -f ${projname}
 	-rm -f ${lshare}

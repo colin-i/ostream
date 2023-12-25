@@ -5,8 +5,8 @@ format elfobj
 include "ascii.h"
 include "common.h"
 
-include "util.s"
-include "values.s"
+include "util.oc"
+include "values.oc"
 
 const WAVE_FORMAT_PCM=1
 

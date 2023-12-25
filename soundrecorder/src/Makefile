@@ -12,7 +12,7 @@ OFLAGS = inplace_reloc 0
 
 projname=soundrecorder
 objname=${projname}.o
-srcname=${projname}.s
+srcname=${projname}.oc
 logname=${srcname}.log
 wprojname=${projname}.exe
 
@@ -27,7 +27,7 @@ link:
 	i686-w64-mingw32-ld ${linkerflags} ${objname} -o ${wprojname} -entry record \
 		 -lmsvcrt -lkernel32 -lwinmm -luser32
 
-%: %.s
+%: %.oc
 	${OCOMP} $< ${OFLAGS}
 
 clean:
