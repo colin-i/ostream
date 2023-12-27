@@ -5,6 +5,8 @@ last=$(curl https://api.github.com/repos/colin-i/$(cat debian/control | grep "^H
 ~/test/xver ./version.txt && \
 ~/test/debinit2 "${1}" ${2} && \
 ~/test/keyring2 && \
+#deb if not going to amd64 will end of life at launchpad
+#sudo gh act -r -j debuild workflow_dispatch -W .github/workflows/debuild.yml -P ubuntu-18.04=ubuntu:bionic  #ubuntu:lucid is the first one
 ~/test/deb && \
 ~/test/publp && \
 ~/test/ai && \
