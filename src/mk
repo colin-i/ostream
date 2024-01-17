@@ -8,3 +8,8 @@ fi
 LD_LIBRARY_PATH=/home/bc/Desktop/out/ld/usr/lib/i386-linux-gnu make ${a} prefix=/usr LD=/home/bc/Desktop/out/ld/usr/bin/i686-linux-gnu-ld.bfd items_prefix=`pwd`/
 #2.34-6ubuntu1.6 was ok
 #backportpackage -s focal -d focal -w . -k D51F0B6365EAB122 -u ppa:colin-i/ppa-staging binutils  #folder will gone (or error without the key), apt source to take it back
+
+#to backport an old version use the fullurl.dsc file instead of package name
+#libgiognutls.so bionic release version package is failling to backport
+#I made a base64 libgiognutls.so.txt copy at https://drive.google.com/uc?id=192pUkPvRf4-SIQaU8vdvJa-Hgo22Cgpw&export=download
+#	mention: mimeType='text/plain' ~/test/google/a 0

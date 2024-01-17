@@ -15,7 +15,7 @@ On linux distributions, <i>.AppImage</i> file from [releases](https://github.com
 \
 On Fedora, <i>.rpm</i> file from [releases](https://github.com/colin-i/ostream/releases).\
 Missing libjpeg.so.8? https://download.copr.fedorainfracloud.org/results/aflyhorse/libjpeg/fedora-36-i386/ \
-Unacceptable TLS certificate? Put [glib-networking:i386 bionic release libgiognutls.so](https://github.com/colin-i/test/releases/download/1.1/libgiognutls.so) in a folder and point to that folder with GIO_EXTRA_MODULES variable.
+Unacceptable TLS certificate? Put `glib-networking:i386 bionic release libgiognutls.so` in a folder and point to that folder with GIO_EXTRA_MODULES variable.
 ```sh
 yum install ovideo-*.*.rpm
 ```
