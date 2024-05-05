@@ -536,17 +536,18 @@ function stage_properties_enc(sd *button,sd *data)
     setcall options stage_properties_enc_get_options_format()
 
     import "dialogfield_size" dialogfield_size
-    if options=(options_jpg)
+	if options=(options_jpg)
         call jpeg_dialog()
         return 1
-    elseif options=(options_mpg)
+	endif
+	if options=(options_mpg)
         import "mpeg_settings_init" mpeg_settings_init
         import "mpeg_settings_set" mpeg_settings_set
         data mpeg_i_f^mpeg_settings_init
         data mpeg_s_f^mpeg_settings_set
         call dialogfield_size(sets,(GTK_DIALOG_MODAL),mpeg_i_f,mpeg_s_f,300,-1)
         return 1
-    endelseif
+	endif
 
     import "message_dialog" message_dialog
     str no="The encoder doesn't have specific options"
@@ -564,21 +565,23 @@ function stage_properties_enc_get_options_format()
     setcall cmp cmpmem(format,mk,3)
     if cmp=(equalCompare)
         setcall encoder stage_file_get_mkv_encoder()
-        if encoder=(format_mkv_mjpg)
+	if encoder=(format_mkv_mjpg)
             return (options_jpg)
-        elseif encoder=(format_mkv_xvid)
+	endif
+	if encoder=(format_mkv_xvid)
             return (options_mpg)
-        endelseif
+	endif
     endif
     str avi="avi"
     setcall cmp cmpmem(format,avi,3)
     if cmp=(equalCompare)
         setcall encoder stage_file_get_avi_encoder()
-        if encoder=(format_avi_mjpg)
+	if encoder=(format_avi_mjpg)
             return (options_jpg)
-        elseif encoder=(format_avi_xvid)
+	endif
+	if encoder=(format_avi_xvid)
             return (options_mpg)
-        endelseif
+	endif
     endif
     str mp4="mp4"
     setcall cmp cmpmem(format,mp4,3)

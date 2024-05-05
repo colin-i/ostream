@@ -265,7 +265,7 @@ endfunction
 
 #bool
 function mkv_seekhead_fn(sd action,sd file)
-    if action=0
+	if action=0
         #seek entry KaxInfo
         data info#1
         data ptr_info^info
@@ -286,7 +286,7 @@ function mkv_seekhead_fn(sd action,sd file)
 
         setcall bool seek_entry(dodata#,file,ptr_tracks)
         return bool
-    else
+	endif
         sd seg_base%ptr_segment_base
         sd position_value
         sd ptr_position_value^position_value
@@ -308,7 +308,6 @@ function mkv_seekhead_fn(sd action,sd file)
             return 0
         endif
         return 1
-    endelse
 endfunction
 
 #bool
@@ -770,16 +769,15 @@ function mkv_codecid(sd file,sd size,sd *filepos)
     sd bool
     sd io
     setcall io mkv_write_read_get()
-    if io=(mkv_write)
+	if io=(mkv_write)
         setcall bool mkv_codecid_data(io,file)
         return bool
-    else
+	endif
         data f^mkv_codecid_read
         setcall err file_get_size_forward(file,size,f)
         if err!=(noerror)
             return 0
         endif
-    endelse
     return 1
 endfunction
 
@@ -878,12 +876,11 @@ function mkv_cluster(sd file,sd read_size,sd file_pos)
     call mkv_fr_set(newframes)
     #
 
-    if timecode_max=1
+	if timecode_max=1
         return 1
-    else
+	endif
         #p_nomoreframes#==1 or an error or abort
         return 0
-    endelse
 endfunction
 
 #returns the timecode
@@ -1484,7 +1481,7 @@ function mkv_rgb_yuv_functions(sd method,sd sz)
     data rgb_size#1
     data p_rgb^rgb
 
-    if method=(mkv_yuv_init)
+	if method=(mkv_yuv_init)
         set yuv 0
         set rgb 0
 
@@ -1501,27 +1498,29 @@ function mkv_rgb_yuv_functions(sd method,sd sz)
         endif
 
         return (noerror)
-    elseif method=(mkv_yuv_p_bytes)
+	endif
+	if method=(mkv_yuv_p_bytes)
         return p_yuv
-    elseif method=(mkv_yuv_set_size)
+	endif
+	if method=(mkv_yuv_set_size)
         set size sz
-    elseif method=(mkv_yuv_get_size)
+	elseif method=(mkv_yuv_get_size)
         return size
-    elseif method=(mkv_yuv_get_bytes)
+	elseif method=(mkv_yuv_get_bytes)
         return yuv
-    elseif method=(mkv_yuv_free)
+	elseif method=(mkv_yuv_free)
         call free(yuv)
         if rgb!=0
             call free(rgb)
         endif
-    elseif method=(mkv_rgb_get_p_bytes)
+	elseif method=(mkv_rgb_get_p_bytes)
         return p_rgb
-    elseif method=(mkv_rgb_set_size)
+	elseif method=(mkv_rgb_set_size)
         set rgb_size sz
-    else
+	else
     #if method==(mkv_rgb_get_size)
         return rgb_size
-    endelse
+	endelse
     return 1
 endfunction
 
@@ -1591,13 +1590,14 @@ function mkv_readentry(sd frames,sd newtime,sd p_resultedframes)
 
     set p_resultedframes# nt_frames
     sub nt_frames frames
-    if nt_frames=0
+	if nt_frames=0
         return 1
-    elseif nt_frames<0
+	endif
+	if nt_frames<0
         str timeerr="Wrong timecodes."
         call texter(timeerr)
         return 0
-    endelseif
+	endif
 
     sd p_rgb
     setcall p_rgb mkv_rgb_yuv_functions((mkv_rgb_get_p_bytes))
@@ -1658,7 +1658,7 @@ endfunction
 
 
 function mkv_codecid_data(sd io,sd arg,sd size)
-    if io=(mkv_write)
+	if io=(mkv_write)
         sd file
         set file arg
     #bool
@@ -1704,7 +1704,7 @@ function mkv_codecid_data(sd io,sd arg,sd size)
             return 0
         endif
         return 1
-    else
+	endif
     #void
         sd mem
         set mem arg
@@ -1723,7 +1723,6 @@ function mkv_codecid_data(sd io,sd arg,sd size)
             return (void)
         endif
         call mkv_read_encoder(0,(format_mkv_rgb24))
-    endelse
 endfunction
 
 
@@ -1768,15 +1767,16 @@ function mkv_read_mjpeg(sd bytes,sd filerowstride,sd j)
     sd rowstride
     setcall rowstride rgb_get_rowstride(w)
 
-    if filerowstride>rowstride
+	if filerowstride>rowstride
         ss rstr="Rowstride too large"
         call texter(rstr)
         return 0
-    elseif j>=h
+	endif
+	if j>=h
         ss herr="Height too big"
         call texter(herr)
         return 0
-    endelseif
+	endif
 
     mult rowstride j
     add rgb rowstride

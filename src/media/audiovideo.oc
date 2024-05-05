@@ -460,15 +460,16 @@ function av_read_row(sd width,sd height,sd buffer,sd bytes,sd filerowstride,sd r
     setcall bufferrowstride rgb_get_rowstride(width)
 
     import "texter" texter
-    if filerowstride>bufferrowstride
+	if filerowstride>bufferrowstride
         ss rstr="Rowstride too large"
         call texter(rstr)
         return 0
-    elseif rowindex>=height
+	endif
+	if rowindex>=height
         ss herr="Height too big"
         call texter(herr)
         return 0
-    endelseif
+	endif
 
     mult bufferrowstride rowindex
     add buffer bufferrowstride

@@ -105,11 +105,12 @@ function stage_effect_scale_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd rowst
     setcall frame_width rule3_offset(k,last_frame,start_rect_width,end_rect_width)
     setcall frame_height rule3_offset(k,last_frame,start_rect_height,end_rect_height)
 
-    if frame_width<4
+	if frame_width<4
         return 0
-    elseif frame_height<4
+	endif
+	if frame_height<4
         return 0
-    endelseif
+	endif
 
     sd left
     sd top

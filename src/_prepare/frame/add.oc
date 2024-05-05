@@ -217,19 +217,21 @@ function stage_frame_form_data_init(sd vbox,sd pixbuf)
 endfunction
 
 function stage_frame_form_data(sd action,sd value)
-    if action=0
+	if action=0
         data width_entry#1
         set width_entry value
         return 0
-    elseif action=1
+	endif
+	if action=1
         data height_entry#1
         set height_entry value
         return 0
-    elseif action=2
+	endif
+	if action=2
         data color_entry#1
         set color_entry value
         return 0
-    endelseif
+	endif
 
     import "entry_to_nr_minValue" entry_to_nr_minValue
 

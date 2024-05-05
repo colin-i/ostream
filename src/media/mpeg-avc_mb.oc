@@ -61,15 +61,13 @@ function avc_cabac_context_init()
 endfunction
 
 function avc_clip3(sd x,sd min,sd max)
-    if x<min
+	if x<min
         return min
-    else
-        if x>max
+	endif
+	if x>max
             return max
-        else
+	endif
             return x
-        endelse
-    endelse
 endfunction
 
 function avc_cabac_context_init_I()

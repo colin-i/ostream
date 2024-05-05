@@ -118,17 +118,17 @@ Function strinmem_portions_advance(sd str_sz,str match,sd takeall,sd advance)
         import "content_size" content_size
         call content_size(str_sz,string_size)
 
-        if nrsz=zero
-            if takeall=true
+	if nrsz=zero
+		if takeall=true
                 call move_cursors_test(str_sz,size,advance)
                 return size
-            else
-                return zero
-            endelse
-        elseif size<nrsz
+		endif
+		return zero
+	endif
+	if size<nrsz
             call move_cursors_test(str_sz,size,advance)
             Return size
-        endelseif
+	endif
 
         Str cnt#1
         Set cnt content

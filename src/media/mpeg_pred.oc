@@ -86,7 +86,7 @@ function macro_blocks_core(sd action,sd mbpos,sd sector,sd item)
     import "mpeg_image_h" mpeg_image_h
     import "multiple_of_nr" multiple_of_nr
 
-    if action=(value_set)
+	if action=(value_set)
     #bool
         setcall mb_width mpeg_image_w()
         setcall mb_height mpeg_image_h()
@@ -116,9 +116,10 @@ function macro_blocks_core(sd action,sd mbpos,sd sector,sd item)
             return 0
         endif
         return 1
-    elseif action=(value_unset)
+	endif
+	if action=(value_unset)
         call free(mem)
-    else
+	else
     #if action==(value_get)
     #pointer
         #go to item
@@ -140,7 +141,7 @@ function macro_blocks_core(sd action,sd mbpos,sd sector,sd item)
         add block mbpos
         add block sector
         return block
-    endelse
+	endelse
 endfunction
 
 function macro_blocks(sd action,sd mbpos,sd sector)
@@ -350,13 +351,12 @@ endfunction
 
 function mb_rescale(sd coef)
     sd x
-    if coef!=0
+	if coef!=0
         mult coef (DEFAULT_QUANT)
         setcall x mb_div(coef,(DEFAULT_QUANT))
         return x
-    else
+	endif
         return 0
-    endelse
 endfunction
 
 #################calc_acdc_bits
@@ -463,11 +463,12 @@ function calc_acdc_bits(sd acpred_direction,sd mbpos,sd sector,sd qcoeff,sd pred
 endfunction
 
 function clip_value(sd value,sd min,sd max)
-    if value<min
+	if value<min
         return min
-    elseif value>max
+	endif
+	if value>max
         return max
-    endelseif
+	endif
     return value
 endfunction
 
@@ -575,14 +576,14 @@ function mpeg_scan_tables(sd table)
     data zig_zag^zig_zag_data
     data horizontal^horizontal_data
     data vertical^vertical_data
-    if table=(zig_zag)
+	if table=(zig_zag)
         return zig_zag
-    elseif table=(horizontal)
+	endif
+	if table=(horizontal)
         return horizontal
-    else
+	endif
         #vertical
         return vertical
-    endelse
 endfunction
 
 ######

@@ -264,15 +264,14 @@ function vlc_tables_intra_maxrun(sd last,sd pos)
     char *    ={0, 0,  0, 0, 0, 0, 0, 0}
     char *    ={0, 0,  0, 0, 0, 0, 0, 0}
 
-    if last=0
+	if last=0
         ss max0^last0
         add max0 pos
         return max0#
-    else
+	endif
         ss max1^last1
         add max1 pos
         return max1#
-    endelse
 endfunction
 
 function vlc_tables_intra_maxlevel(sd last,sd pos)
@@ -295,15 +294,14 @@ function vlc_tables_intra_maxlevel(sd last,sd pos)
     char *    ={0, 0, 0, 0, 0, 0, 0, 0}
     char *    ={0, 0, 0, 0, 0, 0, 0, 0}
 
-    if last=0
+	if last=0
         ss max0^last0
         add max0 pos
         return max0#
-    else
+	endif
         ss max1^last1
         add max1 pos
         return max1#
-    endelse
 endfunction
 
 function vlc_tables_len_init3()

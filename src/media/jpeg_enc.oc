@@ -201,7 +201,7 @@ endfunction
 function jpeg_file_mem(sd action,sd arg,sd append_size)
     data mem#1
     data size#1
-    if action=(value_set)
+	if action=(value_set)
     #bool
         setcall mem alloc_block((value_set))
         if mem=0
@@ -209,9 +209,10 @@ function jpeg_file_mem(sd action,sd arg,sd append_size)
         endif
         set size 0
         return 1
-    elseif action=(value_unset)
+	endif
+	if action=(value_unset)
         call free(mem)
-    elseif action=(value_append)
+	elseif action=(value_append)
     #bool
         sd append
         set append arg
@@ -223,7 +224,7 @@ function jpeg_file_mem(sd action,sd arg,sd append_size)
         set mem appendresult
         add size append_size
         return 1
-    else
+	else
     #if action==(value_filewrite)
     #bool
         sd file
@@ -234,7 +235,7 @@ function jpeg_file_mem(sd action,sd arg,sd append_size)
             return 0
         endif
         return 1
-    endelse
+	endelse
 endfunction
 
 function jpeg_file_mem_add(sd append,sd append_size)
@@ -1345,7 +1346,7 @@ endfunction
 #bool
 function jpeg_category(sd action)
     data category#1
-    if action=(value_set)
+	if action=(value_set)
         sd p_category^category
         sd err
         setcall err memoryalloc(65535,p_category)
@@ -1353,16 +1354,16 @@ function jpeg_category(sd action)
             return 0
         endif
         return 1
-    elseif action=(value_get)
+	endif
+	if action=(value_get)
         return category
-    else
+	endif
         call free(category)
-    endelse
 endfunction
 #bool
 function jpeg_length(sd action)
     data length#1
-    if action=(value_set)
+	if action=(value_set)
         sd p_length^length
         sd err
         setcall err memoryalloc(65535,p_length)
@@ -1370,16 +1371,16 @@ function jpeg_length(sd action)
             return 0
         endif
         return 1
-    elseif action=(value_get)
+	endif
+	if action=(value_get)
         return length
-    else
+	endif
         call free(length)
-    endelse
 endfunction
 #bool
 function jpeg_value(sd action)
     data value#1
-    if action=(value_set)
+	if action=(value_set)
         sd p_value^value
         sd err
         setcall err memoryalloc((2*65535),p_value)
@@ -1387,11 +1388,11 @@ function jpeg_value(sd action)
             return 0
         endif
         return 1
-    elseif action=(value_get)
+	endif
+	if action=(value_get)
         return value
-    else
+	endif
         call free(value)
-    endelse
 endfunction
 
 import "array_get_byte" array_get_byte
