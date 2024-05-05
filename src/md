@@ -8,3 +8,17 @@ fi
 #make compile prefix=/usr && make linkapp linkerflags=
 
 LD_LIBRARY_PATH=/home/bc/Desktop/out/ld/usr/lib/i386-linux-gnu make ${a} prefix=/usr OFLAGSEXTRA="function_name 1 nul_res_pref 1" linkerflags= LD=/home/bc/Desktop/out/ld/usr/bin/i686-linux-gnu-ld.bfd items_prefix=`pwd`/
+
+#for arm is the appimage, extracted, ./AppRun
+#on noble some dependencies are not anymore, to test on noble:
+# sudo docker pull ubuntu:focal
+# sudo docker container create -ti ubuntu:focal
+#                      start
+#                      attach
+# dpkg --add-architecture i386
+# apt update
+# apt install software-properties-common
+# add-apt-repository ppa:colin-i
+# apt install git ocompiler make pkg-config libgtk2.0-dev:i386 libgstreamer-plugins-base1.0-dev:i386 libjpeg8-dev:i386 libsoup2.4-dev:i386 libasound2-dev:i38
+# git clone https://github.com/colin-i/ostream
+# sudo docker container cp ...:/ostream/src/ovideo ./ostream
