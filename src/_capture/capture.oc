@@ -937,7 +937,7 @@ function capture_direct_run(sd output_file,sd method)
     import "dialog_modal_texter_draw" dialog_modal_texter_draw
     call dialog_modal_texter_draw("Recording..")
     #loop the screenshots
-    while 1=1
+    whiletrue
         #take screenshot
         sd pixbuf
         setcall pixbuf capture_obtain_screenshot()

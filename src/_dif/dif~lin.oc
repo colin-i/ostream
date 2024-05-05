@@ -302,7 +302,7 @@ function fd_elt(sd d)
     return elt
 endfunction
 function capture_alt_thread_proc(sd *noArg)
-    while 1=1
+    whiletrue
         const STDIN_FILENO=0
         const fd_set_size=128
         char filedescriptor_set#fd_set_size

@@ -937,7 +937,7 @@ endfunction
 
 function mpeg_fixcode(sd mv)
     sd fcode=1
-    while 1=1
+    whiletrue
         sd value
         setcall value shl(16,fcode)
         if value>mv

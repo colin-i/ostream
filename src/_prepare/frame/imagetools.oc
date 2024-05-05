@@ -597,7 +597,7 @@ function stage_lines_thread_loop()
     sd nr_frames
     setcall nr_frames stage_get_frames()
     #loop
-    while 1=1
+    whiletrue
         sd stop
         setcall stop av_dialog_stop((value_get))
         if stop=1
