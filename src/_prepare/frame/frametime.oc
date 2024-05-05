@@ -82,9 +82,7 @@ endfunction
 
 #method is defined at olang.h
 
-function stage_frame_time_numbers(sd method,sd arg1,sd newvalue,sd numberoftimes)
-    sd index
-    set index arg1
+function stage_frame_time_numbers(sd method,sd index,sd newvalue,sd numberoftimes)
 	if method=(stage_frame_time_init)
         #const stage_frame_time_init=0
         data frames#1
@@ -105,7 +103,7 @@ function stage_frame_time_numbers(sd method,sd arg1,sd newvalue,sd numberoftimes
             set pointer frames
             add pointer size
             sub pointer 4
-            set pointer# arg1
+            set pointer# index
         endif
         return 1
 	endif
