@@ -376,18 +376,16 @@ endfunction
 
 
 function get_lower(sd A,sd B)
-    if A<B
+	if A<B
         return A
-    else
+	endif
         return B
-    endelse
 endfunction
 function get_higher(sd A,sd B)
-    if A>B
+	if A>B
         return A
-    else
+	endif
         return B
-    endelse
 endfunction
 
 ##char,short,int
