@@ -299,7 +299,7 @@ endfunction
 
 
 function stage_effect_orientation(sd part,sd argument,sd use_center_bool,sd text)
-    if part=0
+	if part=0
     #returns the frame
         data use_center#1
         set use_center use_center_bool
@@ -371,7 +371,7 @@ function stage_effect_orientation(sd part,sd argument,sd use_center_bool,sd text
         importx "_gtk_toggle_button_set_active" gtk_toggle_button_set_active
         call gtk_toggle_button_set_active(o_center,1)
         return frame
-    else
+	endif
         sd p_top
         set p_top argument
 
@@ -430,5 +430,4 @@ function stage_effect_orientation(sd part,sd argument,sd use_center_bool,sd text
         #bottom-right
         set p_top# 1
         return 1
-    endelse
 endfunction

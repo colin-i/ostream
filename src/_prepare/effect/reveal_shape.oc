@@ -118,7 +118,7 @@ function stage_reveal_shape_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd rowst
     sd i
     sd j
     sd value
-    if shape=(stage_reveal_shape_rectangle)
+	if shape=(stage_reveal_shape_rectangle)
         set j top
         while j!=bottom
             set i left
@@ -130,7 +130,7 @@ function stage_reveal_shape_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd rowst
             inc j
         endwhile
         return 1
-    else
+	endif
     #if shape==(stage_reveal_shape_diamond)||shape==(stage_reveal_shape_curve)
         sd half_width
         set half_width frame_width
@@ -224,14 +224,14 @@ function stage_reveal_shape_tool(sd part,sd k,sd nr,sd pixels,sd w,sd h,sd rowst
             endif
             inc j
         endwhile
-    endelse
 endfunction
 
 function stage_reveal_diamond_row(sd j,sd height)
-    if j<0
+	if j<0
         return 0
-    elseif j>=height
+	endif
+	if j>=height
         return 0
-    endelseif
+	endif
     return 1
 endfunction

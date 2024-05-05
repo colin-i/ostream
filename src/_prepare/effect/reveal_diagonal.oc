@@ -203,7 +203,7 @@ endfunction
 
 
 function stage_effect_corner(sd part,sd vbox)
-    if part=0
+	if part=0
         #frame
         import "framefield" framefield
         str corner="Corner start"
@@ -251,7 +251,7 @@ function stage_effect_corner(sd part,sd vbox)
         importx "_gtk_toggle_button_set_active" gtk_toggle_button_set_active
         call gtk_toggle_button_set_active(c_top_left,1)
         return 0
-    else
+	endif
         importx "_gtk_toggle_button_get_active" gtk_toggle_button_get_active
 
         sd bool
@@ -273,5 +273,4 @@ function stage_effect_corner(sd part,sd vbox)
         endif
         #bottom
         return (bottom_right)
-    endelse
 endfunction

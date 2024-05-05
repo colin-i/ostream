@@ -491,7 +491,7 @@ function mpeg_input_mem(sd action,ss rgb)
     data memory#1
     data distance#1
 
-    if action=(value_set)
+	if action=(value_set)
     #bool
         sd size
         import "yuv_get_all_sizes" yuv_get_all_sizes
@@ -537,7 +537,8 @@ function mpeg_input_mem(sd action,ss rgb)
         add V mem
 
         return 1
-    elseif action=(value_rgbtoyuv)
+	endif
+	if action=(value_rgbtoyuv)
         #place the cursor on one of the two images
         add mem distance
         add temp_y distance
@@ -576,10 +577,10 @@ function mpeg_input_mem(sd action,ss rgb)
 
         call mpeg_input_lumstride((value_set),rounded_width)
         call mpeg_input_cromstride((value_set),width_crom)
-    else
+	else
     #if action==(value_unset)
         call free(memory)
-    endelse
+	endelse
 endfunction
 function mpeg_input_y(sd action,sd value,sd distance)
     data y#1
@@ -707,7 +708,7 @@ function mpeg_file_mem(sd action,sd append,sd append_bits)
     data p_size^size
     sd bool
 
-    if action=(value_set)
+	if action=(value_set)
     #bool
         set size 0
         set bits 0
@@ -719,11 +720,13 @@ function mpeg_file_mem(sd action,sd append,sd append_bits)
             return 0
         endif
         return 1
-    elseif action=(value_get)
+	endif
+	if action=(value_get)
         return bits_pos
-    elseif action=(value_unset)
+	endif
+	if action=(value_unset)
         call free(mem)
-    elseif action=(value_append)
+	elseif action=(value_append)
     #bool
         import "neg" neg
 
@@ -764,7 +767,7 @@ function mpeg_file_mem(sd action,sd append,sd append_bits)
             endif
         endwhile
         return 1
-    else
+	else
     #if action==(value_filewrite)
     #bool
         if bits_pos!=0
@@ -785,7 +788,7 @@ function mpeg_file_mem(sd action,sd append,sd append_bits)
         set bits_pos 0
 
         return bool
-    endelse
+	endelse
 endfunction
 
 #bool

@@ -574,10 +574,10 @@ function capture_rect_screenshot(sd action)
     data *raw_option#1
 
     data values_rect^x
-    if action=(value_init)
+	if action=(value_init)
     #get the pointer
         return values_rect
-    else
+	endif
     #if action==(value_screenshot)
         sd temporary_flag
         setcall temporary_flag capture_temp_flag((value_get))
@@ -588,7 +588,6 @@ function capture_rect_screenshot(sd action)
         #screenshot from temp file
             call capture_read_temp_screenshot(wdt,hgt)
         endelse
-    endelse
 endfunction
 
 importx "_cairo_destroy" cairo_destroy
@@ -638,7 +637,7 @@ function capture_pixbuf(sd action,sd x,sd y,sd pix_width,sd pix_height,sd cursor
     data cairo#1
     data surface#1
 
-    if action=(value_set)
+	if action=(value_set)
     #bool
         sd bool
         #init capture mem
@@ -719,9 +718,11 @@ function capture_pixbuf(sd action,sd x,sd y,sd pix_width,sd pix_height,sd cursor
             call capture_terminal((value_set),1)
         endif
         return 1
-    elseif action=(value_get)
+	endif
+	if action=(value_get)
         return pixbuf
-    elseif action=(value_unset)
+	endif
+	if action=(value_unset)
         call capture_free_more_stuff(cairo_flag,cairo,surface,mem,pixbuf)
         sd t
         setcall t capture_terminal((value_get))
@@ -729,7 +730,7 @@ function capture_pixbuf(sd action,sd x,sd y,sd pix_width,sd pix_height,sd cursor
             call capture_alternative_free()
             call capture_terminal((value_set),0)
         endif
-    else
+	else
     #if action==(value_append)
         if cairo_flag=1
             #use cairo
@@ -747,7 +748,7 @@ function capture_pixbuf(sd action,sd x,sd y,sd pix_width,sd pix_height,sd cursor
                 call bytes_swap_reverse(mem,pix_width,pix_height)
             endif
         endif
-    endelse
+	endelse
 endfunction
 
 

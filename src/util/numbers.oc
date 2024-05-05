@@ -77,11 +77,12 @@ Function numeric(char c)
         char nine="9"
         Data false=FALSE
         Data true=TRUE
-        If c<zero
+	If c<zero
                 Return false
-        ElseIf c>nine
+	endif
+	If c>nine
                 Return false
-        EndElseIf
+	EndIf
         Return true
 EndFunction
 
@@ -140,7 +141,7 @@ Function memtoint_add(str content,data size,data outvalue,data minusbool)
         const max_int=0x80<<8<<8<<8
         const max_int_bil_2_rest=max_int-bil_2
         if multx=(bil_1)
-            if size!=0
+		if size!=0
                 #(...)x xxx xxx xxx
                 while size!=0
                     Dec content;Dec size
@@ -148,21 +149,23 @@ Function memtoint_add(str content,data size,data outvalue,data minusbool)
                         return (FALSE)
                     endif
                 endwhile
-            endif
-            if number>2
+		endif
+		if number>2
                 #3 xxx xxx xxx-9 xxx xxx xxx
                 return (FALSE)
-            elseif number=2
-                if value>(max_int_bil_2_rest)
+		endif
+		if number=2
+			if value>(max_int_bil_2_rest)
                     #2 147 483 649-2 999 999 999
                     return (FALSE)
-                elseif value=(max_int_bil_2_rest)
+			endif
+			if value=(max_int_bil_2_rest)
                     if minusbool=(FALSE)
                         #2 147 483 648 is the first positive overflow
                         return (FALSE)
                     endif
-                endelseif
-            endelseif
+			endif
+		endif
         endif
         mult multx 10
     EndWhile
@@ -202,13 +205,14 @@ endfunction
 function strtoint_positive_not_zero(ss str,sd ptr_out)
     sd bool
     setcall bool strtoint_positive(str,ptr_out)
-    if bool=0
+	if bool=0
         return 0
-    elseif ptr_out#=0
+	endif
+	if ptr_out#=0
         str notzero="Unexpected 0(zero) number"
         call texter(notzero)
         return 0
-    endelseif
+	endif
     return 1
 endfunction
 
@@ -216,13 +220,14 @@ endfunction
 function strtoint_positive_twoorgreater(ss str,sd ptr_out)
     sd bool
     setcall bool strtoint_positive(str,ptr_out)
-    if bool=0
+	if bool=0
         return 0
-    elseif ptr_out#<2
+	endif
+	if ptr_out#<2
         str errnr="A number equal or greater than 2 expected"
         call texter(errnr)
         return 0
-    endelseif
+	endif
     return 1
 endfunction
 
@@ -230,14 +235,15 @@ endfunction
 function strtoint_positive_N_or_Greater(ss str,sd ptr_out,sd n)
     sd bool
     setcall bool strtoint_positive(str,ptr_out)
-    if bool=0
+	if bool=0
         return 0
-    elseif ptr_out#<n
+	endif
+	if ptr_out#<n
         import "strdworddisp" strdworddisp
         str errnr="Expecting a number equal or greater than "
         call strdworddisp(errnr,n)
         return 0
-    endelseif
+	endif
     return 1
 endfunction
 

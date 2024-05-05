@@ -519,7 +519,7 @@ import "alloc_block" alloc_block
 function stage_read_values(sd action,sd append,sd append_size)
     data mem#1
     data size#1
-    if action=(value_set)
+	if action=(value_set)
     #bool
         setcall mem alloc_block((value_set))
         if mem=0
@@ -527,9 +527,10 @@ function stage_read_values(sd action,sd append,sd append_size)
         endif
         set size 0
         return 1
-    elseif action=(value_unset)
+	endif
+	if action=(value_unset)
         call free(mem)
-    elseif action=(value_append)
+	elseif action=(value_append)
     #bool
         sd appendresult
         setcall appendresult alloc_block((value_append),mem,size,append,append_size)
@@ -539,7 +540,7 @@ function stage_read_values(sd action,sd append,sd append_size)
         set mem appendresult
         add size append_size
         return 1
-    elseif action=(value_write)
+	elseif action=(value_write)
         sd cursor
         set cursor mem
         sd pixbuf
@@ -557,7 +558,7 @@ function stage_read_values(sd action,sd append,sd append_size)
             import "stage_new_frame_with_timelength" stage_new_frame_with_timelength
             call stage_new_frame_with_timelength(pixbuf,frames)
         endwhile
-    else
+	else
     #if action==(value_custom)
     #increment the last frame length
     #bool
@@ -570,7 +571,7 @@ function stage_read_values(sd action,sd append,sd append_size)
         sub pointer 4
         inc pointer#
         return 1
-    endelse
+	endelse
 endfunction
 
 

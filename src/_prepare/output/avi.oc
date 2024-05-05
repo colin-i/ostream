@@ -968,7 +968,7 @@ function avi_index_mem(sd action,sd file,sd offset,sd i,ss identifier,sd forward
 
     data p_size^size
 
-    if action=(value_set)
+	if action=(value_set)
     #bool
         set size 0
         setcall index_mem alloc_block((value_set))
@@ -976,9 +976,10 @@ function avi_index_mem(sd action,sd file,sd offset,sd i,ss identifier,sd forward
             return 0
         endif
         return 1
-    elseif action=(value_unset)
+	endif
+	if action=(value_unset)
         call alloc_block((value_unset),index_mem)
-    elseif action=(value_append)
+	elseif action=(value_append)
     #bool
         const avi_index_entry_size=0x10
 
@@ -1053,7 +1054,7 @@ function avi_index_mem(sd action,sd file,sd offset,sd i,ss identifier,sd forward
         endif
         add size (avi_index_entry_size)
         return 1
-    elseif action=(value_expand)
+	elseif action=(value_expand)
     #bool
         import "file_seek_cursor" file_seek_cursor
         setcall err file_seek_cursor(file,4)
@@ -1076,7 +1077,7 @@ function avi_index_mem(sd action,sd file,sd offset,sd i,ss identifier,sd forward
             return 0
         endif
         return 1
-    else
+	else
     #bool
         #value_filewrite
         setcall err file_write(index_mem,size,file)
@@ -1084,7 +1085,7 @@ function avi_index_mem(sd action,sd file,sd offset,sd i,ss identifier,sd forward
             return 0
         endif
         return 1
-    endelse
+	endelse
 endfunction
 
 function avi_write_frame(sd file)
@@ -1227,7 +1228,7 @@ function avi_read_entries(sd file,sd *file_pos,ss chunk_id,sd chunk_size)
         set is_video 1
     endif
 
-    if is_video=1
+	if is_video=1
         if chunk_size=0
         #extend previous frame length
             setcall bool stage_read_values((value_custom))
@@ -1302,7 +1303,7 @@ function avi_read_entries(sd file,sd *file_pos,ss chunk_id,sd chunk_size)
             return 0
         endif
         return 1
-    else
+	endif
     #is audio
         #01wb
         import "file_get_size_forward" file_get_size_forward
@@ -1313,7 +1314,6 @@ function avi_read_entries(sd file,sd *file_pos,ss chunk_id,sd chunk_size)
             return 0
         endif
         return 1
-    endelse
 endfunction
 
 #bool

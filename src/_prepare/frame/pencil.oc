@@ -299,15 +299,18 @@ function stage_pencil_setpixel(sd *ebox,sd event,sd *data)
     sd px_height
     setcall px_width gdk_pixbuf_get_width(pixbuf)
     setcall px_height gdk_pixbuf_get_height(pixbuf)
-    if mouse_x<0
+	if mouse_x<0
         return 0
-    elseif mouse_y<0
+	endif
+	if mouse_y<0
         return 0
-    elseif mouse_x>=px_width
+	endif
+	if mouse_x>=px_width
         return 0
-    elseif mouse_y>=px_height
+	endif
+	if mouse_y>=px_height
         return 0
-    endelseif
+	endif
     sd mouse_x_max
     set mouse_x_max mouse_x
     add mouse_x_max pixel_value

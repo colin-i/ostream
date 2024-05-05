@@ -146,13 +146,12 @@ function mcbpc_intra_tab(sd x,sd block)
 
     sd mcbpc_intra^mcbpc_intra_tab_data
     add mcbpc_intra ind
-    if block=(VLC_code)
+	if block=(VLC_code)
         return mcbpc_intra#
-    else
+	endif
         ss byte
         set byte mcbpc_intra
         return byte#
-    endelse
 endfunction
 
 function mcbpc_inter_tab(sd x,sd block)
@@ -171,13 +170,12 @@ function mcbpc_inter_tab(sd x,sd block)
 
     sd mcbpc_inter^mcbpc_inter_tab_data
     add mcbpc_inter ind
-    if block=(VLC_code)
+	if block=(VLC_code)
         return mcbpc_inter#
-    else
+	endif
         ss byte
         set byte mcbpc_inter
         return byte#
-    endelse
 endfunction
 
 function cbpy_tab(sd x,sd block)
@@ -191,13 +189,12 @@ function cbpy_tab(sd x,sd block)
 
     sd cbpy^cbpy_data
     add cbpy ind
-    if block=(VLC_code)
+	if block=(VLC_code)
         return cbpy#
-    else
+	endif
         ss byte
         set byte cbpy
         return byte#
-    endelse
 endfunction
 
 function dcy_tab(sd x,sd block)
@@ -337,13 +334,12 @@ function dcy_tab(sd x,sd block)
 
     sd dcy^dcy_tab_data
     add dcy ind
-    if block=(VLC_code)
+	if block=(VLC_code)
         return dcy#
-    else
+	endif
         ss byte
         set byte dcy
         return byte#
-    endelse
 endfunction
 
 function dcc_tab(sd x,sd block)
@@ -483,13 +479,12 @@ function dcc_tab(sd x,sd block)
 
     sd dcc^dcc_tab_data
     add dcc ind
-    if block=(VLC_code)
+	if block=(VLC_code)
         return dcc#
-    else
+	endif
         ss byte
         set byte dcc
         return byte#
-    endelse
 endfunction
 
 

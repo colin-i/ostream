@@ -628,22 +628,24 @@ function stage_sound_alloc(sd action,sd newblock,sd newblock_size)
     data p_alloc^alloc
     data size#1
 
-    if action=(stage_sound_alloc_init)
+	if action=(stage_sound_alloc_init)
     #init the memory
         set alloc 0
         set size 0
         call stage_sound_subsize((value_set),0)
         call memoryrealloc(p_alloc,size)
         return 0
-    elseif action=(stage_sound_alloc_getremainingsize)
+	endif
+	if action=(stage_sound_alloc_getremainingsize)
     #get the remaining size
         sd sz
         setcall sz stage_sound_subsize((value_get))
         subcall sz stage_sound_sizedone((value_get))
         return sz
-    elseif action=(stage_sound_alloc_getbytes)
+	endif
+	if action=(stage_sound_alloc_getbytes)
         return alloc
-    endelseif
+	endif
     if alloc=0
         return 0
     endif
