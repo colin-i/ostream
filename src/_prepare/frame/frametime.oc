@@ -85,7 +85,7 @@ endfunction
 function stage_frame_time_numbers(sd method,sd arg1,sd newvalue,sd numberoftimes)
     sd index
     set index arg1
-    if method=(stage_frame_time_init)
+	if method=(stage_frame_time_init)
         #const stage_frame_time_init=0
         data frames#1
         data size#1
@@ -93,7 +93,8 @@ function stage_frame_time_numbers(sd method,sd arg1,sd newvalue,sd numberoftimes
         set size 0
         set frames 0
         return 1
-    elseif method=(stage_frame_time_append)
+	endif
+	if method=(stage_frame_time_append)
         #const stage_frame_time_append=1
         import "memoryrealloc" memoryrealloc
         add size 4
@@ -107,14 +108,16 @@ function stage_frame_time_numbers(sd method,sd arg1,sd newvalue,sd numberoftimes
             set pointer# arg1
         endif
         return 1
-    elseif method=(stage_frame_time_free)
+	endif
+	if method=(stage_frame_time_free)
         #const stage_frame_time_free=2
         importx "_free" free
         if frames!=0
             call free(frames)
         endif
         return 1
-    elseif method=(stage_frame_time_get_at_index)
+	endif
+	if method=(stage_frame_time_get_at_index)
     #get the index from the created database
         mult index 4
         if index>=size
@@ -124,7 +127,8 @@ function stage_frame_time_numbers(sd method,sd arg1,sd newvalue,sd numberoftimes
         set value frames
         add value index
         return value#
-    elseif method=(stage_frame_time_set_frame_length)
+	endif
+	if method=(stage_frame_time_set_frame_length)
     #modify a frame length
         mult index 4
         if index>=size
@@ -135,7 +139,8 @@ function stage_frame_time_numbers(sd method,sd arg1,sd newvalue,sd numberoftimes
         add loc index
         set loc# newvalue
         return 1
-    elseif method=(stage_frame_time_insert)
+	endif
+	if method=(stage_frame_time_insert)
     #insert at index newvalue and numberoftimes
         sd newzone
         set newzone numberoftimes
@@ -172,7 +177,8 @@ function stage_frame_time_numbers(sd method,sd arg1,sd newvalue,sd numberoftimes
             endwhile
         endif
         return 1
-    elseif method=(stage_frame_time_delete_frame)
+	endif
+	if method=(stage_frame_time_delete_frame)
     #a frame was deleted
         mult index 4
         if index>=size
@@ -196,7 +202,8 @@ function stage_frame_time_numbers(sd method,sd arg1,sd newvalue,sd numberoftimes
         endwhile
         sub size 4
         return 1
-    elseif method=(stage_frame_time_sum_at_index)
+	endif
+	if method=(stage_frame_time_sum_at_index)
     #length at pos returned
         mult index 4
         if index>=size
@@ -213,7 +220,7 @@ function stage_frame_time_numbers(sd method,sd arg1,sd newvalue,sd numberoftimes
             sub index 4
         endwhile
         return length_at_pos
-    else
+	endif
     #if method==(stage_frame_time_total_sum)
     #total length returned
         sd frames_pointer
@@ -225,7 +232,6 @@ function stage_frame_time_numbers(sd method,sd arg1,sd newvalue,sd numberoftimes
             add total_length frames_pointer#
         endwhile
         return total_length
-    endelse
 endfunction
 
 
