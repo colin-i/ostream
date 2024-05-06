@@ -10,7 +10,7 @@ fi
 LD_LIBRARY_PATH=/home/bc/Desktop/out/ld/usr/lib/i386-linux-gnu make ${a} prefix=/usr OFLAGSEXTRA="function_name 1 nul_res_pref 1" linkerflags= LD=/home/bc/Desktop/out/ld/usr/bin/i686-linux-gnu-ld.bfd items_prefix=`pwd`/
 
 #for arm is the appimage, extracted, ./AppRun
-#on noble some dependencies are not anymore, to test on noble:
+#on noble gtk2 changed some dependecies and need to rebuild but i386 maximum at bionic, to test on noble:
 # sudo docker pull ubuntu:focal
 # sudo docker container create -ti ubuntu:focal
 #                      start
