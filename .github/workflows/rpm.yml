@@ -22,13 +22,13 @@ jobs:
       echo "name=${name}" >> $GITHUB_ENV
       version=`cat debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))"`
       echo "version=${version}" >> $GITHUB_ENV
+   #this is locally: throw new Error("Parameter token or opts.auth is required");
    - uses: dsaltares/fetch-gh-release-asset@master
-     #this is locally: throw new Error("Parameter token or opts.auth is required");
      with:
-      #repo: 'colin-i/test'
-      file: "${{ env.name }}_${{ env.version }}_i386.deb'
-      target: "${{ env.name }}.deb"
-      token: ${{ secrets.PAT }}
+       file: ${{ env.name }}_${{ env.version }}_i386.deb
+       target: ${{ env.name }}.deb
+       token: ${{ secrets.PAT }}
+       #repo: 'colin-i/test'
    #Runs a set of commands using the runners shell
    - name: Run a multi-line script
      run: |
