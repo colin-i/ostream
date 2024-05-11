@@ -3,8 +3,8 @@ on:
   inputs:
    ppa:
     description: "ppa sufix"
-   unpublished:
-    description: "don't wait to publish, take from build page"
+   #unpublished:
+   # description: "don't wait to publish, take from build page"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -15,40 +15,52 @@ jobs:
   # Steps represent a sequence of tasks that will be executed as part of the job
   steps:
    - uses: actions/checkout@v3
-   #Runs a set of commands using the runners shell
-   - name: Run a multi-line script
+   - name: get name version
      run: |
       #proj
       name=`cat debian/changelog | head -1 | grep -o ^[^\ ]*`
+      echo "name=${name}" >> $GITHUB_ENV
+      version=`cat debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))"`
+      echo "version=${version}" >> $GITHUB_ENV
+   - uses: dsaltares/fetch-gh-release-asset@master
+     #this is locally: throw new Error("Parameter token or opts.auth is required");
+     with:
+      #repo: 'colin-i/test'
+      file: "${{ env.name }}_${{ env.version }}_i386.deb'
+      target: "${{ env.name }}.deb"
+      token: ${{ secrets.PAT }}
+   #Runs a set of commands using the runners shell
+   - name: Run a multi-line script
+     run: |
       #get deb
-      if [ "${{ github.event.inputs.unpublished }}" = "" ]; then
-       echo published
-       dist=`cat debian/changelog | head -1 | grep -Poe "[^ ]*(?=;)"`
-       src=ppa.launchpadcontent.net/colin-i/ppa${{ github.event.inputs.ppa }}
-       wget http://${src}/ubuntu/dists/${dist}/main/binary-i386/Packages.xz
-       xz -d Packages.xz
-       debfilename=`grep "^Filename.*/${name}_" Packages | tail -1 | cut -d ' ' -f 2`
-       wget http://${src}/ubuntu/${debfilename} -O ${name}.deb
-      else
-       echo unpublished
-       version=`cat debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))"`
-       arh=`cat debian/control | grep ^Architecture | cut -d ' ' -f2`
-       if [ ! -e "lp2.py" ]; then
-        wget -q https://raw.githubusercontent.com/colin-i/test/master/lp2.py
-        #on focal is already, python3-launchpadlib is already the newest version
-        #sudo apt install python3-launchpadlib
-       fi
-       OUTPUT=$(python3 lp2.py ppa${{ github.event.inputs.ppa }} ${name} ${version} ${arh})
-       wget ${OUTPUT}/+files/${name}_${version}_${arh}.deb -O ${name}.deb
-       #f=`wget -q https://launchpad.net/~colin-i/+archive/ubuntu/ppa${{ github.event.inputs.ppa }}/+build/${{ github.event.inputs.unpublished }} -O - | grep -Poe "[^\"]*(?=\.deb\")"`
-       #wget ${f}.deb -O ${name}.deb
-      fi
+      #if [ "${{ github.event.inputs.unpublished }}" = "" ]; then
+      # echo published
+      # dist=`cat debian/changelog | head -1 | grep -Poe "[^ ]*(?=;)"`
+      # src=ppa.launchpadcontent.net/colin-i/ppa${{ github.event.inputs.ppa }}
+      # wget http://${src}/ubuntu/dists/${dist}/main/binary-i386/Packages.xz
+      # xz -d Packages.xz
+      # debfilename=`grep "^Filename.*/${name}_" Packages | tail -1 | cut -d ' ' -f 2`
+      # wget http://${src}/ubuntu/${debfilename} -O ${name}.deb
+      #else
+      # echo unpublished
+      # version=`cat debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))"`
+      # arh=`cat debian/control | grep ^Architecture | cut -d ' ' -f2`
+      # if [ ! -e "lp2.py" ]; then
+      #  wget -q https://raw.githubusercontent.com/colin-i/test/master/lp2.py
+      #  #on focal is already, python3-launchpadlib is already the newest version
+      #  #sudo apt install python3-launchpadlib
+      # fi
+      # OUTPUT=$(python3 lp2.py ppa${{ github.event.inputs.ppa }} ${name} ${version} ${arh})
+      # wget ${OUTPUT}/+files/${name}_${version}_${arh}.deb -O ${name}.deb
+      # #f=`wget -q https://launchpad.net/~colin-i/+archive/ubuntu/ppa${{ github.event.inputs.ppa }}/+build/${{ github.event.inputs.unpublished }} -O - | grep -Poe "[^\"]*(?=\.deb\")"`
+      # #wget ${f}.deb -O ${name}.deb
+      #fi
       #make rpm
       mkdir out
       cd out
       sudo apt update
       sudo apt install alien
-      sudo alien -rk ../${name}.deb
+      sudo alien -rk ../${{ env.name }}.deb
       fname=`ls`
       mv ${fname} ../${fname}
       echo "file=${fname}" >> $GITHUB_ENV
