@@ -878,7 +878,7 @@ function init_args(sd argc,sv argv)
 	const shareprefix_p^shareprefix
 	if argc<2
 		set shareprefix (NULL)
-		return (FALSE)
+		return (TRUE)
 	endif
 	add argv :
 	sd cmp
