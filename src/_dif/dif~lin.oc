@@ -819,8 +819,8 @@ function uninit_start()
 	sd er
 	setcall er home_folder(#f,(NULL))
 	if er=(noerror)
-		sd a;setcall a access(f,(F_OK))
-		if a=0
+		datax int#1;setcall int access(f,(F_OK))
+		if int=0
 			setcall er move_to_folder(f)
 		else
 			return (error)

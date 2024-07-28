@@ -116,12 +116,12 @@ endfunction
 
 #er
 function init_dir(sd f)
-	sd is
-	setcall is access(f,(F_OK))
+	datax#1 int
+	setcall int access(f,(F_OK))
 	#this looks useless check but we want mkdir to return success, then, it is ok, ignoring mkdir by others between these calls
-	if is=-1
-		setcall is mkdir(f,(flag_dmode))
-		if is!=0
+	if int=-1
+		setcall int mkdir(f,(flag_dmode))
+		if int!=0
 			return "mkdir error"
 		endif
 	endif
@@ -131,10 +131,10 @@ endfunction
 function init_sys_file(sd f,sd data,sd sz,sv perr,sv forward)
 	char buf#biggest_string+1+4+1
 	call sprintf(#buf,"%s.data",f)
-	sd is
-	setcall is access(#buf,(F_OK))
+	datax#1 int
+	setcall int access(#buf,(F_OK))
 	if forward=(NULL)
-		if is=-1
+		if int=-1
 			#open
 			const O_WRONLY=0x0001
 			sd fd
@@ -149,7 +149,7 @@ function init_sys_file(sd f,sd data,sd sz,sv perr,sv forward)
 			endif
 		endif
 	else
-		if is=0
+		if int=0
 			call forward(#buf)
 		endif
 	endelse
@@ -158,10 +158,10 @@ endfunction
 
 #d
 function uninit_folder(sv fn)
-	sd d;sd a
+	sd d;datax#1 int
 	setcall d fn()
-	setcall a access(d,(F_OK))
-	if a=0
+	setcall int access(d,(F_OK))
+	if int=0
 		return d
 	endif
 	return (NULL)
