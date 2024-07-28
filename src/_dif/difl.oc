@@ -9,9 +9,9 @@ if bool!=(FALSE)
 	import "move_to_share_core" move_to_share_core
 	ss testfile="regforkoff"
 	call move_to_share_core(#testfile)
-	sd is
-	setcall is access(testfile,(F_OK))
-	if is=-1
+	datax int#1
+	setcall int access(testfile,(F_OK))
+	if int=-1
 		call gst_init(0,(NULL))
 	else
 		#this is because fedora will wrong all plugin cache on 64 for 32
