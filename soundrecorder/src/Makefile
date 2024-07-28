@@ -23,7 +23,6 @@ all: ${wprojname}
 
 ${wprojname}: ${objname}
 	ounused ${logname}
-	@echo
 	i686-w64-mingw32-ld ${linkerflags} ${objname} -o ${wprojname} -entry record \
 		 -lmsvcrt -lkernel32 -lwinmm -luser32
 

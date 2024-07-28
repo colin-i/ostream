@@ -3,6 +3,10 @@ ifndef OCOMP
 OCOMP=o
 endif
 
+ifndef OLINK
+OLINK=ounused
+endif
+
 ifndef platform
 platform=lin
 endif
@@ -67,8 +71,7 @@ sharefolder=$(DESTDIR)${sharefolderpackage}
 dynlink=/lib/ld-linux.so.2
 all: ${lprojname}
 ${lprojname}: ${lshare} ${obs}
-	ounused ${logs}
-	@echo
+	${OLINK} ${logs}
 	export PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig/:${PKG_CONFIG_PATH}; \
 	$(LD) ${linkerflags} -melf_i386 --dynamic-linker=${dynlink} ${obs} -o ${lprojname} -lc -lm `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lgthread-2.0 -lpthread;
 ${lshare}:
@@ -81,7 +84,6 @@ wprojname=${projname}.exe
 all: ${wprojname}
 ${wprojname}: ${obs}
 	ounused ${logs}
-	@echo
 	#this is also working
 	#i686-w64-mingw32-gcc -Wl,--large-address-aware ${linkerflags} ${obs} -o ${wprojname} -Wl,--start-group \
 	#-Wl,--end-group
