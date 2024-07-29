@@ -66,7 +66,6 @@ ifeq (${platform},lin)
 all: ${projname}
 ${projname}: ${lshare} ${obs}
 	ounused ${logs}
-	@echo
 	$(CC) -nostdlib ${linkerflags} ${obs} -o ${items_prefix}${projname} `pkg-config --libs gtk+-2.0 gstreamer-pbutils-0.10 gstreamer-interfaces-0.10 gstreamer-app-0.10` -lsoup-2.4 -ljpeg -lasound -lm -lpthread -lc
 ${lshare}:
 	echo return \"${sharefolderpackage}\" > ${lshare}
@@ -76,7 +75,6 @@ else
 all: ${wprojname}
 ${wprojname}: ${obs}
 	ounused ${logs}
-	@echo
 	i686-w64-mingw32-ld --large-address-aware ${linkerflags} ${obs} -o ${wprojname} -entry _start --start-group \
 	`dpkg -L mingw-w64-i686-dev | grep '\.a' | sed 's/..$$//' | grep -o '[^\/]*$$' | sed 's/^lib/-l/' | xargs echo` \
 	--end-group -L`echo ~`/.wine/drive_c/gstreamer-sdk/0.10/x86/lib/ \
