@@ -1,5 +1,13 @@
 
-git show master:version.txt > version.txt && \
+echo "test/xver? (n)o? then git show master:verion.txt" && \
+read -n1 -t $((60*60*24)) ans && \
+if [ "${ans}" != "n" ]; then
+	echo xver && \
+	~/test/xver ./version.txt
+else
+	echo git show && \
+	git show master:version.txt > version.txt
+fi && \
 ~/test/debinit2 "${1}" && \
 ~/test/keyring && \
 ~/test/deb && \
