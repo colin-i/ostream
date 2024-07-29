@@ -158,7 +158,7 @@ endfunction
 
 #d
 function uninit_folder(sv fn)
-	sd d;datax#1 int
+	sd d;datax int#1
 	setcall d fn()
 	setcall int access(d,(F_OK))
 	if int=0
