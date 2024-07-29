@@ -131,7 +131,7 @@ endfunction
 function init_sys_file(sd f,sd data,sd sz,sv perr,sv forward)
 	char buf#biggest_string+1+4+1
 	call sprintf(#buf,"%s.data",f)
-	datax#1 int
+	datax int#1
 	setcall int access(#buf,(F_OK))
 	if forward=(NULL)
 		if int=-1
