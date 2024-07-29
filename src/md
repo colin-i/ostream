@@ -1,0 +1,8 @@
+if [ -z "${1}" ]; then
+a=all
+else
+a=${1}
+fi
+
+LD_LIBRARY_PATH=/home/bc/Desktop/out/ld/usr/lib/i386-linux-gnu make ${a} prefix=/usr OFLAGSEXTRA="function_name 1 nul_res_pref 1" linkerflags= LD=/home/bc/Desktop/out/ld/usr/bin/i686-linux-gnu-ld.bfd items_prefix=`pwd`/
+#make compile prefix=/usr && make link linkerflags= LD=... items_prefix=...

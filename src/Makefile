@@ -151,5 +151,3 @@ uninstall:
 .PHONY: all install clean distclean uninstall test
 
 .NOTPARALLEL:
-
-#make compile prefix=/usr && make link linkerflags= LD=/home/bc/Desktop/out/LD-.glibc2.27-x86_64.AppImage items_prefix=/home/bc/v/ovideo-1/src/
