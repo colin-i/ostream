@@ -1,7 +1,7 @@
 
 #1 msg  optional 2 dist
 
-tars="focal jammy mantic" #more at src/md
+tars="focal jammy" #more at src/md
 
 last=$(curl https://api.github.com/repos/colin-i/$(cat debian/control | grep "^Homepage" | grep -o [^/]*$)/releases/latest -s | jq .tag_name -r) && \
 ~/test/xver ./version.txt && \
