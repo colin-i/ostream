@@ -15,18 +15,18 @@ use_version_txt=1 ~/test/debinit2 "${1}" ${2} && \
 ~/test/debuild2 x && \
 git restore debian/files && \
 #git restore? to do at debinit push something
-~/test/updeb && \
 #
 ~/test/ai && \
 ~/test/rpm && \
 ~/test/del && \
 ~/test/rel && \
+~/test/updeb && \
 ./wmake && \
+~/test/up && \
 ~/test/pub appimage rpm rel && \
 ~/test/rerpm && \
 ~/test/upapp && \
 ~/test/uprpm && \
-~/test/up && \
 ~/test/pub upapp && \
 ~/test/pub2 && \
 ~/test/publp2 && \
