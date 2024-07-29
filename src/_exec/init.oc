@@ -116,7 +116,7 @@ endfunction
 
 #er
 function init_dir(sd f)
-	datax#1 int
+	datax int#1
 	setcall int access(f,(F_OK))
 	#this looks useless check but we want mkdir to return success, then, it is ok, ignoring mkdir by others between these calls
 	if int=-1
