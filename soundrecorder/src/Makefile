@@ -40,5 +40,5 @@ distclean: clean
 test:
 	echo "Nothing"
 
-.PHONY: all clean distclean test
-
+.PHONY: all compile ounused link clean distclean test
+.NOTPARALLEL:
