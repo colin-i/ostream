@@ -158,6 +158,6 @@ uninstall:
 	-rm -f $(DESTDIR)$(prefix)/bin/${projname}
 	-rm -r ${sharefolder}
 
-.PHONY: all install clean distclean uninstall test
+.PHONY: all install install-proc linkapp clean distclean uninstall test
 
 .NOTPARALLEL:
