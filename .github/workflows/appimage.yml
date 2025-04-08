@@ -252,6 +252,7 @@ jobs:
        #GIO_EXTRA_MODULES="\${rootbase}/usr/lib/i386-linux-gnu/gio/modules"
        #GST_PLUGIN_SCANNER="\${rootbase}/usr/lib/i386-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner"
        #\${rootbase}/lib:\${rootbase}/lib/i386-linux-gnu
+       #and this is not loading something now: \${rootbase}/usr/lib
        cat > ovideo <<EOF
       #!/bin/sh
       cd "\$(dirname "\$0")"
@@ -260,7 +261,7 @@ jobs:
       hom=\${HOME}/ovideo
       mkdir -p "\${hom}"
       rootbase=\$(pwd)
-      paths="\${rootbase}/usr/lib:\${rootbase}/usr/lib/i386-linux-gnu"
+      paths="\${rootbase}/usr/lib/i386-linux-gnu"
       LD_LIBRARY_PATH="\${paths}" \
        GST_PLUGIN_SYSTEM_PATH="\${rootbase}/usr/lib/gstreamer-1.0" \
        \${loader} ./usr/bin/ostream "\${rootbase}"
