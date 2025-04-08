@@ -22,7 +22,7 @@ jobs:
  # This workflow contains a single job called "build"
  build:
   # The type of runner that the job will run on
-  runs-on: ubuntu-20.04
+  runs-on: ubuntu-24.04
   # Steps represent a sequence of tasks that will be executed as part of the job
   steps:
    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -92,7 +92,7 @@ jobs:
       }
       downdeb () {
        if [ ! -e "${4}.deb" ]; then
-        downdebok ${1} ${2} ${3} ${4} ${5} focal
+        downdebok ${1} ${2} ${3} ${4} ${5} noble${6}
        fi
       }
       if [ ! -e "ovideo.deb" ]; then
@@ -100,19 +100,25 @@ jobs:
         echo published
         downdebok "ppa.launchpadcontent.net/colin-i/ppa${{ github.event.inputs.ppa }}" i386 1 ovideo main bionic
        else
-        echo unpublished
-        #
-        if [ ! -e "lp2.py" ]; then
-         wget -q https://raw.githubusercontent.com/colin-i/test/master/lp2.py
+        if [ "${{ github.event.inputs.unpublished }}" = "x" ]; then
+         echo from github releases
+         durl=$(curl https://api.github.com/repos/colin-i/$(cat debian/control | grep "^Homepage" | grep -o [^/]*$)/releases/latest -s | grep browser_download_url | grep .deb | grep -Po "(?<=: \")[^\"]*")
+        else
+         echo unpublished
          #
-         #is already at focal
-         sudo apt install python3-launchpadlib
+         if [ ! -e "lp2.py" ]; then
+          wget -q https://raw.githubusercontent.com/colin-i/test/master/lp2.py
+          #
+          #is already at focal
+          #sudo apt install python3-launchpadlib
+         fi
+         name=`cat debian/changelog | head -1 | grep -o ^[^\ ]*`
+         version=`cat debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))"`
+         arh=i386
+         OUTPUT=$(python3 lp2.py ppa${{ github.event.inputs.ppa }} ${name} ${version} ${arh})
+         durl="${OUTPUT}/+files/${name}_${version}_${arh}.deb"
         fi
-        name=`cat debian/changelog | head -1 | grep -o ^[^\ ]*`
-        version=`cat debian/changelog | head -1 | grep -Poe "[^\(]*(?=\))"`
-        arh=i386
-        OUTPUT=$(python3 lp2.py ppa${{ github.event.inputs.ppa }} ${name} ${version} ${arh})
-        wget ${OUTPUT}/+files/${name}_${version}_${arh}.deb -O ${name}.deb
+        wget ${durl} -O ${name}.deb
         #
         #f=`wget -q https://launchpad.net/~colin-i/+archive/ubuntu/ppa${{ github.event.inputs.ppa }}/+build/${{ github.event.inputs.unpublished }} -O - | grep -o -e "[^\"]*\.deb\""`
         #wget ${f:0:-1} -O ovideo.deb
@@ -120,8 +126,13 @@ jobs:
        fi
       fi
       #get the list with apt install --download-only and -o ... like in test/update/up , and then Get:1 ... jammy/main , ... , Get:2 ... jammy/universe
+      #or faster? like in tester.yml? the additional list(new+upgrades), but more risky
+      #sudo dpkg --add-architecture i386
+      #sudo apt update
+
+      #fonts-droid-fallback fonts-noto-mono fonts-urw-base35 glib-networking:i386 libaa1:i386 libasound2:i386 libasyncns0:i386 libatk1.0-0:i386 libavc1394-0:i386 libbrotli1:i386 libbsd0:i386 libbz2-1.0:i386 libcaca0:i386 libcairo-gobject2:i386 libcairo2:i386 libcdparanoia0:i386 libcrypt1:i386 libdatrie1:i386 libdb5.3:i386 libdecor-0-0:i386 libdecor-0-plugin-1-cairo:i386 libdeflate0:i386 libdjvulibre21:i386 libdv4:i386 libedit2:i386 libegl1:i386 libffi8:i386 libfftw3-double3:i386 libfontconfig1:i386 libgcrypt20:i386 libgdk-pixbuf-xlib-2.0-0:i386 libgl1:i386 libglvnd0:i386 libglx0:i386 libgmp10:i386 libgpg-error-l10n libgpg-error0:i386 libgpm2:i386 libgraphene-1.0-0:i386 libgraphite2-3:i386 libgssdp-1.2-0:i386 libgudev-1.0-0:i386 libgupnp-1.2-1:i386 libhogweed6:i386 libicu70:i386 libidn2-0:i386 libiec61883-0:i386 libijs-0.35 libjack-jackd2-0:i386 libjbig2dec0 libjpeg-turbo8:i386 libjpeg8:i386 libkeyutils1:i386 liblcms2-2:i386 libltdl7:i386 liblz4-1:i386 liblzma5:i386 libmd0:i386 libmp3lame0:i386 libnettle8:i386 libnsl2:i386 libnss-nis:i386 libnss-nisplus:i386 libnuma1:i386 libogg0:i386 libopus0:i386 libp11-kit0:i386 libpciaccess0:i386 libpng16-16:i386 libproxy1v5:i386 libpsl5:i386 libraw1394-11:i386 libreadline8:i386 librtmp1:i386 libsamplerate0:i386 libsbc1:i386 libselinux1:i386 libsensors5:i386 libshout3:i386 libslang2:i386 libsnappy1v5:i386 libsoxr0:i386 libspeex1:i386 libtag1v5-vanilla:i386 libtag1v5:i386 libthai0:i386 libtheora0:i386 libtwolame0:i386 libunistring2:i386 libv4l-0:i386 libv4lconvert0:i386 libvdpau1:i386 libvisual-0.4-0:i386 libvorbis0a:i386 libvorbisenc2:i386 libvorbisfile3:i386 libwavpack1:i386 libwebrtc-audio-processing1:i386 libwmflite-0.2-7:i386 libxau6:i386 libxcb-dri2-0:i386 libxcb-dri3-0:i386 libxcb-glx0:i386 libxcb-present0:i386 libxcb-randr0:i386 libxcb-render0:i386 libxcb-shm0:i386 libxcb-sync1:i386 libxcb-xfixes0:i386 libxcb1:i386 libxcomposite1:i386 libxcursor1:i386 libxdamage1:i386 libxdmcp6:i386 libxext6:i386 libxfixes3:i386 libxi6:i386 libxinerama1:i386 libxkbcommon0:i386 libxrandr2:i386 libxrender1:i386 libxshmfence1:i386 libxss1:i386 libxv1:i386 libxxf86vm1:i386 libzstd1:i386 poppler-data vdpau-driver-all:i386
       array=( \
-       gcc-10-base:i386 glib-networking:i386 gstreamer1.0-plugins-base:i386 gstreamer1.0-plugins-good:i386 gstreamer1.0-x:i386 libaa1:i386 libasn1-8-heimdal:i386 libasound2:i386 libasyncns0:i386 libatk1.0-0:i386 libatomic1:i386 libavahi-client3:i386 libavahi-common-data:i386 libavahi-common3:i386 libavc1394-0:i386 libblkid1:i386 libbrotli1:i386 libbsd0:i386 libbz2-1.0:i386 libc6:i386 libcaca0:i386 libcairo-gobject2:i386 libcairo2:i386 libcap2:i386 libcdparanoia0:i386 libcom-err2:i386 libcrypt1:i386 libcups2:i386 libcurl3-gnutls:i386 libdatrie1:i386 libdb5.3:i386 libdbus-1-3:i386 libdrm-amdgpu1:i386 libdrm-intel1:i386 libdrm-nouveau2:i386 libdrm-radeon1:i386 libdrm2:i386 libdv4:i386 libedit2:i386 libelf1:i386 libexpat1:i386 libffi7:i386 libfftw3-double3:i386 libflac8:i386 libfontconfig1:i386 libfreetype6:i386 libfribidi0:i386 libgail-common:i386 libgail18:i386 libgcc-s1:i386 libgcrypt20:i386 libgdk-pixbuf2.0-0:i386 libglib2.0-0:i386 libgmp10:i386 libgnutls30:i386 libgomp1:i386 libgpg-error-l10n libgpg-error0:i386 libgpm2:i386 libgraphite2-3:i386 libgssapi-krb5-2:i386 libgssapi3-heimdal:i386 libgssdp-1.2-0:i386 libgstreamer-plugins-base1.0-0:i386 libgstreamer-plugins-good1.0-0:i386 libgstreamer1.0-0:i386 libgtk2.0-0:i386 libgudev-1.0-0:i386 libgupnp-1.2-0:i386 libharfbuzz0b:i386 libhcrypto4-heimdal:i386 libheimbase1-heimdal:i386 libheimntlm0-heimdal:i386 libhogweed5:i386 libhx509-5-heimdal:i386 libicu66:i386 libidn2-0:i386 libiec61883-0:i386 libjack-jackd2-0:i386 libjbig0:i386 libjpeg-turbo8:i386 libjpeg8:i386 libk5crypto3:i386 libkeyutils1:i386 libkrb5-26-heimdal:i386 libkrb5-3:i386 libkrb5support0:i386 liblcms2-2:i386 libldap-2.4-2:i386 libllvm9:i386 liblz4-1:i386 liblzma5:i386 libmount1:i386 libmp3lame0:i386 libmpg123-0:i386 libncurses6:i386 libncursesw6:i386 libnettle7:i386 libnghttp2-14:i386 libnuma1:i386 libogg0:i386 libopenjp2-7:i386 libopus0:i386 liborc-0.4-0:i386 libp11-kit0:i386 libpango-1.0-0:i386 libpangocairo-1.0-0:i386 libpangoft2-1.0-0:i386 libpciaccess0:i386 libpcre2-8-0:i386 libpcre3:i386 libpixman-1-0:i386 libpng16-16:i386 libproxy1v5:i386 libpsl5:i386 libpulse0:i386 libraw1394-11:i386 libreadline8:i386 libroken18-heimdal:i386 librsvg2-2:i386 librsvg2-common:i386 librtmp1:i386 libsamplerate0:i386 libsasl2-2:i386 libsasl2-modules:i386 libsasl2-modules-db:i386 libsbc1:i386 libselinux1:i386 libshout3:i386 libslang2:i386 libsnappy1v5:i386 libsndfile1:i386 libsoup2.4-1:i386 libsoxr0:i386 libspeex1:i386 libsqlite3-0:i386 libssh-4:i386 libssl1.1:i386 libstdc++6:i386 libsystemd0:i386 libtag1v5:i386 libtag1v5-vanilla:i386 libtasn1-6:i386 libthai0:i386 libtheora0:i386 libtiff5:i386 libtinfo6:i386 libtwolame0:i386 libudev1:i386 libunistring2:i386 libusb-1.0-0:i386 libuuid1:i386 libv4l-0:i386 libv4lconvert0:i386 libvdpau1:i386 libvisual-0.4-0:i386 libvorbis0a:i386 libvorbisenc2:i386 libvorbisfile3:i386 libvpx6:i386 libvulkan1:i386 libwavpack1:i386 libwayland-client0:i386 libwayland-cursor0:i386 libwayland-egl1:i386 libwebp6:i386 libwebpmux3:i386 libwebrtc-audio-processing1:i386 libwind0-heimdal:i386 libwrap0:i386 libx11-6:i386 libx11-xcb1:i386 libxau6:i386 libxcb-dri2-0:i386 libxcb-dri3-0:i386 libxcb-present0:i386 libxcb-randr0:i386 libxcb-render0:i386 libxcb-shm0:i386 libxcb-sync1:i386 libxcb-xfixes0:i386 libxcb1:i386 libxcomposite1:i386 libxcursor1:i386 libxdamage1:i386 libxdmcp6:i386 libxext6:i386 libxfixes3:i386 libxi6:i386 libxinerama1:i386 libxkbcommon0:i386 libxml2:i386 libxrandr2:i386 libxrender1:i386 libxshmfence1:i386 libxss1:i386 libxv1:i386 libxxf86vm1:i386 libzstd1:i386 mesa-vdpau-drivers:i386 mesa-vulkan-drivers:i386 ocl-icd-libopencl1:i386 vdpau-driver-all:i386 zlib1g:i386 \
+        at-spi2-core fonts-droid-fallback fonts-noto-mono fonts-urw-base35 glib-networking glib-networking-common glib-networking-services glib-networking:i386 libaa1:i386 libasyncns0:i386 libatk-bridge2.0-0t64:i386 libatspi2.0-0t64:i386 libavahi-client3:i386 libavahi-common-data:i386 libavahi-common3:i386 libavc1394-0:i386 libbrotli1:i386 libcaca0:i386 libcairo-gobject2:i386 libcdparanoia0:i386 libcolord2:i386 libdatrie1:i386 libdb5.3t64:i386 libde265-0:i386 libdecor-0-0:i386 libdecor-0-plugin-1-gtk:i386 libdjvulibre-text libdjvulibre21:i386 libduktape207:i386 libdv4t64:i386 libedit2:i386 libegl1:i386 libepoxy0:i386 libffi8:i386 libfftw3-double3:i386 libflac12t64:i386 libfribidi0:i386 libgcrypt20:i386 libgl1:i386 libglvnd0:i386 libglx0:i386 libgpm2:i386 libgraphene-1.0-0:i386 libgraphite2-3:i386 libgssdp-1.6-0:i386 libgudev-1.0-0:i386 libgupnp-1.6-0:i386 libidn12 libiec61883-0:i386 libijs-0.35 libjack-jackd2-0:i386 libjbig0:i386 libjbig2dec0 libjpeg-turbo8:i386 libjson-glib-1.0-0:i386 libkeyutils1:i386 liblc3-1:i386 liblcms2-2:i386 libldacbt-enc2:i386 libltdl7:i386 libmp3lame0:i386 libncurses6:i386 libncursesw6:i386 libnspr4:i386 libnss3:i386 libnuma1:i386 libogg0:i386 libopus0:i386 libpaper-utils libpaper1 libpciaccess0:i386 libpixman-1-0:i386 libpng16-16t64:i386 libproxy1v5 libproxy1v5:i386 libpsl5t64:i386 libraw1394-11:i386 libraw23t64:i386 libreadline8t64:i386 librsvg2-2 librsvg2-2:i386 librsvg2-common librsvg2-common:i386 librtmp1:i386 libsamplerate0:i386 libsbc1:i386 libsdl2-2.0-0:i386 libsensors5:i386 libsharpyuv0:i386 libshout3:i386 libslang2:i386 libssh-4:i386 libtag1v5-vanilla:i386 libtag1v5:i386 libthai0:i386 libtheora0:i386 libtinfo6:i386 libtwolame0:i386 libusb-1.0-0:i386 libv4l-0t64:i386 libv4lconvert0t64:i386 libvisual-0.4-0:i386 libvorbis0a:i386 libvorbisenc2:i386 libvorbisfile3:i386 libvulkan1:i386 libwavpack1:i386 libwayland-client0:i386 libwayland-cursor0:i386 libwayland-egl1:i386 libwayland-server0:i386 libwebp7:i386 libwebpdemux2:i386 libwebpmux3:i386 libwebrtc-audio-processing1:i386 libwmflite-0.2-7:i386 libx11-6:i386 libx11-xcb1:i386 libxau6:i386 libxcb-dri2-0:i386 libxcb-dri3-0:i386 libxcb-glx0:i386 libxcb-present0:i386 libxcb-randr0:i386 libxcb-render0:i386 libxcb-shm0:i386 libxcb-sync1:i386 libxcb-xfixes0:i386 libxcb1:i386 libxcomposite1:i386 libxcursor1:i386 libxdamage1:i386 libxdmcp6:i386 libxext6:i386 libxfixes3:i386 libxi6:i386 libxinerama1:i386 libxkbcommon0:i386 libxrandr2:i386 libxrender1:i386 libxshmfence1:i386 libxss1:i386 libxtst6:i386 libxv1:i386 libxxf86vm1:i386 poppler-data session-migration xfonts-encodings xfonts-utils \
       )
       for var in "${array[@]}"
       do
@@ -134,8 +145,10 @@ jobs:
         downdeb "ro.archive.ubuntu.com" amd64 1 ${var} main
        fi
       done
+
+      #gsfonts i965-va-driver:i386 libass9:i386 libbs2b0:i386 libchromaprint1:i386 libcodec2-1.0:i386 libdav1d5:i386 libdc1394-25:i386 libdca0:i386 libdvdnav4:i386 libdvdread8:i386 libfaad2:i386 libflite1:i386 libfluidsynth3:i386 libgdk-pixbuf2.0-0:i386 libgme0:i386 libgsm1:i386 libgupnp-igd-1.0-4:i386 libheif1:i386 libigdgmm12:i386 libilmbase25:i386 libinstpatch-1.0-2:i386 libjxr-tools libjxr0 libkate1:i386 libldacbt-enc2:i386 liblilv-0-0:i386 liblqr-1-0:i386 libmjpegutils-2.1-0:i386 libmodplug1:i386 libmpcdec6:i386 libmpeg2encpp-2.1-0:i386 libmplex2-2.1-0:i386 libnice10:i386 libopenal-data libopenal1:i386 libopenexr25:i386 libopenmpt0:i386 libserd-0-0:i386 libshine3:i386 libsndio7.0:i386 libsord-0-0:i386 libsoundtouch1:i386 libspandsp2:i386 libsratom-0-0:i386 libsrt1.4-gnutls:i386 libsrtp2-1:i386 libva-drm2:i386 libva-x11-2:i386 libva2:i386 libvo-aacenc0:i386 libvo-amrwbenc0:i386 libwildmidi2:i386 libx264-163:i386 libx265-199:i386 libxvidcore4:i386 libzbar0:i386 libzvbi-common libzvbi0:i386 ocl-icd-libopencl1:i386 timgm6mb-soundfont va-driver-all:i386
       array=( \
-       gstreamer1.0-plugins-bad:i386 i965-va-driver:i386 intel-media-va-driver:i386 libaom0:i386 libass9:i386 libavcodec58:i386 libavutil56:i386 libbs2b0:i386 libchromaprint1:i386 libcodec2-0.9:i386 libdc1394-22:i386 libdca0:i386 libde265-0:i386 libdvdnav4:i386 libdvdread7:i386 libfaad2:i386 libflite1:i386 libfluidsynth2:i386 libgme0:i386 libgsm1:i386 libgstreamer-plugins-bad1.0-0:i386 libgupnp-igd-1.0-4:i386 libigdgmm11:i386 libilmbase24:i386 libinstpatch-1.0-2:i386 libkate1:i386 liblilv-0-0:i386 libmjpegutils-2.1-0:i386 libmms0:i386 libmodplug1:i386 libmpcdec6:i386 libmpeg2encpp-2.1-0:i386 libmplex2-2.1-0:i386 libnice10:i386 libofa0:i386 libopenal-data libopenal1:i386 libopenexr24:i386 libopenmpt0:i386 libsdl2-2.0-0:i386 libserd-0-0:i386 libshine3:i386 libsndio7.0:i386 libsord-0-0:i386 libsoundtouch1:i386 libspandsp2:i386 libsratom-0-0:i386 libsrt1:i386 libsrtp2-1:i386 libswresample3:i386 libusrsctp1:i386 libva-drm2:i386 libva-x11-2:i386 libva2:i386 libvo-aacenc0:i386 libvo-amrwbenc0:i386 libwildmidi2:i386 libx264-155:i386 libx265-179:i386 libxvidcore4:i386 libzbar0:i386 libzvbi-common libzvbi0:i386 mesa-va-drivers:i386 timgm6mb-soundfont va-driver-all:i386 \
+        i965-va-driver:i386 intel-media-va-driver:i386 libass9:i386 libavtp0:i386 libbs2b0:i386 libchromaprint1:i386 libdc1394-25:i386 libdca0:i386 libdvdnav4:i386 libdvdread8t64:i386 libfaad2:i386 libflite1:i386 libfluidsynth3:i386 libgme0:i386 libgsm1:i386 libgstreamer-plugins-bad1.0-0:i386 libgupnp-igd-1.6-0:i386 libigdgmm12:i386 libimath-3-1-29t64:i386 libinstpatch-1.0-2:i386 libjxr-tools libjxr0t64 liblilv-0-0:i386 liblqr-1-0:i386 libmagickcore-6.q16-7-extra:i386 libmagickcore-6.q16-7t64:i386 libmagickwand-6.q16-7t64:i386 libmjpegutils-2.1-0t64:i386 libmodplug1:i386 libmpcdec6:i386 libmpeg2encpp-2.1-0t64:i386 libmplex2-2.1-0t64:i386 libnice10:i386 libopenal-data libopenal1:i386 libopenexr-3-1-30:i386 libopenh264-7:i386 libopenmpt0t64:i386 libserd-0-0:i386 libsndio7.0:i386 libsord-0-0:i386 libsoundtouch1:i386 libspandsp2t64:i386 libsratom-0-0:i386 libsrt1.5-gnutls:i386 libsrtp2-1:i386 libsvtav1enc1d1:i386 libunibreak5:i386 libva-drm2:i386 libva2:i386 libvo-aacenc0:i386 libvo-amrwbenc0:i386 libwildmidi2:i386 libx265-199:i386 libzbar0t64:i386 libzix-0-0:i386 libzvbi-common libzvbi0t64:i386 timgm6mb-soundfont va-driver-all:i386 \
       )
       for var in "${array[@]}"
       do
@@ -147,6 +160,35 @@ jobs:
          downdeb "ro.archive.ubuntu.com" amd64 2 ${var} universe
         fi
       done
+
+      #gcc-12-base:i386 ghostscript gstreamer1.0-gl:i386 gstreamer1.0-plugins-base:i386 gstreamer1.0-plugins-good:i386 gstreamer1.0-x:i386 krb5-locales libapparmor1:i386 libatomic1:i386 libavahi-client3:i386 libavahi-common-data:i386 libavahi-common3:i386 libblkid1:i386 libc6:i386 libcap2:i386 libcom-err2:i386 libcups2:i386 libcurl3-gnutls:i386 libdbus-1-3:i386 libdrm-amdgpu1:i386 libdrm-intel1:i386 libdrm-nouveau2:i386 libdrm-radeon1:i386 libdrm2:i386 libdw1:i386 libegl-mesa0:i386 libelf1:i386 libexpat1 libexpat1-dev libexpat1:i386 libflac8:i386 libfreetype6:i386 libfribidi0:i386 libgail-common libgail-common:i386 libgail18 libgail18:i386 libgbm1:i386 libgcc-s1:i386 libgdk-pixbuf-2.0-0:i386 libgl1-mesa-dri:i386 libglapi-mesa:i386 libglib2.0-0:i386 libglx-mesa0:i386 libgnutls30:i386 libgomp1:i386 libgs9 libgs9-common libgssapi-krb5-2:i386 libgstreamer-gl1.0-0:i386 libgstreamer-plugins-base1.0-0:i386 libgstreamer-plugins-good1.0-0:i386 libgstreamer1.0-0:i386 libgtk2.0-0 libgtk2.0-0:i386 libgtk2.0-bin libgtk2.0-common libharfbuzz0b:i386 libidn12 libjbig0:i386 libk5crypto3:i386 libkrb5-3:i386 libkrb5support0:i386 libldap-2.5-0:i386 libllvm15:i386 libmount1:i386 libmpg123-0:i386 libncurses6:i386 libncursesw6:i386 libnghttp2-14:i386 libnspr4:i386 libnss3:i386 libopenjp2-7:i386 liborc-0.4-0:i386 libpango-1.0-0:i386 libpangocairo-1.0-0:i386 libpangoft2-1.0-0:i386 libpcre2-8-0:i386 libpcre3:i386 libpixman-1-0:i386 libpulse0:i386 librsvg2-2:i386 librsvg2-common:i386 libsasl2-2:i386 libsasl2-modules-db:i386 libsasl2-modules:i386 libsdl2-2.0-0:i386 libsndfile1:i386 libsoup2.4-1:i386 libsqlite3-0:i386 libssh-4:i386 libssl3:i386 libstdc++6:i386 libsystemd0:i386 libtasn1-6:i386 libtiff5:i386 libtinfo6:i386 libtirpc3:i386 libudev1:i386 libunwind8:i386 libusb-1.0-0:i386 libuuid1:i386 libvpx7:i386 libwayland-client0:i386 libwayland-cursor0:i386 libwayland-egl1:i386 libwayland-server0:i386 libwebp7:i386 libwebpdemux2:i386 libwebpmux3:i386 libx11-6:i386 libx11-xcb1:i386 libxml2:i386 mesa-vdpau-drivers:i386 zlib1g:i386
+      array=( \
+        gcc-14-base:i386 ghostscript gsettings-desktop-schemas gstreamer1.0-gl:i386 gstreamer1.0-plugins-base:i386 gstreamer1.0-x:i386 krb5-locales libaom3:i386 libapparmor1:i386 libatomic1:i386 libblkid1:i386 libbsd0:i386 libbz2-1.0:i386 libcap2 libcap2-bin libcap2:i386 libcom-err2:i386 libcups2t64:i386 libcurl3t64-gnutls:i386 libdbus-1-3:i386 libdeflate0:i386 libdrm-amdgpu1:i386 libdrm-intel1:i386 libdrm-radeon1:i386 libdrm2:i386 libdw1t64 libdw1t64:i386 libegl-mesa0:i386 libelf1t64 libelf1t64:i386 libexpat1 libexpat1-dev libexpat1:i386 libgail-common libgail-common:i386 libgail18t64 libgail18t64:i386 libgbm1:i386 libgcc-s1:i386 libgdk-pixbuf2.0-bin libgl1-mesa-dri:i386 libglapi-mesa:i386 libglx-mesa0:i386 libgmp10:i386 libgnutls30t64:i386 libgomp1:i386 libgpg-error0:i386 libgs-common libgs10 libgs10-common libgssapi-krb5-2 libgssapi-krb5-2:i386 libgstreamer-gl1.0-0:i386 libgstreamer-plugins-good1.0-0:i386 libgtk-3-0t64:i386 libgtk-3-bin libgtk2.0-0t64 libgtk2.0-bin libgtk2.0-common libheif-plugin-aomdec:i386 libheif-plugin-aomenc:i386 libheif-plugin-libde265:i386 libheif1:i386 libhogweed6t64:i386 libicu74:i386 libidn2-0:i386 libk5crypto3 libk5crypto3:i386 libkrb5-3 libkrb5-3:i386 libkrb5support0 libkrb5support0:i386 libldap2:i386 libllvm19:i386 liblz4-1:i386 liblzma5 liblzma5:i386 libmd0:i386 libmount1:i386 libmpg123-0t64:i386 libnettle8t64:i386 libnghttp2-14:i386 libopenjp2-7:i386 liborc-0.4-0t64:i386 libp11-kit0:i386 libpam-cap libpcre2-8-0:i386 libpipewire-0.3-0t64:i386 libpipewire-0.3-common libpulse0:i386 libsasl2-2:i386 libsasl2-modules-db:i386 libsasl2-modules:i386 libselinux1:i386 libsndfile1:i386 libsoup-3.0-0:i386 libsoup-3.0-common libsoup2.4-common libspa-0.2-modules:i386 libspeex1:i386 libsqlite3-0:i386 libssl3t64:i386 libstdc++6:i386 libsystemd0:i386 libtasn1-6:i386 libtiff6:i386 libudev1:i386 libunistring5:i386 libunwind8:i386 libvpx9:i386 libxml2:i386 libzstd1:i386 mesa-libgallium:i386 mesa-vulkan-drivers:i386 xz-utils zlib1g:i386 \
+      )
+      for var in "${array[@]}"
+      do
+        if [ -n "$(echo -n ${var} | grep -o : )" ]; then
+         var=`echo -n ${var} | grep -o -e "^[^:]*"`
+         downdeb "ro.archive.ubuntu.com" i386 4 ${var} main -updates
+        else
+         downdeb "ro.archive.ubuntu.com" amd64 3 ${var} main -updates
+        fi
+      done
+
+      #gstreamer1.0-plugins-bad:i386 intel-media-va-driver:i386 libaom3:i386 libavcodec58:i386 libavutil56:i386 libde265-0:i386 libgstreamer-plugins-bad1.0-0:i386 libmagickcore-6.q16-6-extra:i386 libmagickcore-6.q16-6:i386 libmagickwand-6.q16-6:i386 libswresample3:i386 mesa-va-drivers:i386
+      array=( \
+        mesa-va-drivers:i386 \
+      )
+      for var in "${array[@]}"
+      do
+        if [ -n "$(echo -n ${var} | grep -o : )" ]; then
+         var=`echo -n ${var} | grep -o -e "^[^:]*"`
+         downdeb "ro.archive.ubuntu.com" i386 5 ${var} universe -updates
+        else
+         downdeb "ro.archive.ubuntu.com" amd64 4 ${var} universe -updates
+        fi
+      done
+
       #echo ${not_are}
       #exit
       cd AppDir
@@ -156,7 +198,7 @@ jobs:
         kitpart
        fi
        archfile2=${file2}${arch_ai}
-       urlpart=${urlpart:0:`echo ${urlpart} | grep -ob '[^/]*$' | cut -d ':' -f 1`}${archfile2}
+       urlpart=${urlpart:0:$(echo ${urlpart} | grep -ob '[^/]*$' | cut -d ':' -f 1)}${archfile2}
        wget -c https://github.com/${urlpart}
        chmod a+x ${archfile2}
        mv ${archfile2} ${file2}
@@ -180,15 +222,14 @@ jobs:
        echo ln
        #this is not ok: only when running the appimage file: when testing with GST_DEBUG=5: GST_PLUGIN_SYSTEM_PATH will miss /i386-linux-gnu
        ln -s i386-linux-gnu/gstreamer-1.0 gstreamer-1.0
-       #this also at runtime, missing
-       ln -s i386-linux-gnu/pulseaudio/libpulsecommon-13.99.so libpulsecommon-13.99.so
+       #this also at runtime, missing at focal was, not from jammy
+       #ln -s i386-linux-gnu/pulseaudio/libpulsecommon-13.99.so libpulsecommon-13.99.so
       fi
       cd ../../
-      #
       if [ ! -e "usr/bin/ostream" ]; then
        echo launcher
-       gpixd=/usr/lib/i386-linux-gnu/gdk-pixbuf-2.0/
-       gpixf=${gpixd}`ls -1 .${gpixd} | head -1`/loaders
+       #gpixd=/usr/lib/i386-linux-gnu/gdk-pixbuf-2.0/
+       #gpixf=${gpixd}`ls -1 .${gpixd} | head -1`/loaders
        cd usr/bin
        mv ovideo ostream
        #live64 is not having /lib/ld-linux.so.2. without librarypath will wrong libc bionic to jammy
@@ -198,23 +239,29 @@ jobs:
        #if there are problems, try this: GTK_MODULE_DIR
        #to not see GST_PLUGIN_SCANNER warning, extract, run once, it is writing elsewhere not in appimg folders, run second time and is ok
        #if is same with or without GST_PLUGIN_SCANNER then why set? GST_DEBUG=6 will state "Trying GST_PLUGIN_SCANNER env var" so the fault is from there
+       #
+       #since noble a lot of them are already in the system or are generic amd64, and libc:i386 is here with ld-linux
+       #and gio modules are at x86_64-linux-gnu but it is required to set GIO_EXTRA_MODULES at these .so files when runing i386? cat /proc/pid/maps for details
+       #it is libgiognutls.so for i386 but in the system, and the deb does not asks for that so let's say is already there, maybe look in a live cd sometime
+       #same for gdk pixbuf
+       #no more gst plugin scanner here
+       #only GST_PLUGIN_SYSTEM_PATH will map there libgstplayback.so
+       #gpmf=\${hom}/loaders.cache
+       #LD_LIBRARY_PATH="\${paths}" GDK_PIXBUF_MODULEDIR="\${rootbase}${gpixf}" ${loader} .${gpixd}gdk-pixbuf-query-loaders > "\${gpmf}"
+       #GDK_PIXBUF_MODULE_FILE="\${gpmf}"
+       #GIO_EXTRA_MODULES="\${rootbase}/usr/lib/i386-linux-gnu/gio/modules"
+       #GST_PLUGIN_SCANNER="\${rootbase}/usr/lib/i386-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner"
+       #\${rootbase}/lib:\${rootbase}/lib/i386-linux-gnu
        cat > ovideo <<EOF
       #!/bin/sh
       cd "\$(dirname "\$0")"
       cd ../../
-      loader="./lib/ld-linux.so.2"
+      loader="/lib/ld-linux.so.2"
       hom=\${HOME}/ovideo
       mkdir -p "\${hom}"
-      gpmf=\${hom}/loaders.cache
       rootbase=\$(pwd)
-      paths="\${rootbase}/lib:\${rootbase}/usr/lib:\${rootbase}/usr/lib/i386-linux-gnu:\${rootbase}/lib/i386-linux-gnu"
+      paths="\${rootbase}/usr/lib:\${rootbase}/usr/lib/i386-linux-gnu"
       LD_LIBRARY_PATH="\${paths}" \
-       GDK_PIXBUF_MODULEDIR="\${rootbase}${gpixf}" \
-       \${loader} .${gpixd}gdk-pixbuf-query-loaders > "\${gpmf}"
-      LD_LIBRARY_PATH="\${paths}" \
-       GDK_PIXBUF_MODULE_FILE="\${gpmf}" \
-       GIO_EXTRA_MODULES="\${rootbase}/usr/lib/i386-linux-gnu/gio/modules" \
-       GST_PLUGIN_SCANNER="\${rootbase}/usr/lib/i386-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner" \
        GST_PLUGIN_SYSTEM_PATH="\${rootbase}/usr/lib/gstreamer-1.0" \
        \${loader} ./usr/bin/ostream "\${rootbase}"
       EOF

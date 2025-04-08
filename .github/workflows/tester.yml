@@ -1,0 +1,21 @@
+on:
+ workflow_dispatch:
+  inputs:
+   packs:
+    description: "packages"
+
+jobs:
+ aptest:
+  runs-on: ubuntu-24.04
+  steps:
+   - name: Run a multi-line script
+     run: |
+      sudo dpkg --add-architecture i386
+      if [ "${{ github.event.inputs.packs }}" = "" ]; then
+        sudo add-apt-repository ppa:colin-i/ppa -y
+        sudo apt install ovideo
+        #then test2.yml or grep additional packages
+      else
+        sudo apt update
+        sudo apt install ${{ github.event.inputs.packs }}
+      fi
