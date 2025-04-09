@@ -10,6 +10,7 @@ jobs:
   steps:
    - name: Run a multi-line script
      run: |
+      dpkg --print-foreign-architectures
       sudo dpkg --add-architecture i386
       if [ "${{ github.event.inputs.packs }}" = "" ]; then
         sudo add-apt-repository ppa:colin-i/ppa -y
