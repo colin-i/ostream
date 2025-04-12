@@ -1,7 +1,8 @@
 # O Video
 
 ## Install
-On Ubuntu from PPA.
+On Ubuntu, <i>.deb</i> file from [releases](https://github.com/colin-i/ostream/releases).\
+Or from PPA.
 ```sh
 sudo add-apt-repository ppa:colin-i/ppa
 ```
