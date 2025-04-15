@@ -11,6 +11,7 @@ use_version_txt=1 ~/test/debinit2 "${1}" ${2} && \
 #sudo gh act -r -j debuild workflow_dispatch -W .github/workflows/debuild.yml -P ubuntu-18.04=ubuntu:bionic  #ubuntu:lucid is the first one
 ~/test/deb && \
 ~/test/publp && \
+~/test/rpm && \
 #
 ~/test/debuild2 x && \
 git restore debian/files && \
@@ -20,12 +21,11 @@ git restore debian/files && \
 ~/test/rel && \
 ~/test/updeb && \
 ~/test/ai && \
-~/test/rpm && \
 ./wmake && \
 ~/test/up && \
 ~/test/pub appimage rpm rel && \
-~/test/rerpm && \
 ~/test/upapp && \
+~/test/rerpm && \
 ~/test/uprpm && \
 ~/test/pub upapp && \
 ~/test/pub2 && \
