@@ -18,7 +18,7 @@ On Fedora, <i>.rpm</i> file from [releases](https://github.com/colin-i/ostream/r
 Missing libjpeg.so.8? https://download.copr.fedorainfracloud.org/results/aflyhorse/libjpeg/fedora-36-i386/ \
 Unacceptable TLS certificate? `bionic release glib-networking:i386 libgiognutls.so` can do it with environment GIO_EXTRA_MODULES variable for the `dirname` part.
 ```sh
-yum install ovideo-*.*.rpm
+dnf install ovideo-*.*.rpm
 ```
 \
 On Windows, <i>.windows.zip</i> file from [releases](https://github.com/colin-i/ostream/releases).\
