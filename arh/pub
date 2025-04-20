@@ -22,11 +22,11 @@ git restore debian/files && \
 ~/test/updeb && \
 ~/test/ai && \
 ./wmake && \
-~/test/up && \
 ~/test/pub appimage rpm rel && \
 ~/test/upapp && \
 ~/test/rerpm && \
 ~/test/uprpm && \
+~/test/upgen ovideo.zip && \
 ~/test/pub upapp && \
 ~/test/pub2 && \
 ~/test/publp2 && \
