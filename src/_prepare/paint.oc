@@ -4,7 +4,7 @@
 
 format elfobj
 
-include "../_include/include.h"
+include "../_include/include.oh"
 
 function stage_redraw()
     import "drawwidget" drawwidget

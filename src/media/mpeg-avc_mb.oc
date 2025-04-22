@@ -2,7 +2,7 @@
 
 format elfobj
 
-include "../_include/include.h"
+include "../_include/include.oh"
 
 const I_PRED_16x16_DC=2
 #const I_PRED_CHROMA_DC=0

@@ -2,7 +2,7 @@
 
 format elfobj
 
-include "../_include/include.h"
+include "../_include/include.oh"
 
 const JPEG_LIB_VERSION=80
 #const JCS_RGB=2

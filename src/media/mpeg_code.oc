@@ -5,7 +5,7 @@
 
 format elfobj
 
-include "../_include/include.h"
+include "../_include/include.oh"
 
 const MODE_INTRA=3
 

@@ -14,7 +14,7 @@ importx "_gst_object_unref" gst_object_unref
 
 import "strstrdisp" strstrdisp
 
-include "../_include/include.h"
+include "../_include/include.oh"
 
 #v/e
 function on_discover(data *discoverer,data info,data gerror,data passdata)

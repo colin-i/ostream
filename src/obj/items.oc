@@ -4,7 +4,7 @@ format elfobj
 
 importx "_g_object_unref" g_object_unref
 
-include "../_include/include.h"
+include "../_include/include.oh"
 
 
 import "packstart" packstart
@@ -747,7 +747,7 @@ endfunction
 
 
 #forward a pixbuf
-include "../_include/difl.h" "../_include/difw.h"
+include "../_include/difl.oh" "../_include/difw.oh"
 import "gerrtoerr" gerrtoerr
 import "getptrgerr" getptrgerr
 #function pixbuf from file

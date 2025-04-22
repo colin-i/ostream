@@ -4,7 +4,7 @@ format elfobj
 
 #MPEG-4 encoder
 
-include "../_include/include.h"
+include "../_include/include.oh"
 
 import "shl" shl
 import "shr" shr

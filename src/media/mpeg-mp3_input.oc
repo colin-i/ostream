@@ -2,7 +2,7 @@
 
 format elfobj
 
-include "../_include/include.h"
+include "../_include/include.oh"
 
 import "stage_sound_alloc_getremainingsize" stage_sound_alloc_getremainingsize
 import "stage_sound_sizedone" stage_sound_sizedone

@@ -1,0 +1,20 @@
+
+
+include "./files/commons.oh"
+include "./files/olang.oh"
+
+include "./files/gtk.oh"
+include "./files/gdk.oh"
+include "./files/gobject.oh"
+
+include "./files/gst.oh"
+
+include "./files/net.oh"
+
+include "./files/ascii.oh"
+
+include "./files/jpeg.oh"
+
+include "./files/mpeg.oh"
+
+include "./lin.oh" "./win.oh"

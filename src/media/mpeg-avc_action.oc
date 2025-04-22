@@ -3,7 +3,7 @@
 
 format elfobj
 
-include "../_include/include.h"
+include "../_include/include.oh"
 
 import "array_get_int" array_get_int
 import "get_lower" get_lower

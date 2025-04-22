@@ -1,7 +1,7 @@
 
 format elfobj
 
-include "../_include/include.h"
+include "../_include/include.oh"
 
 import "avc_output" avc_output
 import "avc_output_pos" avc_output_pos

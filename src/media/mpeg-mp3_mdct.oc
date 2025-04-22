@@ -2,7 +2,7 @@
 
 format elfobj
 
-include "../_include/include.h"
+include "../_include/include.oh"
 
 const cos_l_units=18*36
 const cos_l_size=cos_l_units*DWORD

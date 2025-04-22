@@ -2,7 +2,7 @@
 
 format elfobj
 
-include "../../_include/include.h"
+include "../../_include/include.oh"
 
 const stage_sound_alloc_init=0
 const stage_sound_alloc_free=1

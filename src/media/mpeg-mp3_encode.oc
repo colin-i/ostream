@@ -3,7 +3,7 @@
 
 format elfobj
 
-include "../_include/include.h"
+include "../_include/include.oh"
 
 import "mp3_output_size" mp3_output_size
 import "mp3_output_pos" mp3_output_pos

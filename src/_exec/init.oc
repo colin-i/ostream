@@ -1,7 +1,7 @@
 
 format elfobj
 
-include "../_include/include.h" #files/olang.h
+include "../_include/include.oh" #files/olang.oh
 
 importx "_strlen" strlen
 importx "_access" access

@@ -19,7 +19,7 @@ import "mainwidget" mainwidget
 import "drawfield" drawfield
 import "streamuri" streamuri
 
-include "../_include/include.h"
+include "../_include/include.oh"
 
 
 ##########images

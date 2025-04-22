@@ -4,7 +4,7 @@
 
 format elfobj
 
-include "../_include/include.h"
+include "../_include/include.oh"
 
 importx "_soup_session_sync_new" soup_session_sync_new
 importx "_soup_message_new" soup_message_new

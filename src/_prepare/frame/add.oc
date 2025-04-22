@@ -2,7 +2,7 @@
 
 format elfobj
 
-include "../../_include/include.h"
+include "../../_include/include.oh"
 
 import "filechooserfield_forward" filechooserfield_forward
 import "pixbuf_from_file" pixbuf_from_file

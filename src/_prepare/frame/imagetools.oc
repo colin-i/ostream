@@ -2,7 +2,7 @@
 
 format elfobj
 
-include "../../_include/include.h"
+include "../../_include/include.oh"
 
 import "stage_frame_dialog" stage_frame_dialog
 

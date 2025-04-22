@@ -1,0 +1,15 @@
+
+grep -r "\.h\"" -n > 1
+IFS=$'\n' a=( `cat 1` )
+i=0
+for v in ${a[@]}; do
+	IFS=':' read -a b <<< "$v"
+	sed -i "${b[1]}s/\.h\"/.oh\"/g" ${b[0]}
+	i=$((i+1))
+done
+
+grep -r "\.oh\"" -n
+echo $i
+grep -r "\.oh\"" -n | wc -l
+
+rm 1

@@ -6,7 +6,7 @@ format elfobj
 #float and double add,sub and other operations
 #we use a trick by placing the cpu asm with HEX language command
 
-include "../_include/include.h"
+include "../_include/include.oh"
 
 import "getoneax" getoneax
 

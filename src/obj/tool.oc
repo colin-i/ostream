@@ -2,7 +2,7 @@
 
 format elfobj
 
-include "../_include/include.h"
+include "../_include/include.oh"
 
 #color(base) to a widget
 #importx "_gtk_widget_modify_base" gtk_widget_modify

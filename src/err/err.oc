@@ -6,7 +6,7 @@ importx "_g_error_free" g_error_free
 import "texter" texter
 import "geterrno" geterrno
 
-include "../_include/include.h"
+include "../_include/include.oh"
 
 #get pointer
 function getptrgerr()

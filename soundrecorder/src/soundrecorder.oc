@@ -2,8 +2,8 @@
 
 format elfobj
 
-include "ascii.h"
-include "common.h"
+include "ascii.oh"
+include "common.oh"
 
 include "util.oc"
 include "values.oc"

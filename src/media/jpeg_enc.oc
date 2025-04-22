@@ -2,7 +2,7 @@
 
 format elfobj
 
-include "../_include/include.h"
+include "../_include/include.oh"
 
 import "file_write" file_write
 import "pixbuf_get_wh" pixbuf_get_wh
