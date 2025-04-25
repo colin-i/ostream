@@ -75,7 +75,7 @@ if [ "$2" != "clean" ]; then
 		cd ..
 		zip -r ovideo.zip ovideo && \
 		rm -r ./ovideo && \
-	unzip -l ovideo.zip
+		unzip -l ovideo.zip
 	fi
 fi
 
