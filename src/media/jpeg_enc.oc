@@ -185,14 +185,16 @@ function write_jpeg_blocks(sd pixbuf)
         add j 8
     endwhile
 
-    #Write End of Image Marker
-    char EOI_data={0xFF,0xD9}
-    str EOI^EOI_data
-    setcall bool jpeg_file_mem_add(EOI,2)
-    if bool!=1
-        return 0
-    endif
-    return 1
+	#write if last byte is not full
+	set bool jpeg_write_last() # corrected with albmac/JPEGVisualRepairTool, there is another byte diff, example ballhit/env1(dbl2png,kolourpaint to bmp), but identify -verbose is ok
+	if bool=1
+		#Write End of Image Marker
+		char EOI_data={0xFF,0xD9}
+		vstr EOI^EOI_data
+		setcall bool jpeg_file_mem_add(EOI,2)
+		return bool
+	end
+	return 0
 endfunction
 
 
@@ -1713,61 +1715,78 @@ function jpeg_bytepos(sd action,sd value)
 endfunction
 
 function jpeg_write_data(sd pos,sd data)
-    #words style from char
-    char m_data={1,   0,         2,   0,         4,    0,          8,    0}
-    char      *={16,  0,         32,  0,         64,   0,          128,  0}
-    char      *={256, 256/0x100, 512, 512/0x100, 1024, 1024/0x100, 2048, 2048/0x100}
-    char      *={4096,4096/0x100,8192,8192/0x100,16384,16384/0x100,32768,32768/0x100}
-    str mask^m_data
+	#words style from char
+	char m_data={1,   0,         2,   0,         4,    0,          8,    0}
+	char      *={16,  0,         32,  0,         64,   0,          128,  0}
+	char      *={256, 256/0x100, 512, 512/0x100, 1024, 1024/0x100, 2048, 2048/0x100}
+	char      *={4096,4096/0x100,8192,8192/0x100,16384,16384/0x100,32768,32768/0x100}
+	str mask^m_data
 
-    dec pos
+	dec pos
 
-    sd bytenew
-    sd bytepos
-    sd pbyte^bytenew
-    setcall bytenew jpeg_bytenew((value_get))
-    setcall bytepos jpeg_bytepos((value_get))
+	sd bytenew
+	sd bytepos
+	setcall bytenew jpeg_bytenew((value_get))
+	setcall bytepos jpeg_bytepos((value_get))
 
-    while pos>=0
-        sd mask_value
-        setcall mask_value array_get_word(mask,pos)
-        and mask_value data
-        if mask_value!=0
-            orcall bytenew array_get_word(mask,bytepos)
-        endif
-        dec pos
-        dec bytepos
-        #write file data
-        if bytepos<0
-            sd bool
-            setcall bool jpeg_file_mem_add(pbyte,1)
-            if bool!=1
-                return 0
-            endif
-            if bytenew=0xff
-                str null=""
-                setcall bool jpeg_file_mem_add(null,1)
-                if bool!=1
-                    return 0
-                endif
-            endif
+	while pos>=0
+		sd mask_value
+		setcall mask_value array_get_word(mask,pos)
+		and mask_value data
+		if mask_value!=0
+			orcall bytenew array_get_word(mask,bytepos)
+		endif
+		dec pos
+		dec bytepos
+		#write file data
+		if bytepos<0
+		sd bool
+		set bool jpeg_write_byte(#bytenew)
+		if bool!=1
+			return 0
+		endif
+		set bytenew (bytenew_start)
+		set bytepos (bytepos_start)
+	endif
+	endwhile
+	#store the bytenew and bytepos for next round
+	call jpeg_bytenew((value_set),bytenew)
+	call jpeg_bytepos((value_set),bytepos)
 
-            set bytenew (bytenew_start)
-            set bytepos (bytepos_start)
-        endif
-    endwhile
-    #store the bytenew and bytepos for next round
-    call jpeg_bytenew((value_set),bytenew)
-    call jpeg_bytepos((value_set),bytepos)
-
-    return 1
+	return 1
 endfunction
-
-
-
-
-
-
+function jpeg_write_byte(ss p)
+	sd bool
+	setcall bool jpeg_file_mem_add(p,1)
+	if bool=1
+		if p#=0xff
+			vstr null=""
+			setcall bool jpeg_file_mem_add(null,1)
+			return bool
+		endif
+		return 1
+	endif
+	return 0
+end
+function jpeg_write_last()
+	sd bytepos
+	setcall bytepos jpeg_bytepos((value_get))
+	if bytepos!=(bytepos_start)
+		char fast={2,4,8,16,32,64,128}
+		ss _fast^fast
+		charx f#1
+		add _fast bytepos
+		set f _fast#
+		sd bytenew
+		setcall bytenew jpeg_bytenew((value_get))
+		mult bytenew f
+		sub f 1
+		or bytenew f
+		sd bool;set bool jpeg_write_byte(#bytenew)
+		return bool
+	end
+	return 1
+end
 
 
 
