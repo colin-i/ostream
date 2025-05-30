@@ -48,28 +48,29 @@ import "av_dialog_stop" av_dialog_stop
 
 
 
-#importx "_fread" fread
-#importx "_fwrite" fwrite
-#function extragere(ss location)
-#	data extragere_off1#1
-#	const extr_1^extragere_off1
-#	data extragere_off2#1
-#	const extr_2^extragere_off2
-#	sd file
-#	call openfile(#file,location,"rb")
-#	sd mp3_file
-#	char out#256
-#	call sprintf(#out,"%s.mp3",location)
-#	call openfile(#mp3_file,#out,"wb")
-#	sd mp3_sz;set mp3_sz extragere_off2;sub mp3_sz extragere_off1
-#	call file_seek_set(file,extragere_off1)
-#	sd mp3Mem;setcall mp3Mem memalloc(mp3_sz)
-#	Call fread(mp3Mem,1,mp3_sz,file)
-#	Call fwrite(mp3Mem,1,mp3_sz,mp3_file)
-#	call fclose(mp3_file)
-#	call fclose(file)
-#endfunction
-
+#!
+importx "_fread" fread
+importx "_fwrite" fwrite
+function extragere(ss location)
+	data extragere_off1#1
+	const extr_1^extragere_off1
+	data extragere_off2#1
+	const extr_2^extragere_off2
+	sd file
+	call openfile(#file,location,"rb")
+	sd mp3_file
+	char out#256
+	call sprintf(#out,"%s.mp3",location)
+	call openfile(#mp3_file,#out,"wb")
+	sd mp3_sz;set mp3_sz extragere_off2;sub mp3_sz extragere_off1
+	call file_seek_set(file,extragere_off1)
+	sd mp3Mem;setcall mp3Mem memalloc(mp3_sz)
+	Call fread(mp3Mem,1,mp3_sz,file)
+	Call fwrite(mp3Mem,1,mp3_sz,mp3_file)
+	call fclose(mp3_file)
+	call fclose(file)
+endfunction
+!
 
 
 

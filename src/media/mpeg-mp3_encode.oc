@@ -9,8 +9,9 @@ import "mp3_output_size" mp3_output_size
 import "mp3_output_pos" mp3_output_pos
 
 #define         MPG_MD_STEREO           0
+#define         MPG_MD_JOINT_STEREO     1
 const MPG_MD_DUAL_CHANNEL=2
-#define         MPG_MD_MONO             3
+const MPG_MD_MONO=3
 
 const MPG_MD_LR_LR=0
 #define         MPG_MD_LR_I              1
@@ -183,8 +184,10 @@ function mp3_encode_frame()
 endfunction
 
 function mp3_bitrate()
-    data bitrate=128
-    return bitrate
+	if (mp3_channels)=2
+		return 128
+	end
+	return 64
 endfunction
 
 import "l3_enc" l3_enc
@@ -253,7 +256,11 @@ function mp3_header()
     #extension
     call mp3_bs_write(0,1)
     #mode
-    call mp3_bs_write((MPG_MD_DUAL_CHANNEL),2)
+	if (mp3_channels)=2
+		call mp3_bs_write((MPG_MD_DUAL_CHANNEL),2)
+	else
+		call mp3_bs_write((MPG_MD_MONO),2)
+	end
     #mode_ext
     call mp3_bs_write((MPG_MD_LR_LR),2)
     #copyright
@@ -271,8 +278,11 @@ function mp3_frameSI()
     #main_data_begin
     call mp3_bs_write(0,9)
     #private_bits
-    #if config->wave.channels == 2
-    call mp3_bs_write(0,3)
+	if (mp3_channels)=2
+		call mp3_bs_write(0,3)
+	else
+		call mp3_bs_write(0,5)
+	end
     #scalefactor select information
     sd i=0
     while i<(mp3_channels)
