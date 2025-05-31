@@ -7,12 +7,12 @@ include "../../_include/include.oh"
 
 function stage_file_options_got_file(sd mem,sd *size)
     #values and initial default set
-    data fps#1
+    data fps=10
     data ptr_fps^fps
     const ptr_fps^fps
     set fps 2
 
-    data output#1
+    data output=9
     data ptr_output^output
     const ptr_output^output
     set output 0
@@ -51,11 +51,11 @@ function stage_file_options_fname()
 endfunction
 
 function stage_file_options_init()
+    import "file_get_content_forward" file_get_content_forward
+
     #stage data
     ss stagedata
     setcall stagedata stage_file_options_fname()
-
-    import "file_get_content_forward" file_get_content_forward
     data f^stage_file_options_got_file
     call file_get_content_forward(stagedata,f)
 
@@ -124,7 +124,7 @@ function stage_file_options_output()
     return ptr_output#
 endfunction
 function stage_file_options_info_message(sd action,sd value)
-    data flag#1
+    data flag=1
     if action=(value_set)
         set flag value
     else
