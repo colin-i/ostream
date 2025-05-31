@@ -48,41 +48,73 @@ import "av_dialog_stop" av_dialog_stop
 
 
 
-#!
 importx "_fread" fread
 importx "_fwrite" fwrite
-function extragere(ss location)
-	data extragere_off1#1
-	const extr_1^extragere_off1
-	data extragere_off2#1
-	const extr_2^extragere_off2
-	sd file
-	call openfile(#file,location,"rb")
-	sd mp3_file
-	char out#256
-	call sprintf(#out,"%s.mp3",location)
-	call openfile(#mp3_file,#out,"wb")
-	sd mp3_sz;set mp3_sz extragere_off2;sub mp3_sz extragere_off1
-	call file_seek_set(file,extragere_off1)
-	sd mp3Mem;setcall mp3Mem memalloc(mp3_sz)
-	Call fread(mp3Mem,1,mp3_sz,file)
-	Call fwrite(mp3Mem,1,mp3_sz,mp3_file)
-	call fclose(mp3_file)
-	call fclose(file)
-endfunction
-!
+importx "_strlen" strlen
+import "getwritemode" getwritemode
+import "getreadmode" getreadmode
+import "texter_inline" texter_inline
+import "texter_inline_end" texter_inline_end
+function mp3_file(sd bool,sv extra_off1,sv mp3_sz)
+#location is saved with const
+#reopen, the mode is getwritemode for mp4 file. call before mp4 is closed to not release resources to not recheck too many calls
+	vstrx src#1
+	const extr_0^src
 
+	ss dest;set dest src
+	add dest strlen(src)
+	dec dest
+	if bool=(FALSE)
+		sd err
+		sd file
+		ss r;set r getreadmode()
+		set err openfile(#file,src,r) #after this the resources are claimed at least to what the opened file reached
+		#linux, for example, can rename the resources to .nfs000000000068516d00000006 if the file information header is deleted
+		if err=(noerror)
+			charx aux#1;set aux dest#
+			set dest# 0x33   #mp4->mp3 , hacky way
+
+			sub mp3_sz extra_off1
+			sd mp3Mem;setcall mp3Mem memalloc(mp3_sz)
+			if mp3Mem!=(NULL)
+				sd mp3__file
+				ss w;set w getwritemode()
+				set err openfile(#mp3__file,src,w)
+				if err=(noerror)
+					call file_seek_set(file,extra_off1)
+					Call fread(mp3Mem,1,mp3_sz,file)
+					Call fwrite(mp3Mem,1,mp3_sz,mp3__file)
+					call fclose(mp3__file)
+				end
+				call free(mp3Mem)
+			end
+			call fclose(file)
+
+			set dest# aux
+		end
+	else
+		set dest# 0x33   #mp4->mp3 , hacky way
+		call texter_inline(" and ")
+		call texter_inline_end(src)
+	end
+end
+function mp3_file_bool()
+	char b=FALSE
+	return b
+end
 
 
 function mp4_write()
-    call mp4_write_expand_set((mp4_write))
-    ss location
-    import "stage_get_output_container" stage_get_output_container
-    setcall location stage_get_output_container()
-    call av_dialog_run(mp4_dialog,location)
-
-#call extragere(location)
-
+	call mp4_write_expand_set((mp4_write))
+	ss location
+	import "stage_get_output_container" stage_get_output_container
+	setcall location stage_get_output_container()
+	sd b;set b mp3_file_bool()
+	if b=(TRUE)
+		value off0%%extr_0
+		set off0# location
+	end
+	call av_dialog_run(mp4_dialog,location)
 endfunction
 #
 function mp4_filewrite(sd file)
@@ -104,10 +136,10 @@ function mp4_container(sd file,sd pixbuf)
         return 0
     endif
     setcall bool mp3_init()
-    if bool=1
-        call mp4_file(file,pixbuf)
-        call mp3_free()
-    endif
+	if bool=1
+		call mp4_file(file,pixbuf)
+		call mp3_free()
+	endif
     call avc_free()
 endfunction
 
@@ -158,9 +190,9 @@ function mp4_file(sd file,sd pixbuf)
     endif
     #
     setcall bool mp4_start(file)
-    if bool=(TRUE)
-        call mp4_info_set(1)
-    endif
+	if bool=(TRUE)
+		call mp4_info_set(1)
+	endif
 endfunction
 #bool
 function mp4_start(sd file)
@@ -1265,9 +1297,15 @@ import "file_seekSet_setDwRev_goEnd" file_seekSet_setDwRev_goEnd
 
 #bool
 function mp4_mdat(sd file)
-
-#data off1%extr_1
-#call file_tell(file,off1)
+	sd err
+	sd b;set b mp3_file_bool()
+	if b=(TRUE)
+		sv off1
+		set err file_tell(file,#off1)
+		if err!=(noerror)
+			return 0
+		end
+	end
 
     sd bool
     setcall bool mp4_mdat_sound(file)
@@ -1280,7 +1318,6 @@ function mp4_mdat(sd file)
     setcall ch_off mp4_chunksOffset((value_get))
     sd file_pos
     sd ptr_file_pos^file_pos
-    sd err
     setcall err file_tell(file,ptr_file_pos)
     if err!=(noerror)
         return 0
@@ -1290,8 +1327,10 @@ function mp4_mdat(sd file)
         return (FALSE)
     endif
 
-#data off2%extr_2
-#set off2# file_pos
+	sd bl;set bl mp3_file_bool()
+	if bl=(TRUE)
+		call mp3_file((FALSE),off1,file_pos)
+	end
 
     #
     sd all_size_of_sample
@@ -2397,12 +2436,18 @@ function mp4_dialog(ss filename)
         endif
     endelse
 
-    sd info
-    setcall info mp4_info_get()
-    if info=(TRUE)
-        import "save_inform_saved" save_inform_saved
-        call save_inform_saved(filename)
-    endif
+	sd info
+	setcall info mp4_info_get()
+	if info=(TRUE)
+		import "save_inform_saved" save_inform_saved
+		call save_inform_saved(filename)
+		if procedure=(mp4_write)
+			sd b;set b mp3_file_bool()
+			if b=(TRUE)
+				call mp3_file((TRUE))
+			end
+		end
+	endif
 
     call av_dialog_close()
 endfunction

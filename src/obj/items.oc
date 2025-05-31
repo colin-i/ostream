@@ -206,8 +206,21 @@ function texter(ss text)
 	call gtk_entry_set_text(info#,text)
 	call printer(text)
 endfunction
+importx "_gtk_entry_append_text" gtk_entry_append_text
+importx "_printf" printf
+function texter_inline(ss text)
+	sd info#1
+	setcall info get_current_texter_pointer()
+	call gtk_entry_append_text(info#,text)
+	call printf(text)
+endfunction
+function texter_inline_end(ss text)
+	sd info#1
+	setcall info get_current_texter_pointer()
+	call gtk_entry_append_text(info#,text)
+	call printer(text)
+endfunction
 function printer(ss text)
-    importx "_printf" printf
     call printf(text)
     char nl={0xa,0}
     str newline^nl
