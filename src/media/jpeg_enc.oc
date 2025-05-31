@@ -1868,7 +1868,7 @@ endfunction
 
 #quality
 function jpeg_quality(sd action,sd value)
-    data quality#1
+    data quality=800
     if action=(value_set)
         set quality value
     else

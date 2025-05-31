@@ -2,7 +2,8 @@
 format elfobj
 
 
-#MPEG-4 encoder
+#MPEG-4 Advanced Simple Profile encoder
+#this was, comparing by constants like XVID_VOL_INTERLACING or XVID_VOP_HQACPRED, xvidcore, https://labs.xvid.com/project/
 
 include "../_include/include.h"
 
@@ -1471,7 +1472,7 @@ function mpeg_options(sd mem,sd *size)
 endfunction
 
 function mpeg_single_tolerance(sd action,sd value)
-    data single_tolerance#1
+    data single_tolerance=3
     if action=(value_set)
         set single_tolerance value
     else
@@ -1479,7 +1480,7 @@ function mpeg_single_tolerance(sd action,sd value)
     endelse
 endfunction
 function mpeg_group_tolerance(sd action,sd value)
-    data group_tolerance#1
+    data group_tolerance=3
     if action=(value_set)
         set group_tolerance value
     else

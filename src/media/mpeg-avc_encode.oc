@@ -4,6 +4,9 @@ format elfobj
 
 include "../_include/include.h"
 
+#MPEG-4 Advanced Video Coding
+#this was, comparing by constants like X264_TYPE_AUTO or NAL_SLICE_IDR, x264 http://www.videolan.org/x264.html
+
 const NAL_SLICE=1
 const NAL_SLICE_IDR=5
 const NAL_SEI=6
@@ -116,7 +119,7 @@ function avc_ini_headers()
     #importx "_sprintf" sprintf
     #char version_data#256
     #str version^version_data
-    #str format="x264 - core %d%s - H.264/MPEG-4 AVC codec - Copyleft 2005 - http://www.videolan.org/x264.html"
+    #str format="x264 - core %d%s - H.264/MPEG-4 AVC codec - Copyleft 2005"
     #sd X264_BUILD=34
     #str X264_VERSION=""
     #call sprintf(version,format,X264_BUILD,X264_VERSION)

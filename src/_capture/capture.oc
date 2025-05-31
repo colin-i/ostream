@@ -413,24 +413,25 @@ endfunction
 import "file_write" file_write
 
 function capture_left_string()
-    char c#dword_null
-    return #c
+	char c={0,0,0,0,0,0,0,0,0,0, 0} #dword_null
+#             1,2,3,4,5,6,7,8,9,10,11
+	return #c
 endfunction
 function capture_top_string()
-    char c#dword_null
-    return #c
+	char c={0,0,0,0,0,0,0,0,0,0, 0}
+	return #c
 endfunction
 function capture_width_string()
-    char c#dword_null
-    return #c
+	char c={0,0,0,0,0,0,0,0,0,0, 0}
+	return #c
 endfunction
 function capture_height_string()
-    char c#dword_null
-    return #c
+	char c={0,0,0,0,0,0,0,0,0,0, 0}
+	return #c
 endfunction
 function capture_size_string()
-    char c#dword_null
-    return #c
+	char c={0,0,0,0,0,0,0,0,0,0, 0}
+	return #c
 endfunction
 import "file_write_string" file_write_string
 function capture_settings_set_write(sd capture_fl)
@@ -569,9 +570,9 @@ function capture_rect_screenshot(sd action)
     data y#1
     data wdt#1
     data hgt#1
-    data cursor_option#1
-    data *temp_option#1
-    data *raw_option#1
+    data cursor_option=1
+    data *temp_option=1
+    data *raw_option=1
 
     data values_rect^x
 	if action=(value_init)

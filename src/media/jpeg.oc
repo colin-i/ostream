@@ -4,6 +4,8 @@ format elfobj
 
 include "../_include/include.h"
 
+#maybe from here: https://www.codeproject.com/Articles/83225/A-Simple-JPEG-Encoder-in-C-
+
 const JPEG_LIB_VERSION=80
 #const JCS_RGB=2
 

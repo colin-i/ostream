@@ -87,7 +87,7 @@ function update_path()
     return update_fname
 endfunction
 function update_mem()
-    data mem#1
+    data mem=1
     return #mem
 endfunction
 import "openfile" openfile
