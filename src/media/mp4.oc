@@ -102,7 +102,9 @@ function mp3_file_bool()
 	char b=FALSE
 	return b
 end
-
+function mp3_file_bool_set(sd value)
+	set mp3_file_bool.b value
+end
 
 function mp4_write()
 	call mp4_write_expand_set((mp4_write))

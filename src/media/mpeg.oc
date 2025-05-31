@@ -1452,23 +1452,26 @@ endfunction
 
 ##########options
 function mpeg_options(sd mem,sd *size)
-    sd value
-    sd p_value^value
-    sd mem_sz^mem
-    import "get_mem_int_advance" get_mem_int_advance
-    sd err
-
-    setcall err get_mem_int_advance(p_value,mem_sz)
-    if err!=(noerror)
-        return 0
-    endif
-    call mpeg_single_tolerance((value_set),value)
-
-    setcall err get_mem_int_advance(p_value,mem_sz)
-    if err!=(noerror)
-        return 0
-    endif
-    call mpeg_group_tolerance((value_set),value)
+	sd value
+	sd p_value^value
+	sd mem_sz^mem
+	import "get_mem_int_advance" get_mem_int_advance
+	sd err
+	setcall err get_mem_int_advance(p_value,mem_sz)
+	if err=(noerror)
+		call mpeg_single_tolerance((value_set),value)
+		setcall err get_mem_int_advance(p_value,mem_sz)
+		if err=(noerror)
+			call mpeg_group_tolerance((value_set),value)
+			setcall err get_mem_int_advance(p_value,mem_sz)
+			if err=(noerror)
+				import "mp3_file_bool_set" mp3_file_bool_set
+				call mp3_file_bool_set(value)
+				return 1
+			end
+		end
+	end
+	return 0
 endfunction
 
 function mpeg_single_tolerance(sd action,sd value)
