@@ -32,13 +32,13 @@ Function openfile(data pfile,str path,str fmode)
 EndFunction
 
 function getreadmode()
-    str read="rb"
-    return read
+	vstr read="rb"
+	return read
 endfunction
 
 function getwritemode()
-    str write="wb"
-    return write
+	vstr write="wb"
+	return write
 endfunction
 
 #e
