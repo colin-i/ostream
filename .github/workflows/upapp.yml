@@ -4,6 +4,8 @@ on:
   inputs:
    flow:
     description: "workflow artifact"
+   branch:
+    description: "another branch"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -29,7 +31,11 @@ jobs:
       if [ "${flow}" = "" ]; then
        flow=appimage
       fi
-      id=$(gh run list --workflow=${flow}.yml -b $(git rev-parse --abbrev-ref HEAD) | cut -f7 | head -1)
+      branch=${{ github.event.inputs.branch }}
+      if [ "${branch}" = "" ]; then
+       branch=$(git rev-parse --abbrev-ref HEAD)
+      fi
+      id=$(gh run list --workflow=${flow}.yml -b ${branch} | cut -f7 | head -1)
       repo_at_gh=`cat debian/control | grep "^Homepage" | grep -o [^/]*$`
       #
       url=`gh api -H "Accept: application/vnd.github.v3+json" /repos/colin-i/${repo_at_gh}/actions/runs/${id}/artifacts | jq ".artifacts[0].archive_download_url"`
