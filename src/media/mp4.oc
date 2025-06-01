@@ -81,10 +81,12 @@ function mp3_file(sd bool,sv extra_off1,sv mp3_sz)
 				ss w;set w getwritemode()
 				set err openfile(#mp3__file,src,w)
 				if err=(noerror)
-					call file_seek_set(file,extra_off1)
-					Call fread(mp3Mem,1,mp3_sz,file)
-					Call fwrite(mp3Mem,1,mp3_sz,mp3__file)
-					call fclose(mp3__file)
+					call file_seek_set(file,extra_off1) #this was ok
+					sdu rd;set rd fread(mp3Mem,mp3_sz,1,file)
+					if rd=1 #if the resources are ok at main open it doesn't mean async is not changeable for second open
+						Call fwrite(mp3Mem,mp3_sz,1,mp3__file)
+						call fclose(mp3__file)
+					end
 				end
 				call free(mp3Mem)
 			end
