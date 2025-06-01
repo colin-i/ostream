@@ -6,7 +6,7 @@ on:
 
 jobs:
  aptest2:
-  runs-on: ubuntu-24.04
+  runs-on: ubuntu-22.04 #also replace at second grep
   steps:
    - name: Run a multi-line script
      run: |
@@ -14,9 +14,11 @@ jobs:
       sudo apt update
       a=( ${{ github.event.inputs.packs }} )
       for b in "${a[@]}"; do
-       c=`apt-cache policy $b | grep "^[ ]*500" | head -1 | grep -Poe "(?<=noble)[^ ]*"`
-       echo $b $c
-       echo "$c $b" >> file
+       if [ "${b}" != "ovideo:i386" ]; then  #here from "new" not from "additional"
+        c=`apt-cache policy $b | grep "^[ ]*500" | head -1 | grep -Poe "(?<=jammy)[^ ]*"`
+        echo $b $c
+        echo "$c $b" >> file
+       fi
       done
       sort -k1nr file >> f
    - name: artifact

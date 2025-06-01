@@ -3,20 +3,30 @@ on:
   inputs:
    packs:
     description: "packages"
+   deb:
+    description: "from deb"
 
 jobs:
  aptest:
-  runs-on: ubuntu-24.04
+  runs-on: ubuntu-22.04
   steps:
+   - name: checkout
+     if: ${{ github.event.inputs.deb != '' }}
+     uses: actions/checkout@master
    - name: Run a multi-line script
      run: |
       dpkg --print-foreign-architectures
       sudo dpkg --add-architecture i386
-      if [ "${{ github.event.inputs.packs }}" = "" ]; then
-        sudo add-apt-repository ppa:colin-i/ppa -y
-        sudo apt install ovideo
-        #then test2.yml or grep additional packages
+      if [ "${{ github.event.inputs.deb }}" != "" ]; then
+       sudo apt update
+       sudo apt install --no-upgrade --dry-run ./ovideo_*.deb   #--no-upgrade is useless is not counting at dependencies
       else
-        sudo apt update
-        sudo apt install ${{ github.event.inputs.packs }}
+       if [ "${{ github.event.inputs.packs }}" = "" ]; then
+         sudo add-apt-repository ppa:colin-i/ppa -y
+         sudo apt install --no-upgrade --dry-run ovideo
+         #then tester2.yml or grep additional packages
+       else
+         sudo apt update
+         sudo apt install --no-upgrade --dry-run ${{ github.event.inputs.packs }}
+       fi
       fi
