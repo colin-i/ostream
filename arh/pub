@@ -20,10 +20,11 @@ git restore debian/files && \
 ~/test/del && \
 ~/test/rel && \
 ~/test/updeb && \
-~/test/ai && \
+~/test/ai/ai && \
 ./wmake && \
 ~/test/pub appimage rpm rel && \
-~/test/upapp && \
+~/test/test && \
+~/test/ai/upapp && \
 ~/test/rpm/rerpm && \
 ~/test/rpm/uprpm && \
 ~/test/upgen ovideo.zip && \
