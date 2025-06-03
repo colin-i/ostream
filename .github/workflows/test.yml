@@ -1,5 +1,8 @@
 on:
  workflow_dispatch:
+  inputs:
+   branch:
+    description: "another branch"
 env:
  #for gh and for upload
  GITHUB_TOKEN: ${{ secrets.PAT }}
@@ -16,7 +19,11 @@ jobs:
       #proj
       name=`cat debian/changelog | head -1 | grep -o ^[^\ ]*`
       #get appimage artifact
-      id=$(gh run list --workflow=appimage.yml -b $(git rev-parse --abbrev-ref HEAD) | cut -f7 | head -1)
+      branch=${{ github.event.inputs.branch }}
+      if [ -z "${branch}" ]; then
+       branch=$(git rev-parse --abbrev-ref HEAD)
+      fi
+      id=$(gh run list --workflow=appimage.yml -b ${branch} | cut -f7 | head -1)
       repo_at_gh=`cat debian/control | grep "^Homepage" | grep -o "[^/]*$"`
       #
       url=`gh api -H "Accept: application/vnd.github.v3+json" /repos/colin-i/${repo_at_gh}/actions/runs/${id}/artifacts | jq ".artifacts[0].archive_download_url"`
