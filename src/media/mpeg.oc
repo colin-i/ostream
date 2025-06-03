@@ -1512,6 +1512,17 @@ function mpeg_settings_init(sd vbox,sd *dialog)
     setcall value mpeg_group_tolerance((value_get))
     setcall scale hscalefield(hbox,0,256,1,value)
     call mpeg_group_scale((value_set),scale)
+
+	importx "_gtk_check_button_new_with_label" gtk_check_button_new_with_label
+	valuexu mp3_toggle#1;setcall mp3_toggle gtk_check_button_new_with_label("MP3 File")
+	import "mp3_file_bool" mp3_file_bool
+	sd b;set b mp3_file_bool()
+	if b=(TRUE)
+		importx "_gtk_toggle_button_set_active" gtk_toggle_button_set_active
+		call gtk_toggle_button_set_active(mp3_toggle,(TRUE))
+	end
+	import "packstart_default" packstart_default
+	call packstart_default(vbox,mp3_toggle)
 endfunction
 function mpeg_settings_set()
     import "file_write_forward_sys_folder_enter_leave" file_write_forward_sys_folder_enter_leave
@@ -1531,14 +1542,17 @@ function mpeg_settings_set_write(sd mpeg_fl)
     setcall scale mpeg_single_scale((value_get))
     setcall value hscale_get(scale)
     call mpeg_single_tolerance((value_set),value)
-
     call file_write(p_value,4,mpeg_fl)
 
     setcall scale mpeg_group_scale((value_get))
     setcall value hscale_get(scale)
     call mpeg_group_tolerance((value_set),value)
-
     call file_write(p_value,4,mpeg_fl)
+
+	importx "_gtk_toggle_button_get_active" gtk_toggle_button_get_active
+	sd f;set f gtk_toggle_button_get_active(mpeg_settings_init.mp3_toggle)
+	call mp3_file_bool_set(f)
+	call file_write(#f,4,mpeg_fl)
 endfunction
 
 function mpeg_single_scale(sd action,sd value)
