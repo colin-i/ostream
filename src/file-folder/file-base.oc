@@ -365,21 +365,15 @@ endfunction
 
 #e
 function file_write(sd buffer,sd size,sd file)
-    data z=0
-    data noe=noerror
-    if size=z
-        return noe
-    endif
-    data byte=1
-    sd sizewrote
-    importx "_fwrite" fwrite
-    setcall sizewrote fwrite(buffer,byte,size,file)
-    if sizewrote!=z
-        return noe
-    endif
-    str er="File write error number: "
-    call strerrno(er)
-    return er
+	sd sizewrote
+	importx "_fwrite" fwrite
+	setcall sizewrote fwrite(buffer,1,size,file)
+	if sizewrote=size
+		return (noerror)
+	endif
+	vstr er="File write error number: "
+	call strerrno(er)
+	return er
 endfunction
 #bool
 function file_write_string(sd string,sd file)
