@@ -55,16 +55,22 @@ import "getwritemode" getwritemode
 import "getreadmode" getreadmode
 import "texter_inline" texter_inline
 import "texter_inline_end" texter_inline_end
-function mp3_file(sd bool,sv extra_off1,sv mp3_sz)
+function mp3_file(sd bool,sv extra_off1,sv mp3_off)
 #location is saved with const
 #reopen, the mode is getwritemode for mp4 file. call before mp4 is closed to not release resources to not recheck too many calls
+	charx nothing#1
 	vstrx src#1
 	const extr_0^src
-
 	ss dest;set dest src
 	add dest strlen(src)
 	dec dest
 	if bool=(FALSE)
+		if extra_off1=mp3_off
+			set nothing 1
+			ret
+		end
+		set nothing 0
+
 		sd err
 		sd file
 		ss r;set r getreadmode()
@@ -74,17 +80,17 @@ function mp3_file(sd bool,sv extra_off1,sv mp3_sz)
 			charx aux#1;set aux dest#
 			set dest# 0x33   #mp4->mp3 , hacky way
 
-			sub mp3_sz extra_off1
-			sd mp3Mem;setcall mp3Mem memalloc(mp3_sz)
+			sub mp3_off extra_off1
+			sd mp3Mem;setcall mp3Mem memalloc(mp3_off)
 			if mp3Mem!=(NULL)
 				sd mp3__file
 				ss w;set w getwritemode()
 				set err openfile(#mp3__file,src,w)
 				if err=(noerror)
 					call file_seek_set(file,extra_off1) #this was ok
-					sdu rd;set rd fread(mp3Mem,mp3_sz,1,file)
+					sdu rd;set rd fread(mp3Mem,mp3_off,1,file)
 					if rd=1 #if the resources are ok at main open it doesn't mean async is not changeable for second open
-						Call fwrite(mp3Mem,mp3_sz,1,mp3__file)
+						Call fwrite(mp3Mem,mp3_off,1,mp3__file)
 						call fclose(mp3__file)
 					end
 				end
@@ -94,7 +100,7 @@ function mp3_file(sd bool,sv extra_off1,sv mp3_sz)
 
 			set dest# aux
 		end
-	else
+	elseif nothing=0
 		set dest# 0x33   #mp4->mp3 , hacky way
 		call texter_inline(" and ")
 		call texter_inline_end(src)
