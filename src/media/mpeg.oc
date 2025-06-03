@@ -1534,25 +1534,28 @@ function mpeg_settings_set()
 endfunction
 
 function mpeg_settings_set_write(sd mpeg_fl)
-    import "hscale_get" hscale_get
-    sd value
-    sd scale
-    sd p_value^value
+	import "hscale_get" hscale_get
+	sd value
+	sd scale
+	sd p_value^value
+	sd err
 
-    setcall scale mpeg_single_scale((value_get))
-    setcall value hscale_get(scale)
-    call mpeg_single_tolerance((value_set),value)
-    call file_write(p_value,4,mpeg_fl)
-
-    setcall scale mpeg_group_scale((value_get))
-    setcall value hscale_get(scale)
-    call mpeg_group_tolerance((value_set),value)
-    call file_write(p_value,4,mpeg_fl)
-
-	importx "_gtk_toggle_button_get_active" gtk_toggle_button_get_active
-	sd f;set f gtk_toggle_button_get_active(mpeg_settings_init.mp3_toggle)
-	call mp3_file_bool_set(f)
-	call file_write(#f,4,mpeg_fl)
+	setcall scale mpeg_single_scale((value_get))
+	setcall value hscale_get(scale)
+	call mpeg_single_tolerance((value_set),value)
+	set err file_write(p_value,4,mpeg_fl)
+	if err=(noerror)
+		setcall scale mpeg_group_scale((value_get))
+		setcall value hscale_get(scale)
+		call mpeg_group_tolerance((value_set),value)
+		set err file_write(p_value,4,mpeg_fl)
+		if err=(noerror)
+			importx "_gtk_toggle_button_get_active" gtk_toggle_button_get_active
+			sd f;set f gtk_toggle_button_get_active(mpeg_settings_init.mp3_toggle)
+			call mp3_file_bool_set(f)
+			call file_write(#f,4,mpeg_fl)
+		end
+	end
 endfunction
 
 function mpeg_single_scale(sd action,sd value)
