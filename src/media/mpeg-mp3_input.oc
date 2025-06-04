@@ -7,6 +7,7 @@ include "../_include/include.oh"
 import "stage_sound_alloc_getremainingsize" stage_sound_alloc_getremainingsize
 import "stage_sound_sizedone" stage_sound_sizedone
 import "stage_sound_alloc_getbytes" stage_sound_alloc_getbytes
+import "stage_sound_channels" stage_sound_channels
 
 const HAN_SIZE=512
 const han_bytes_size=HAN_SIZE*DWORD
@@ -22,7 +23,8 @@ function mp3_get_pcm(sd buffer)
     #get size is all the raw size to read
     sd get_size
     set get_size frame_ch_size
-    mult get_size (mp3_channels)
+	sd mp3_channels;set mp3_channels stage_sound_channels((value_get))
+	mult get_size mp3_channels
     #can be less remaining size than a frame
     if get_size>remainingsize
         set get_size remainingsize
@@ -38,7 +40,7 @@ function mp3_get_pcm(sd buffer)
     #
     sd get_ch_size
     set get_ch_size get_size
-    div get_ch_size (mp3_channels)
+    divu get_ch_size mp3_channels
     #raw data to buffer
     import "cpymem" cpymem
     sd cursor
@@ -47,7 +49,9 @@ function mp3_get_pcm(sd buffer)
     sd cursor_size
     sd buffer_cursor
     sd sizeadd
-    while i!=(mp3_channels)
+	sd add=mp3_bytespersample
+	mult add mp3_channels
+    while i!=mp3_channels
         set cursor bytes
         set next_channel i
         mult next_channel (mp3_bytespersample)
@@ -60,34 +64,13 @@ function mp3_get_pcm(sd buffer)
         #
         set cursor_size 0
         while cursor_size!=get_ch_size
-            call cpymem(buffer_cursor,cursor,(mp3_bytespersample))
-            add cursor (mp3_bytespersample*mp3_channels)
-            add buffer_cursor (WORD)
-            add cursor_size (mp3_bytespersample)
+			call cpymem(buffer_cursor,cursor,(mp3_bytespersample))
+			add cursor add
+			add buffer_cursor (WORD)
+			add cursor_size (mp3_bytespersample)
         endwhile
         inc i
     endwhile
-    #actions if less than a frame readed
-    #if get_ch_size!=frame_ch_size
-    #    set i 0
-    #    while i!=(mp3_channels)
-    #        set buffer_cursor buffer
-    #        set sizeadd (buffer_channel_size)
-    #        mult sizeadd i
-    #        add buffer_cursor sizeadd
-    #        add buffer_cursor get_ch_size
-            #
-    #        set cursor_size get_ch_size
-    #        while cursor_size!=frame_ch_size
-    #            data silent_data=0
-    #            data p_silent_data^silent_data
-    #            call cpymem(buffer_cursor,p_silent_data,(mp3_bytespersample))
-    #            add buffer_cursor (WORD)
-    #            add cursor_size (mp3_bytespersample)
-    #        endwhile
-    #        inc i
-    #    endwhile
-    #endif
 endfunction
 
 #bool

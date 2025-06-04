@@ -23,7 +23,8 @@ const MPG_MD_LR_LR=0
 #bool
 function mp3_encode(sd file)
     call mp3_output_size((value_set),0)
-    call mp3_output_pos((value_set),8)
+    call mp3_output_pos((value_set),0x80)
+#    call mp3_output_pos((value_set),8)
 
     call mp3_encode_frame()
 
@@ -50,7 +51,7 @@ import "sar32" sar
 
 import "mp3_mean_bits" mp3_mean_bits
 import "mp3_l3_sb_sample" mp3_l3_sb_sample
-
+import "stage_sound_channels" stage_sound_channels
 function mp3_encode_init()
     #sd avg_slots_per_frame
     #(
@@ -94,12 +95,13 @@ function mp3_encode_init()
     set bits_per_frame whole_slots_per_frame
     mult bits_per_frame 8
 
-    sd sideinfo_len
-    if (mp3_channels)=1
-        set sideinfo_len 168
-    else
-        set sideinfo_len 288
-    endelse
+	sd sideinfo_len
+	sd mp3_channels;set mp3_channels stage_sound_channels((value_get))
+	if mp3_channels=1
+		set sideinfo_len 168
+	else
+		set sideinfo_len 288
+	endelse
 
     sd mean_bits
     set mean_bits bits_per_frame
@@ -157,23 +159,23 @@ function mp3_encode_frame()
         add sizeadd (l3_sb_sample_size)
         add l3_sb sizeadd
         #
-        sd channel=mp3_channels
-        while channel!=0
-            dec channel
-            sub buf (buffer_channel_size)
-            sub l3_sb (l3_sb_sample_channel_size)
-            #
-            sd i=0
-            while i<18
-                call l3_window_filter_subband(buf,l3_sb,channel)
-                add buf (buffer_band_size)
-                add l3_sb (l3_sb_sample_band_size)
-                inc i
-            endwhile
-            sub buf (buffer_granule_size)
-            sub l3_sb (l3_sb_sample_granule_size)
-        endwhile
-        inc granule
+		sd mp3_channel;set mp3_channel stage_sound_channels((value_get))
+		while mp3_channel!=0
+			dec mp3_channel
+			sub buf (buffer_channel_size)
+			sub l3_sb (l3_sb_sample_channel_size)
+			#
+			sd i=0
+			while i<18
+				call l3_window_filter_subband(buf,l3_sb,mp3_channel)
+				add buf (buffer_band_size)
+				add l3_sb (l3_sb_sample_band_size)
+				inc i
+			endwhile
+			sub buf (buffer_granule_size)
+			sub l3_sb (l3_sb_sample_granule_size)
+		endwhile
+		inc granule
     endwhile
     #apply mdct to the polyphase output
     import "mp3_mdct" mp3_mdct
@@ -186,7 +188,8 @@ function mp3_encode_frame()
 endfunction
 
 function mp3_bitrate()
-	if (mp3_channels)=2
+	sd mp3_channels;set mp3_channels stage_sound_channels((value_get))
+	if mp3_channels=2
 		return 128
 	end
 	return 64
@@ -199,24 +202,24 @@ function mp3_format_bitstream(sd mdct_freq)
     sd l3enc_tt
     setcall l3enc_tt l3_enc(0,0)
     sd granule=0
-    while granule<2
-        sd channel=0
-        while channel<(mp3_channels)
-            sd i=0
-            while i<(samp_per_frame2)
-                if mdct_freq#<0
-                    #if l3enc_tt#>0
-                    mult l3enc_tt# -1
-                    #endif
-                endif
-                add mdct_freq (DWORD)
-                add l3enc_tt (DWORD)
-                inc i
-            endwhile
-            inc channel
-        endwhile
-        inc granule
-    endwhile
+	while granule<2
+		sd mp3_channel;set mp3_channel stage_sound_channels((value_get))
+		while mp3_channel>0
+			sd i=0
+			while i<(samp_per_frame2)
+				if mdct_freq#<0
+					#if l3enc_tt#>0
+					mult l3enc_tt# -1
+					#endif
+				endif
+				add mdct_freq (DWORD)
+				add l3enc_tt (DWORD)
+				inc i
+			endwhile
+			dec mp3_channel
+		endwhile
+		inc granule
+	endwhile
     #
     call mp3_side_info()
     call mp3_main_data()
@@ -258,7 +261,8 @@ function mp3_header()
     #extension
     call mp3_bs_write(0,1)
     #mode
-	if (mp3_channels)=2
+	sd mp3_channels;set mp3_channels stage_sound_channels((value_get))
+	if mp3_channels=2
 		call mp3_bs_write((MPG_MD_DUAL_CHANNEL),2)
 	else
 		call mp3_bs_write((MPG_MD_MONO),2)
@@ -280,81 +284,83 @@ function mp3_frameSI()
     #main_data_begin
     call mp3_bs_write(0,9)
     #private_bits
-	if (mp3_channels)=2
+	sd mp3_channels;set mp3_channels stage_sound_channels((value_get))
+	if mp3_channels=2
 		call mp3_bs_write(0,3)
 	else
 		call mp3_bs_write(0,5)
 	end
-    #scalefactor select information
-    sd i=0
-    while i<(mp3_channels)
-        sd scfsi_band=0
-        while scfsi_band<4
-            call mp3_bs_write(0,1)
-            inc scfsi_band
-        endwhile
-        inc i
-    endwhile
-    sd value
-    sd granule=0
-    while granule<2
-        sd channel=0
-        while channel<(mp3_channels)
-            sd gr_info
-            setcall gr_info mp3_gr_info(granule,channel)
-            #
-            setcall value mp3_gr_info_itemGet(gr_info,(gr_info_part2_3_length))
-            call mp3_bs_write(value,12)
-            setcall value mp3_gr_info_itemGet(gr_info,(gr_info_big_values))
-            call mp3_bs_write(value,9)
-            setcall value mp3_gr_info_itemGet(gr_info,(gr_info_global_gain))
-            call mp3_bs_write(value,8)
-            #scalefac_compress
-            call mp3_bs_write(0,4)
-            call mp3_bs_write(0,1)
-            #
-            setcall value mp3_gr_info_itemGet(gr_info,(gr_info_table_select_0))
-            call mp3_bs_write(value,5)
-            setcall value mp3_gr_info_itemGet(gr_info,(gr_info_table_select_1))
-            call mp3_bs_write(value,5)
-            setcall value mp3_gr_info_itemGet(gr_info,(gr_info_table_select_2))
-            call mp3_bs_write(value,5)
-            #
-            setcall value mp3_gr_info_itemGet(gr_info,(gr_info_region0_count))
-            call mp3_bs_write(value,4)
-            setcall value mp3_gr_info_itemGet(gr_info,(gr_info_region1_count))
-            call mp3_bs_write(value,3)
-            #
-            #preflag
-            call mp3_bs_write(0,1)
-            #scalefac_scale
-            call mp3_bs_write(0,1)
-            setcall value mp3_gr_info_itemGet(gr_info,(gr_info_count1table_select))
-            call mp3_bs_write(value,1)
-            #
-            inc channel
-        endwhile
-        inc granule
-    endwhile
+	#scalefactor select information
+	sd mp3_channel;set mp3_channel mp3_channels
+	while mp3_channel>0
+		sd scfsi_band=0
+		while scfsi_band<4
+			call mp3_bs_write(0,1)
+			inc scfsi_band
+		endwhile
+		dec mp3_channel
+	endwhile
+	sd value
+	sd granule=0
+	while granule<2
+		set mp3_channel 0
+		while mp3_channel<mp3_channels
+			sd gr_info
+			setcall gr_info mp3_gr_info(granule,mp3_channel)
+			#
+			setcall value mp3_gr_info_itemGet(gr_info,(gr_info_part2_3_length))
+			call mp3_bs_write(value,12)
+			setcall value mp3_gr_info_itemGet(gr_info,(gr_info_big_values))
+			call mp3_bs_write(value,9)
+			setcall value mp3_gr_info_itemGet(gr_info,(gr_info_global_gain))
+			call mp3_bs_write(value,8)
+			#scalefac_compress
+			call mp3_bs_write(0,4)
+			call mp3_bs_write(0,1)
+			#
+			setcall value mp3_gr_info_itemGet(gr_info,(gr_info_table_select_0))
+			call mp3_bs_write(value,5)
+			setcall value mp3_gr_info_itemGet(gr_info,(gr_info_table_select_1))
+			call mp3_bs_write(value,5)
+			setcall value mp3_gr_info_itemGet(gr_info,(gr_info_table_select_2))
+			call mp3_bs_write(value,5)
+			#
+			setcall value mp3_gr_info_itemGet(gr_info,(gr_info_region0_count))
+			call mp3_bs_write(value,4)
+			setcall value mp3_gr_info_itemGet(gr_info,(gr_info_region1_count))
+			call mp3_bs_write(value,3)
+			#
+			#preflag
+			call mp3_bs_write(0,1)
+			#scalefac_scale
+			call mp3_bs_write(0,1)
+			setcall value mp3_gr_info_itemGet(gr_info,(gr_info_count1table_select))
+			call mp3_bs_write(value,1)
+			#
+			inc mp3_channel
+		endwhile
+		inc granule
+	endwhile
 endfunction
 
 #main data
 
 function mp3_main_data()
-    sd granule=0
-    while granule<2
-        sd channel=0
-        while channel<(mp3_channels)
-            sd gr_info
-            setcall gr_info mp3_gr_info(granule,channel)
-            sd l3enc_tt
-            setcall l3enc_tt l3_enc(granule,channel)
-            #
-            call mp3_Huffmancodebits(gr_info,l3enc_tt)
-            inc channel
-        endwhile
-        inc granule
-    endwhile
+	sd mp3_channels;set mp3_channels stage_sound_channels((value_get))
+	sd granule=0
+	while granule<2
+		sd mp3_channel;set mp3_channel 0
+		while mp3_channel<mp3_channels
+			sd gr_info
+			setcall gr_info mp3_gr_info(granule,mp3_channel)
+			sd l3enc_tt
+			setcall l3enc_tt l3_enc(granule,mp3_channel)
+			#
+			call mp3_Huffmancodebits(gr_info,l3enc_tt)
+			inc mp3_channel
+		endwhile
+		inc granule
+	endwhile
 endfunction
 
 import "l3_enc_sample_get" l3_enc_sample_get

@@ -12,14 +12,14 @@ function mp3_output(sd way,sd value)
         return output
     endelse
 endfunction
-function mp3_allsize(sd way,sd value)
-    data allsize#1
-    if way=(value_set)
-        set allsize value
-    else
-        return allsize
-    endelse
-endfunction
+#function mp3_allsize(sd way,sd value)
+#    data allsize#1
+#    if way=(value_set)
+#        set allsize value
+#    else
+#        return allsize
+#    endelse
+#endfunction
 function mp3_output_size(sd way,sd value)
     data output_size#1
     if way=(value_set)
@@ -81,10 +81,10 @@ endfunction
 #l3_enc
 
 const l3_enc_channelSize=samp_per_frame2*DWORD
-const l3_enc_granuleSize=mp3_channels*l3_enc_channelSize
+const l3_enc_granuleSize=mp3_chans*l3_enc_channelSize
 #pointer
 function l3_enc(sd granule,sd channel)
-    data l3_enc_data#2*mp3_channels*samp_per_frame2
+    data l3_enc_data#2*mp3_chans*samp_per_frame2
     sd l3^l3_enc_data
     mult granule (l3_enc_granuleSize)
     add l3 granule
@@ -102,11 +102,11 @@ endfunction
 #gr info
 
 const gr_info_items=gr_info_channelSize/DWORD
-const gr_info_granuleSize=mp3_channels*gr_info_channelSize
+const gr_info_granuleSize=mp3_chans*gr_info_channelSize
 #pointer
 function mp3_gr_info(sd granule,sd channel)
     #side informations
-    data gr_info_data#2*mp3_channels*gr_info_items
+    data gr_info_data#2*mp3_chans*gr_info_items
     sd gr_info^gr_info_data
     mult granule (gr_info_granuleSize)
     add gr_info granule

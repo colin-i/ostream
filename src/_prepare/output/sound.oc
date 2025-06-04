@@ -624,33 +624,34 @@ function stage_sound_subsize(sd action,sd value)
 endfunction
 function stage_sound_alloc(sd action,sd newblock,sd newblock_size)
     import "memoryrealloc" memoryrealloc
-    data alloc#1
-    data p_alloc^alloc
-    data size#1
+	value alloc=NULL
+	value p_alloc^alloc
+	data size#1
 
 	if action=(stage_sound_alloc_init)
     #init the memory
-        set alloc 0
+        set alloc (NULL)
         set size 0
         call stage_sound_subsize((value_set),0)
-        call memoryrealloc(p_alloc,size)
-        return 0
+        call memoryrealloc(p_alloc,1) #here is the rule to never 0 alloc
+        ret
 	endif
 	if action=(stage_sound_alloc_getremainingsize)
-    #get the remaining size
+	#get the remaining size
         sd sz
         setcall sz stage_sound_subsize((value_get))
         subcall sz stage_sound_sizedone((value_get))
         return sz
 	endif
 	if action=(stage_sound_alloc_getbytes)
-        return alloc
+		return alloc
 	endif
-    if alloc=0
-        return 0
-    endif
+	if alloc=(NULL)
+		ret
+	endif
     if action=(stage_sound_alloc_free)
-        call free(alloc)
+		call free(alloc)
+		#set alloc (NULL)#seems that init is called first
     elseif action=(stage_sound_alloc_expand)
         sd newsubsize
         setcall newsubsize stage_sound_subsize((value_get))
@@ -663,7 +664,7 @@ function stage_sound_alloc(sd action,sd newblock,sd newblock_size)
             sd err
             setcall err memoryrealloc(p_alloc,newsize)
             if err!=(noerror)
-                return err
+                ret
             endif
             set size newsize
         endif
@@ -683,7 +684,7 @@ function stage_sound_alloc(sd action,sd newblock,sd newblock_size)
         if stop_flag#=1
             #safe close the main thread if stop pressed
             call sound_global_flag_set(0)
-            return (void)
+            ret
         endif
 
         sd bytespersec
