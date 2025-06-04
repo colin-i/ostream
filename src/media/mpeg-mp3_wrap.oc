@@ -9,8 +9,7 @@ function mp3_init()
     import "mp3_output" mp3_output
 #    import "mp3_allsize" mp3_allsize
     sd output
-    const BUFFER_SIZE=4096
-    sd size=BUFFER_SIZE
+    sd size=(mp3_BUFFER_SIZE)
     import "memalloc" memalloc
     setcall output memalloc(size)
     if output=0

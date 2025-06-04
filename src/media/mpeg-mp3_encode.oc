@@ -246,7 +246,7 @@ function mp3_header()
     sd biterate_index
     sd btrt
     setcall btrt mp3_bitrate()
-    data bitratex_data={0,32,40,48,56,64,80,96,112,128,160,192,224,256,320}
+    data bitratex_data={0,32,40,48,56,64,80,96,112,mp3_max_supported_bitrate,160,192,224,256,320}
     data bitratex^bitratex_data
     setcall biterate_index int_in_set(btrt,bitratex,15)
     call mp3_bs_write(biterate_index,4)
