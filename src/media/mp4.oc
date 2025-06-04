@@ -2047,7 +2047,8 @@ const mp4a_start=\
     char *version={0,0}
     char *revision={0,0}
     data *vendor=0
-    char *channel_count={0,mp3_channels}
+	char *channel_count=0;char channel_count#1
+	set channel_count stage_sound_channels((value_get))
     char *bitspersample={0,mp3_bitspersample}
     char *compression_id={0,0}
     char *packet_size={0,0}
@@ -2335,14 +2336,42 @@ endfunction
 #
 #bool
 function mp4_sound_init(sd all_size)
+	import "stage_sound_channels" stage_sound_channels
+	import "stage_sound_bps" stage_sound_bps
+	import "stage_sound_rate" stage_sound_rate
+	sd ch
+	setcall ch stage_sound_channels((value_get))
+	#verify for the used format
+	if ch!=(mp3_channels_stereo)
+	#	if ch!=(mp3_channels_mono)
+			vstr ch_err="Sound with 2 channels required"
+			call texter(ch_err)
+			return 0
+	#	endif
+	endif
+	sd bps
+	setcall bps stage_sound_bps((value_get))
+	if bps!=(mp3_bitspersample)
+		vstr bps_err="Sound with 16 bits-per-sample required"
+		call texter(bps_err)
+		return 0
+	endif
+	sd rate
+	setcall rate stage_sound_rate((value_get))
+	if rate!=(mp3_samplerate)
+		vstr sr_err="Sound with 48000 sample rate required"
+		call texter(sr_err)
+		return 0
+	endif
     #all samples
     sd all_samples
     setcall all_samples mp4_all_samples()
-    sd samples
-    set samples all_size
-    div samples (buffer_size)
-    mult samples (buffer_size)
-    div samples (mp3_channels*mp3_bytespersample)
+	sd samples
+	set samples all_size
+	divu samples (buffer_size)
+	mult samples (buffer_size)
+	divu samples (mp3_bytespersample)
+	divu samples ch
     set all_samples# samples
     #duration at the default timescale
     import "fmul_quad" fmul_quad
@@ -2380,31 +2409,6 @@ function mp4_sound_init(sd all_size)
     call mp4_next_track_set((emptyId))
     #Not part of MPEG-4 audio profiles
     call mp4_audio_profile_set(0xfe)
-    #verify for the used format
-    import "stage_sound_channels" stage_sound_channels
-    import "stage_sound_bps" stage_sound_bps
-    import "stage_sound_rate" stage_sound_rate
-    sd ch
-    setcall ch stage_sound_channels((value_get))
-    if ch!=(mp3_channels)
-        str ch_err="Sound with 2 channels required"
-        call texter(ch_err)
-        return 0
-    endif
-    sd bps
-    setcall bps stage_sound_bps((value_get))
-    if bps!=(mp3_bitspersample)
-        str bps_err="Sound with 16 bits-per-sample required"
-        call texter(bps_err)
-        return 0
-    endif
-    sd rate
-    setcall rate stage_sound_rate((value_get))
-    if rate!=(mp3_samplerate)
-        str sr_err="Sound with 48000 sample rate required"
-        call texter(sr_err)
-        return 0
-    endif
     return 1
 endfunction
 

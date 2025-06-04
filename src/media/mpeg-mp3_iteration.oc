@@ -11,14 +11,15 @@ import "mp3_gr_info_itemGet" mp3_gr_info_itemGet
 import "l3_enc" l3_enc
 import "mp3_xrabs" mp3_xrabs
 import "mult64_highint_rounded" mult64_highint_rounded
-
+import "stage_sound_channels" stage_sound_channels
 function mp3_iteration(sd mdct_freq,sd mean_bits)
     sd ResvSize=0
     sd ResvMax=0
     sd xr
-    sd channel=mp3_channels
-    while channel>0
-        dec channel
+	sd mp3_channels;set mp3_channels stage_sound_channels((value_get))
+	sd channel;set channel mp3_channels
+	while channel>0
+		dec channel
         set xr (mdct_freq_channel_size)
         mult xr channel
         add xr mdct_freq
@@ -72,7 +73,7 @@ function mp3_iteration(sd mdct_freq,sd mean_bits)
             #
             sd value
             set value mean_bits
-            div value (mp3_channels)
+            divu value mp3_channels
             subcall value mp3_gr_info_itemGet(gr_info,(gr_info_part2_3_length))
             add ResvSize value
             #
@@ -92,7 +93,8 @@ endfunction
 #max_bits
 function mp3_ResvMaxBits(sd mean_bits)
     sd max_bits
-    div mean_bits (mp3_channels)
+	sd mp3_channels;set mp3_channels stage_sound_channels((value_get))
+	divu mean_bits mp3_channels
     set max_bits mean_bits
     if max_bits>4095
         set max_bits 4095
@@ -112,13 +114,14 @@ endfunction
 function mp3_ResvFrameEnd(sd ResvSize,sd ResvMax,sd mean_bits)
     #just in case mean_bits is odd, this is necessary...
     sd value
-    if (mp3_channels)=2
+	sd mp3_channels;set mp3_channels stage_sound_channels((value_get))
+	if mp3_channels=2
         set value mean_bits
         and value 1
         if value!=0
             inc ResvSize
         endif
-    endif
+	endif
     sd over_bits
     set over_bits ResvSize
     sub over_bits ResvMax

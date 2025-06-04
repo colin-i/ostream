@@ -10,7 +10,7 @@ const ca_cs_units=8
 const ca_cs_size=ca_cs_units*DWORD
 
 import "mult64" mult64
-
+import "stage_sound_channels" stage_sound_channels
 function mp3_mdct(sd l3_sb_sample,sd mdct_freq)
     sd l3_sb_gr
     sd l3_sb_gr_1
@@ -22,6 +22,7 @@ function mp3_mdct(sd l3_sb_sample,sd mdct_freq)
     sd p_value^value
     sd l3_sb_cursor_1
     sd granule=0
+	sd mp3_channels;set mp3_channels stage_sound_channels((value_get))
     while granule<2
         set mdct_enc mdct_freq
         set sizeadd (mdct_freq_granule_size)
@@ -39,7 +40,7 @@ function mp3_mdct(sd l3_sb_sample,sd mdct_freq)
         add l3_sb_gr (l3_sb_sample_size)
         add l3_sb_gr_1 (l3_sb_sample_size)
         #
-        sd channel=mp3_channels
+        sd channel;set channel mp3_channels
         while channel>0
             dec channel
             sub l3_sb_gr (l3_sb_sample_channel_size)
@@ -193,7 +194,7 @@ function mp3_mdct(sd l3_sb_sample,sd mdct_freq)
     sd from
     sd to
     set channel 0
-    while channel!=(mp3_channels)
+    while channel!=mp3_channels
         set from channel
         mult from (l3_sb_sample_channel_size)
         set to from

@@ -65,11 +65,13 @@ const avc_P_SKIP=6
 
 
 #mp3
-const mp3_channels=2
+const mp3_channels_stereo=2
+#const mp3_channels_mono=1
+const mp3_chans=2
 const mp3_samplerate=48000
 const mp3_bitspersample=16
 const mp3_bytespersample=mp3_bitspersample/8
-const mp3_blockalign=mp3_channels*mp3_bytespersample
+const mp3_blockalign=mp3_chans*mp3_bytespersample
 const samp_per_frame=1152
 const samp_per_frame2=576
 
@@ -94,11 +96,11 @@ const SBLIMIT=32
 const l3_sb_sample_band_size=SBLIMIT*DWORD
 const l3_sb_sample_granule_size=18*l3_sb_sample_band_size
 const l3_sb_sample_channel_size=3*l3_sb_sample_granule_size
-const l3_sb_sample_size=mp3_channels*l3_sb_sample_channel_size
+const l3_sb_sample_size=mp3_chans*l3_sb_sample_channel_size
 const l3_sb_sample_units=l3_sb_sample_size/DWORD
 
 const mdct_freq_channel_size=samp_per_frame2*DWORD
-const mdct_freq_granule_size=mdct_freq_channel_size*mp3_channels
+const mdct_freq_granule_size=mdct_freq_channel_size*mp3_chans
 
 const huffman_xlen=0
 const huffman_ylen=huffman_xlen+DWORD
@@ -107,4 +109,4 @@ const huffman_linmax=huffman_linbits+DWORD
 const huffman_entry=huffman_linmax+DWORD
 
 const buffer_channel_size=samp_per_frame*WORD
-const buffer_size=mp3_channels*buffer_channel_size
+const buffer_size=mp3_chans*buffer_channel_size
