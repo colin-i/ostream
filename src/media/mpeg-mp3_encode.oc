@@ -5,7 +5,7 @@ format elfobj
 
 include "../_include/include.h"
 
-#comparing constants like MPG_MD_DUAL_CHANNEL or BUFFER_SIZE, the discontinued BladeEnc, maybe a fork of The LAME Project
+#comparing constants like MPG_MD_DUAL_CHANNEL or BUFFER_SIZE(was 4096), the discontinued BladeEnc, maybe a fork of The LAME Project
 
 import "mp3_output_size" mp3_output_size
 import "mp3_output_pos" mp3_output_pos
