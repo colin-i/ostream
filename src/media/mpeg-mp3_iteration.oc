@@ -13,10 +13,11 @@ import "mp3_xrabs" mp3_xrabs
 import "mult64_highint_rounded" mult64_highint_rounded
 import "stage_sound_channels" stage_sound_channels
 function mp3_iteration(sd mdct_freq,sd mean_bits)
-    sd ResvSize=0
-    sd ResvMax=0
-    sd xr
+	sd ResvSize=0
+	sd ResvMax=0
+	sd xr
 	sd mp3_channels;set mp3_channels stage_sound_channels((value_get))
+	sd mdct_freq_granule_size=mdct_freq_channel_size;mult mdct_freq_granule_size mp3_channels
 	sd channel;set channel mp3_channels
 	while channel>0
 		dec channel
@@ -82,7 +83,7 @@ function mp3_iteration(sd mdct_freq,sd mean_bits)
             add quantizerStepSize 210
             call mp3_gr_info_itemSet(gr_info,(gr_info_global_gain),quantizerStepSize)
             #
-            add xr (mdct_freq_granule_size)
+            add xr mdct_freq_granule_size
             inc granule
         endwhile
     endwhile

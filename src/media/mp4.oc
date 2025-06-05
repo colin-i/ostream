@@ -1895,12 +1895,13 @@ const soundmdhd_size=\-soundmdhd_start
             return 0
         endif
     else
-        setcall err file_seek_cursor_get_dword_reverse(file,(soundmdhd_duration),#duration)
-        if err!=(noerror)
-            return 0
-        endif
-        mult duration (mp3_blockalign)
-        call mp4_audio_samples_set(duration)
+		setcall err file_seek_cursor_get_dword_reverse(file,(soundmdhd_duration),#duration)
+		if err!=(noerror)
+			return 0
+		endif
+		mult duration (mp3_bytespersample)
+		mult duration stage_sound_channels((value_get))
+		call mp4_audio_samples_set(duration)
     endelse
     return 1
 endfunction
