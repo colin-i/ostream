@@ -555,22 +555,22 @@ endfunction
 
 #mathings
 
-#pos/-1
-function int_in_set(sd int,sd set,sd set_count)
-    if set_count=0
-        return -1
-    endif
+#pos
+function int_in_set(sd int,sd set) #,sd set_count)
+#    if set_count=0
+#        return -1
+#    endif
     sd start
     set start set
     while set#!=int
         add set (DWORD)
-        dec set_count
-        if set_count=0
-            return -1
-        endif
+#        dec set_count
+#        if set_count=0
+#            return -1
+#        endif
     endwhile
     sub set start
-    div set (DWORD)
+    divu set (DWORD)
     return set
 endfunction
 
