@@ -112,10 +112,10 @@ function mp3_encode_init()
     setcall p_mean_bits mp3_mean_bits()
     set p_mean_bits# mean_bits
 
-    import "setmemzero" setmemzero
-    sd l3_sb_sample
-    setcall l3_sb_sample mp3_l3_sb_sample()
-    call setmemzero(l3_sb_sample,(l3_sb_sample_size))
+	import "setmemzero" setmemzero
+	sd l3_sb_sample
+	setcall l3_sb_sample mp3_l3_sb_sample()
+	call setmemzero(l3_sb_sample,(l3_sb_sample_stereo_size))  #this has 2 granules
 endfunction
 
 function mp3_encode_frame()
@@ -129,7 +129,7 @@ function mp3_encode_frame()
     sd l3_sb_sample
     setcall l3_sb_sample mp3_l3_sb_sample()
     #
-    const mdct_freq_size=2*mdct_freq_granule_size
+    const mdct_freq_size=2*mdct_freq_granule_stereo_size
     data mdct_freq_data#mdct_freq_size
     data mdct_freq^mdct_freq_data
     #call setmemzero(mdct_freq,(mdct_freq_size))
@@ -150,6 +150,7 @@ function mp3_encode_frame()
     add l3_sb (l3_sb_sample_granule_size)
 	sd mp3_channels;set mp3_channels stage_sound_channels((value_get))
 	sd buffer_size=buffer_channel_size;mult buffer_size mp3_channels
+	sd l3_sb_sample_size=l3_sb_sample_channel_size;mult l3_sb_sample_size mp3_channels
     while granule!=2
         set sizeadd granule
         mult sizeadd (buffer_granule_size)
@@ -158,7 +159,7 @@ function mp3_encode_frame()
         #
         set sizeadd granule
         mult sizeadd (l3_sb_sample_granule_size)
-        add sizeadd (l3_sb_sample_size)
+        add sizeadd l3_sb_sample_size
         add l3_sb sizeadd
         #
 		sd mp3_channel;set mp3_channel mp3_channels
@@ -185,6 +186,8 @@ function mp3_encode_frame()
     #bit and noise allocation
     import "mp3_iteration" mp3_iteration
     call mp3_iteration(mdct_freq,mean_bits)
+	import "debug" debug
+	call debug(mdct_freq,(mdct_freq_size))
     #write the frame to the bitstream
     call mp3_format_bitstream(mdct_freq)
 endfunction

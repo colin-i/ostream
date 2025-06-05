@@ -23,12 +23,14 @@ function mp3_mdct(sd l3_sb_sample,sd mdct_freq)
     sd l3_sb_cursor_1
     sd granule=0
 	sd mp3_channels;set mp3_channels stage_sound_channels((value_get))
+	sd l3_sb_sample_size=l3_sb_sample_channel_size;mult l3_sb_sample_size mp3_channels
+	sd mdct_freq_granule_size=mdct_freq_channel_size;mult mdct_freq_granule_size mp3_channels
     while granule<2
         set mdct_enc mdct_freq
-        set sizeadd (mdct_freq_granule_size)
+        set sizeadd mdct_freq_granule_size
         mult sizeadd granule
         add mdct_enc sizeadd
-        add mdct_enc (mdct_freq_granule_size)
+        add mdct_enc mdct_freq_granule_size
         #
         set l3_sb_gr l3_sb_sample
         set sizeadd granule
@@ -37,8 +39,8 @@ function mp3_mdct(sd l3_sb_sample,sd mdct_freq)
         set l3_sb_gr_1 l3_sb_gr
         add l3_sb_gr_1 (l3_sb_sample_granule_size)
         #
-        add l3_sb_gr (l3_sb_sample_size)
-        add l3_sb_gr_1 (l3_sb_sample_size)
+        add l3_sb_gr l3_sb_sample_size
+        add l3_sb_gr_1 l3_sb_sample_size
         #
         sd channel;set channel mp3_channels
         while channel>0
