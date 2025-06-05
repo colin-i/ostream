@@ -42,6 +42,8 @@ import "prog_free" prog_free
 call gstunset()
 call search_clear_memory()
 call prog_free()
+import "debug_free" debug_free
+call debug_free()
 
 #normal return no, gtk_main problems (in this context)
 include "../_dif/lin.oc" "../_dif/win.oc"
