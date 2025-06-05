@@ -926,6 +926,17 @@ function stage_sound_copy_action(sd mem,sd *size)
         return 0
     endif
 
+	#still need to bytealign to not do wrong access
+	sd part;set part stage_sound_bps((value_get))
+	divu part 8
+	mult part stage_sound_channels((value_get))
+	sd was;set was chunk_size
+	divu chunk_size part
+	mult chunk_size part
+	if was!=chunk_size
+		call texter("The wave copy was not block aligned")
+	end
+
     call stage_sound_alloc_expand(mem,chunk_size)
     call stage_sound_alloc((stage_sound_alloc_printdialog_time))
 endfunction

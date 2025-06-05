@@ -81,16 +81,18 @@ endfunction
 #l3_enc
 
 const l3_enc_channelSize=samp_per_frame2*DWORD
-const l3_enc_granuleSize=mp3_chans*l3_enc_channelSize
+#const l3_enc_granuleSize=mp3_chans*l3_enc_channelSize
+import "stage_sound_channels" stage_sound_channels
 #pointer
 function l3_enc(sd granule,sd channel)
-    data l3_enc_data#2*mp3_chans*samp_per_frame2
-    sd l3^l3_enc_data
-    mult granule (l3_enc_granuleSize)
-    add l3 granule
-    mult channel (l3_enc_channelSize)
-    add l3 channel
-    return l3
+	data l3_enc_data#2*mp3_channels_stereo*samp_per_frame2
+	sd l3^l3_enc_data
+	mult granule (l3_enc_channelSize)
+	mult granule stage_sound_channels((value_get))
+	add l3 granule
+	mult channel (l3_enc_channelSize)
+	add l3 channel
+	return l3
 endfunction
 #value
 function l3_enc_sample_get(sd set,sd samp_nr)
@@ -102,17 +104,18 @@ endfunction
 #gr info
 
 const gr_info_items=gr_info_channelSize/DWORD
-const gr_info_granuleSize=mp3_chans*gr_info_channelSize
+#const gr_info_granuleSize=mp3_chans*gr_info_channelSize
 #pointer
 function mp3_gr_info(sd granule,sd channel)
-    #side informations
-    data gr_info_data#2*mp3_chans*gr_info_items
-    sd gr_info^gr_info_data
-    mult granule (gr_info_granuleSize)
-    add gr_info granule
-    mult channel (gr_info_channelSize)
-    add gr_info channel
-    return gr_info
+	#side informations
+	data gr_info_data#2*mp3_channels_stereo*gr_info_items
+	sd gr_info^gr_info_data
+	mult granule (gr_info_channelSize)
+	mult granule stage_sound_channels((value_get))
+	add gr_info granule
+	mult channel (gr_info_channelSize)
+	add gr_info channel
+	return gr_info
 endfunction
 #value
 function mp3_gr_info_itemGet(sd pack,sd item)

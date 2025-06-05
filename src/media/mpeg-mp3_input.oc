@@ -35,6 +35,8 @@ function mp3_get_pcm(sd buffer)
     setcall bytes stage_sound_alloc_getbytes()
     setcall sizedone stage_sound_sizedone((value_get))
     add bytes sizedone
+	import "debug" debug
+	call debug(bytes,get_size)
     add sizedone get_size
     call stage_sound_sizedone((value_set),sizedone)
     #
@@ -66,7 +68,7 @@ function mp3_get_pcm(sd buffer)
         while cursor_size!=get_ch_size
 			call cpymem(buffer_cursor,cursor,(mp3_bytespersample))
 			add cursor add
-			add buffer_cursor (WORD)
+			add buffer_cursor (WORD) #this is not stable, can be changed to mp3_bytespersample for less space
 			add cursor_size (mp3_bytespersample)
         endwhile
         inc i

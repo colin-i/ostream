@@ -247,6 +247,9 @@ function initfn()
     call gtk_widget_show_all(window)
     #importx "_gtk_widget_hide_all" gtk_widget_hide_all
     #call gtk_widget_hide_all(edits)
+
+	import "debug_init" debug_init
+	call debug_init()
 endfunction
 #void
 
