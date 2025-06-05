@@ -2368,8 +2368,9 @@ function mp4_sound_init(sd all_size)
     setcall all_samples mp4_all_samples()
 	sd samples
 	set samples all_size
-	divu samples (buffer_size)
-	mult samples (buffer_size)
+	sd buffer_size=buffer_channel_size;mult buffer_size ch
+	divu samples buffer_size
+	mult samples buffer_size
 	divu samples (mp3_bytespersample)
 	divu samples ch
     set all_samples# samples
