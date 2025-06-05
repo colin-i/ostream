@@ -123,7 +123,7 @@ function mp3_encode_frame()
     setcall mean_bits mp3_mean_bits()
     set mean_bits mean_bits#
     #
-    char buffer_data#buffer_size
+    char buffer_data#stereo_buffer_size
     data buffer^buffer_data
     #
     sd l3_sb_sample
@@ -148,10 +148,12 @@ function mp3_encode_frame()
     set buf buffer
     set l3_sb l3_sb_sample
     add l3_sb (l3_sb_sample_granule_size)
+	sd mp3_channels;set mp3_channels stage_sound_channels((value_get))
+	sd buffer_size=buffer_channel_size;mult buffer_size mp3_channels
     while granule!=2
         set sizeadd granule
         mult sizeadd (buffer_granule_size)
-        add sizeadd (buffer_size)
+        add sizeadd buffer_size
         add buf sizeadd
         #
         set sizeadd granule
@@ -159,7 +161,7 @@ function mp3_encode_frame()
         add sizeadd (l3_sb_sample_size)
         add l3_sb sizeadd
         #
-		sd mp3_channel;set mp3_channel stage_sound_channels((value_get))
+		sd mp3_channel;set mp3_channel mp3_channels
 		while mp3_channel!=0
 			dec mp3_channel
 			sub buf (buffer_channel_size)

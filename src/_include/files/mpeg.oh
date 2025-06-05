@@ -111,4 +111,4 @@ const huffman_linmax=huffman_linbits+DWORD
 const huffman_entry=huffman_linmax+DWORD
 
 const buffer_channel_size=samp_per_frame*WORD
-const buffer_size=mp3_chans*buffer_channel_size
+const stereo_buffer_size=mp3_chans*buffer_channel_size

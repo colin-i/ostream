@@ -1,0 +1,38 @@
+
+format elfobj
+
+include "../_include/include.oh"
+
+importx "_getenv" getenv
+importx "_fopen" fopen
+importx "_fclose" fclose
+importx "_fwrite" fwrite
+
+import "texter" texter
+
+function debug_init()
+	sd v;set v getenv("OVIDEO_DEBUG_FILE")
+	if v!=(NULL)
+		value f=NULL
+		import "getwritemode" getwritemode
+		sd w;set w getwritemode()
+		set f fopen(v,w)
+		if f!=(NULL)
+			call texter("debug file opened")
+		end
+	end
+end
+function debug_free()
+	if debug_init.f!=(NULL)
+		importx "_fflush" fflush
+		#call fflush(debug_init.f) #must xxd 0x2400 after fclose but xxd only shows 0x2000
+		call fclose(debug_init.f)
+		#set debug_init.f (NULL)
+	end
+end
+function debug(ss data,sd size)
+	if debug_init.f!=(NULL)
+		call fwrite(data,size,1,debug_init.f)
+		call fflush(debug_init.f) #why not at fclose, same, fclose will throw 400 to garbage
+	end
+end
