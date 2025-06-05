@@ -195,9 +195,9 @@ endfunction
 function mp3_bitrate()
 	sd mp3_channels;set mp3_channels stage_sound_channels((value_get))
 	if mp3_channels=2
-		return 128
+		return 128 #96
 	end
-	return 64
+	return 64 #32
 endfunction
 
 import "l3_enc" l3_enc
@@ -251,18 +251,18 @@ function mp3_header()
     sd biterate_index
     sd btrt
     setcall btrt mp3_bitrate()
-    data bitratex_data={0,32,40,48,56,64,80,96,112,mp3_max_supported_bitrate,160,192,224,256,320}
+    data bitratex_data={0,32,40,48,56,64,80,96,112,mp3_max_supported_bitrate} #,160,192,224,256,320}
     data bitratex^bitratex_data
-    setcall biterate_index int_in_set(btrt,bitratex,15)
+    setcall biterate_index int_in_set(btrt,bitratex) #,15)
     call mp3_bs_write(biterate_index,4)
     #samplerate index
     sd samplerate_index
     data samplerateex_data={44100, 48000, 32000}
     data samplerateex^samplerateex_data
-    setcall samplerate_index int_in_set(48000,samplerateex,3)
+    setcall samplerate_index int_in_set(48000,samplerateex) #,3)
     call mp3_bs_write(samplerate_index,2)
     #padding
-    call mp3_bs_write(0,1)
+    call mp3_bs_write(0,1) #Padding is necessary when the sampling frequency is 44.1 kHz and the frame length should always be an integer.
     #extension
     call mp3_bs_write(0,1)
     #mode
