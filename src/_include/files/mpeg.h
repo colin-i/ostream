@@ -67,14 +67,15 @@ const avc_P_SKIP=6
 #mp3
 const mp3_channels_stereo=2
 const mp3_channels_mono=1
-const mp3_samplerate=48000
+const mp3_samplerate_max=48000
+const mp3_samplerate_min=32000
 const mp3_bitspersample=16
 const mp3_bytespersample=mp3_bitspersample/8
 #const mp3_blockalign=mp3_chans*mp3_bytespersample
 const samp_per_frame=1152
 const samp_per_frame2=576
 const mp3_max_supported_bitrate=128
-const mp3_BUFFER_SIZE=mp3_max_supported_bitrate*1000*144/mp3_samplerate  ;# + padding
+const mp3_BUFFER_SIZE=mp3_max_supported_bitrate*1000*144/mp3_samplerate_max  ;# + padding
 
 const gr_info_part2_3_length=0
 const gr_info_big_values=gr_info_part2_3_length+DWORD

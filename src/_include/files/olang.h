@@ -149,6 +149,7 @@ const avi_expand=1
 
 #const sound_preview_buffers=32
 
+const riff_noflag=0
 const riff_move=1
 const riff_optional=2
 

@@ -7,18 +7,30 @@ importx "_getenv" getenv
 importx "_fopen" fopen
 importx "_fclose" fclose
 importx "_fwrite" fwrite
+importx "_strchr" strchr
 
 import "texter" texter
 
 function debug_init()
-	sd v;set v getenv("OVIDEO_DEBUG_FILE")
+	sd v;set v getenv("OVIDEO_DEBUG_FILES")
 	if v!=(NULL)
 		value f=NULL
+		value fi#1
 		import "getwritemode" getwritemode
-		sd w;set w getwritemode()
-		set f fopen(v,w)
-		if f!=(NULL)
-			call texter("debug file opened")
+		ss pos;set pos strchr(v,(MULTIPATH_SEPARATOR))
+		if pos!=(NULL)
+			set pos# (Nullchar)
+			sd w;set w getwritemode()
+			inc pos
+			set fi fopen(pos,w)
+			if fi!=(NULL)
+				set f fopen(v,w)
+				if f!=(NULL)
+					call texter("debug file opened")
+				else
+					call fclose(fi)
+				end
+			end
 		end
 	end
 end
@@ -28,11 +40,15 @@ function debug_free()
 		#call fflush(debug_init.f) #must xxd 0x2400 after fclose but xxd only shows 0x2000
 		call fclose(debug_init.f)
 		#set debug_init.f (NULL)
+		#call fflush(debug_init.fi) #else is gone to the garbage
+		call fclose(debug_init.fi)
 	end
 end
 function debug(ss data,sd size)
 	if debug_init.f!=(NULL)
+		call fwrite(#size,4,1,debug_init.fi)
 		call fwrite(data,size,1,debug_init.f)
 		call fflush(debug_init.f) #why not at fclose, same, fclose will throw 400 to garbage
+		call fflush(debug_init.fi) #else is gone to the garbage
 	end
 end

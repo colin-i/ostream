@@ -52,6 +52,7 @@ import "sar32" sar
 import "mp3_mean_bits" mp3_mean_bits
 import "mp3_l3_sb_sample" mp3_l3_sb_sample
 import "stage_sound_channels" stage_sound_channels
+import "stage_sound_rate" stage_sound_rate
 function mp3_encode_init()
     #sd avg_slots_per_frame
     #(
@@ -64,7 +65,7 @@ function mp3_encode_init()
     #    (double)config->mpeg.bits_per_slot
     #);
     sd samp_per_frame=samp_per_frame
-    sd samplerate=mp3_samplerate
+	sd samplerate;set samplerate stage_sound_rate((value_get))
     sd bits_per_slot=8
     sd bitrate
     setcall bitrate mp3_bitrate()
@@ -193,11 +194,20 @@ function mp3_encode_frame()
 endfunction
 
 function mp3_bitrate()
-	sd mp3_channels;set mp3_channels stage_sound_channels((value_get))
-	if mp3_channels=2
-		return 128 #96
+	sd channels;set channels stage_sound_channels((value_get))
+	sd rate;set rate stage_sound_rate((value_get))
+	if channels=2
+		if rate=(mp3_samplerate_max)
+			return 128
+		end
+		#mp3_samplerate_min
+		return 96
 	end
-	return 64 #32
+	if rate=(mp3_samplerate_max)
+		return 64
+	end
+	#mp3_samplerate_min
+	return 32
 endfunction
 
 import "l3_enc" l3_enc
@@ -257,9 +267,10 @@ function mp3_header()
     call mp3_bs_write(biterate_index,4)
     #samplerate index
     sd samplerate_index
-    data samplerateex_data={44100, 48000, 32000}
+    data samplerateex_data={44100, mp3_samplerate_max, mp3_samplerate_min}
     data samplerateex^samplerateex_data
-    setcall samplerate_index int_in_set(48000,samplerateex) #,3)
+	sd samplerate;set samplerate stage_sound_rate((value_get))
+	setcall samplerate_index int_in_set(samplerate,samplerateex) #,3)
     call mp3_bs_write(samplerate_index,2)
     #padding
     call mp3_bs_write(0,1) #Padding is necessary when the sampling frequency is 44.1 kHz and the frame length should always be an integer.
