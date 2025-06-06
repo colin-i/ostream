@@ -36,19 +36,24 @@ function debug_init()
 end
 function debug_free()
 	if debug_init.f!=(NULL)
-		importx "_fflush" fflush
-		#call fflush(debug_init.f) #must xxd 0x2400 after fclose but xxd only shows 0x2000
 		call fclose(debug_init.f)
 		#set debug_init.f (NULL)
-		#call fflush(debug_init.fi) #else is gone to the garbage
 		call fclose(debug_init.fi)
 	end
 end
 function debug(ss data,sd size)
 	if debug_init.f!=(NULL)
-		call fwrite(#size,4,1,debug_init.fi)
-		call fwrite(data,size,1,debug_init.f)
-		call fflush(debug_init.f) #why not at fclose, same, fclose will throw 400 to garbage
-		call fflush(debug_init.fi) #else is gone to the garbage
+		sd a;set a fwrite(#size,4,1,debug_init.fi)
+		if a=1
+			set a fwrite(data,size,1,debug_init.f)
+			if a=1
+				importx "_fflush" fflush
+				call fflush(debug_init.fi)
+				call fflush(debug_init.f)
+				#also a kernel sync(2) to phisical write to the disk
+				ret
+			end
+		end
+		call texter("weird error")
 	end
 end
