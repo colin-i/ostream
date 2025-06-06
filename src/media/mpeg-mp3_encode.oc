@@ -10,9 +10,9 @@ include "../_include/include.oh"
 import "mp3_output_size" mp3_output_size
 import "mp3_output_pos" mp3_output_pos
 
-#define         MPG_MD_STEREO           0
+const MPG_MD_STEREO=0
 #define         MPG_MD_JOINT_STEREO     1
-const MPG_MD_DUAL_CHANNEL=2
+#define         MPG_MD_DUAL_CHANNEL     2
 const MPG_MD_MONO=3
 
 const MPG_MD_LR_LR=0
@@ -279,7 +279,7 @@ function mp3_header()
     #mode
 	sd mp3_channels;set mp3_channels stage_sound_channels((value_get))
 	if mp3_channels=2
-		call mp3_bs_write((MPG_MD_DUAL_CHANNEL),2)
+		call mp3_bs_write((MPG_MD_STEREO),2)
 	else
 		call mp3_bs_write((MPG_MD_MONO),2)
 	end

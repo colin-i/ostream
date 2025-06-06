@@ -355,14 +355,29 @@ function stage_file_command(ss command)
     call default_unref(pipe)
 endfunction
 
+#void
 function stage_save_all()
     #verify for one frame and not mass remove
-    import "frame_jobs" frame_jobs
-    sd bool
-    setcall bool frame_jobs()
-    if bool!=1
-        return 0
-    endif
+	import "stage_get_sel" stage_get_sel
+	sd s;set s stage_get_sel()
+	if s=(NULL)
+		#must save mp3, ask if sound is null?
+		import "new_pixbuf_color" new_pixbuf_color
+		sd pixbuf
+		setcall pixbuf new_pixbuf_color(16,16,0)
+		if pixbuf=(NULL)
+			ret #urn 0
+		end
+		import "stage_new_pixbuf" stage_new_pixbuf
+		call stage_new_pixbuf(pixbuf)
+	else
+		import "mass_remove_job" mass_remove_job
+		sd bool
+		setcall bool mass_remove_job()
+		if bool!=(TRUE)
+			ret #urn 0
+		end
+	end
 
     #file format
     sd format
@@ -376,7 +391,7 @@ function stage_save_all()
     if cmp=(equalCompare)
         import "mkvfile" mkvfile
         call mkvfile((capture_flag_off))
-        return 1
+        ret #urn 1
     endif
 
     import "is_local_avi" is_local_avi
@@ -384,7 +399,7 @@ function stage_save_all()
     if bool=1
         import "aviwrite" aviwrite
         call aviwrite(0)
-        return 1
+        ret #urn 1
     endif
 
     import "slen" slen
@@ -393,7 +408,7 @@ function stage_save_all()
     if cmp=(equalCompare)
         import "mp4_write" mp4_write
         call mp4_write()
-        return 1
+        ret #urn 1
     endif
 
     data file_frames%stage_file_frames
@@ -431,7 +446,7 @@ function stage_save_all()
     data noerr=noerror
     setcall err allocsum_null(strings,ptr_mem)
     if err!=noerr
-        return err
+        ret #urn err
     endif
 
     call sprintf(mem,pipeformat,srcname,extra,informat,outformat,location)
