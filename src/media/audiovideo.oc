@@ -481,6 +481,10 @@ endfunction
 
 #bool
 function riff_head(sd mem_sz,ss chunk,sd p_chunk_size,ss riff_ex)
+	sd bool;set bool riff_head_ex(mem_sz,chunk,p_chunk_size,riff_ex,0)
+	return bool
+end
+function riff_head_ex(sd mem_sz,ss chunk,sd p_chunk_size,ss riff_ex,sd flags)
     sd mem
     sd size
     sd block^mem
@@ -494,9 +498,12 @@ function riff_head(sd mem_sz,ss chunk,sd p_chunk_size,ss riff_ex)
     sd cmp
     setcall cmp cmpmem(chunk,mem,4)
     if cmp!=(equalCompare)
+	sd test=riff_optional;and test flags
+	if test=0
         str cmp_er="Unrecognized chunk"
         call texter(cmp_er)
-        return 0
+	end
+	return 0
     endif
     import "move_cursors" move_cursors
     call move_cursors(block,4)
@@ -521,8 +528,12 @@ function riff_head(sd mem_sz,ss chunk,sd p_chunk_size,ss riff_ex)
         call move_cursors(block,4)
         sub p_chunk_size# 4
     endif
-    call cpymem(mem_sz,block,8)
-    return 1
+	and flags (riff_move)
+	if flags!=0
+		call move_cursors(block,p_chunk_size#)
+	end
+	call cpymem(mem_sz,block,8)
+	return 1
 endfunction
 
 

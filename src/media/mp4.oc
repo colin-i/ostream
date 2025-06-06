@@ -2344,11 +2344,11 @@ function mp4_sound_init(sd all_size)
 	setcall ch stage_sound_channels((value_get))
 	#verify for the used format
 	if ch!=(mp3_channels_stereo)
-	#	if ch!=(mp3_channels_mono)
-			vstr ch_err="Sound with 2 channels required"
+		if ch!=(mp3_channels_mono)
+			vstr ch_err="Sound with 1/2 channels required"
 			call texter(ch_err)
 			return 0
-	#	endif
+		endif
 	endif
 	sd bps
 	setcall bps stage_sound_bps((value_get))

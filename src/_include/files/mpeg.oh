@@ -66,7 +66,7 @@ const avc_P_SKIP=6
 
 #mp3
 const mp3_channels_stereo=2
-#const mp3_channels_mono=1
+const mp3_channels_mono=1
 const mp3_samplerate=48000
 const mp3_bitspersample=16
 const mp3_bytespersample=mp3_bitspersample/8

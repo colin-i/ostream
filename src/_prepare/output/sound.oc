@@ -872,44 +872,39 @@ function sound_get_values(sd mem,sd *size)
 endfunction
 
 function stage_sound_copy_action(sd mem,sd *size)
-    str r="RIFF"
-    str r_ex="WAVE"
-    str f="fmt "
-    str d="data"
-    sd bool
-    import "riff_head" riff_head
-    sd mem_sz^mem
-    sd chunk_size
-    sd p_chunk_size^chunk_size
-
-    setcall bool riff_head(mem_sz,r,p_chunk_size,r_ex)
-    if bool!=1
-        return 0
-    endif
-    setcall bool riff_head(mem_sz,f,p_chunk_size,0)
-    if bool!=1
-        return 0
-    endif
-    import "move_cursors" move_cursors
-    call move_cursors(mem_sz,chunk_size)
-    setcall bool riff_head(mem_sz,d,p_chunk_size,0)
-    if bool!=1
-        return 0
-    endif
-
-	#still need to bytealign to not do wrong access
-	sd part;set part stage_sound_bps((value_get))
-	divu part 8
-	mult part stage_sound_channels((value_get))
-	sd was;set was chunk_size
-	divu chunk_size part
-	mult chunk_size part
-	if was!=chunk_size
-		call texter("The wave copy was not block aligned")
+	vstr r="RIFF"^
+	vstr r_ex="WAVE"^
+	vstr f="fmt "^
+	vstr l="LIST"^
+	vstr d="data"^
+	sd bool
+	import "riff_head" riff_head
+	sd mem_sz^mem
+	sd chunk_size
+	sd p_chunk_size^chunk_size
+	setcall bool riff_head(mem_sz,r,p_chunk_size,r_ex)
+	if bool=1
+		import "riff_head_ex" riff_head_ex
+		setcall bool riff_head_ex(mem_sz,f,p_chunk_size,0,(riff_move))
+		if bool=1
+			call riff_head_ex(mem_sz,l,p_chunk_size,0,(riff_move|riff_optional))
+			setcall bool riff_head(mem_sz,d,p_chunk_size,0)
+			if bool=1
+				#still need to bytealign to not do wrong access
+				sd part;set part stage_sound_bps((value_get))
+				divu part 8
+				mult part stage_sound_channels((value_get))
+				sd was;set was chunk_size
+				divu chunk_size part
+				mult chunk_size part
+				if was!=chunk_size
+					call texter("The wave copy was not block aligned")
+				end
+				call stage_sound_alloc_expand(mem,chunk_size)
+				call stage_sound_alloc((stage_sound_alloc_printdialog_time))
+			end
+		end
 	end
-
-    call stage_sound_alloc_expand(mem,chunk_size)
-    call stage_sound_alloc((stage_sound_alloc_printdialog_time))
 endfunction
 
 
