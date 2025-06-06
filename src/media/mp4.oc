@@ -1655,7 +1655,7 @@ function mp4_mdat_sound(sd file)
         sd max_rate
         setcall max_rate mp4_audio_maxBitrate_get()
         #
-        sd timescale=mp3_samplerate
+        sd timescale;set timescale stage_sound_rate((value_get))
         sd samples=0
         sd loop=1
         while loop=1
@@ -1883,7 +1883,7 @@ const soundmdhd_size=\-soundmdhd_start
     if procedure=(mp4_write)
         sd times^creationTime
         call mp4_times((value_get),times)
-        set timeScale (mp3_samplerate)
+        set timeScale stage_sound_rate((value_get))
         setcall timeScale dword_reverse(timeScale)
         setcall duration mp4_all_samples()
         setcall duration dword_reverse(duration#)
@@ -2062,12 +2062,13 @@ const mp4a_size=\-mp4a_start
     sd procedure
     setcall procedure mp4_write_expand_get()
     if procedure=(mp4_write)
-        import "int_into_short" int_into_short
-        sd sr
-        setcall sr dword_reverse((mp3_samplerate))
-        div sr (0x100*0x100)
-        sd p^samplerate_hi
-        call int_into_short(sr,p)
+		import "int_into_short" int_into_short
+		sd sr
+		sd mp3_samplerate;set mp3_samplerate stage_sound_rate((value_get))
+		setcall sr dword_reverse(mp3_samplerate)
+		divu sr (0x100*0x100)
+		sd p^samplerate_hi
+		call int_into_short(sr,p)
     endif
 
     sd bool
@@ -2334,12 +2335,11 @@ const soundstco_size=\-soundstco_start
     return 1
 endfunction
 
-#
+import "stage_sound_channels" stage_sound_channels
+import "stage_sound_rate" stage_sound_rate
 #bool
 function mp4_sound_init(sd all_size)
-	import "stage_sound_channels" stage_sound_channels
 	import "stage_sound_bps" stage_sound_bps
-	import "stage_sound_rate" stage_sound_rate
 	sd ch
 	setcall ch stage_sound_channels((value_get))
 	#verify for the used format
@@ -2359,10 +2359,13 @@ function mp4_sound_init(sd all_size)
 	endif
 	sd rate
 	setcall rate stage_sound_rate((value_get))
-	if rate!=(mp3_samplerate)
-		vstr sr_err="Sound with 48000 sample rate required"
-		call texter(sr_err)
-		return 0
+	if rate!=(mp3_samplerate_max)
+#		if rate!=(mp3_samplerate_min)
+			vstr sr_err="Sound with 48000 sample rate required"
+#			vstr sr_err="Sound with 32000/48000 sample rate required"
+			call texter(sr_err)
+			return 0
+#		end
 	endif
     #all samples
     sd all_samples
@@ -2386,7 +2389,8 @@ function mp4_sound_init(sd all_size)
     call fild_value(tscale)
     call fstp_quad(double)
     call fmul_quad(double)
-    call fild_value((mp3_samplerate))
+	sd mp3_samplerate;set mp3_samplerate stage_sound_rate((value_get))
+	call fild_value(mp3_samplerate)
     call fstp_quad(double)
     call fdiv_quad(double)
     setcall duration mp4_sound_duration()
@@ -2464,7 +2468,6 @@ function mp4_dialog(ss filename)
 			end
 		end
 	endif
-
     call av_dialog_close()
 endfunction
 

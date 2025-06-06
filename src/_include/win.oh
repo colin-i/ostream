@@ -9,3 +9,6 @@ const flag_O_CREAT=0x0100;const flag_O_BINARY=0x8000
 const flag_fmode=flag_dmode
 
 const LC_NUMERIC=4
+
+Const Semicolon=0x3B
+const MULTIPATH_SEPARATOR=Semicolon

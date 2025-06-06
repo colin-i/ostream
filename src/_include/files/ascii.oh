@@ -1,5 +1,5 @@
 
-#Const Nullchar=0x00
+Const Nullchar=0x00
 #Const StartofHeading=0x01
 #Const StartofText=0x02
 #Const EndofText=0x03
