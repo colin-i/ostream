@@ -181,16 +181,18 @@ function mp3_encode_frame()
 		endwhile
 		inc granule
     endwhile
-    #apply mdct to the polyphase output
-    import "mp3_mdct" mp3_mdct
-    call mp3_mdct(l3_sb_sample,mdct_freq)
-    #bit and noise allocation
-    import "mp3_iteration" mp3_iteration
-    call mp3_iteration(mdct_freq,mean_bits)
 	import "debug" debug
+	call debug(l3_sb_sample,(l3_sb_sample_stereo_size))
+	#apply mdct to the polyphase output
+	import "mp3_mdct" mp3_mdct
+	call mp3_mdct(l3_sb_sample,mdct_freq)
 	call debug(mdct_freq,(mdct_freq_size))
-    #write the frame to the bitstream
-    call mp3_format_bitstream(mdct_freq)
+	#bit and noise allocation
+	import "mp3_iteration" mp3_iteration
+	call mp3_iteration(mdct_freq,mean_bits)
+	call debug(mdct_freq,(mdct_freq_size))
+	#write the frame to the bitstream
+	call mp3_format_bitstream(mdct_freq)
 endfunction
 
 function mp3_bitrate()
