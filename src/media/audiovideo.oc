@@ -174,8 +174,8 @@ endfunction
 
 #bool
 function av_dialog_run(sd forward,sd data)
-    value dialog#1   #valuex will not be good for another thread, were will see always 0
-    set dialog (NULL)
+	value dialog=NULL   #valuex will not be good for another thread, were will see always 0
+#	set dialog (NULL)
 
     #init for linux terminal capture
     import "capture_terminal" capture_terminal
@@ -248,7 +248,7 @@ function av_dialog_run(sd forward,sd data)
 		importx "_gtk_widget_destroy" gtk_widget_destroy
 		call gtk_widget_destroy(dialog) #here is not saying critical at windows, but also on linux the dialog needs to be destroyed
 
-		set dialog (NULL) # main thread here for idleclose
+		set dialog (NULL) # main thread here for idleclose, and when coming again
 		import "dialog_modal_texter_drawwidget" dialog_modal_texter_drawwidget
 		call dialog_modal_texter_drawwidget((value_set),0) #if an idle_add is still coming
 		call av_dialog_multiline_info((value_set),0) #if an idle_add is still coming
