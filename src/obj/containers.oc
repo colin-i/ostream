@@ -127,28 +127,25 @@ function dialogfield(ss title,sd modal_flag,sd forward1,sd forward2)
 endfunction
 #true to not propagate
 function dialogfield_modal_texter_expose(sd widget)
-	call dialogfield_modal_texter_drawtext((value_get),widget)
-	return (TRUE)
+	sd b;set b dialogfield_modal_texter_drawtext((value_get),widget)
+	return b
 endfunction
 import "cpymem" cpymem
 import "slen" slen
 #const modal_texter_draw_data_size=100
-function dialogfield_modal_texter_drawtext(sd procedure,sd text)
-	char text_data#22+modal_texter_mark+1
-	vstr strtext^text_data
+function dialogfield_modal_texter_drawtext(sd procedure,sd data)
+	vstr main_thread_text=NULL
+#	char text_data#22+modal_texter_mark+1
+#	vstr strtext^text_data
 	if procedure=(value_set)
-	#this is not main thread
-		sd len
-		setcall len slen(text)
-		inc len
-		call cpymem(strtext,text,len)
-	elseif procedure=(value_get)
-	#this is main thread
-		import "draw_expose_text" draw_expose_text
-		call draw_expose_text(text,strtext)
+		set main_thread_text data
 	else
-	#value_unset
-		set strtext# 0
+		if main_thread_text!=(NULL) #was not our call
+			import "draw_expose_text" draw_expose_text
+			call draw_expose_text(data,main_thread_text)
+			return (TRUE)  #was handled, no more propagation required
+		end
+		return (FALSE)
 	endelse
 endfunction
 #
@@ -162,13 +159,13 @@ function dialogfield_modal_texter_init(sd vbox,sd dialog)
     import "connect_signal" connect_signal
     sd draw
     setcall draw drawfield(vbox)
-    call dialogfield_modal_texter_drawtext((value_unset))
+#    call dialogfield_modal_texter_drawtext((value_unset))
     #old remark: it's not ok to access at the same time txt[modal_texter_draw_data_size] by threads but it's no problem
     #import "setmemzero" setmemzero
     #call setmemzero(txt,(modal_texter_draw_data_size))
     call dialog_modal_texter_drawwidget((value_set),draw)
     #
-    str expose="expose-event"
+    vstr expose="expose-event"
     data exp^dialogfield_modal_texter_expose
     call connect_signal(draw,expose,exp)
     #
@@ -195,31 +192,50 @@ function dialog_modal_texter_drawwidget(sd action,sd value)
         return drawwidget
     endelse
 endfunction
+function dup_str(ss text)
+	import "memalloc" memalloc
+	importx "_strlen" strlen
+	importx "_memcpy" memcpy
+	sd len;set len strlen(text);inc len
+	sd mem;set mem memalloc(len) #cannot double thread the text
+	if mem!=(NULL)
+		call memcpy(mem,text,len)
+		return mem
+	end
+	return (NULL)
+end
 function dialog_modal_texter_draw(ss text)
-#	sd widget
-#	setcall widget dialog_modal_texter_drawwidget((value_get))
-#	if widget!=0
-	call dialogfield_modal_texter_drawtext((value_set),text)
-	importx "_g_idle_add" g_idle_add
-	#the drawing commands must be called from the main thread or sometimes will crash
-	call g_idle_add(dialog_modal_texter_draw_main_thread,(void))
-#	endif
+	char counter=0
+	if counter<(limit_idle_add)
+		sd mem;set mem dup_str(text)
+		if mem!=(NULL)
+			importx "_g_idle_add" g_idle_add
+			#the drawing commands must be called from the main thread or sometimes will crash
+			call g_idle_add(dialog_modal_texter_draw_main_thread,mem)
+			inc counter
+		endif
+	end
 endfunction
 #FALSE=stop timeout
-function dialog_modal_texter_draw_main_thread(sd *data)
+function dialog_modal_texter_draw_main_thread(sd data)
 	sd widget
 	setcall widget dialog_modal_texter_drawwidget((value_get))
 	if widget!=0 #this,at audiovideo,can come later in main after g_thread_join/gtk_widget_destroy
+		call dialogfield_modal_texter_drawtext((value_set),data)
 		import "widget_redraw" widget_redraw
 		importx "_gtk_widget_get_window" gtk_widget_get_window
 		call widget_redraw(widget)
 		sd window
-		setcall window gtk_widget_get_window(widget)
+		setcall window gtk_widget_get_window(widget) #Returns the widget's window if it is realized, NULL otherwise.
 		if window!=0
 			importx "_gdk_window_process_updates" gdk_window_process_updates
 			call gdk_window_process_updates(window,(FALSE))
 		endif
+		call dialogfield_modal_texter_drawtext((value_set),(NULL)) #that is an expose gdk event
 	endif
+	importx "_free" free
+	call free(data)
+	dec dialog_modal_texter_draw.counter
 	return (FALSE)
 endfunction
 

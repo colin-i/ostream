@@ -1094,8 +1094,8 @@ function mkv_simpleblock(sd file,sd size,sd filepos)
             data p%ptr_nomoreframes
             set p# 1
             data fl%ptr_location
-            import "save_inform_saved" save_inform_saved
-            call save_inform_saved(fl#)
+            import "save_inform_saved_th" save_inform_saved_th
+            call save_inform_saved_th(fl#)
             return 0
         endif
         data time_max%ptr_timecodemax

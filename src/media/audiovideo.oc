@@ -175,8 +175,7 @@ endfunction
 
 #bool
 function av_dialog_run(sd forward,sd data)
-    data dialog#1
-
+    value dialog#1
     #init for linux terminal capture
     import "dialog_modal_texter_drawwidget" dialog_modal_texter_drawwidget
     call dialog_modal_texter_drawwidget((value_set),0)
@@ -217,11 +216,11 @@ function av_dialog_run(sd forward,sd data)
             sd response=GTK_RESPONSE_OK+1
             sd stop_click=0
             while response!=(GTK_RESPONSE_OK)
-                setcall response gtk_dialog_run(dialog)
-                if response!=(GTK_RESPONSE_OK)
-                    call av_dialog_stop((value_set),1)
-                    set stop_click 1
-                endif
+			setcall response gtk_dialog_run(dialog)
+			if response!=(GTK_RESPONSE_OK)
+				call av_dialog_stop((value_set),1)
+				set stop_click 1
+			endif
             endwhile
             if stop_click=0
                 #keep the dialog for viewing informations
@@ -243,7 +242,7 @@ function av_dialog_run(sd forward,sd data)
             import "capture_alt_ev_wait" capture_alt_ev_wait
             call capture_alt_ev_wait()
         endelse
-        #close the other thread and get return(optional)
+        #wait return from the other thread(optional)
         importx "_g_thread_join" g_thread_join
         setcall bool g_thread_join(thread)
     endelse
@@ -254,6 +253,7 @@ function av_dialog_run(sd forward,sd data)
         #free dialog
         importx "_gtk_widget_destroy" gtk_widget_destroy
         call gtk_widget_destroy(dialog) #here is not saying critical at windows, but also on linux the dialog needs to be destroyed
+		set dialog (NULL) # main thread here for idleclose
     endif
 
     return bool
@@ -264,13 +264,22 @@ function av_dialog_handle()
     sd p%av_dialog
     return p#
 endfunction
-function av_dialog_close()
+function av_dialog_idleclose() #main thread here
+	sd dialog
+	setcall dialog av_dialog_handle()
+	if dialog!=0
+		importx "_gtk_dialog_response" gtk_dialog_response
+		call gtk_dialog_response(dialog,(GTK_RESPONSE_OK))
+	end
+	return (FALSE)
+end
+function av_dialog_close() #this from another thread but av_dialog_handle was init and main thread will wait another thread to end before resetting av_dialog_handle
     sd dialog
     setcall dialog av_dialog_handle()
     if dialog!=0
-    #close the dialog
-        importx "_gtk_dialog_response" gtk_dialog_response
-        call gtk_dialog_response(dialog,(GTK_RESPONSE_OK))
+		#close the dialog
+		importx "_g_idle_add" g_idle_add #av_dialog_close from another thread
+		call g_idle_add(av_dialog_idleclose) #,dialog)
     else
     #signal the terminal
         import "capture_alt_ev_set" capture_alt_ev_set
@@ -287,28 +296,39 @@ function av_dialog_stop(sd action,sd value)
 endfunction
 
 import "slen" slen
+import "dup_str" dup_str
 
 #text iter at get
-function av_dialog_multiline_info(sd action,sd arg)
-    data view#1
-    sd buffer
-    if action=(value_set)
-        set view arg
-    else
-    #if action==(value_insert)
-        if view=0
-            return 0
-        endif
-        importx "_gtk_text_view_get_buffer" gtk_text_view_get_buffer
-        sd text
-        set text arg
-        setcall buffer gtk_text_view_get_buffer(view)
-        sd len
-        setcall len slen(text)
-        importx "_gtk_text_buffer_insert_at_cursor" gtk_text_buffer_insert_at_cursor
-        call gtk_text_buffer_insert_at_cursor(buffer,text,len)
-    endelse
+function av_dialog_multiline_info(sd action,sd arg) #another thread
+	value view#1 #NULL #is set to this anyway
+	if action=(value_set)
+		set view arg
+	else
+	#if action==(value_insert)
+		char counter=0
+		if counter<(limit_idle_add)
+			sd mem;set mem dup_str(arg)
+			if mem!=(NULL)
+				call g_idle_add(av_dialog_multiline_info_th,mem)
+				inc counter
+			end
+		end
+	endelse
 endfunction
+function av_dialog_multiline_info_th(ss mem) #main thread
+	sd buffer
+	if av_dialog_multiline_info.view!=(NULL)
+		importx "_gtk_text_view_get_buffer" gtk_text_view_get_buffer
+		setcall buffer gtk_text_view_get_buffer(av_dialog_multiline_info.view)
+		sd len
+		setcall len slen(mem)
+		importx "_gtk_text_buffer_insert_at_cursor" gtk_text_buffer_insert_at_cursor
+		call gtk_text_buffer_insert_at_cursor(buffer,mem,len)
+	end
+	call free(mem)
+	dec av_dialog_multiline_info.counter
+	return (FALSE)
+end
 
 function av_dialog_init(sd vbox,sd *dialog)
     #init for read

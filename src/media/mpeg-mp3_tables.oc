@@ -572,12 +572,19 @@ function mp3_tables_enwindow()
     return p
 endfunction
 
-
+import "stage_sound_rate" stage_sound_rate
 function scalefac_band_long()
-    #Table B.8.c: 48 kHz
-    data band={0,4,8,12,16,20,24,30,36,42,50,60,72,88,106,128,156,190,230,276,330,384,576}
-    data p^band
-    return p
+	sd samplerate;set samplerate stage_sound_rate((value_get))
+	if samplerate=32000
+		# Table B.8.a: 32 kHz
+		data band32={0,4,8,12,16,20,24,30,36,44,54,66,82,102,126,156,194,240,296,364,448,550,576}
+		vdata p32^band32
+		return p32
+	end
+	# Table B.8.c: 48 kHz
+	data band        ={0,4,8,12,16,20,24,30,36,42,50,60,72,88,106,128,156,190,230,276,330,384,576}
+	vdata p^band
+	return p
 endfunction
 function scalefac_band_long_get(sd index)
     sd tab

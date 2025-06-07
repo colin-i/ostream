@@ -40,11 +40,27 @@ function rec_stream_error(data *bus,data message)
 endfunction
 
 function save_inform_saved(ss location)
-    str sv="File saved as: "
-    data ss=stringstring
-    import "strvaluedisp" strvaluedisp
-    call strvaluedisp(sv,location,ss)
+	vstr sv="File saved as: "
+	data ss=stringstring
+	import "strvaluedisp" strvaluedisp
+	call strvaluedisp(sv,location,ss)
 endfunction
+function save_inform_saved_th_fn(ss location)
+	call strvaluedisp(save_inform_saved.sv,location,save_inform_saved.ss)
+	return (FALSE)
+end
+function save_inform_saved_thf_fn(ss location)
+	call strvaluedisp(save_inform_saved.sv,location,save_inform_saved.ss)
+	call free(location)
+	return (FALSE)
+end
+importx "_g_idle_add" g_idle_add
+function save_inform_saved_th(ss location)
+	call g_idle_add(save_inform_saved_th_fn,location)
+end
+function save_inform_saved_thf(ss location)
+	call g_idle_add(save_inform_saved_thf_fn,location)
+end
 
 function rec_endofstream(data *bus,data *message,str passdata)
     call save_inform_saved(passdata)

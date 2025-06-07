@@ -249,7 +249,7 @@ endfunction
 function stage_sound_closedialog()
 	#not in main is here
 	importx "_g_idle_add" g_idle_add
-	call g_idle_add(stage_sound_realclosedialog,(void))
+	call g_idle_add(stage_sound_realclosedialog) #,(void))
 endfunction
 #bool
 function stage_sound_realclosedialog()

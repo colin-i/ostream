@@ -135,27 +135,27 @@ function avc_rounding(sd value)
 endfunction
 
 function avc_free()
-    sd mem
-    setcall mem avc_pre_input((value_get))
-    call free(mem)
-    setcall mem avc_input((value_get))
-    if mem!=0
-        call free(mem)
-    endif
-    setcall mem avc_output((value_get))
-    if mem!=0
-        call free(mem)
-    endif
-    setcall mem avc_nal_output((value_get))
-    if mem!=0
-        call free(mem)
-    endif
-    setcall mem avc_mb_data((value_get))
-    if mem!=0
-        call free(mem)
-    endif
-    setcall mem avc_input_dequant((value_get))
-    if mem!=0
-        call free(mem)
-    endif
+	sd mem
+	setcall mem avc_pre_input((value_get))
+	call free(mem)
+	setcall mem avc_input((value_get))
+	if mem!=0
+		call free(mem)
+		setcall mem avc_output((value_get))
+		if mem!=0
+			call free(mem)
+			setcall mem avc_nal_output((value_get))
+			if mem!=0
+				call free(mem)
+				setcall mem avc_mb_data((value_get))
+				if mem!=0
+					call free(mem)
+					setcall mem avc_input_dequant((value_get))
+					if mem!=0
+						call free(mem)
+					endif
+				end
+			end
+		end
+	end
 endfunction
