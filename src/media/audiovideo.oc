@@ -206,6 +206,7 @@ function av_dialog_run(sd forward,sd data)
 		import "gerrtoerr" gerrtoerr
 		call gerrtoerr(ptrgerr)
 	else
+		sd returned=0
 		if term=0
 			#dialog run
 			importx "_gtk_dialog_run" gtk_dialog_run
@@ -223,6 +224,12 @@ function av_dialog_run(sd forward,sd data)
 				sd toggle
 				setcall toggle av_results((value_get))
 				if toggle!=0
+					#wait return from the other thread(optional)
+					importx "_g_thread_join" g_thread_join
+					setcall bool g_thread_join(thread) #this is here because needing no more reallocs on log
+					set returned 1
+					call av_dialog_multiline_info((value_get))
+
 					call gtk_dialog_run(dialog)
 					import "stage_file_options_info_message" stage_file_options_info_message
 					sd toggle_button
@@ -238,15 +245,17 @@ function av_dialog_run(sd forward,sd data)
 			import "capture_alt_ev_wait" capture_alt_ev_wait
 			call capture_alt_ev_wait()
 		endelse
-		#wait return from the other thread(optional)
-		importx "_g_thread_join" g_thread_join
-		setcall bool g_thread_join(thread)
+		if returned=0
+			#wait return from the other thread(optional)
+			setcall bool g_thread_join(thread)
+		end
 	endelse
 
 	if dialog!=0
 		#free dialog
 		importx "_gtk_widget_destroy" gtk_widget_destroy
 		call gtk_widget_destroy(dialog) #here is not saying critical at windows, but also on linux the dialog needs to be destroyed
+		call av_dialog_multiline_info((value_unset))
 
 		set dialog (NULL) # main thread here for idleclose, and when coming again
 		import "dialog_modal_texter_drawwidget" dialog_modal_texter_drawwidget
@@ -294,41 +303,50 @@ function av_dialog_stop(sd action,sd value)
 endfunction
 
 import "slen" slen
-import "dup_str" dup_str
 
 #text iter at get
 function av_dialog_multiline_info(sd action,sd arg) #another thread
-	value view#1 #NULL #is set to this anyway
-	if action=(value_set)
-		set view arg
-	else
-	#if action==(value_insert)
-		char counter=0
-		while counter!=0
-			import "sleepMs" sleepMs
-			call sleepMs(100) #wait for main thread
+	value view#1 #NULL #will be set
+	valueu mem#1 #is multithread so no valuexu
+	data size#1
+	if action=(value_insert) #another thread
+		sd len
+		importx "_strlen" strlen
+		setcall len strlen(arg)
+		inc len
+		sd sz;set sz size
+		add sz len
+		if sz>0  #overflow?
+			import "memrealloc" memrealloc
+			sd m;set m memrealloc(mem,sz)
+			if m!=(NULL)
+				set mem m
+				add m size
+				set size sz
+				importx "_memcpy" memcpy
+				call memcpy(m,arg,len)
+			end
 		end
-		sd mem;set mem dup_str(arg)
+	elseif action=(value_set) #in main safe
+		set view arg
+		importx "_malloc" malloc
+		set mem malloc(1) #no zero
+		set size 0
+	else #in main safe
 		if mem!=(NULL)
-			call g_idle_add(av_dialog_multiline_info_th,mem)
-			inc counter
+			if action=(value_get)
+				importx "_gtk_text_view_get_buffer" gtk_text_view_get_buffer
+				sd buffer
+				setcall buffer gtk_text_view_get_buffer(view)
+				dec size
+				importx "_gtk_text_buffer_insert_at_cursor" gtk_text_buffer_insert_at_cursor
+				call gtk_text_buffer_insert_at_cursor(buffer,mem,size)
+			else #if action=(value_unset)
+				call free(mem)
+			end
 		end
 	endelse
 endfunction
-function av_dialog_multiline_info_th(ss mem) #main thread
-	sd buffer
-	if av_dialog_multiline_info.view!=(NULL)
-		importx "_gtk_text_view_get_buffer" gtk_text_view_get_buffer
-		setcall buffer gtk_text_view_get_buffer(av_dialog_multiline_info.view)
-		sd len
-		setcall len slen(mem)
-		importx "_gtk_text_buffer_insert_at_cursor" gtk_text_buffer_insert_at_cursor
-		call gtk_text_buffer_insert_at_cursor(buffer,mem,len)
-	end
-	call free(mem)
-	dec av_dialog_multiline_info.counter
-	return (FALSE)
-end
 
 function av_dialog_init(sd vbox,sd *dialog)
     #init for read
