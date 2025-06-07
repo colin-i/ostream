@@ -71,6 +71,7 @@ const mp3_samplerate_max=48000
 const mp3_samplerate_min=32000
 const mp3_bitspersample=16
 const mp3_bytespersample=mp3_bitspersample/8
+const l3_bytespersample=mp3_bytespersample
 #const mp3_blockalign=mp3_chans*mp3_bytespersample
 const samp_per_frame=1152
 const samp_per_frame2=576
@@ -110,5 +111,5 @@ const huffman_linbits=huffman_ylen+DWORD
 const huffman_linmax=huffman_linbits+DWORD
 const huffman_entry=huffman_linmax+DWORD
 
-const buffer_channel_size=samp_per_frame*WORD
+const buffer_channel_size=samp_per_frame*l3_bytespersample  #WORD
 const stereo_buffer_size=mp3_channels_stereo*buffer_channel_size

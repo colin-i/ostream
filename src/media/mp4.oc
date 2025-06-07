@@ -53,8 +53,7 @@ importx "_fwrite" fwrite
 importx "_strlen" strlen
 import "getwritemode" getwritemode
 import "getreadmode" getreadmode
-import "texter_inline" texter_inline
-import "texter_inline_end" texter_inline_end
+import "save_inform_saved_thf" save_inform_saved_thf
 function mp3_file(sd bool,sv extra_off1,sv mp3_off)
 #location is saved with const
 #reopen, the mode is getwritemode for mp4 file. call before mp4 is closed to not release resources to not recheck too many calls
@@ -62,7 +61,8 @@ function mp3_file(sd bool,sv extra_off1,sv mp3_off)
 	vstrx src#1
 	const extr_0^src
 	ss dest;set dest src
-	add dest strlen(src)
+	sd src_sz;set src_sz strlen(src)
+	add dest src_sz
 	dec dest
 	if bool=(FALSE)
 		if extra_off1=mp3_off
@@ -101,9 +101,24 @@ function mp3_file(sd bool,sv extra_off1,sv mp3_off)
 			set dest# aux
 		end
 	elseif nothing=0
-		set dest# 0x33   #mp4->mp3 , hacky way
-		call texter_inline(" and ")
-		call texter_inline_end(src)
+		sd allocsz;set allocsz src_sz
+		mult allocsz 2 #this is captures/epoch.ext here
+		add allocsz 5+1
+		sd mem;set mem memalloc(allocsz)
+		if mem!=(NULL)
+			importx "_memcpy" memcpy
+			call memcpy(mem,src,src_sz)
+			ss cursor;set cursor mem
+			add cursor src_sz
+			char and=" and "^
+			call memcpy(cursor,#and,5)
+			add cursor 5
+			set dest# 0x33   #mp4->mp3 , hacky way
+			call memcpy(cursor,src,src_sz)
+			add cursor src_sz
+			set cursor# (Nullchar)
+			call save_inform_saved_thf(mem)
+		end
 	end
 end
 function mp3_file_bool()
@@ -145,12 +160,12 @@ function mp4_container(sd file,sd pixbuf)
     if bool!=1
         return 0
     endif
-    setcall bool mp3_init()
+	setcall bool mp3_init()
 	if bool=1
 		call mp4_file(file,pixbuf)
 		call mp3_free()
 	endif
-    call avc_free()
+	call avc_free()
 endfunction
 
 import "mp4_longest_duration" mp4_longest_duration
@@ -195,7 +210,7 @@ function mp4_file(sd file,sd pixbuf)
         addcall sz mp4_audio_samples_get()
         setcall bool mp4_sound_init(sz)
         if bool!=1
-            return (void)
+            ret #urn (void)
         endif
     endif
     #
@@ -1336,7 +1351,6 @@ function mp4_mdat(sd file)
     if bool!=(TRUE)
         return (FALSE)
     endif
-
 	sd bl;set bl mp3_file_bool()
 	if bl=(TRUE)
 		call mp3_file((FALSE),off1,file_pos)
@@ -1589,7 +1603,6 @@ function mp4_mdat_sound(sd file)
     sd ptr_file_pos^file_pos
 
     #sound
-    import "mp3_encode" mp3_encode
     sd is_sound_or_is_not
     setcall is_sound_or_is_not mp4_sound_presence_get()
     if is_sound_or_is_not!=0
@@ -1668,10 +1681,13 @@ function mp4_mdat_sound(sd file)
             if err!=(noerror)
                 return 0
             endif
+
+	    import "mp3_encode" mp3_encode
             setcall bool mp3_encode(file)
             if bool!=1
                 return 0
             endif
+
             setcall err file_tell(file,p_sound_size)
             if err!=(noerror)
                 return 0
@@ -2360,12 +2376,11 @@ function mp4_sound_init(sd all_size)
 	sd rate
 	setcall rate stage_sound_rate((value_get))
 	if rate!=(mp3_samplerate_max)
-#		if rate!=(mp3_samplerate_min)
-			vstr sr_err="Sound with 48000 sample rate required"
-#			vstr sr_err="Sound with 32000/48000 sample rate required"
+		if rate!=(mp3_samplerate_min)
+			vstr sr_err="Sound with 32000/48000 sample rate required"
 			call texter(sr_err)
 			return 0
-#		end
+		end
 	endif
     #all samples
     sd all_samples
@@ -2420,6 +2435,7 @@ endfunction
 
 
 ##extend + write
+import "save_inform_saved_th" save_inform_saved_th
 import "file_write_forward" file_write_forward
 function mp4_dialog(ss filename)
     #init expand values
@@ -2455,20 +2471,22 @@ function mp4_dialog(ss filename)
             call free(mem)
         endif
     endelse
-
 	sd info
 	setcall info mp4_info_get()
 	if info=(TRUE)
-		import "save_inform_saved" save_inform_saved
-		call save_inform_saved(filename)
+		sd b
 		if procedure=(mp4_write)
-			sd b;set b mp3_file_bool()
+			set b mp3_file_bool()
 			if b=(TRUE)
 				call mp3_file((TRUE))
+			else
+				call save_inform_saved_th(filename)
 			end
+		else
+			call save_inform_saved_th(filename)
 		end
 	endif
-    call av_dialog_close()
+	call av_dialog_close()
 endfunction
 
 #bool

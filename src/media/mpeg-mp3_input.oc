@@ -68,7 +68,7 @@ function mp3_get_pcm(sd buffer)
         while cursor_size!=get_ch_size
 			call cpymem(buffer_cursor,cursor,(mp3_bytespersample))
 			add cursor add
-			add buffer_cursor (WORD) #this is not stable, can be changed to mp3_bytespersample for less space
+			add buffer_cursor (l3_bytespersample) #WORD
 			add cursor_size (mp3_bytespersample)
         endwhile
         inc i
@@ -324,7 +324,7 @@ function l3_window_filter_subband(sd buf,sd l3_sb,sd channel)
     sd i=31
     while i>=0
         setcall value short_get_to_int(buf)
-        add buf (WORD)
+        add buf (l3_bytespersample) #WORD
         setcall value shl(value,16)
         set index i
         add index off

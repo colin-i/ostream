@@ -9,6 +9,10 @@ importx "_gtk_main" gtk_main
 #importx "_exit" exit
 
 import "initfn" initfn
+function main_thread()
+	value t#1
+	return t
+end
 
 include "../_dif/difl.oc" "../_dif/difw.oc"
 
@@ -20,6 +24,8 @@ call setlocale((LC_NUMERIC),"C") #"English" was ok
 
 importx "_g_thread_init" g_thread_init
 call g_thread_init(0)
+importx "_g_thread_self" g_thread_self
+set main_thread.t g_thread_self()
 
 import "gstset" gstset
 call gstset()
