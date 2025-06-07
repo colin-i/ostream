@@ -100,24 +100,28 @@ function mp3_file(sd bool,sv extra_off1,sv mp3_off)
 
 			set dest# aux
 		end
-	elseif nothing=0
-		sd allocsz;set allocsz src_sz
-		mult allocsz 2 #this is captures/epoch.ext here
-		add allocsz 5+1
-		sd mem;set mem memalloc(allocsz)
-		if mem!=(NULL)
-			importx "_memcpy" memcpy
-			call memcpy(mem,src,src_sz)
-			ss cursor;set cursor mem
-			add cursor src_sz
-			char and=" and "^
-			call memcpy(cursor,#and,5)
-			add cursor 5
-			set dest# 0x33   #mp4->mp3 , hacky way
-			call memcpy(cursor,src,src_sz)
-			add cursor src_sz
-			set cursor# (Nullchar)
-			call save_inform_saved_thf(mem)
+	else
+		if nothing=0
+			sd allocsz;set allocsz src_sz
+			mult allocsz 2 #this is captures/epoch.ext here
+			add allocsz 5+1
+			sd mem;set mem memalloc(allocsz)
+			if mem!=(NULL)
+				importx "_memcpy" memcpy
+				call memcpy(mem,src,src_sz)
+				ss cursor;set cursor mem
+				add cursor src_sz
+				char and=" and "^
+				call memcpy(cursor,#and,5)
+				add cursor 5
+				set dest# 0x33   #mp4->mp3 , hacky way
+				call memcpy(cursor,src,src_sz)
+				add cursor src_sz
+				set cursor# (Nullchar)
+				call save_inform_saved_thf(mem)
+			end
+		else
+			call save_inform_saved_th(src)
 		end
 	end
 end

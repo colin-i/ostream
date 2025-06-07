@@ -206,7 +206,7 @@ function dup_str(ss text)
 end
 function dialog_modal_texter_draw(ss text)
 	char counter=0
-	if counter<(limit_idle_add)
+	if counter<1
 		sd mem;set mem dup_str(text)
 		if mem!=(NULL)
 			importx "_g_idle_add" g_idle_add

@@ -164,7 +164,6 @@ endfunction
 
 
 
-
 #dialog for read/write waiting
 
 import "dialog_modal_texter_draw" dialog_modal_texter_draw
@@ -175,13 +174,10 @@ endfunction
 
 #bool
 function av_dialog_run(sd forward,sd data)
-    value dialog#1
-    #init for linux terminal capture
-    import "dialog_modal_texter_drawwidget" dialog_modal_texter_drawwidget
-    call dialog_modal_texter_drawwidget((value_set),0)
-    call av_dialog_multiline_info((value_set),0)
-    set dialog 0
+    value dialog#1   #valuex will not be good for another thread, were will see always 0
+    set dialog (NULL)
 
+    #init for linux terminal capture
     import "capture_terminal" capture_terminal
     sd term
     setcall term capture_terminal((value_get))
@@ -206,59 +202,61 @@ function av_dialog_run(sd forward,sd data)
     importx "_g_thread_create" g_thread_create
     sd thread
     setcall thread g_thread_create(forward,data,1,ptrgerr)
-    if thread=0
-        import "gerrtoerr" gerrtoerr
-        call gerrtoerr(ptrgerr)
-    else
-        if term=0
-            #dialog run
-            importx "_gtk_dialog_run" gtk_dialog_run
-            sd response=GTK_RESPONSE_OK+1
-            sd stop_click=0
-            while response!=(GTK_RESPONSE_OK)
-			setcall response gtk_dialog_run(dialog)
-			if response!=(GTK_RESPONSE_OK)
-				call av_dialog_stop((value_set),1)
-				set stop_click 1
+	if thread=0
+		import "gerrtoerr" gerrtoerr
+		call gerrtoerr(ptrgerr)
+	else
+		if term=0
+			#dialog run
+			importx "_gtk_dialog_run" gtk_dialog_run
+			sd response=GTK_RESPONSE_OK+1
+			sd stop_click=0
+			while response!=(GTK_RESPONSE_OK)
+				setcall response gtk_dialog_run(dialog)
+				if response!=(GTK_RESPONSE_OK)
+					call av_dialog_stop((value_set),1)
+					set stop_click 1
+				endif
+			endwhile
+			if stop_click=0
+				#keep the dialog for viewing informations
+				sd toggle
+				setcall toggle av_results((value_get))
+				if toggle!=0
+					call gtk_dialog_run(dialog)
+					import "stage_file_options_info_message" stage_file_options_info_message
+					sd toggle_button
+					setcall toggle_button av_results_toggle_button((value_get))
+					importx "_gtk_toggle_button_get_active" gtk_toggle_button_get_active
+					setcall toggle gtk_toggle_button_get_active(toggle_button)
+					if toggle=1
+						call stage_file_options_info_message((value_set),0)
+					endif
+				endif
 			endif
-            endwhile
-            if stop_click=0
-                #keep the dialog for viewing informations
-                sd toggle
-                setcall toggle av_results((value_get))
-                if toggle!=0
-                    call gtk_dialog_run(dialog)
-                    import "stage_file_options_info_message" stage_file_options_info_message
-                    sd toggle_button
-                    setcall toggle_button av_results_toggle_button((value_get))
-                    importx "_gtk_toggle_button_get_active" gtk_toggle_button_get_active
-                    setcall toggle gtk_toggle_button_get_active(toggle_button)
-                    if toggle=1
-                        call stage_file_options_info_message((value_set),0)
-                    endif
-                endif
-            endif
-        else
-            import "capture_alt_ev_wait" capture_alt_ev_wait
-            call capture_alt_ev_wait()
-        endelse
-        #wait return from the other thread(optional)
-        importx "_g_thread_join" g_thread_join
-        setcall bool g_thread_join(thread)
-    endelse
+		else
+			import "capture_alt_ev_wait" capture_alt_ev_wait
+			call capture_alt_ev_wait()
+		endelse
+		#wait return from the other thread(optional)
+		importx "_g_thread_join" g_thread_join
+		setcall bool g_thread_join(thread)
+	endelse
 
-    if dialog!=0
-        #for text draw callbacks
-        call dialog_modal_texter_drawwidget((value_set),0)
-        #free dialog
-        importx "_gtk_widget_destroy" gtk_widget_destroy
-        call gtk_widget_destroy(dialog) #here is not saying critical at windows, but also on linux the dialog needs to be destroyed
+	if dialog!=0
+		#free dialog
+		importx "_gtk_widget_destroy" gtk_widget_destroy
+		call gtk_widget_destroy(dialog) #here is not saying critical at windows, but also on linux the dialog needs to be destroyed
+
 		set dialog (NULL) # main thread here for idleclose
-    endif
+		import "dialog_modal_texter_drawwidget" dialog_modal_texter_drawwidget
+		call dialog_modal_texter_drawwidget((value_set),0) #if an idle_add is still coming
+		call av_dialog_multiline_info((value_set),0) #if an idle_add is still coming
+	endif
 
-    return bool
+	return bool
 
-    const av_dialog^dialog
+	const av_dialog^dialog
 endfunction
 function av_dialog_handle()
     sd p%av_dialog
@@ -306,12 +304,14 @@ function av_dialog_multiline_info(sd action,sd arg) #another thread
 	else
 	#if action==(value_insert)
 		char counter=0
-		if counter<(limit_idle_add)
-			sd mem;set mem dup_str(arg)
-			if mem!=(NULL)
-				call g_idle_add(av_dialog_multiline_info_th,mem)
-				inc counter
-			end
+		while counter!=0
+			import "sleepMs" sleepMs
+			call sleepMs(100) #wait for main thread
+		end
+		sd mem;set mem dup_str(arg)
+		if mem!=(NULL)
+			call g_idle_add(av_dialog_multiline_info_th,mem)
+			inc counter
 		end
 	endelse
 endfunction

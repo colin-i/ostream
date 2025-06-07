@@ -154,4 +154,3 @@ const riff_move=1
 const riff_optional=2
 
 const modal_texter_mark=dword_max+dword_max
-const limit_idle_add=2
