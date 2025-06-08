@@ -313,7 +313,6 @@ function av_dialog_multiline_info(sd action,sd arg) #another thread
 		sd len
 		importx "_strlen" strlen
 		setcall len strlen(arg)
-		inc len
 		sd sz;set sz size
 		add sz len
 		if sz>0  #overflow?
@@ -338,9 +337,9 @@ function av_dialog_multiline_info(sd action,sd arg) #another thread
 				importx "_gtk_text_view_get_buffer" gtk_text_view_get_buffer
 				sd buffer
 				setcall buffer gtk_text_view_get_buffer(view)
-				dec size
-				importx "_gtk_text_buffer_insert_at_cursor" gtk_text_buffer_insert_at_cursor
-				call gtk_text_buffer_insert_at_cursor(buffer,mem,size)
+				#importx "_gtk_text_buffer_insert_at_cursor" gtk_text_buffer_insert_at_cursor
+				importx "_gtk_text_buffer_set_text" gtk_text_buffer_set_text
+				call gtk_text_buffer_set_text(buffer,mem,size)
 			else #if action=(value_unset)
 				call free(mem)
 			end
