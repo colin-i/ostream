@@ -1,14 +1,14 @@
 
-echo "test/xver? (n)o? then git show master:verion.txt" && \
+echo "test/xver? y? else git show master:verion.txt" && \
 read -n1 -t $((60*60*24)) ans && \
-if [ "${ans}" != "n" ]; then
+if [ "${ans}" = "y" ]; then
 	echo xver && \
 	~/test/xver ./version.txt
 else
 	echo git show && \
 	git show master:version.txt > version.txt
 fi && \
-~/test/debinit2 "${1}" && \
+~/test/debinit2b "${1}" && \
 ~/test/keyring && \
 ~/test/deb && \
 ~/test/publp && \
