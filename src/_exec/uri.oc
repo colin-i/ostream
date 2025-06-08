@@ -3,7 +3,7 @@ format elfobj
 
 import "texter" texter
 
-include "../_include/include.h"
+include "../_include/include.oh"
 
 function setplaybin2(data value)
     data playbin2#1

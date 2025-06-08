@@ -2,7 +2,7 @@
 
 format elfobj
 
-include "../_include/include.h"
+include "../_include/include.oh"
 
 Const GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER=2
 

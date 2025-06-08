@@ -3,7 +3,7 @@
 
 format elfobj
 
-include "../../_include/include.h"
+include "../../_include/include.oh"
 
 const stage_move_cover_set=0
 const stage_move_cover_get=1

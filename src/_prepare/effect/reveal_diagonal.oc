@@ -3,7 +3,7 @@
 
 format elfobj
 
-include "../../_include/include.h"
+include "../../_include/include.oh"
 
 const top_left=0
 const top_right=1

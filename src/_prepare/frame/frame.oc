@@ -2,7 +2,7 @@
 
 format elfobj
 
-include "../../_include/include.h"
+include "../../_include/include.oh"
 
 
 function stage_frame_panel(sd action,sd button,sd backfn,sd panel)

@@ -1,6 +1,6 @@
 
 
-include "jpeg~l.h" "jpeg~w.h"
+include "jpeg~l.oh" "jpeg~w.oh"
 
 const jerr_size=132
 

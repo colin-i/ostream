@@ -3,7 +3,7 @@
 
 format elfobj
 
-include "../_include/include.h"
+include "../_include/include.oh"
 
 #comparing constants like MPG_MD_DUAL_CHANNEL or BUFFER_SIZE(was 4096), the discontinued BladeEnc, maybe a fork of The LAME Project
 

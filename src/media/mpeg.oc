@@ -5,7 +5,7 @@ format elfobj
 #MPEG-4 Advanced Simple Profile encoder
 #this was, comparing by constants like XVID_VOL_INTERLACING or XVID_VOP_HQACPRED, xvidcore, https://labs.xvid.com/project/
 
-include "../_include/include.h"
+include "../_include/include.oh"
 
 import "shl" shl
 import "shr" shr

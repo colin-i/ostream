@@ -2,7 +2,7 @@
 
 format elfobj
 
-include "../_include/include.h"
+include "../_include/include.oh"
 
 const X264_SCAN8_SIZE=6*8
 

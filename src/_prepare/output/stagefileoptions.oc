@@ -3,7 +3,7 @@
 
 format elfobj
 
-include "../../_include/include.h"
+include "../../_include/include.oh"
 
 function stage_file_options_got_file(sd mem,sd *size)
     #values and initial default set

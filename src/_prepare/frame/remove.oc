@@ -2,7 +2,7 @@
 
 format elfobj
 
-include "../../_include/include.h"
+include "../../_include/include.oh"
 
 import "stage_get_sel" stage_get_sel
 import "stage_get_sel_pos" stage_get_sel_pos

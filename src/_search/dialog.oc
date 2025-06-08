@@ -3,7 +3,7 @@
 
 format elfobj
 
-include "../_include/include.h"
+include "../_include/include.oh"
 
 function show_preferences_set_windows(sd vbox)
     import "packstart" packstart

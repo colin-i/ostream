@@ -7,7 +7,7 @@ format elfobj
 import "timeNode" time
 importx "_sprintf" sprintf
 
-include "../../_include/include.h"
+include "../../_include/include.oh"
 
 function rec_get()
     data recbin#1
