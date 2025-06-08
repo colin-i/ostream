@@ -16,18 +16,18 @@ use_version_txt=1 ~/test/debinit2b "${1}" ${2} && \
 git restore debian/files && git diff --exit-code && \
 #
 ~/test/ai/ai && \
-~/test/rpm/rpm && \
 ~/test/del && \
 ~/test/rel && \
 ./wmake && \
-~/test/pub appimage rpm rel && \
+~/test/pub appimage rel && \
 ~/test/updeb && \
+~/test/rpm/rpm && \
 ~/test/test && \
 ~/test/ai/upapp && \
+~/test/upgen ovideo.zip && \
+~/test/pub rpm upapp && \
 ~/test/rpm/rerpm && \
 ~/test/rpm/uprpm && \
-~/test/upgen ovideo.zip && \
-~/test/pub upapp && \
 ~/test/pub2 && \
 ~/test/publp2 && \
 ~/test/lp 0 "${tars}" && \
