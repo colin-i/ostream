@@ -65,7 +65,7 @@ jobs:
       mv ${fname} ../${fname}
       echo "file=${fname}" >> $GITHUB_ENV
    - name: artifact
-     uses: actions/upload-artifact@v3
+     uses: actions/upload-artifact@master
      with:
       name: rpm
       path: ./${{ env.file }}
