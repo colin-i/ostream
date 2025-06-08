@@ -2567,7 +2567,7 @@ function mp4_expand_go(ss filepath,ss temppath)
     setcall err openfile(#file,temppath,"rb")
     if err=(noerror)
         #info
-        call dialog_modal_texter_draw("Prepare the original file")
+        call dialog_modal_texter_draw("Preparing the original file")
         #store read handle for reading at the other file
         call mp4_expand_startfile_set(file)
         sd info
