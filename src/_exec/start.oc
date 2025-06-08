@@ -167,7 +167,7 @@ function callbackprocessfolder()
 		#move to settings
 		data sysforward^setsystems
 		call sys_folder_enterleave(sysforward)
-		return (void)
+		ret #urn (void)
 	endif
 	call texter(err)
 endfunction

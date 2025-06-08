@@ -672,7 +672,7 @@ function sound_preview_write_buffer(sd buffer,sd buffer_size)
     sd hwaveout
     setcall hwaveout sound_preview_mm_hwaveout()
     if hwaveout#=0
-        return (void)
+        ret #urn (void)
     endif
 	const wvhd=\
     data lpData#1
@@ -962,7 +962,7 @@ function video_realize(data widget)
 			sd drawablehandle
 			setcall drawablehandle gdk_win32_drawable_get_handle(window)
 			call gst_x_overlay_set_window_handle(interfacecast,drawablehandle)
-			return (void)
+			ret #urn (void)
 		endif
 		import "printer" printer
 		call printer("gst_element_implements_interface false.")
@@ -1022,7 +1022,7 @@ function iterate_next_forward_free(sd iter,sv forward)
 	if ret=(GST_ITERATOR_OK)
 		call forward(elem)
 		call gst_object_unref(elem)
-		return (void)
+		ret #urn (void)
 	endif
 	call texter("Iterator error")
 endfunction

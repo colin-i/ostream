@@ -66,7 +66,7 @@ function stage_sound()
         if bool=(FALSE)
             str er="The sound is on, stop the stage preview first"
             call texter(er)
-            return (void)
+            ret #urn (void)
         endif
     endif
 
@@ -547,7 +547,7 @@ function stage_amplify(sd *widget,sd entry)
                 setcall value short_get_to_int(buf)
             else
                 call texter("wrong bits-per-sample")
-                return (void)
+                ret #urn (void)
             endelse
             call fild_value(value)
             call fmul_quad(#multp)

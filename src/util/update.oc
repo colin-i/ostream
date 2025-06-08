@@ -78,7 +78,7 @@ function update()
 	sd up
 	setcall up update_get()
 	if up=(FALSE)
-		return (void)
+		ret #urn (void)
 	endif
 
 	import "uri_queue_content" uri_queue_content
@@ -105,7 +105,7 @@ function update_set(sd value)
     sd file
     setcall err openfile(#file,path,"wb")
     if err!=(noerror)
-        return (void)
+        ret #urn (void)
     endif
     import "file_write" file_write
     call file_write(#value,4,file)

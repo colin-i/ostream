@@ -161,7 +161,7 @@ function memto64(sd in,ss dest,sd out)
 	if high!=(NULL)
 		set hex# 0
 		call sscanf(high,"%x",out)
-		return (void)
+		ret #urn (void)
 	endif
 	set out# 0
 endfunction

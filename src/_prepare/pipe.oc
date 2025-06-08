@@ -346,7 +346,7 @@ function stage_start_pipe(ss uri)
     importx "_free" free
     call free(mem)
     if pipe=0
-        return (void)
+        ret #urn (void)
     endif
 
     import "bus_signals_data" bus_signals_data

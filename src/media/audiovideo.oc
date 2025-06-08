@@ -635,7 +635,7 @@ function av_expand_go(ss filename)
     setcall compare cmpmem_s(extension,length,a,frm_len)
     if compare=(equalCompare)
         call avi_write_fname(filename,(avi_expand))
-        return (void)
+        ret #urn (void)
     endif
 
     setcall frm_len slen(m)
@@ -644,7 +644,7 @@ function av_expand_go(ss filename)
     if compare=(equalCompare)
         import "mp4_extend" mp4_extend
         call mp4_extend(filename)
-        return (void)
+        ret #urn (void)
     endif
 
     call texter("Unrecognized format")

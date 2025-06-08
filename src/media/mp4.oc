@@ -2557,7 +2557,7 @@ function mp4_expand_go(ss filepath,ss temppath)
     sd ret
     setcall ret change_name(filepath,temppath)
     if ret!=0
-        return (void)
+        ret #urn (void)
     endif
     #open read to get previous values
     import "openfile" openfile

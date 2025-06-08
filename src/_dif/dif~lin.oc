@@ -23,7 +23,7 @@ function movetoScriptfolder(data forward)
 		setcall err move_to_folder(f)
 		if err=(noerror)
 			call forward()
-			return (void)
+			ret #urn (void)
 		endif
 	endif
 	call texter(err)
@@ -502,7 +502,7 @@ function alsa_write(sd procedure,sd random_key,sd bf_pos,sd all_buffer_size)
     sd handle
     setcall handle sound_preview_playback_handle()
     if handle#=0
-        return (void)
+        ret #urn (void)
     endif
     data pos#1
     data buffer_size#1
@@ -511,7 +511,7 @@ function alsa_write(sd procedure,sd random_key,sd bf_pos,sd all_buffer_size)
         set buffer_size 0
         set wait_bufferfull_timeout 0
         call alsa_full_set((value_set),#wait_bufferfull_timeout)
-        return (void)
+        ret #urn (void)
     endif
     #all values are in frames(blockalign values) except pos
     importx "gdk_threads_add_timeout" gdk_threads_add_timeout
@@ -527,7 +527,7 @@ function alsa_write(sd procedure,sd random_key,sd bf_pos,sd all_buffer_size)
             add buffer_size all_buffer_size
             if wait_bufferfull_timeout=1
                 #a timeout will resolve the new sound
-                return (void)
+                ret #urn (void)
             endif
         else
             set pos bf_pos
@@ -538,13 +538,13 @@ function alsa_write(sd procedure,sd random_key,sd bf_pos,sd all_buffer_size)
     sd low_size
     setcall low_size alsa_low_size(pos,buffer_size)
     if low_size=1
-        return (void)
+        ret #urn (void)
     endif
     #get available size
     sd avail_size
     setcall avail_size alsa_get_availsize(handle#)
     if avail_size<0
-        return (void)
+        ret #urn (void)
     endif
     #see the remaining size
     sd write_size
@@ -565,7 +565,7 @@ function alsa_write(sd procedure,sd random_key,sd bf_pos,sd all_buffer_size)
     if buffer>currentsize
         str sz_err="Size error"
         call texter(sz_err)
-        return (void)
+        ret #urn (void)
     endif
     sub buffer rawsize
     addcall buffer stage_sound_alloc_getbytes()
@@ -575,7 +575,7 @@ function alsa_write(sd procedure,sd random_key,sd bf_pos,sd all_buffer_size)
     if frames_wrote!=write_size
         str wrerr="Write to audio interface failed"
         call texter(wrerr)
-        return (void)
+        ret #urn (void)
     endif
     #timeout for next data
     if buffer_size>avail_size
@@ -585,7 +585,7 @@ function alsa_write(sd procedure,sd random_key,sd bf_pos,sd all_buffer_size)
         #wait half main buffer to be played
         setcall err alsa_get_params(handle#,#main_frames,#period_size)
         if err<0
-            return (void)
+            ret #urn (void)
         endif
         div main_frames 2
         #main_frames     x
@@ -597,7 +597,6 @@ function alsa_write(sd procedure,sd random_key,sd bf_pos,sd all_buffer_size)
         call gdk_threads_add_timeout(timeout_space,f,random_key)
     endif
     sub buffer_size write_size
-    return (void)
 endfunction
 
 function alsa_full_set(sd procedure,sd ptr)
@@ -962,7 +961,7 @@ function prog_init()
 		setcall c malloc((PATH_MAX))
 		if c!=(NULL)
 			set b# c
-			return (void)
+			ret #urn (void)
 		endif
 	endif
 	call puts(s)
@@ -1106,7 +1105,7 @@ function iterate_next_forward_free(sd iter,sv forward)
 		setcall obj g_value_get_object(ptr_elem)
 		call forward(obj)
 		call g_value_unset(ptr_elem)
-		return (void)
+		ret #urn (void)
 	endif
 	call texter("Iterator error")
 endfunction
