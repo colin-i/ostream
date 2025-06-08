@@ -228,9 +228,11 @@ function av_dialog_run(sd forward,sd data)
 					importx "_g_thread_join" g_thread_join
 					setcall bool g_thread_join(thread) #this is here because needing no more reallocs on log
 					set returned 1
-					call av_dialog_multiline_info((value_get))
 
+					call dialog_modal_texter_drawwidget((value_unset))
+					call av_dialog_multiline_info((value_get))
 					call gtk_dialog_run(dialog)
+
 					import "stage_file_options_info_message" stage_file_options_info_message
 					sd toggle_button
 					setcall toggle_button av_results_toggle_button((value_get))
@@ -375,17 +377,17 @@ function av_results(sd action,sd scroll,sd vbox)
         set vbox_entry vbox
     else
     #returns toggle flag status (1/0)
-        importx "_gtk_container_add" gtk_container_add
-        call gtk_container_add(vbox_entry,scroll_entry)
-        importx "_gtk_widget_show_all" gtk_widget_show_all
-        call gtk_widget_show_all(scroll_entry)
-
         #info message flag
         sd toggle
         setcall toggle stage_file_options_info_message((value_get))
         if toggle=0
             return 0
         endif
+
+        importx "_gtk_container_add" gtk_container_add
+        call gtk_container_add(vbox_entry,scroll_entry)
+        importx "_gtk_widget_show_all" gtk_widget_show_all
+        call gtk_widget_show_all(scroll_entry)
         importx "_gtk_check_button_new_with_label" gtk_check_button_new_with_label
         ss txt="Disable results message(set from Stage Options to disable permanently)"
         sd results_toggle

@@ -185,12 +185,16 @@ function dialogfield_modal_texter_init(sd vbox,sd dialog)
     call new_texter_modal(vbox,dialog)
 endfunction
 function dialog_modal_texter_drawwidget(sd action,sd value)
-    data drawwidget#1
-    if action=(value_set)
-        set drawwidget value
-    else
-        return drawwidget
-    endelse
+	value drawwidget#1
+	if action=(value_get)
+		return drawwidget
+	end
+	if action=(value_set)
+		set drawwidget value
+	else #unset
+		call gtk_widget_destroy(drawwidget)
+		set drawwidget (NULL) #for incoming idle_add
+	endelse
 endfunction
 function dup_str(ss text)
 	import "memalloc" memalloc
