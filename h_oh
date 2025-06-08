@@ -1,0 +1,18 @@
+
+#q="\.h\""  #w="\.oh\""
+#q="return (void)" w="ret \#urn (void)"
+
+grep -r "$q" -n > ../1
+IFS=$'\n' a=( `cat ../1` )
+i=0
+for v in ${a[@]}; do
+	IFS=':' read -a b <<< "$v"
+	sed -i "${b[1]}s/${q}/${w}/g" ${b[0]}
+	#w was .oh\" here
+	i=$((i+1))
+done
+rm ../1
+
+grep -r "${w}" -n
+echo $i
+grep -r "${w}" -n | wc -l
