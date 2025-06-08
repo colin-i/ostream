@@ -402,7 +402,7 @@ function stage_prepare_uri_set()
     else
         setcall bool strtoint_positive(text,first)
         if bool!=(TRUE)
-            return (void)
+            ret #urn (void)
         endif
     endelse
     setcall text gtk_entry_get_text(l_entry#)
@@ -412,7 +412,7 @@ function stage_prepare_uri_set()
     else
         setcall bool strtoint_positive(text,last)
         if bool!=(TRUE)
-            return (void)
+            ret #urn (void)
         endif
     endelse
     sd pos
@@ -884,7 +884,7 @@ function sound_pixbuf_paint()
     setcall bps stage_sound_bps((value_get))
     if bps!=8
         if bps!=16
-            return (void)
+            ret #urn (void)
         endif
     endif
     #

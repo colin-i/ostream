@@ -517,7 +517,7 @@ function stage_lines_set()
     setcall nr stage_lines_number()
     setcall bool entry_to_int_min_N(entry#,nr,1)
     if bool=(FALSE)
-        return (void)
+        ret #urn (void)
     endif
     #get add/remove
     sd add_rem_entry
@@ -601,7 +601,7 @@ function stage_lines_thread_loop()
         sd stop
         setcall stop av_dialog_stop((value_get))
         if stop=1
-            return (void)
+            ret #urn (void)
         endif
         #
         if img_nr!=sel_pos
@@ -610,7 +610,7 @@ function stage_lines_thread_loop()
         #
         inc img_nr
         if img_nr=nr_frames
-            return (void)
+            ret #urn (void)
         endif
         #
         import "dialog_modal_texter_draw" dialog_modal_texter_draw
@@ -631,16 +631,16 @@ function stage_lines_modify_img(sd img_nr)
     setcall start stage_lines_start()
     setcall end stage_lines_end()
     if img_nr<start#
-        return (void)
+        ret #urn (void)
     endif
     if end#<img_nr
-        return (void)
+        ret #urn (void)
     endif
     #
     sd pixbuf
     setcall pixbuf stage_nthPixbufFromContainer(img_nr)
     if pixbuf=0
-        return (void)
+        ret #urn (void)
     endif
     #
     sd number_ptr
@@ -680,7 +680,7 @@ function stage_lines_modify_img(sd img_nr)
         endelse
     endelse
     if newmem=0
-        return (void)
+        ret #urn (void)
     endif
     #
     importx "_gdk_pixbuf_new_from_data" gdk_pixbuf_new_from_data
@@ -690,7 +690,7 @@ function stage_lines_modify_img(sd img_nr)
     setcall newpixbuf gdk_pixbuf_new_from_data(newmem,(GDK_COLORSPACE_RGB),(FALSE),8,w,h,stride,free_callback,newmem)
     if newpixbuf=0
         call free(newmem)
-        return (void)
+        ret #urn (void)
     endif
     #
     sd ebox
@@ -721,7 +721,7 @@ function img_row_add(sd p_newmem,sd w,sd p_h,sd number,sd stride,ss bytes,sd siz
     sd newmem
     setcall newmem memalloc(newsize)
     if newmem=0
-        return (void)
+        ret #urn (void)
     endif
     set p_newmem# newmem
     sd cursor
@@ -775,7 +775,7 @@ function img_col_add(sd p_newmem,sd p_w,sd h,sd number,sd p_stride,ss prevpixels
     sd newmem
     setcall newmem memalloc(newsize)
     if newmem=0
-        return (void)
+        ret #urn (void)
     endif
     set p_newmem# newmem
     sd color
@@ -822,7 +822,7 @@ function img_row_remove(sd p_newmem,sd p_h,sd number,sd stride,ss prevpixels)
     mult newrows 2
     if newrows>=p_h#
         call texter("remove rows error")
-        return (void)
+        ret #urn (void)
     endif
     sub p_h# newrows
     #
@@ -833,7 +833,7 @@ function img_row_remove(sd p_newmem,sd p_h,sd number,sd stride,ss prevpixels)
     sd newmem
     setcall newmem memalloc(newsize)
     if newmem=0
-        return (void)
+        ret #urn (void)
     endif
     set p_newmem# newmem
 
@@ -851,7 +851,7 @@ function img_col_remove(sd p_newmem,sd p_w,sd h,sd number,sd p_stride,ss prevpix
     mult newcols 2
     if newcols>=p_w#
         call texter("remove cols error")
-        return (void)
+        ret #urn (void)
     endif
     sub p_w# newcols
     #
@@ -865,7 +865,7 @@ function img_col_remove(sd p_newmem,sd p_w,sd h,sd number,sd p_stride,ss prevpix
     sd newmem
     setcall newmem memalloc(newsize)
     if newmem=0
-        return (void)
+        ret #urn (void)
     endif
     set p_newmem# newmem
     #

@@ -484,7 +484,7 @@ function avc_mb_cache_init(sd x,sd y,sd type)
             call avc_mb_non_zero((value_set),pos,0)
             inc i
         endwhile
-        return (void)
+        ret #urn (void)
     endif
 
     sd left

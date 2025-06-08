@@ -242,7 +242,7 @@ function sound_prev_pos(sd frame_pos,sd random_key)
     if sum_at_point=0
         if frame_pos!=0
             #after the last frame, once
-            return (void)
+            ret #urn (void)
         endif
     endif
     sd pos_sound_size
@@ -252,7 +252,7 @@ function sound_prev_pos(sd frame_pos,sd random_key)
     setcall current_sound_size stage_sound_subsize((value_get))
     if current_sound_size<=pos_sound_size
         #no sound buffer to add
-        return (void)
+        ret #urn (void)
     endif
 
     sd test_minimum_sz
@@ -264,7 +264,7 @@ function sound_prev_pos(sd frame_pos,sd random_key)
     set minimum_sz blockalign
     if test_minimum_sz<=minimum_sz
         #insignificant sound detected
-        return (void)
+        ret #urn (void)
     endif
 
     #get next logical size

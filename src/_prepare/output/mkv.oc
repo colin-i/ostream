@@ -1715,12 +1715,12 @@ function mkv_codecid_data(sd io,sd arg,sd size)
         setcall compare cmpmem_s(mem,size,p_uncomp,(codecid_i420_sz))
         if compare=(equalCompare)
             call mkv_read_encoder(0,(format_mkv_i420))
-            return (void)
+            ret #urn (void)
         endif
         setcall compare cmpmem_s(mem,size,p_mjpg,(codecid_mjpg_sz))
         if compare=(equalCompare)
             call mkv_read_encoder(0,(format_mkv_mjpg))
-            return (void)
+            ret #urn (void)
         endif
         call mkv_read_encoder(0,(format_mkv_rgb24))
 endfunction

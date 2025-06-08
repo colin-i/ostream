@@ -679,7 +679,7 @@ function sound_preview_write_buffer(sd buffer,sd buffer_size)
     sd hwaveout
     setcall hwaveout sound_preview_mm_hwaveout()
     if hwaveout#=0
-        return (void)
+        ret #urn (void)
     endif
 	const wvhd=\
     data lpData#1

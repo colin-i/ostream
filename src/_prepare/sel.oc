@@ -328,7 +328,7 @@ function stage_frame_dialog(sd init,sd on_ok,sd title)
     sd bool
     setcall bool frame_jobs()
     if bool!=(TRUE)
-        return (void)
+        ret #urn (void)
     endif
     import "dialogfield" dialogfield
     call dialogfield(title,(GTK_DIALOG_MODAL),init,on_ok)
@@ -338,7 +338,7 @@ function stage_frame_dialog_solo(sd init,sd on_ok,sd title)
     sd bool
     setcall bool mass_remove_job()
     if bool!=(TRUE)
-        return (void)
+        ret #urn (void)
     endif
     call dialogfield(title,(GTK_DIALOG_MODAL),init,on_ok)
 endfunction

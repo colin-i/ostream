@@ -447,28 +447,28 @@ function capture_settings_set_write(sd capture_fl)
     setcall string gtk_entry_get_text(entries#)
     setcall bool file_write_string(string,capture_fl)
     if bool!=1
-        return (void)
+        ret #urn (void)
     endif
     add entries (DWORD)
     #
     setcall string gtk_entry_get_text(entries#)
     setcall bool file_write_string(string,capture_fl)
     if bool!=1
-        return (void)
+        ret #urn (void)
     endif
     add entries (DWORD)
     #
     setcall string gtk_entry_get_text(entries#)
     setcall bool file_write_string(string,capture_fl)
     if bool!=1
-        return (void)
+        ret #urn (void)
     endif
     add entries (DWORD)
     #
     setcall string gtk_entry_get_text(entries#)
     setcall bool file_write_string(string,capture_fl)
     if bool!=1
-        return (void)
+        ret #urn (void)
     endif
     add entries (DWORD)
     #
@@ -476,23 +476,23 @@ function capture_settings_set_write(sd capture_fl)
     setcall string gtk_entry_get_text(entries)
     setcall bool file_write_string(string,capture_fl)
     if bool!=1
-        return (void)
+        ret #urn (void)
     endif
 
     setcall value capture_cursor_option((value_get))
     setcall err file_write(p_value,4,capture_fl)
     if err!=(noerror)
-        return (void)
+        ret #urn (void)
     endif
     setcall value capture_temp_option((value_get))
     setcall err file_write(p_value,4,capture_fl)
     if err!=(noerror)
-        return (void)
+        ret #urn (void)
     endif
     setcall value capture_raw_option((value_get))
     setcall err file_write(p_value,4,capture_fl)
     if err!=(noerror)
-        return (void)
+        ret #urn (void)
     endif
 endfunction
 
