@@ -5,7 +5,7 @@ tars="focal jammy" #more at src/md
 
 last=$(curl https://api.github.com/repos/colin-i/$(cat debian/control | grep "^Homepage" | grep -o [^/]*$)/releases/latest -s | jq .tag_name -r) && \
 ~/test/xver ./version.txt && \
-use_version_txt=1 ~/test/debinit2 "${1}" ${2} && \
+use_version_txt=1 ~/test/debinit2b "${1}" ${2} && \
 ~/test/keyring2 && \
 #deb if not going to amd64 will end of life at launchpad at focal
 #sudo gh act -r -j debuild workflow_dispatch -W .github/workflows/debuild.yml -P ubuntu-18.04=ubuntu:bionic  #ubuntu:lucid is the first one
@@ -14,7 +14,7 @@ use_version_txt=1 ~/test/debinit2 "${1}" ${2} && \
 ~/test/rpm/rpm && \
 #
 ~/test/debuild2 x && \
-git restore debian/files && \
+git restore debian/files && git diff --exit-code && \
 #git restore? to do at debinit push something
 #
 ~/test/del && \
