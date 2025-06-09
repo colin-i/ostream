@@ -1,3 +1,9 @@
+ovideo (1-195) bionic; urgency=medium
+
+  * minor fix at log dialog
+
+ -- bc <bc@bc-desktop>  Mon, 09 Jun 2025 08:37:26 +0300
+
 ovideo (1-193) bionic; urgency=medium
 
   * jpeg fix and mp3 mono/32H
