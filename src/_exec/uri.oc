@@ -53,7 +53,7 @@ function video_realize(data widget)
 		sd drawablehandle
 		setcall drawablehandle gdkGetdrawable(window)
 		call gst_x_overlay_set_window_handle(interfacecast,drawablehandle)
-		return (void)
+		ret #urn (void)
 	endif
 	import "printer" printer
 	call printer("gst_element_implements_interface false.")
