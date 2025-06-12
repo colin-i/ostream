@@ -1,0 +1,28 @@
+on:
+ workflow_dispatch:
+env:
+ #for upload
+ GITHUB_TOKEN: ${{ secrets.PAT }}
+jobs:
+ takescreen:
+  runs-on: ubuntu-latest
+  container:
+   image: opensuse/tumbleweed  #this is same for all platforms: @sha256:ffe262de61d788ad1f822c33e295bfd9a4644c83d39692afaae1c750eb997fa0
+   options: --platform=linux/386   #this is not at docker pull , is useless
+  steps:
+   - name: Run a multi-line script
+     run: |
+      zypper -n in xorg-x11-server-Xvfb wget    xwd ImageMagick
+      wget https://download.opensuse.org/repositories/home:/costin/openSUSE_Tumbleweed/i586/ovideo-1-1.1.i586.rpm
+      zypper -n --no-gpg-checks in ./ovideo-1-1.1.i586.rpm   #will install -32bit packages
+      export DISPLAY=:99
+      Xvfb :99 -screen 0 1920x1080x8 &
+      sleep 5
+      ovideo &
+      sleep 20
+      xwd -root -silent | convert xwd:- png:screenshot.png    #it is a GUI picture but not the same as on i586, is working on normal installation?
+   - name: upload artifact
+     uses: actions/upload-artifact@master
+     with:
+      name: screenshot-${{ matrix.os }}
+      path: screenshot.png

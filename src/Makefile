@@ -73,7 +73,9 @@ all: ${lprojname}
 ${lprojname}: ${lshare} ${obs}
 	${OLINK} ${logs}
 	export PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig/:${PKG_CONFIG_PATH}; \
-	$(LD) ${linkerflags} -melf_i386 --dynamic-linker=${dynlink} ${obs} -o ${lprojname} -lc -lm `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lgthread-2.0 -lpthread;
+	$(LD) -melf_i386 --dynamic-linker=${dynlink} ${linkerflags} ${obs} -o ${lprojname} ${Lc} -lc -lm `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lgthread-2.0 -lpthread;
+#same CC problem like at actionswf # $(CC) -m32 ${linkerflagsextra}
+#need to use LLVM lld to work
 ${lshare}:
 	echo char prestart=0x2e\;char simplestart=\"${sharefolderpackage}\"\;return \#simplestart > ${lshare}
 
@@ -117,11 +119,11 @@ endif
 #snprintf with circular unresolved requirements
 #cos is in -lmingwex that will work with -lmingw32 -lmsvcrt
 #on win msvcr100 is old and at here is from old java-i586
-linkapp:
-	LD_LIBRARY_PATH=/home/bc/v/ovideo-1/AppDir/usr/lib/i386-linux-gnu:/home/bc/v/ovideo-1/AppDir/lib/i386-linux-gnu \
-		$(LD) ${linkerflags} -melf_i386 --dynamic-linker=${dynlink} ${obs} -o ${lprojname} \
-			-L/home/bc/v/ovideo-1/AppDir/usr/lib/i386-linux-gnu \
-			-l:libc.so.6 -l:libm.so.6 -l:libgtk-x11-2.0.so.0 -l:libgdk-x11-2.0.so.0 -l:libpangocairo-1.0.so.0 -l:libatk-1.0.so.0 -l:libcairo.so.2 -l:libgdk_pixbuf-2.0.so.0 -l:libgio-2.0.so.0 -l:libpangoft2-1.0.so.0 -l:libpango-1.0.so.0 -l:libfontconfig.so.1 -l:libfreetype.so.6 -l:libgstpbutils-1.0.so.0 -l:libgstaudio-1.0.so.0 -l:libgstvideo-1.0.so.0 -l:libgstapp-1.0.so.0 -l:libgstbase-1.0.so.0 -l:libgstreamer-1.0.so.0 -l:libgobject-2.0.so.0 -l:libglib-2.0.so.0 -l:libjpeg.so.8 -l:libsoup-2.4.so.1 -l:libasound.so.2 -l:libpthread.so.0 -l:libgthread-2.0.so.0
+#linkapp:
+#	LD_LIBRARY_PATH=/home/bc/v/ovideo-1/AppDir/usr/lib/i386-linux-gnu:/home/bc/v/ovideo-1/AppDir/lib/i386-linux-gnu \
+#		$(LD) ${linkerflags} -melf_i386 --dynamic-linker=${dynlink} ${obs} -o ${lprojname} \
+#			-L/home/bc/v/ovideo-1/AppDir/usr/lib/i386-linux-gnu \
+#			-l:libc.so.6 -l:libm.so.6 -l:libgtk-x11-2.0.so.0 -l:libgdk-x11-2.0.so.0 -l:libpangocairo-1.0.so.0 -l:libatk-1.0.so.0 -l:libcairo.so.2 -l:libgdk_pixbuf-2.0.so.0 -l:libgio-2.0.so.0 -l:libpangoft2-1.0.so.0 -l:libpango-1.0.so.0 -l:libfontconfig.so.1 -l:libfreetype.so.6 -l:libgstpbutils-1.0.so.0 -l:libgstaudio-1.0.so.0 -l:libgstvideo-1.0.so.0 -l:libgstapp-1.0.so.0 -l:libgstbase-1.0.so.0 -l:libgstreamer-1.0.so.0 -l:libgobject-2.0.so.0 -l:libglib-2.0.so.0 -l:libjpeg.so.8 -l:libsoup-2.4.so.1 -l:libasound.so.2 -l:libpthread.so.0 -l:libgthread-2.0.so.0
 
 %.o: %.oc
 	${OCOMP} $< ${OFLAGS}
@@ -158,6 +160,6 @@ uninstall:
 	-rm -f $(DESTDIR)$(prefix)/bin/${projname}
 	-rm -r ${sharefolder}
 
-.PHONY: all install install-proc linkapp clean distclean uninstall test
+.PHONY: all install install-proc clean distclean uninstall test
 
 .NOTPARALLEL:
