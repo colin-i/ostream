@@ -19,13 +19,11 @@ git restore debian/files && git diff --exit-code && \
 ./wmake && \
 ~/test/pub appimage rel && \
 ~/test/updeb && \
-~/test/rpm/rpm && \
+~/test/rpm/suse && \
 ~/test/test && \
 ~/test/ai/upapp && \
 ~/test/upgen ovideo.zip && \
 ~/test/pub rpm upapp && \
-~/test/rpm/rerpm && \
-~/test/rpm/uprpm && \
 ~/test/pub2 && \
 ~/test/publp2 && \
 ~/test/lp 0 "${tars}" && \

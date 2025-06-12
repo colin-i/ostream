@@ -12,21 +12,30 @@ Install:
 sudo apt-get install ovideo
 ```
 \
-On linux distributions, <i>.AppImage</i> file from [releases](https://github.com/colin-i/ostream/releases).\
-\
-On Fedora, <i>.rpm</i> file from [releases](https://github.com/colin-i/ostream/releases).\
-Missing libjpeg.so.8? https://download.copr.fedorainfracloud.org/results/aflyhorse/libjpeg/fedora-36-i386/ \
-Unacceptable TLS certificate? `bionic release glib-networking:i386 libgiognutls.so` can do it with environment GIO_EXTRA_MODULES variable for the `dirname` part.
+On openSUSE (i586), run the following as __root__:\
+For openSUSE Tumbleweed:
 ```sh
-dnf install ovideo-*.*.rpm
+zypper addrepo https://download.opensuse.org/repositories/home:costin/openSUSE_Tumbleweed/home:costin.repo
+```
+For openSUSE Leap:
+```sh
+zypper addrepo https://download.opensuse.org/repositories/home:costin/openSUSE_Leap_15.6/home:costin.repo
+```
+And:
+```sh
+zypper refresh
+zypper install ovideo
 ```
 \
 On Windows, <i>.windows.zip</i> file from [releases](https://github.com/colin-i/ostream/releases).\
 <i>Gstreamer sdk</i> x86 0.10 from [here](https://cgit.freedesktop.org/gstreamer/gstreamer/refs/heads).
+\
+\
+On other linux distributions, <i>.AppImage</i> file from [releases](https://github.com/colin-i/ostream/releases).
 
 ## From source
 Compile with [O Compiler](https://github.com/colin-i/o) and link with
-<i>binutils</i> and see the <i>Makefile</i> for requirements.
+<i>lld</i> and having gstreamer1(with good/bad plugins), gtk2, libsoup2, libasound2, libjpeg8.
 
 ## Info
 [Video tutorials](https://www.youtube.com/channel/UCBJPvGdXY5U3p8Fbl6HOFkQ).\
