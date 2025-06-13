@@ -34,8 +34,7 @@ On Windows, <i>.windows.zip</i> file from [releases](https://github.com/colin-i/
 On other linux distributions, <i>.AppImage</i> file from [releases](https://github.com/colin-i/ostream/releases).
 
 ## From source
-Compile with [O Compiler](https://github.com/colin-i/o) and link with
-<i>lld</i> and having gstreamer1(with good/bad plugins), gtk2, libsoup2, libasound2, libjpeg8.
+Compile with [O Compiler](https://github.com/colin-i/o). At linux, for example: link with <i>lld</i> and having gstreamer1(with good/bad plugins), gtk2, libsoup2, libasound2, libjpeg8.
 
 ## Info
 [Video tutorials](https://www.youtube.com/channel/UCBJPvGdXY5U3p8Fbl6HOFkQ).\
