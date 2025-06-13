@@ -8,7 +8,7 @@ jobs:
   runs-on: ubuntu-latest
   container:
    image: opensuse/tumbleweed  #this is same for all platforms: @sha256:ffe262de61d788ad1f822c33e295bfd9a4644c83d39692afaae1c750eb997fa0
-   options: --platform=linux/386   #this is not at docker pull , is useless
+   #options: --platform=linux/386   #this is not at docker pull , is useless
   steps:
    - name: Run a multi-line script
      run: |
@@ -20,7 +20,7 @@ jobs:
       sleep 5
       ovideo &
       sleep 20
-      xwd -root -silent | convert xwd:- png:screenshot.png    #it is a GUI picture but not the same as on i586, is working on normal installation?
+      xwd -root -silent | convert xwd:- png:screenshot.png    #it is a GUI picture but not the same as on i586, on normal installation is ok
    - name: upload artifact
      uses: actions/upload-artifact@master
      with:
