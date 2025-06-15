@@ -32,13 +32,14 @@ jobs:
       curl -L -H "Authorization: token ${{ secrets.PAT }}" ${url} --output a.zip
       unzip ./a.zip
 
-      sudo apt-get install -y libfuse2`if [ ${{ matrix.os }} = "ubuntu-24.04" ]; then echo -n t64; fi` #xvfb is already
+      apt download libfuse2`if [ ${{ matrix.os }} = "ubuntu-24.04" ]; then echo -n t64; fi` #xvfb is already
+      dpkg -x ./*.deb q
 
       export DISPLAY=:99
       sudo Xvfb :99 -screen 0 1920x1080x8 &
       sleep 5
-      ./${name}.AppImage &
-      sleep 30  #10 seconds for update check
+      LD_LIBRARY_PATH=`pwd`/q/lib/x86_64-linux-gnu ./${name}.AppImage &
+      sleep 20
       sudo apt install -y imagemagick #imagemagick is on noble
       #x11-apps #xwd -root -silent | convert xwd:- png:screenshot.png      #xwd with x11-apps
       import -window root -display :99 -screen screenshot.png
