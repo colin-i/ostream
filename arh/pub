@@ -13,7 +13,6 @@ use_version_txt=1 ~/test/debinit2b "${1}" ${2} && \
 ~/test/debuild2 x && \
 git restore debian/files && git diff --exit-code && \
 ~/test/ai/ai && \
-~/test/keyring && \
 ~/test/del && \
 ~/test/rel && \
 ./wmake && \
