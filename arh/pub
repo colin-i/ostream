@@ -9,11 +9,11 @@ use_version_txt=1 ~/test/debinit2b "${1}" ${2} && \
 #deb if not going to amd64 will end of life at launchpad at focal
 #sudo gh act -r -j debuild workflow_dispatch -W .github/workflows/debuild.yml -P ubuntu-18.04=ubuntu:bionic  #ubuntu:lucid is the first one
 ~/test/deb && \
-~/test/keyring2 && \
 ~/test/publp && \
 ~/test/debuild2 x && \
 git restore debian/files && git diff --exit-code && \
 ~/test/ai/ai && \
+~/test/keyring && \
 ~/test/del && \
 ~/test/rel && \
 ./wmake && \
