@@ -31,7 +31,7 @@ On Windows, <i>.windows.zip</i> file from [releases](https://github.com/colin-i/
 <i>Gstreamer sdk</i> x86 0.10 from [here](https://cgit.freedesktop.org/gstreamer/gstreamer/refs/heads).
 \
 \
-On other linux distributions, <i>.AppImage</i> file from [releases](https://github.com/colin-i/ostream/releases).
+On linux distributions, <i>.AppImage</i> file from [releases](https://github.com/colin-i/ostream/releases).
 
 ## From source
 Compile with [O Compiler](https://github.com/colin-i/o). At linux, for example: link with <i>lld</i> and having gstreamer1(with good/bad plugins), gtk2, libsoup2, libasound2, libjpeg8.
