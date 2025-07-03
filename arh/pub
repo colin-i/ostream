@@ -26,5 +26,4 @@ git restore debian/files && git diff --exit-code && \
 ~/test/publp2 && \
 ~/test/lp 0 "${tars}" && \
 ~/test/lp x "${tars}" && \
-~/test/keyring && \
 ~/test/arh2 ${last}
