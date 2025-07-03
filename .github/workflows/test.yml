@@ -40,7 +40,7 @@ jobs:
       sleep 5
       LD_LIBRARY_PATH=`pwd`/q/lib/x86_64-linux-gnu ./${name}.AppImage &
       sleep 20
-      sudo apt install -y imagemagick #imagemagick is on noble
+      sudo apt install -y imagemagick #imagemagick is on jammy, not on noble
       #x11-apps #xwd -root -silent | convert xwd:- png:screenshot.png      #xwd with x11-apps
       import -window root -display :99 -screen screenshot.png
    - name: upload artifact
