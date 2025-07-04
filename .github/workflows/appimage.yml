@@ -44,21 +44,14 @@ jobs:
       if [ -n "${{ env.init }}" ]; then
        exit
       fi
-      mkdir -p AppDir
-      file=runtime
-      arch_ai=-x86_64
-      archfile=${file}${arch_ai}
-      kitpart () {
-       #this is not working anymore urlpart=`wget -q https://github.com/AppImage/AppImageKit/releases/latest -O - | grep "${archfile}" | head -n 1 | cut -d '"' -f 2`
-       urlpart=AppImage/AppImageKit/releases/latest/download/${archfile}
-      }
-      if [ ! -e "${file}" ]; then
-       kitpart
-       #"pkg2appimage-.*-x86_64.AppImage"
-       wget -c https://github.com/${urlpart}
-       mv ${archfile} ${file}
-       chmod a+x ${file}
+      run=runtime
+      if [ ! -e "${run}" ]; then
+       archfile=runtime-x86_64
+       wget -c https://github.com/AppImage/type2-runtime/releases/download/continuous/${archfile}
+       mv ${archfile} ${run}
       fi
+
+      mkdir -p AppDir
 
       #export PATH=${PATH}:`pwd`/AppDir/usr/sbin
       #path with AppDir for ghostscript but is not working
@@ -220,17 +213,72 @@ jobs:
       fi
 
       cd AppDir
-      file2=AppRun
-      if [ ! -e "${file2}" ]; then
-       if [ -z "${urlpart}" ]; then
-        kitpart
-       fi
-       archfile2=${file2}${arch_ai}
-       urlpart=${urlpart:0:$(echo ${urlpart} | grep -ob '[^/]*$' | cut -d ':' -f 1)}${archfile2}
-       wget -c https://github.com/${urlpart}
-       chmod a+x ${archfile2}
-       mv ${archfile2} ${file2}
+
+      cd usr/lib
+      if [ ! -e "gstreamer-1.0" ]; then
+       echo ln
+
+       #this is not ok: only when running the appimage file: when testing with GST_DEBUG=5: GST_PLUGIN_SYSTEM_PATH will miss /i386-linux-gnu
+       ln -s i386-linux-gnu/gstreamer-1.0 gstreamer-1.0
+
+       cd i386-linux-gnu
+       ln -s pulseaudio/libpulsecommon-15.99.so libpulsecommon-15.99.so
+       cd ..
       fi
+      cd ../..
+
+      file=AppRun
+      if [ ! -e "${file}" ]; then
+       echo launcher
+
+       #loaders cache is not working with relative paths
+       gpixd=/usr/lib/i386-linux-gnu/gdk-pixbuf-2.0/
+       gpixf="${gpixd}`ls -1 .${gpixd} | head -1`/loaders"
+       echo ${gpixf}
+
+       #live64 is not having /lib/ld-linux.so.2, LD_LIBRARY_PATH is required at run
+       #./lib since zlib1g. ./usr/lib for liblilv-0.so.0 . focal?
+       #if there are problems, try this: GTK_MODULE_DIR. focal?
+       #to not see GST_PLUGIN_SCANNER warning, extract, run once, it is writing elsewhere not in appimg folders, run second time and is ok. focal?
+       #if is same with or without GST_PLUGIN_SCANNER then why set? GST_DEBUG=6 will state "Trying GST_PLUGIN_SCANNER env var" so the fault is from there. ok...
+       #and gio modules ? cat /proc/pid/maps for details ? noble?
+       #it is libgiognutls.so for i386 but in the system, GIO_EXTRA_MODULES
+       #GST_PLUGIN_SYSTEM_PATH will map there libgstplayback.so
+       #\${rootbase}/lib:\${rootbase}/usr/lib ?
+       #big confusion with GTK_MODULES, at jammy for noble, GTK_PATH was for this but is not working, modules if set like path is an extra warning but is working, if set on libgail is ok, the other module is error, the solution for the moment is to set only on libgail
+       #cd "\$(dirname "\$0")"
+
+       cat > ${file} <<EOF
+      #!/bin/sh
+      rootbase="\$(readlink -f "\$(dirname "\$0")")"
+      paths="\${rootbase}/lib/i386-linux-gnu:\${rootbase}/usr/lib/i386-linux-gnu"
+      loader="\${rootbase}/lib/ld-linux.so.2"
+
+      hom="\${HOME}/ovideo/"
+      mkdir -p "\${hom}"
+      lch="\${hom}loaders.cache"
+      LD_LIBRARY_PATH="\${paths}" GDK_PIXBUF_MODULEDIR="\${rootbase}${gpixf}"\
+       "\${loader}" "\${rootbase}${gpixd}gdk-pixbuf-query-loaders" > "\${lch}"
+
+      regs="\${hom}registry.i686.bin"
+      LD_LIBRARY_PATH="\${paths}"\
+       GST_PLUGIN_SYSTEM_PATH="\${rootbase}/usr/lib/gstreamer-1.0"\
+       GST_PLUGIN_SCANNER="\${rootbase}/usr/lib/i386-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner"\
+       GST_REGISTRY="\${regs}"\
+       "\${loader}" "\${rootbase}/usr/bin/${helper}"
+
+      LD_LIBRARY_PATH="\${paths}"\
+       GIO_EXTRA_MODULES="\${rootbase}/usr/lib/i386-linux-gnu/gio/modules"\
+       GST_PLUGIN_SYSTEM_PATH="\${rootbase}/usr/lib/gstreamer-1.0"\
+       GST_PLUGIN_SCANNER="\${rootbase}/usr/lib/i386-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner"\
+       GST_REGISTRY="\${regs}" GST_REGISTRY_UPDATE=no\
+       GTK_MODULES="\${rootbase}/usr/lib/i386-linux-gnu/gtk-2.0/modules/libgail.so"\
+       GDK_PIXBUF_MODULE_FILE="\${lch}"\
+       "\${loader}" "\${rootbase}"/usr/bin/${name} "\${rootbase}"
+      EOF
+       chmod a+x ${file}
+      fi
+
       pngfile=ovideo.png
       if [ ! -e "${pngfile}" ]; then
        wget https://github.com/colin-i/test/releases/download/1.5/ovideo.png -O ${pngfile} #O for multiple times
@@ -244,72 +292,7 @@ jobs:
       EOF
        ln -s ${pngfile} .DirIcon #f for multiple times
       fi
-      #
-      cd usr/lib
-      if [ ! -e "gstreamer-1.0" ]; then
-       echo ln
 
-       #this is not ok: only when running the appimage file: when testing with GST_DEBUG=5: GST_PLUGIN_SYSTEM_PATH will miss /i386-linux-gnu
-       ln -s i386-linux-gnu/gstreamer-1.0 gstreamer-1.0
-
-       cd i386-linux-gnu
-       ln -s pulseaudio/libpulsecommon-15.99.so libpulsecommon-15.99.so
-       cd ..
-      fi
-      cd ../..
-      if [ ! -e "usr/bin/ostream" ]; then
-       echo launcher
-
-       #loaders cache is not working with relative paths
-       gpixd=/usr/lib/i386-linux-gnu/gdk-pixbuf-2.0/
-       gpixf="${gpixd}`ls -1 .${gpixd} | head -1`/loaders"
-       echo ${gpixf}
-
-       cd usr/bin
-       mv ovideo ostream
-       #live64 is not having /lib/ld-linux.so.2, LD_LIBRARY_PATH is required at run
-       #./lib since zlib1g. ./usr/lib for liblilv-0.so.0 . focal?
-       #if there are problems, try this: GTK_MODULE_DIR. focal?
-       #to not see GST_PLUGIN_SCANNER warning, extract, run once, it is writing elsewhere not in appimg folders, run second time and is ok. focal?
-       #if is same with or without GST_PLUGIN_SCANNER then why set? GST_DEBUG=6 will state "Trying GST_PLUGIN_SCANNER env var" so the fault is from there. ok...
-       #and gio modules ? cat /proc/pid/maps for details ? noble?
-       #it is libgiognutls.so for i386 but in the system, GIO_EXTRA_MODULES
-       #GST_PLUGIN_SYSTEM_PATH will map there libgstplayback.so
-       #\${rootbase}/lib:\${rootbase}/usr/lib ?
-       #big confusion with GTK_MODULES, at jammy for noble, GTK_PATH was for this but is not working, modules if set like path is an extra warning but is working, if set on libgail is ok, the other module is error, the solution for the moment is to set only on libgail
-
-       cat > ovideo <<EOF
-      #!/bin/sh
-      cd "\$(dirname "\$0")/../.."
-      rootbase="\$(pwd)"
-      paths="\${rootbase}/lib/i386-linux-gnu:\${rootbase}/usr/lib/i386-linux-gnu"
-      loader="\${rootbase}/lib/ld-linux.so.2"
-
-      hom="\${HOME}/ovideo/"
-      mkdir -p "\${hom}"
-      lch="\${hom}loaders.cache"
-      LD_LIBRARY_PATH="\${paths}" GDK_PIXBUF_MODULEDIR="\${rootbase}${gpixf}" \
-       "\${loader}" "\${rootbase}${gpixd}gdk-pixbuf-query-loaders" > "\${lch}"
-
-      regs="\${hom}registry.i686.bin"
-      LD_LIBRARY_PATH="\${paths}" \
-       GST_PLUGIN_SYSTEM_PATH="\${rootbase}/usr/lib/gstreamer-1.0" \
-       GST_PLUGIN_SCANNER="\${rootbase}/usr/lib/i386-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner" \
-       GST_REGISTRY="\${regs}" \
-       "\${loader}" "\${rootbase}/usr/bin/${helper}"
-
-      LD_LIBRARY_PATH="\${paths}" \
-       GIO_EXTRA_MODULES="\${rootbase}/usr/lib/i386-linux-gnu/gio/modules" \
-       GST_PLUGIN_SYSTEM_PATH="\${rootbase}/usr/lib/gstreamer-1.0" \
-       GST_PLUGIN_SCANNER="\${rootbase}/usr/lib/i386-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner" \
-       GST_REGISTRY="\${regs}" GST_REGISTRY_UPDATE=no \
-       GTK_MODULES="\${rootbase}/usr/lib/i386-linux-gnu/gtk-2.0/modules/libgail.so" \
-       GDK_PIXBUF_MODULE_FILE="\${lch}" \
-        "\${loader}" "\${rootbase}/usr/bin/ostream" "\${rootbase}"
-      EOF
-       chmod 755 ovideo
-       cd ../..
-      fi
       #metadata file
       mi=usr/share/metainfo
       mif=${mi}/com.colin.ovideo.appdata.xml
@@ -341,12 +324,11 @@ jobs:
       </component>
       EOF
       fi
-      #
+
       cd ..
-      #
       if [ ! -e "ovideo.AppImage" ]; then
        mksquashfs AppDir ovideo.squashfs -root-owned -noappend
-       cat runtime >> ovideo.AppImage
+       cat ${run} > ovideo.AppImage
        cat ovideo.squashfs >> ovideo.AppImage
        chmod a+x ovideo.AppImage
       fi
