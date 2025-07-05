@@ -251,30 +251,30 @@ jobs:
        cat > ${file} <<EOF
       #!/bin/sh
       rootbase="\$(readlink -f "\$(dirname "\$0")")"
-      paths="\${rootbase}/lib/i386-linux-gnu:\${rootbase}/usr/lib/i386-linux-gnu"
-      loader="\${rootbase}/lib/ld-linux.so.2"
+      paths="\${rootbase}"/lib/i386-linux-gnu:"\${rootbase}"/usr/lib/i386-linux-gnu
+      loader="\${rootbase}"/lib/ld-linux.so.2
 
-      hom="\${HOME}/ovideo/"
+      hom="\${HOME}"/ovideo/
       mkdir -p "\${hom}"
-      lch="\${hom}loaders.cache"
-      LD_LIBRARY_PATH="\${paths}" GDK_PIXBUF_MODULEDIR="\${rootbase}${gpixf}"\
-       "\${loader}" "\${rootbase}${gpixd}gdk-pixbuf-query-loaders" > "\${lch}"
+      lch="\${hom}"loaders.cache
+      LD_LIBRARY_PATH="\${paths}" GDK_PIXBUF_MODULEDIR="\${rootbase}"${gpixf}\
+       "\${loader}" "\${rootbase}"${gpixd}gdk-pixbuf-query-loaders > "\${lch}"
 
-      regs="\${hom}registry.i686.bin"
+      regs="\${hom}"registry.i686.bin
       LD_LIBRARY_PATH="\${paths}"\
-       GST_PLUGIN_SYSTEM_PATH="\${rootbase}/usr/lib/gstreamer-1.0"\
-       GST_PLUGIN_SCANNER="\${rootbase}/usr/lib/i386-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner"\
+       GST_PLUGIN_SYSTEM_PATH="\${rootbase}"/usr/lib/gstreamer-1.0\
+       GST_PLUGIN_SCANNER="\${rootbase}"/usr/lib/i386-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner\
        GST_REGISTRY="\${regs}"\
-       "\${loader}" "\${rootbase}/usr/bin/${helper}"
+       "\${loader}" "\${rootbase}"/usr/bin/${helper}
 
       LD_LIBRARY_PATH="\${paths}"\
-       GIO_EXTRA_MODULES="\${rootbase}/usr/lib/i386-linux-gnu/gio/modules"\
-       GST_PLUGIN_SYSTEM_PATH="\${rootbase}/usr/lib/gstreamer-1.0"\
-       GST_PLUGIN_SCANNER="\${rootbase}/usr/lib/i386-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner"\
+       GIO_EXTRA_MODULES="\${rootbase}"/usr/lib/i386-linux-gnu/gio/modules\
+       GST_PLUGIN_SYSTEM_PATH="\${rootbase}"/usr/lib/gstreamer-1.0\
+       GST_PLUGIN_SCANNER="\${rootbase}"/usr/lib/i386-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner\
        GST_REGISTRY="\${regs}" GST_REGISTRY_UPDATE=no\
-       GTK_MODULES="\${rootbase}/usr/lib/i386-linux-gnu/gtk-2.0/modules/libgail.so"\
+       GTK_MODULES="\${rootbase}"/usr/lib/i386-linux-gnu/gtk-2.0/modules/libgail.so\
        GDK_PIXBUF_MODULE_FILE="\${lch}"\
-       "\${loader}" "\${rootbase}"/usr/bin/${name} "\${rootbase}"
+       exec "\${loader}" "\${rootbase}"/usr/bin/${name} "\${rootbase}"
       EOF
        chmod a+x ${file}
       fi
