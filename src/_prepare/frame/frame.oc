@@ -39,7 +39,7 @@ function stage_frame_panel_open_fn(sd p_data)
 
     import "stage_save_img" stage_save_img
     char frame_lot="img.bmp"
-    char *="Save the current selection to a file"
+    char *="Save the selected frame to a file"
     data *^stage_save_img
     #
     import "stage_add_centered" stage_add_centered
