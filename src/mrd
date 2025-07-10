@@ -1,0 +1,7 @@
+
+PKG_CONFIG_PATH=/home/bc/a/v/ovideo-1/_fix/pc \
+LD_LIBRARY_PATH=${HOME}/Desktop/binutils-arm64-i686-focal/usr/lib/aarch64-linux-gnu LD=${HOME}/Desktop/binutils-arm64-i686-focal/usr/bin/i686-linux-gnu-ld.bfd \
+OFLAGSEXTRA+=" function_name 1 nul_res_pref 1" linkerflags= \
+	make prefix=/usr items_prefix=`pwd`/
+
+#i686-linux-gnu/bin/ld

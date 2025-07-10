@@ -73,7 +73,7 @@ all: ${lprojname}
 ${lprojname}: ${lshare} ${obs}
 	${OLINK} ${logs}
 	export PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig/:${PKG_CONFIG_PATH}; \
-	$(LD) -melf_i386 --dynamic-linker=${dynlink} ${linkerflags} ${obs} -o ${lprojname} ${Lc} -lc -lm `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lgthread-2.0 -lpthread;
+	$(LD) -melf_i386 --dynamic-linker=${dynlink} ${linkerflags} ${obs} -o ${lprojname} ${Lc} -l:libc.so.6 -l:libm.so.6 `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lgthread-2.0 -lpthread;
 #same CC problem like at actionswf # $(CC) -m32 ${linkerflagsextra}
 #need to use LLVM lld to work
 ${lshare}:
