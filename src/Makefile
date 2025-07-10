@@ -49,6 +49,8 @@ $(foreach var,$(items),$(eval obs += ${items_prefix}${var}.o))
 $(eval logs = )
 $(foreach var,$(items),$(eval logs += ${items_prefix}${var}.oc.log))
 
+extra=${o}containers.oh
+
 ifeq (${platform},lin)
 
 OFLAGS = underscore_pref 1 ${OFLAGSEXTRA}
@@ -76,13 +78,16 @@ install-proc:
 	install -m 664 ./version.txt ${sharefolder}/
 	install -D ${projname} \
 		$(DESTDIR)$(prefix)/bin/${projname}
+uninstall:
+	-rm -f $(DESTDIR)$(prefix)/bin/${projname}
+	-rm -r ${sharefolder}
 
 else
 
 OFLAGS = inplace_reloc 0 include_sec 1 ${OFLAGSEXTRA}
 wprojname=ovideo.exe
 all: ${wprojname}
-${wprojname}: ${obs}
+${wprojname}: ${extra} ${obs}
 	ounused ${logs}
 	i686-w64-mingw32-ld --large-address-aware ${linkerflags} ${obs} -o ${wprojname} -entry _start --start-group \
 	`dpkg -L mingw-w64-i686-dev | grep '\.a' | sed 's/..$$//' | grep -o '[^\/]*$$' | sed 's/^lib/-l/' | xargs echo` \
@@ -94,8 +99,13 @@ platform-clean:
 	-rm -f ${wprojname}
 install-proc:
 	echo use wmake
+uninstall: install-proc
 
 endif
+
+${extra}:
+	#echo -e '#include <gtk/gtk.h>\nvoid main(){printf("%u %u",sizeof(GtkEventBox),sizeof(GtkEventBoxClass));}' | gcc `PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig pkg-config --cflags gtk+-2.0` -x c -m32 -g - `PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig pkg-config --libs gtk+-2.0`
+	touch ${extra}
 
 #at jammy libgtk2.0-dev:i386,libgstreamer-plugins-base1.0-dev:i386,libsoup2.4-dev:i386,libasound2-dev:i386
 
@@ -142,10 +152,6 @@ test:
 	echo "Nothing"
 
 install: all install-proc
-
-uninstall:
-	-rm -f $(DESTDIR)$(prefix)/bin/${projname}
-	-rm -r ${sharefolder}
 
 .PHONY: all install install-proc clean platform-clean distclean uninstall test
 
