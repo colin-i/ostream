@@ -61,6 +61,8 @@ $(foreach var,$(items),$(eval obs += ${items_prefix}${var}.o))
 $(eval logs = )
 $(foreach var,$(items),$(eval logs += ${items_prefix}${var}.oc.log))
 
+extra=${o}containers.oh
+
 ifeq (${platform},lin)
 
 OFLAGS = underscore_pref 1 ${OFLAGSEXTRA}
@@ -70,7 +72,7 @@ sharefolderpackage=$(prefix)/share/ovideo
 sharefolder=$(DESTDIR)${sharefolderpackage}
 dynlink=/lib/ld-linux.so.2
 all: ${lprojname}
-${lprojname}: ${lshare} ${obs}
+${lprojname}: ${lshare} ${extra} ${obs}
 	${OLINK} ${logs}
 	export PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig/:${PKG_CONFIG_PATH}; \
 	$(LD) -melf_i386 --dynamic-linker=${dynlink} ${linkerflags} ${obs} -o ${lprojname} ${Lc} -l:libc.so.6 -l:libm.so.6 `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lgthread-2.0 -lpthread;
@@ -84,7 +86,7 @@ else
 OFLAGS = inplace_reloc 0 include_sec 1 ${OFLAGSEXTRA}
 wprojname=${projname}.exe
 all: ${wprojname}
-${wprojname}: ${obs}
+${wprojname}: ${extra} ${obs}
 	ounused ${logs}
 	#this is also working
 	#i686-w64-mingw32-gcc -Wl,--large-address-aware ${linkerflags} ${obs} -o ${wprojname} -Wl,--start-group \
@@ -98,6 +100,9 @@ ${wprojname}: ${obs}
 
 endif
 
+${extra}:
+	#echo -e '#include <gtk/gtk.h>\nvoid main(){printf("%u %u",sizeof(GtkEventBox),sizeof(GtkEventBoxClass));}' | gcc `PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig pkg-config --cflags gtk+-2.0` -x c -m32 -g - `PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig pkg-config --libs gtk+-2.0`
+	touch ${extra}
 
 #at jammy libgtk2.0-dev:i386,libgstreamer-plugins-base1.0-dev:i386,libsoup2.4-dev:i386,libasound2-dev:i386
 
@@ -135,6 +140,7 @@ clean:
 	-rm -f ${logs}
 	-rm -f ${projname}
 	-rm -f ${lshare}
+	-rm -f ${extra}
 	-rm -f ${wprojname}
 
 distclean: clean
