@@ -1,4 +1,4 @@
 Name: GTK+
 Description: GTK+ Graphical UI Library (${target} target)
 Version: 2.24.33
-Libs: -L/home/bc/a/v/ovideo-1/_fix/x -lgtk 
+Libs: -l:libgstreamer-1.0.so.0 -l:libgstapp-1.0.so.0 -l:libgstvideo-1.0.so.0

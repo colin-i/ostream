@@ -1,0 +1,9 @@
+
+cd l
+if [ -z "$1" ]; then
+	ln -s /home/bc/a/v/squashfs-root/usr/lib/i386-linux-gnu/libjpeg.so.8.2.2 libjpeg.so
+	ln -s /home/bc/a/v/squashfs-root/usr/lib/i386-linux-gnu/libsoup-2.4.so.1 libsoup-2.4.so
+	ln -s /home/bc/a/v/squashfs-root/usr/lib/i386-linux-gnu/libasound.so.2 libasound.so
+	ln -s /home/bc/a/v/squashfs-root/usr/lib/i386-linux-gnu/libgthread-2.0.so.0 libgthread-2.0.so
+	ln -s /home/bc/a/v/squashfs-root/lib/i386-linux-gnu/libpthread.so.0 libpthread.so
+else rm libjpeg.so libsoup-2.4.so libasound.so libgthread-2.0.so libpthread.so; fi
