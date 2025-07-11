@@ -104,8 +104,12 @@ uninstall: install-proc
 endif
 
 ${extra}:
-	#echo -e '#include <gtk/gtk.h>\nvoid main(){printf("%u %u",sizeof(GtkEventBox),sizeof(GtkEventBoxClass));}' | gcc `PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig pkg-config --cflags gtk+-2.0` -x c -m32 -g - `PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig pkg-config --libs gtk+-2.0`
-	touch ${extra}
+	a='#include <gtk/gtk.h>'$$'\n''int main(){printf("data a=%u;data b=%u;",sizeof(GtkEventBox),sizeof(GtkEventBoxClass));return 0;}'; \
+	echo "$${a}" | gcc `pkg-config --cflags gtk+-2.0` -x c -m32 - `pkg-config --libs gtk+-2.0`
+	echo -n '#function ov_frame();' > $@
+	./a.out >> $@
+	echo end >> $@
+	rm a.out
 
 #at jammy libgtk2.0-dev:i386,libgstreamer-plugins-base1.0-dev:i386,libsoup2.4-dev:i386,libasound2-dev:i386
 
