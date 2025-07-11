@@ -1,5 +1,6 @@
 set -e
 if [ -z "`ls ../_fix/l`" ]; then cd ../_fix; ./fix; cd ../src; fi
+if [ ! -e obj/containers.oh ]; then cp ../../containers.oh obj; fi
 PKG_CONFIG_PATH=/home/bc/a/v/ovideo-1/_fix/pc \
 LD_LIBRARY_PATH=${HOME}/Desktop/binutils-arm64-i686-focal/usr/lib/aarch64-linux-gnu LD=${HOME}/Desktop/binutils-arm64-i686-focal/usr/bin/i686-linux-gnu-ld.bfd \
 Lc=-L/home/bc/a/v/ovideo-1/_fix/l \

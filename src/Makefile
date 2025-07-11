@@ -101,12 +101,12 @@ ${wprojname}: ${extra} ${obs}
 endif
 
 ${extra}:
-	a='#include <gtk/gtk.h>'$$'\n''int main(){printf("data a=%u;data b=%u;",sizeof(GtkEventBox),sizeof(GtkEventBoxClass));return 0;}'; \
+	a='int main(){printf("charx GtkTypeInfo#%u;data s=%u;data a=%u;data b=%u;data bb=%u;data c=%u;data cc=%u;",sizeof(GtkTypeInfo),sizeof(GtkTypeInfo),offsetof(GtkTypeInfo,type_name),offsetof(GtkTypeInfo,object_size),sizeof(GtkEventBox),offsetof(GtkTypeInfo,class_size),sizeof(GtkEventBoxClass));return 0;}'; \
 	export PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig:${PKG_CONFIG_PATH}; \
-	echo "$${a}" | gcc `pkg-config --cflags gtk+-2.0` -x c -m32 - `pkg-config --libs gtk+-2.0`
+	printf '#include <gtk/gtk.h>\n%s' "$${a}" | gcc `pkg-config --cflags gtk+-2.0` -x c -m32 - `pkg-config --libs gtk+-2.0`
 	echo -n '#function ov_frame();' > $@
 	./a.out >> $@
-	echo end >> $@
+	echo 'call setmemzero(#GtkTypeInfo,s);end' >> $@
 	rm a.out
 
 #at jammy libgtk2.0-dev:i386,libgstreamer-plugins-base1.0-dev:i386,libsoup2.4-dev:i386,libasound2-dev:i386
