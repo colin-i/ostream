@@ -18,6 +18,8 @@ include "../_dif/difl.oc" "../_dif/difw.oc"
 
 call gtk_init(0,0)
 call gst_init(0,0)
+#import "ov_init" ov_init
+#call ov_init()
 
 importx "_setlocale" setlocale
 call setlocale((LC_NUMERIC),"C") #"English" was ok

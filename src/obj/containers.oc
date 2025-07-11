@@ -163,7 +163,6 @@ function dialogfield_modal_texter_init(sd vbox,sd dialog)
     setcall draw drawfield(vbox)
 #    call dialogfield_modal_texter_drawtext((value_unset))
     #old remark: it's not ok to access at the same time txt[modal_texter_draw_data_size] by threads but it's no problem
-    #import "setmemzero" setmemzero
     #call setmemzero(txt,(modal_texter_draw_data_size))
     call dialog_modal_texter_drawwidget((value_set),draw)
     #
@@ -277,13 +276,50 @@ endfunction
 
 importx "_gtk_container_add" gtk_container_add
 import "container_add" container_add
+#!
+importx "_gtk_type_new" gtk_type_new
+function ov_gtk_event_box_new()
+	valuex type#1  #gsize
+	sd ebox;set ebox gtk_type_new(type)
+	return ebox
+end
+importx "_gtk_event_box_get_type" gtk_event_box_get_type
+importx "_gtk_type_unique" gtk_type_unique
+import "setmemzero" setmemzero
+function ov_init()
+	#vstrx type_name#1             #_gchar
+	#datax object_size#1           #guint
+	#datax class_size#1            #guint
+	#valuex class_init_func#1      #GtkClassInitFunc
+	#valuex object_init_func#1     #GtkObjectInitFunc
+	#valuex reserved_1#1           #gpointer
+	#valuex reserved_2#1           #gpointer
+	#valuex base_class_init_func#1 #GtkClassInitFunc
 
+	call ov_frame()
+
+	sd a
+	set a #ov_frame.GtkTypeInfo
+	add a ov_frame.a
+	set a#v^ "OVEventBox"
+	set a #ov_frame.GtkTypeInfo
+	add a ov_frame.b
+	set a# ov_frame.bb
+	set a #ov_frame.GtkTypeInfo
+	add a ov_frame.c
+	set a# ov_frame.cc
+
+	sd t;set t gtk_event_box_get_type()
+	set ov_gtk_event_box_new.type gtk_type_unique(t,#ov_frame.GtkTypeInfo)
+end
+!
 importx "_gtk_event_box_new" gtk_event_box_new
 function eventboxfield(sd box)
-    sd wid
-    setcall wid gtk_event_box_new()
-    call packstart_default(box,wid)
-    return wid
+	sd wid
+	#setcall wid ov_gtk_event_box_new()
+	setcall wid gtk_event_box_new()
+	call packstart_default(box,wid)
+	return wid
 endfunction
 function eventboxfield_cnt(sd box)
     sd wid
