@@ -205,25 +205,30 @@ function stage_pixbuf_to_container(sd pixbuf,sd eventbox)
 endfunction
 
 #add a new frame to the stage
-#err
+#eventbox
 function stage_new_frame_with_timelength(sd pixbuf,sd length)
-    #add the frame length at the end
-    call stage_frame_time_numbers((stage_frame_time_append),length)
+	#add the frame length at the end
+	call stage_frame_time_numbers((stage_frame_time_append),length)
 
-    #add eventbox for mouse detection
-    sd eventbox
-    setcall eventbox stage_new_click_area()
+	#add eventbox for mouse detection
+	sd eventbox
+	setcall eventbox stage_new_click_area()
 
-    #pixbuf to eventbox
-    call stage_pixbuf_to_container(pixbuf,eventbox)
+	#pixbuf to eventbox
+	call stage_pixbuf_to_container(pixbuf,eventbox)
+	#return eventbox
 endfunction
-#add a frame,length=1
+#add a frame,length=1  ebox return
 function stage_new_pix(sd pixbuf,ss text_ok)
-    call stage_new_frame_with_timelength(pixbuf,1)
+	call stage_new_frame_with_timelength(pixbuf,1)
+	#sd ebox
+	#set ebox stage_new_frame_with_timelength(pixbuf,1)
 
-    #show the message and the received number of frames
-    data one=1
-    call stage_display_index(text_ok,one)
+	#show the message and the received number of frames
+	data one=1
+	call stage_display_index(text_ok,one)
+
+	#return ebox
 endfunction
 import "default_unref_ptr" default_unref_ptr
 #incoming frame arrange

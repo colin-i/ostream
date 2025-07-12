@@ -316,6 +316,15 @@ function ov_init()
 	sd t;set t gtk_event_box_get_type()
 	set ov_gtk_event_box_new.type gtk_type_unique(t,#ov_frame.GtkTypeInfo)
 end
+function ov_frame_destroy_func(sd *frame,ss *fnameclone)
+end
+function ov_frame_connect_fname(sd frame,ss *fname)
+	#connect frame
+	ss clone
+
+	#and to free
+	call connect_signal_data(frame,"destroy",ov_frame_destroy_func,clone)
+end
 !
 importx "_gtk_container_add" gtk_container_add
 import "container_add" container_add
