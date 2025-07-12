@@ -273,15 +273,16 @@ function dialogfield_modal_texter_sync(ss title,sd forward_init,ss buttontext,sd
 endfunction
 
 ##########eventbox
-
-importx "_gtk_container_add" gtk_container_add
-import "container_add" container_add
 #!
 importx "_gtk_type_new" gtk_type_new
 function ov_gtk_event_box_new()
 	valuex type#1  #gsize
 	sd ebox;set ebox gtk_type_new(type)
 	return ebox
+end
+importx "_g_type_class_add_private" g_type_class_add_private
+function ov_gtk_event_box_class_init(sd class)
+	call g_type_class_add_private(class,:) #When an object is allocated, the private structures for the type and all of its parent types are allocated sequentially in the same memory block as the public structures, and are zero-filled.
 end
 importx "_gtk_event_box_get_type" gtk_event_box_get_type
 importx "_gtk_type_unique" gtk_type_unique
@@ -308,11 +309,17 @@ function ov_init()
 	set a #ov_frame.GtkTypeInfo
 	add a ov_frame.c
 	set a# ov_frame.cc
+	set a #ov_frame.GtkTypeInfo
+	add a ov_frame.d
+	set a#v ov_gtk_event_box_class_init
 
 	sd t;set t gtk_event_box_get_type()
 	set ov_gtk_event_box_new.type gtk_type_unique(t,#ov_frame.GtkTypeInfo)
 end
 !
+importx "_gtk_container_add" gtk_container_add
+import "container_add" container_add
+
 importx "_gtk_event_box_new" gtk_event_box_new
 function eventboxfield(sd box)
 	sd wid
