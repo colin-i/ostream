@@ -101,7 +101,7 @@ ${wprojname}: ${extra} ${obs}
 endif
 
 ${extra}:
-	a='int main(){printf("charx GtkTypeInfo#%u;data s=%u;data a=%u;data b=%u;data bb=%u;data c=%u;data cc=%u;",sizeof(GtkTypeInfo),sizeof(GtkTypeInfo),offsetof(GtkTypeInfo,type_name),offsetof(GtkTypeInfo,object_size),sizeof(GtkEventBox),offsetof(GtkTypeInfo,class_size),sizeof(GtkEventBoxClass));return 0;}'; \
+	a='int main(){printf("charx GtkTypeInfo#%u;data s=%u;data a=%u;data b=%u;data bb=%u;data c=%u;data cc=%u;data d=%u;",sizeof(GtkTypeInfo),sizeof(GtkTypeInfo),offsetof(GtkTypeInfo,type_name),offsetof(GtkTypeInfo,object_size),sizeof(GtkEventBox),offsetof(GtkTypeInfo,class_size),sizeof(GtkEventBoxClass),offsetof(GtkTypeInfo,class_init_func));return 0;}'; \
 	export PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig:${PKG_CONFIG_PATH}; \
 	printf '#include <gtk/gtk.h>\n%s' "$${a}" | gcc `pkg-config --cflags gtk+-2.0` -x c -m32 - `pkg-config --libs gtk+-2.0`
 	echo -n '#function ov_frame();' > $@
