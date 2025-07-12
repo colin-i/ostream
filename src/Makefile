@@ -108,7 +108,7 @@ ${extra}:
 	printf '#include <gtk/gtk.h>\n%s' "$${a}" | gcc `pkg-config --cflags gtk+-2.0` -x c -m32 - `pkg-config --libs gtk+-2.0`
 	echo -n '#function ov_frame();' > $@
 	./a.out >> $@
-	echo 'call setmemzero(#GtkTypeInfo,s);end' >> $@
+	echo -n 'call setmemzero(#GtkTypeInfo,s);end' >> $@
 	rm a.out
 
 #at jammy libgtk2.0-dev:i386,libgstreamer-plugins-base1.0-dev:i386,libsoup2.4-dev:i386,libasound2-dev:i386
