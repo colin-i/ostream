@@ -226,6 +226,7 @@ function stage_get_sel_parent(sd ptr_eventbox)
     return (noerror)
 endfunction
 
+import "object_get_dword_name" object_get_dword_name
 #e
 function stage_get_sel_pixbuf(sd ptr)
     sd eventbox
@@ -236,7 +237,6 @@ function stage_get_sel_pixbuf(sd ptr)
         return err
     endif
     sd pixbuf
-    import "object_get_dword_name" object_get_dword_name
     setcall pixbuf object_get_dword_name(eventbox)
     set ptr# pixbuf
     data noerr=noerror
@@ -264,36 +264,36 @@ endfunction
 
 #save the selection to a file
 function stage_save_img()
-    sd pixbuf
-    sd ptr_pixbuf^pixbuf
-    sd err
-    data noerr=noerror
-    setcall err stage_get_sel_pixbuf(ptr_pixbuf)
-    if err!=noerr
-        return err
-    endif
+	sd eventbox
+	sd ptr_eventbox^eventbox
+	sd err
+	setcall err stage_get_sel_parent(ptr_eventbox)
+	if err=(noerror)
+		ss location
+		#set location ov_frame_location(eventbox)
+		#if location=(NULL)
+			vstr format="jpeg"
+			import "save_destination" save_destination
+			setcall location save_destination(format)
+		#endif
+		sd file
+		sd p_file^file
+		import "openfile" openfile
+		importx "_fclose" fclose
+		ss mode="wb"
+		setcall err openfile(p_file,location,mode)
+		if err=(noerror)
+			sd pixbuf
+			setcall pixbuf object_get_dword_name(eventbox)
 
-    ss location
-    str format="jpeg"
-    import "save_destination" save_destination
-    setcall location save_destination(format)
+			import "stage_jpeg_write" stage_jpeg_write
+			call stage_jpeg_write(file,pixbuf)
+			call fclose(file)
 
-    sd file
-    sd p_file^file
-    import "openfile" openfile
-    importx "_fclose" fclose
-    sd er
-    ss mode="wb"
-    setcall er openfile(p_file,location,mode)
-    if er!=(noerror)
-        return 0
-    endif
-    import "stage_jpeg_write" stage_jpeg_write
-    call stage_jpeg_write(file,pixbuf)
-    call fclose(file)
-
-    import "save_inform_saved" save_inform_saved
-    call save_inform_saved(location)
+			import "save_inform_saved" save_inform_saved
+			call save_inform_saved(location)
+		endif
+	endif
 endfunction
 
 
