@@ -216,19 +216,18 @@ function stage_new_frame_with_timelength(sd pixbuf,sd length)
 
 	#pixbuf to eventbox
 	call stage_pixbuf_to_container(pixbuf,eventbox)
-	#return eventbox
+	return eventbox
 endfunction
 #add a frame,length=1  ebox return
 function stage_new_pix(sd pixbuf,ss text_ok)
-	call stage_new_frame_with_timelength(pixbuf,1)
-	#sd ebox
-	#set ebox stage_new_frame_with_timelength(pixbuf,1)
+	sd ebox
+	set ebox stage_new_frame_with_timelength(pixbuf,1)
 
 	#show the message and the received number of frames
 	data one=1
 	call stage_display_index(text_ok,one)
 
-	#return ebox
+	return ebox
 endfunction
 import "default_unref_ptr" default_unref_ptr
 #incoming frame arrange

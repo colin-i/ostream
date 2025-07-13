@@ -262,6 +262,9 @@ function stage_get_selection_pixbuf()
     return px
 endfunction
 
+function jpeg_format()
+	return "jpg"
+end
 #save the selection to a file
 function stage_save_img()
 	sd eventbox
@@ -270,12 +273,13 @@ function stage_save_img()
 	setcall err stage_get_sel_parent(ptr_eventbox)
 	if err=(noerror)
 		ss location
-		#set location ov_frame_location(eventbox)
-		#if location=(NULL)
-			vstr format="jpeg"
+		import "ov_frame_location" ov_frame_location
+		set location ov_frame_location(eventbox)
+		if location=(NULL)
+			ss format;set format jpeg_format()
 			import "save_destination" save_destination
 			setcall location save_destination(format)
-		#endif
+		end
 		sd file
 		sd p_file^file
 		import "openfile" openfile

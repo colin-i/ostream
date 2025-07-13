@@ -17,22 +17,20 @@ function stage_new_frame_got_filename(ss filename)
 	setcall pixbuf pixbuf_from_file(filename)
 	sd z=0
 	if pixbuf!=z
-		call stage_new_pixbuf(pixbuf)
-		#sd ebox
-		#set ebox stage_new_pixbuf(pixbuf)
-		#import "ov_frame_connect_fname" ov_frame_connect_fname
-		#call ov_frame_connect_fname(ebox,filename)
+		sd ebox
+		set ebox stage_new_pixbuf(pixbuf)
+		import "ov_frame_connect_fname" ov_frame_connect_fname
+		call ov_frame_connect_fname(ebox,filename)
 	endif
 endfunction
 function stage_new_pixbuf(sd pixbuf)
 	vstr text="Frame added. Total frames: "
 	import "stage_new_pix" stage_new_pix
-	call stage_new_pix(pixbuf,text)
-	#sd ebox
-	#set ebox stage_new_pix(pixbuf,text)
+	sd ebox
+	set ebox stage_new_pix(pixbuf,text)
 	import "stage_display_last" stage_display_last
 	call stage_display_last()
-	#return ebox
+	return ebox
 endfunction
 
 
