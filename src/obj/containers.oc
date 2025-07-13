@@ -323,14 +323,14 @@ importx "_g_strdup" g_strdup
 importx "_g_type_instance_get_private" g_type_instance_get_private
 function ov_frame_connect_fname(sd frame,ss fname)
 	ss clone;set clone g_strdup(fname)
-	if clone!=(NULL)
-		#connect frame
-		sv data;set data g_type_instance_get_private(frame,ov_gtk_event_box_new.type)
-		set data# clone
+	#don't see a null return here https://docs.gtk.org/glib/func.strdup.html maybe is abort inside
 
-		#and to free
-		call connect_signal_data(frame,"destroy",ov_frame_destroy_func,clone)
-	end
+	#connect frame
+	sv data;set data g_type_instance_get_private(frame,ov_gtk_event_box_new.type)
+	set data# clone
+
+	#and to free
+	call connect_signal_data(frame,"destroy",ov_frame_destroy_func,clone)
 end
 !
 importx "_gtk_container_add" gtk_container_add
