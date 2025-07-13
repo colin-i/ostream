@@ -74,12 +74,19 @@ endfunction
 
 importx "gtk_file_chooser_get_filename" gtk_file_chooser_get_filename
 function file_chooser_get_fname(sd dialog)
-    sd file
-    setcall file gtk_file_chooser_get_filename(dialog)
-    return file
+	sd file
+	setcall file gtk_file_chooser_get_filename(dialog) #platform encoding
+	return file
 endfunction
-
-
+function ov_frame_clone(ss file) #here is from filechooser
+	importx "g_filename_to_utf8" g_filename_to_utf8
+	ss f;set f g_filename_to_utf8(file,-1,(NULL),(NULL),(NULL)) #G_CONVERT_ERROR_EMBEDDED_NUL(output contains a nul character) is not because len is -1
+	#G_CONVERT_ERROR_ILLEGAL_SEQUENCE(A nul character found inside the string) , same -1 len
+	#if f!=(NULL) #"or NULL on an error"
+	#	call g_free(file) can't free orig here, is from filechooser forward
+	#end
+	return f
+end
 
 
 

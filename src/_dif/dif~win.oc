@@ -143,7 +143,11 @@ function file_chooser_get_fname(sd dialog)
     setcall file gtk_file_chooser_get_filename_utf8(dialog)
     return file
 endfunction
-
+importx "_g_strdup" g_strdup
+function ov_frame_clone(ss file) #already utf8
+	set file g_strdup(file) #nothing about null return
+	return file
+end
 
 
 

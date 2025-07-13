@@ -106,7 +106,7 @@ endif
 ${extra}:
 	a='int main(){printf("charx GtkTypeInfo#%u;data s=%u;data a=%u;data b=%u;data bb=%u;data c=%u;data cc=%u;data d=%u;",sizeof(GtkTypeInfo),sizeof(GtkTypeInfo),offsetof(GtkTypeInfo,type_name),offsetof(GtkTypeInfo,object_size),sizeof(GtkEventBox),offsetof(GtkTypeInfo,class_size),sizeof(GtkEventBoxClass),offsetof(GtkTypeInfo,class_init_func));return 0;}'; \
 	printf '#include <gtk/gtk.h>\n%s' "$${a}" | gcc `pkg-config --cflags gtk+-2.0` -x c -m32 - `pkg-config --libs gtk+-2.0`
-	echo -n '#function ov_frame();' > $@
+	echo -n 'function ov_frame();' > $@
 	./a.out >> $@
 	echo -n 'call setmemzero(#GtkTypeInfo,s);end' >> $@
 	rm a.out

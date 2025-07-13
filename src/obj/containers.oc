@@ -273,7 +273,7 @@ function dialogfield_modal_texter_sync(ss title,sd forward_init,ss buttontext,sd
 endfunction
 
 ##########eventbox
-#!
+
 importx "_gtk_type_new" gtk_type_new
 function ov_gtk_event_box_new()
 	valuex type#1  #gsize
@@ -319,28 +319,54 @@ end
 function ov_frame_destroy_func(sd *frame,ss fnameclone)
 	call g_free(fnameclone)
 end
-importx "_g_strdup" g_strdup
+importx "_g_basename" g_basename
+importx "_g_utf8_strrchr" g_utf8_strrchr
+importx "_g_strconcat" g_strconcat
 importx "_g_type_instance_get_private" g_type_instance_get_private
 function ov_frame_connect_fname(sd frame,ss fname)
-	ss clone;set clone g_strdup(fname)
-	#don't see a null return here https://docs.gtk.org/glib/func.strdup.html maybe is abort inside
+	import "ov_frame_clone" ov_frame_clone
+	set fname ov_frame_clone(fname)
+	if fname!=(NULL) #"or NULL on an error"
+		#there is a complication with home_folder absolute on linux, set here fast at the moment
+		ss bname;set bname g_basename(fname) #It returns a pointer into the given file name string.
+		#these are starting from gtk_file_chooser_get_filename[_utf8] utf8 also from filename_to_utf8
+		ss pos;set pos g_utf8_strrchr(bname,-1,(Period))
+		if pos!=(NULL)
+			inc pos             ##. in utf8 is 1 byte
+			set pos# (Nullchar)
+		end
+		import "capture_folder" capture_folder
+		sd p1;set p1 capture_folder()
+		import "jpeg_format" jpeg_format
+		sd form;set form jpeg_format()
+		sd location;set location g_strconcat(p1,"/",bname,form,(NULL)) #/ is ok at the other jpg save. utf8 return
+		call g_free(fname)
 
-	#connect frame
-	sv data;set data g_type_instance_get_private(frame,ov_gtk_event_box_new.type)
-	set data# clone
+		#connect frame
+		sv data;set data g_type_instance_get_private(frame,ov_gtk_event_box_new.type)
+		set data# location
 
-	#and to free
-	call connect_signal_data(frame,"destroy",ov_frame_destroy_func,clone)
+		#and to free
+		call connect_signal_data(frame,"destroy",ov_frame_destroy_func,location)
+	end
 end
-!
+function ov_frame_location(sd ebox)
+	sv source;set source g_type_instance_get_private(ebox,ov_gtk_event_box_new.type)
+	import "move_to_home_core" move_to_home_core
+	ss location;set location source#
+	if location!=(NULL)
+		call move_to_home_core(#location)
+	end
+	return location
+end
+
 importx "_gtk_container_add" gtk_container_add
 import "container_add" container_add
 
 importx "_gtk_event_box_new" gtk_event_box_new
 function eventboxfield(sd box)
 	sd wid
-	#setcall wid ov_gtk_event_box_new()
-	setcall wid gtk_event_box_new()
+	setcall wid ov_gtk_event_box_new() #gtk_event_box_new()
 	call packstart_default(box,wid)
 	return wid
 endfunction

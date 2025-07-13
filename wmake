@@ -1,12 +1,14 @@
 
 if [ -z "$1" ] || [ -n "$2" ]
 then
-cd src
-./wmake $2
-if [ "$?" != 0 ]; then
-exit
-fi
-cd ..
+#make/clean
+	cd src
+	if [ ! -e obj/containers.oh ]; then cp ../../containers.oh obj; fi
+	./wmake $2
+	if [ "$?" != 0 ]; then
+		exit
+	fi
+	cd ..
 fi
 
 
