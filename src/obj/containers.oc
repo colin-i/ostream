@@ -330,16 +330,16 @@ function ov_frame_connect_fname(sd frame,ss fname)
 		#there is a complication with home_folder absolute on linux, set here fast at the moment
 		ss bname;set bname g_basename(fname) #It returns a pointer into the given file name string.
 		#these are starting from gtk_file_chooser_get_filename[_utf8] utf8 also from filename_to_utf8
-		ss pos;set pos g_utf8_strrchr(bname,-1,(Period))
+		char ext_delim={Period,Nullchar}
+		ss pos;set pos g_utf8_strrchr(bname,-1,ext_delim)
 		if pos!=(NULL)
-			inc pos             ##. in utf8 is 1 byte
 			set pos# (Nullchar)
 		end
 		import "capture_folder" capture_folder
 		sd p1;set p1 capture_folder()
 		import "jpeg_format" jpeg_format
 		sd form;set form jpeg_format()
-		sd location;set location g_strconcat(p1,"/",bname,form,(NULL)) #/ is ok at the other jpg save. utf8 return
+		sd location;set location g_strconcat(p1,"/",bname,#ext_delim,form,(NULL)) #/ is ok at the other jpg save. utf8 return
 		call g_free(fname)
 
 		#connect frame
