@@ -66,20 +66,36 @@ extra=${o}containers.oh
 ifeq (${platform},lin)
 
 OFLAGS = underscore_pref 1 ${OFLAGSEXTRA}
-lprojname=${items_prefix}${projname}
 lshare=_dif/share.txt
 sharefolderpackage=$(prefix)/share/ovideo
 sharefolder=$(DESTDIR)${sharefolderpackage}
 dynlink=/lib/ld-linux.so.2
-all: ${lprojname}
-${lprojname}: ${lshare} ${extra} ${obs}
+all: ${projname}
+${projname}: ${lshare} ${extra} ${obs}
 	${OLINK} ${logs}
 	export PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig:${PKG_CONFIG_PATH}; \
-	$(LD) -melf_i386 --dynamic-linker=${dynlink} ${linkerflags} ${obs} -o ${lprojname} ${Lc} -l:libc.so.6 -l:libm.so.6 `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lgthread-2.0 -lpthread;
+	$(LD) -melf_i386 --dynamic-linker=${dynlink} ${linkerflags} ${obs} -o ${items_prefix}${projname} ${Lc} -l:libc.so.6 -l:libm.so.6 `pkg-config --libs gtk+-2.0 gstreamer-pbutils-1.0 gstreamer-app-1.0` -ljpeg -lsoup-2.4 -lasound -lgthread-2.0 -lpthread;
 #same CC problem like at actionswf # $(CC) -m32 ${linkerflagsextra}
 #need to use LLVM lld to work
 ${lshare}:
 	echo char prestart=0x2e\;char simplestart=\"${sharefolderpackage}\"\;return \#simplestart > ${lshare}
+platform-clean:
+	-rm -f ${projname}
+	-rm -f ${lshare}
+install-proc:
+	cd ../build; \
+	find ./img -type f ! -name 1616.png -exec install -Dm 664 {} ${sharefolder}/{} \;
+	#is with ! name can try in debian/rules override_dh_auto_clean maybe
+	install -d ${sharefolder}/html
+	cd ../html; \
+	install -Dm 664 html/use.html ${sharefolder}/html/
+	cd ..; \
+	install -m 664 ./version.txt ${sharefolder}/
+	install -D ${projname} \
+		$(DESTDIR)$(prefix)/bin/${projname}
+uninstall:
+	-rm -f $(DESTDIR)$(prefix)/bin/${projname}
+	-rm -r ${sharefolder}
 
 else
 
@@ -97,6 +113,11 @@ ${wprojname}: ${extra} ${obs}
 	-lgtk-win32-2.0 -lgdk-win32-2.0 -lgdk_pixbuf-2.0 -lglib-2.0 -lgobject-2.0 -lgio-2.0 -lgthread-2.0 \
 	-lgstreamer-0.10 -lgstapp-0.10 -lgstinterfaces-0.10 -lgstpbutils-0.10 \
 	-lcairo -lpango-1.0 -lsoup-2.4 -ljpeg;
+platform-clean:
+	-rm -f ${wprojname}
+install-proc:
+	echo use wmake
+uninstall: install-proc
 
 endif
 
@@ -140,37 +161,18 @@ ${extra}:
 #	$(eval logs += $@.oc.log)
 #	$(eval obs += $@.o)
 
-clean:
+clean: platform-clean
 	-rm -f ${obs}
 	-rm -f ${logs}
-	-rm -f ${projname}
-	-rm -f ${lshare}
 	-rm -f ${extra}
-	-rm -f ${wprojname}
 
 distclean: clean
 
 test:
 	echo "Nothing"
 
-install-proc:
-	cd ../build; \
-	find ./img -type f ! -name 1616.png -exec install -Dm 664 {} ${sharefolder}/{} \;
-	#is with ! name can try in debian/rules override_dh_auto_clean maybe
-	install -d ${sharefolder}/html
-	cd ../html; \
-	install -Dm 664 html/use.html ${sharefolder}/html/
-	cd ..; \
-	install -m 664 ./version.txt ${sharefolder}/
-	install -D ${projname} \
-		$(DESTDIR)$(prefix)/bin/${projname}
-
 install: all install-proc
 
-uninstall:
-	-rm -f $(DESTDIR)$(prefix)/bin/${projname}
-	-rm -r ${sharefolder}
-
-.PHONY: all install install-proc clean distclean uninstall test
+.PHONY: all install install-proc clean platform-clean distclean uninstall test
 
 .NOTPARALLEL:
