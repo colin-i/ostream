@@ -10,12 +10,6 @@ endif
 
 platform = lin
 
-ifeq (${platform},win)
-	OFLAGS = inplace_reloc 0 include_sec 1 ${OFLAGSEXTRA}
-else
-	OFLAGS = underscore_pref 1 ${OFLAGSEXTRA}
-endif
-
 cap = _capture/capture
 err = err/err
 eve = event/event
@@ -50,12 +44,6 @@ uti = ${u}asm ${u}floating ${u}lists ${u}numbers ${u}update ${u}util
 items = _dif/dif~${platform} ${cap} ${err} ${eve} ${exe} ${ffl} ${gnu} ${int} ${med} ${mem} ${net} ${obj} ${pre} ${sea} ${str} ${uti}
 items_prefix=
 
-projname=ovideo
-wprojname=ovideo.exe
-lshare=_dif/share.txt
-sharefolderpackage=$(prefix)/share/ovideo
-sharefolder=$(DESTDIR)${sharefolderpackage}
-
 $(eval obs = )
 $(foreach var,$(items),$(eval obs += ${items_prefix}${var}.o))
 $(eval logs = )
@@ -63,15 +51,36 @@ $(foreach var,$(items),$(eval logs += ${items_prefix}${var}.oc.log))
 
 ifeq (${platform},lin)
 
+OFLAGS = underscore_pref 1 ${OFLAGSEXTRA}
+projname=ovideo
+lshare=_dif/share.txt
+sharefolderpackage=$(prefix)/share/ovideo
+sharefolder=$(DESTDIR)${sharefolderpackage}
 all: ${projname}
-${projname}: ${lshare} ${obs}
+${projname}: ${lshare} ${extra} ${obs}
 	ounused ${logs}
 	$(CC) -nostdlib ${linkerflags} ${obs} -o ${items_prefix}${projname} `pkg-config --libs gtk+-2.0 gstreamer-pbutils-0.10 gstreamer-interfaces-0.10 gstreamer-app-0.10` -lsoup-2.4 -ljpeg -lasound -lm -lpthread -lc
 ${lshare}:
 	echo return \"${sharefolderpackage}\" > ${lshare}
+platform-clean:
+	-rm -f ${projname}
+	-rm -f ${lshare}
+install-proc:
+	cd ../build; \
+	find ./img -type f ! -name 1616.png -exec install -Dm 664 {} ${sharefolder}/{} \;
+	#is with ! name can try in debian/rules override_dh_auto_clean maybe
+	install -d ${sharefolder}/html
+	cd ../html; \
+	install -Dm 664 html/use.html ${sharefolder}/html/
+	cd ..; \
+	install -m 664 ./version.txt ${sharefolder}/
+	install -D ${projname} \
+		$(DESTDIR)$(prefix)/bin/${projname}
 
 else
 
+OFLAGS = inplace_reloc 0 include_sec 1 ${OFLAGSEXTRA}
+wprojname=ovideo.exe
 all: ${wprojname}
 ${wprojname}: ${obs}
 	ounused ${logs}
@@ -80,7 +89,11 @@ ${wprojname}: ${obs}
 	--end-group -L`echo ~`/.wine/drive_c/gstreamer-sdk/0.10/x86/lib/ \
 	-lgtk-win32-2.0 -lgdk-win32-2.0 -lgdk_pixbuf-2.0 -lglib-2.0 -lgobject-2.0 -lgio-2.0 -lgthread-2.0 \
 	-lgstreamer-0.10 -lgstapp-0.10 -lgstinterfaces-0.10 -lgstpbutils-0.10 \
-	-lcairo -lpango-1.0 -lsoup-2.4 -ljpeg
+	-lcairo -lpango-1.0 -lsoup-2.4 -ljpeg;
+platform-clean:
+	-rm -f ${wprojname}
+install-proc:
+	echo use wmake
 
 endif
 
@@ -118,29 +131,15 @@ endif
 #	$(eval logs += $@.oc.log)
 #	$(eval obs += $@.o)
 
-clean:
+clean: platform-clean
 	-printf ' %s.oc.log' ${items} | xargs rm -f
 	-printf ' %s.o' ${items} | xargs rm -f
-	-rm -f ${projname}
-	-rm -f ${lshare}
-	-rm -f ${wprojname}
+	-rm -f ${extra}
 
 distclean: clean
 
 test:
 	echo "Nothing"
-
-install-proc:
-	install -D ${projname} \
-		$(DESTDIR)$(prefix)/bin/${projname}
-	cd ../build; \
-	find ./img -type f ! -name 1616.png -exec install -Dm 664 {} ${sharefolder}/{} \;
-	#is with ! name can try in debian/rules override_dh_auto_clean maybe
-	install -d ${sharefolder}/html
-	cd ../html; \
-	install -Dm 664 html/use.html ${sharefolder}/html/
-	cd ..; \
-	install -m 664 ./version.txt ${sharefolder}/
 
 install: all install-proc
 
@@ -148,6 +147,6 @@ uninstall:
 	-rm -f $(DESTDIR)$(prefix)/bin/${projname}
 	-rm -r ${sharefolder}
 
-.PHONY: all install install-proc clean distclean uninstall test
+.PHONY: all install install-proc clean platform-clean distclean uninstall test
 
 .NOTPARALLEL:
