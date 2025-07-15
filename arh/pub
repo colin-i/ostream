@@ -6,19 +6,17 @@ tars="focal jammy" #more at src/md
 last=$(curl https://api.github.com/repos/colin-i/$(cat debian/control | grep "^Homepage" | grep -o [^/]*$)/releases/latest -s | jq .tag_name -r) && \
 ~/test/xver ./version.txt && \
 use_version_txt=1 ~/test/debinit2b "${1}" ${2} && \
-#deb if not going to amd64 will end of life at launchpad at focal
-#sudo gh act -r -j debuild workflow_dispatch -W .github/workflows/debuild.yml -P ubuntu-18.04=ubuntu:bionic  #ubuntu:lucid is the first one
 ~/test/deb && \
 ~/test/publp && \
-~/test/debuild2 x && \
-git restore debian/files && git diff --exit-code && \
-~/test/ai/ai && \
 ~/test/del && \
 ~/test/rel && \
+~/test/pub rel && \
+gh workflow run debuild.yml && \
+~/test/pub debuild && \
+~/test/ai/ai && \
 ./wmake && \
-~/test/pub appimage rel && \
+~/test/pub appimage && \
 ~/test/ai/upapppic && \
-~/test/updeb && \
 ~/test/upgen ovideo.zip && \
 ~/test/pub upapp && \
 ~/test/rpm/suse && \
@@ -27,3 +25,9 @@ git restore debian/files && git diff --exit-code && \
 ~/test/lp 0 "${tars}" && \
 ~/test/lp x "${tars}" && \
 ~/test/arh2 ${last}
+
+#deb if not going to amd64 will end of life at launchpad at focal
+#sudo gh act -r -j debuild workflow_dispatch -W .github/workflows/debuild.yml -P ubuntu-18.04=ubuntu:bionic  #ubuntu:lucid is the first one
+#~/test/debuild2 x
+#git restore debian/files && git diff --exit-code
+#~/test/updeb

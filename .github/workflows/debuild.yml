@@ -1,0 +1,99 @@
+
+on:
+ workflow_dispatch:
+env:
+ #for gh api
+ GITHUB_TOKEN: ${{ secrets.PAT }}
+jobs:
+ debuild:
+  runs-on: ubuntu-latest  #22.04 same as appimage
+  container: ubuntu:jammy #having unmet  libgstreamer1.0-dev:i386 : Depends: libunwind-dev:i386
+  steps:
+   - uses: actions/checkout@master
+     with:
+      path: in
+   - uses: actions/checkout@master
+     with:
+      repository: colin-i/sync
+      path: in2
+      ref: ovideo
+   - uses: actions/checkout@master
+     with:
+      repository: colin-i/sync
+      path: in3
+      ref: ovideo-xenial
+   - name: Run a multi-line script
+     run: |
+      dpkg --add-architecture i386
+      apt update
+      apt install -y software-properties-common
+      add-apt-repository -y ppa:colin-i/ppa
+      #                                                          for obj/containers.oh
+      apt install -y wget ocompiler devscripts debhelper make gcc-multilib lld libgtk2.0-dev:i386 libsoup2.4-dev:i386 libasound2-dev:i386\
+       libgstreamer-plugins-base1.0-dev:i386 binutils-i686-linux-gnu:i386 jq curl
+      #                                           a strip case at dpkg-buildpackage
+
+      mv in2/debian/patches in/debian/patches
+      mv in2/.pc in/.pc
+
+      #downdeb () {
+      #	pkg=${1}
+      #	#pkg=ocompiler
+      #	maindeb=${pkg}.deb
+      #	#if [ ! -e "${maindeb}" ]; then
+      #		arch=i386
+      #		inter=Packages${arch}
+      #		#                    ${nr} for multiple Packages
+      #		src=archive.ubuntu.com
+      #		#src="ppa.launchpadcontent.net/colin-i/ppa"
+      #		#if [ ! -e "${inter}" ]; then
+      #			#sfx=${4}
+      #			wget http://${src}/ubuntu/dists/focal/main/binary-${arch}/Packages.xz -O ${inter}.xz
+      #			#                                         -${sfx}
+      #			xz -d ${inter}.xz # f for multiple times
+      #		#fi
+      #		debfilename=`grep "^Filename.*/${pkg}_" ${inter} | tail -1 | cut -d ' ' -f 2`
+      #		wget_url=http://${src}/ubuntu/${debfilename}
+      #		wget ${wget_url} -O ${maindeb}
+      #		dpkg -x ${maindeb} x
+      #	#fi
+      #}
+      #downdeb binutils-i686-linux-gnu
+      #apath=`pwd`/x/usr/
+
+      origf=ovideo-1.tar.gz
+      #if [ ! -e "${origf}" ]; then
+       origln=ovideo_1.orig.tar.gz
+       wget https://ppa.launchpadcontent.net/colin-i/ppa/ubuntu/pool/main/o/ovideo/${origln} -O ${origf}
+       ln -s ${origf} ${origln}
+      #fi
+
+      cd in
+      #
+      files=`cat xenial`
+      for var in ${files}; do mv ../in3/.pc/${var} .pc; done
+      for var in ${files}; do mv ../in3/debian/patches/${var} debian/patches; done
+      #
+      #LD_LIBRARY_PATH=${apath}lib/i386-linux-gnu LD=${apath}bin/i686-linux-gnu-ld.bfd dpkg-buildpackage -b -us -uc -ai386
+      LD=ld.lld Lc=-L/lib32 Lg=-L/usr/lib/i386-linux-gnu dpkg-buildpackage -b -us -uc -ai386
+
+      file=ovideo_`cat version.txt | sed 's/\./-/'`_i386.deb
+
+      repo_at_gh=`cat debian/control | grep "^Homepage" | grep -o [^/]*$`
+      #id=`gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/colin-i/ostream/releases/latest | jq .id`
+      id=`curl -L \
+       -H "Accept: application/vnd.github+json" \
+       -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
+       -H "X-GitHub-Api-Version: 2022-11-28" \
+       https://api.github.com/repos/colin-i/${repo_at_gh}/releases/latest | jq .id`
+      #gh api --method POST -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" --hostname github.com\
+      #	/repos/colin-i/ostream/releases/${id}/assets?name=${file} -f ${file}
+      cd ..
+      curl -L \
+       -X POST \
+       -H "Accept: application/vnd.github+json" \
+       -H "Authorization: Bearer ${{ env.GITHUB_TOKEN }}" \
+       -H "X-GitHub-Api-Version: 2022-11-28" \
+       -H "Content-Type: application/octet-stream" \
+       "https://uploads.github.com/repos/colin-i/${repo_at_gh}/releases/${id}/assets?name=${file}" \
+       --data-binary @${file}
