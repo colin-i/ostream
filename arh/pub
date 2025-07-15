@@ -14,7 +14,7 @@ use_version_txt=1 ~/test/debinit2b "${1}" ${2} && \
 gh workflow run debuild.yml && \
 ~/test/pub debuild && \
 ~/test/ai/ai && \
-./wmake && \
+./wrmake && \
 ~/test/pub appimage && \
 ~/test/ai/upapppic && \
 ~/test/upgen ovideo.zip && \

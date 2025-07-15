@@ -1,6 +1,7 @@
 
 #optional 1 debug/clean
 
+if [ -z "${wineroot}" ]; then export wineroot=.wine; fi
 if [ -z "${1}" ] || [ "$1" = "clean" ]; then
 	make platform=win $@
 else
