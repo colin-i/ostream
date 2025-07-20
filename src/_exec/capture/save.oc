@@ -122,9 +122,7 @@ function capture_path(ss format,sd extrabool,sd extranumber)
 endfunction
 
 function save_destination(ss format)
-    sd path
-    setcall path capture_path(format,0)
-    return path
+	callret capture_path(format,0)
 endfunction
 
 
@@ -152,10 +150,8 @@ function save_get_audio_format()
 endfunction
 function save_get_ogg_dest()
 #these formats are related to format_max
-    str format="ogg"
-    sd dest
-    setcall dest save_destination(format)
-    return dest
+	vstr format="ogg"
+	callret save_destination(format)
 endfunction
 
 #v

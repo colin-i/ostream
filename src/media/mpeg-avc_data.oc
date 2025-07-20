@@ -311,9 +311,7 @@ function avc_residual_ac_ch()
     return residual_ac_ch
 endfunction
 function avc_residual_ac_u()
-    sd residual_ac_u
-    setcall residual_ac_u avc_residual_ac_ch()
-    return residual_ac_u
+	callret avc_residual_ac_ch()
 endfunction
 function avc_residual_ac_v()
     sd residual_ac_v
@@ -328,9 +326,7 @@ function avc_chroma_dc()
     return chroma_dc
 endfunction
 function avc_chroma_dc_u()
-    sd res
-    setcall res avc_chroma_dc()
-    return res
+	callret avc_chroma_dc()
 endfunction
 function avc_chroma_dc_v()
     sd res

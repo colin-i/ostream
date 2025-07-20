@@ -191,8 +191,6 @@ endfunction
 
 function stage_effect_scale_orientation(sd part,sd argument)
     import "stage_effect_orientation" stage_effect_orientation
-    sd value
     ss text="Orientation"
-    setcall value stage_effect_orientation(part,argument,(TRUE),text)
-    return value
+	callret stage_effect_orientation(part,argument,(TRUE),text)
 endfunction

@@ -60,9 +60,7 @@ function mpeg_mb_prediction(sd x,sd y,sd mb_width,sd qcoeff,sd acpred_direction)
         endwhile
     endelse
 
-    sd cbp
-    setcall cbp mpeg_calc_cbp(qcoeff)
-    return cbp
+	callret mpeg_calc_cbp(qcoeff)
 endfunction
 
 const mb_pred_values=0
@@ -145,9 +143,7 @@ function macro_blocks_core(sd action,sd mbpos,sd sector,sd item)
 endfunction
 
 function macro_blocks(sd action,sd mbpos,sd sector)
-    sd value
-    setcall value macro_blocks_core(action,mbpos,sector,(mb_pred_values))
-    return value
+	callret macro_blocks_core(action,mbpos,sector,(mb_pred_values))
 endfunction
 
 function macro_blocks_mode(sd action,sd mbpos,sd value)
@@ -350,11 +346,9 @@ function mpeg_predict_acdc(sd x,sd mb_width,sd mbpos,sd block,sd predictors,sd a
 endfunction
 
 function mb_rescale(sd coef)
-    sd x
 	if coef!=0
         mult coef (DEFAULT_QUANT)
-        setcall x mb_div(coef,(DEFAULT_QUANT))
-        return x
+		callret mb_div(coef,(DEFAULT_QUANT))
 	endif
         return 0
 endfunction

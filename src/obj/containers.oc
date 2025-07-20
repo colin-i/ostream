@@ -116,16 +116,12 @@ endfunction
 function dialogfield_size(ss title,sd modal_flag,sd forward1,sd forward2,sd width,sd height)
     str GTK_STOCK_OK="gtk-ok"
     data responseok=GTK_RESPONSE_OK
-    sd dialog
-    setcall dialog dialogfield_size_button(title,modal_flag,forward1,forward2,width,height,GTK_STOCK_OK,responseok)
-    return dialog
+	callret dialogfield_size_button(title,modal_flag,forward1,forward2,width,height,GTK_STOCK_OK,responseok)
 endfunction
 
 function dialogfield(ss title,sd modal_flag,sd forward1,sd forward2)
     data default=-1
-    sd dialog
-    setcall dialog dialogfield_size(title,modal_flag,forward1,forward2,default,default)
-    return dialog
+	callret dialogfield_size(title,modal_flag,forward1,forward2,default,default)
 endfunction
 #true to not propagate
 function dialogfield_modal_texter_expose(sd widget)
@@ -249,9 +245,7 @@ function dialogfield_modal_texter_core(ss title,sd forward_init,ss buttontext)
     sd p%p_forward_init
     set p# forward_init
     data init^dialogfield_modal_texter_init
-    sd dialog
-    setcall dialog dialogfield_size_button_core(title,(GTK_DIALOG_MODAL),init,(modal_texter_parentdialog_width),-1,buttontext,(GTK_RESPONSE_CANCEL))
-    return dialog
+	callret dialogfield_size_button_core(title,(GTK_DIALOG_MODAL),init,(modal_texter_parentdialog_width),-1,buttontext,(GTK_RESPONSE_CANCEL))
 endfunction
 #void
 #function dialogfield_modal_texter(ss title,sd forward_init,ss buttontext)
@@ -277,8 +271,7 @@ endfunction
 importx "_gtk_type_new" gtk_type_new
 function ov_gtk_event_box_new()
 	valuex type#1  #gsize
-	sd ebox;set ebox gtk_type_new(type)
-	return ebox
+	callret gtk_type_new(type)
 end
 importx "_g_type_class_add_private" g_type_class_add_private
 function ov_gtk_event_box_class_init(sd class)
@@ -404,9 +397,7 @@ function filechooserfield_core()
     str GTK_STOCK_OPEN="gtk-open"
     data null=0
     importx "_gtk_file_chooser_dialog_new" gtk_file_chooser_dialog_new
-    sd dialog
-    setcall dialog gtk_file_chooser_dialog_new(open_file,main,open,GTK_STOCK_CANCEL,responsecancel,GTK_STOCK_OPEN,(GTK_RESPONSE_ACCEPT),null)
-    return dialog
+	callret gtk_file_chooser_dialog_new(open_file,main,open,GTK_STOCK_CANCEL,responsecancel,GTK_STOCK_OPEN,(GTK_RESPONSE_ACCEPT),null)
 endfunction
 
 importx "_g_free" g_free
@@ -415,9 +406,7 @@ importx "_g_free" g_free
 function filechooserfield()
     sd dialog
     setcall dialog filechooserfield_core()
-    sd filename
-    setcall filename filechooserfield_dialog(dialog)
-    return filename
+	callret filechooserfield_dialog(dialog)
 endfunction
 
 function filechooserfield_dialog(sd dialog)
@@ -477,9 +466,7 @@ endfunction
 function fchooserbuttonfield_open_label(sd container,ss dialog_label_text)
     sd hbox
     setcall hbox hboxfield_label(container,dialog_label_text)
-    sd fchooser
-    setcall fchooser fchooserbuttonfield_open(hbox,dialog_label_text)
-    return fchooser
+	callret fchooserbuttonfield_open(hbox,dialog_label_text)
 endfunction
 
 ##########frame
@@ -496,10 +483,8 @@ endfunction
 importx "_gtk_hbox_new" gtk_hbox_new
 ##########hbox
 function hboxfield_prepare()
-    data gtkwidget#1
     data null=0
-    setcall gtkwidget gtk_hbox_new(null,null)
-    return gtkwidget
+	callret gtk_hbox_new(null,null) #pointer
 endfunction
 function hboxfield_pack_pad(data container,data padding)
     data gtkwidget#1

@@ -77,9 +77,7 @@ function color_widget_get_color_to_rgb(sd color_entry)
     add value_colors 2
     setcall blue_const gdkcolor2byte(value_colors)
 
-    sd color
-    setcall color colors_to_littlewithalpha_color(red_const,green_const,blue_const)
-    return color
+	callret colors_to_littlewithalpha_color(red_const,green_const,blue_const)
 endfunction
 
 #color
@@ -304,27 +302,21 @@ endfunction
 
 #field
 function edit_info_prepare_green(ss text)
-	sd w
-	setcall w edit_info_prepare_texter_green(text,(NULL))
-	return w
+	callret edit_info_prepare_texter_green(text,(NULL))
 endfunction
 
 #field
 function edit_info_prepare_blue(ss text)
     char infocolors={0x00,0x00,0xff}
     data infoptrcolors^infocolors
-    sd widget
-    setcall widget edit_info_prepare_texter(infoptrcolors,text,(NULL))
-    return widget
+	callret edit_info_prepare_texter(infoptrcolors,text,(NULL))
 endfunction
 
 #field
 function edit_info_prepare_texter_green(ss text,sd p_texter)
     char infocolors={0x00,0xff,0x00}
     data infoptrcolors^infocolors
-    sd widget
-    setcall widget edit_info_prepare_texter(infoptrcolors,text,p_texter)
-    return widget
+	callret edit_info_prepare_texter(infoptrcolors,text,p_texter)
 endfunction
 
 function editinfofield_green(sd box)
@@ -373,18 +365,14 @@ function label_and_edit(sd box,ss text)
     sd hbox
     setcall hbox hboxfield_cnt(box)
     call labelfield_l(text,hbox)
-    sd edit
-    setcall edit editfield_pack(hbox)
-    return edit
+	callret editfield_pack(hbox)
 endfunction
 
 #bool
 function entry_to_int_min_N(sd entry,sd p_int,sd N)
     ss text
     setcall text gtk_entry_get_text(entry)
-    sd bool
-    setcall bool strtoint_positive_N_or_Greater(text,p_int,N)
-    return bool
+	callret strtoint_positive_N_or_Greater(text,p_int,N)
 endfunction
 
 #bool
@@ -437,9 +425,7 @@ function hscalefield_main(sd box,sd min,sd max,sd step,sd pos,sd packexpand)
 endfunction
 
 function hscalefield(sd box,sd min,sd max,sd step,sd pos)
-    sd hscale
-    setcall hscale hscalefield_main(box,min,max,step,pos,(TRUE))
-    return hscale
+	callret hscalefield_main(box,min,max,step,pos,(TRUE))
 endfunction
 
 #int pos
@@ -493,7 +479,6 @@ importx "_gtk_widget_new" gtk_widget_new
 importx "_gtk_label_get_type" gtk_label_get_type
 ##############label
 function labelfield_left_prepare(ss text)
-    sd widget
     sd GTK_TYPE_LABEL
     str label="label"
     str x="xalign"
@@ -501,8 +486,7 @@ function labelfield_left_prepare(ss text)
     data n=0
 
     setcall GTK_TYPE_LABEL gtk_label_get_type()
-    setcall widget gtk_widget_new(GTK_TYPE_LABEL,label,text,x,left,left,n)
-    return widget
+	callret gtk_widget_new(GTK_TYPE_LABEL,label,text,x,left,left,n) #pointer
 endfunction
 function labelfield_l(ss text,sd box)
     sd label
@@ -576,10 +560,7 @@ function msgelement_pixbuf(sd msg)
     setcall value gst_structure_get_value(struct,pix)
 
     importx "_g_value_dup_object" g_value_dup_object
-    sd pixbuf
-    setcall pixbuf g_value_dup_object(value)
-
-    return pixbuf
+	callret g_value_dup_object(value) #pointer
 endfunction
 
 function msgelement_pixbuf_forward_data(sd msg,sv forward,sd data)
@@ -901,9 +882,7 @@ function pixbuf_get_pixel(sd pixbuf,sd x,sd y)
     sd rowstride
     setcall bytes gdk_pixbuf_get_pixels(pixbuf)
     setcall rowstride gdk_pixbuf_get_rowstride(pixbuf)
-    sd value
-    setcall value rgb_px_get(bytes,x,y,8,3,rowstride)
-    return value
+	callret rgb_px_get(bytes,x,y,8,3,rowstride)
 endfunction
 
 function pixbuf_over_pixbuf(sd overpixbuf,sd laypixbuf,sd min_i,sd max_i,sd min_j,sd max_j)

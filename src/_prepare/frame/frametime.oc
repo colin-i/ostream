@@ -237,9 +237,7 @@ endfunction
 function stage_get_fr_length(sd eventbox)
     sd pos
     setcall pos stage_frame_index(eventbox)
-    sd length
-    setcall length stage_frame_time_numbers((stage_frame_time_get_at_index),pos)
-    return length
+	callret stage_frame_time_numbers((stage_frame_time_get_at_index),pos)
 endfunction
 
 #length of the stage sel
@@ -247,9 +245,7 @@ function stage_get_sel_fr_length()
     sd container
     sd ptr_container^container
     call stage_get_sel_parent(ptr_container)
-    sd length
-    setcall length stage_get_fr_length(container)
-    return length
+	callret stage_get_fr_length(container)
 endfunction
 
 const frame_unit_red=0xff

@@ -102,9 +102,7 @@ function stage_nthwidgetFromcontainer(sd value)
     import "stage_get_frames_container" stage_get_frames_container
     sd container
     setcall container stage_get_frames_container()
-    sd eventbox
-    setcall eventbox nthwidgetFromcontainer(container,value)
-    return eventbox
+	callret nthwidgetFromcontainer(container,value)
 endfunction
 
 import "object_get_dword_name" object_get_dword_name
@@ -118,9 +116,7 @@ function stage_nthPixbufFromContainer(sd value)
     if eventbox=0
         return 0
     endif
-    sd pixbuf
-    setcall pixbuf object_get_dword_name(eventbox)
-    return pixbuf
+	callret object_get_dword_name(eventbox)
 endfunction
 
 import "texter" texter
@@ -481,9 +477,7 @@ function stage_jpeg_write(sd file,sd pixbuf)
     setcall quality rule3_two_offsets((jpeg_min_quality),quality,(jpeg_max_quality),(jpeg_max_quality),(jpeg_min_quality))
 
     import "write_jpeg" write_jpeg
-    sd bool
-    setcall bool write_jpeg(file,pixbuf,quality)
-    return bool
+	callret write_jpeg(file,pixbuf,quality)
 endfunction
 
 
@@ -506,11 +500,7 @@ function av_frames(sd action,sd value)
         if eventbox=0
             return 0
         endif
-
-        sd pix
-        setcall pix object_get_dword_name(eventbox)
-
-        return pix
+		callret object_get_dword_name(eventbox)
     endelse
 endfunction
 

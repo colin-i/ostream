@@ -16,9 +16,7 @@ function stage_get_frames()
     setcall box stage_get_frames_container()
 
     import "widget_get_children_number" widget_get_children_number
-    sd elements
-    setcall elements widget_get_children_number(box)
-    return elements
+	callret widget_get_children_number(box)
 endfunction
 
 #display the index of frames and the string
@@ -41,9 +39,7 @@ function stage_frame_index(sd frame)
     import "widget_position_in_container" widget_position_in_container
     sd box
     setcall box stage_get_frames_container()
-    sd pos
-    setcall pos widget_position_in_container(frame,box)
-    return pos
+	callret widget_position_in_container(frame,box)
 endfunction
 
 #frame clicked function
@@ -133,15 +129,11 @@ function unselectedframe()
 const unselected_bmp_start=\
     vstr frame="frame.bmp"
 const unselected_bmp_size=\-unselected_bmp_start-1
-    ss file
-    setcall file stage_get_image(frame)
-    return file
+	callret stage_get_image(frame)
 endfunction
 function selectedframe()
     vstr frame="sel.bmp"
-    ss file
-    setcall file stage_get_image(frame)
-    return file
+	callret stage_get_image(frame)
 endfunction
 
 import "move_to_share_core" move_to_share_core
@@ -166,9 +158,7 @@ function stage_new_click_area()
     setcall box stage_get_frames_container()
     #eventbox
     import "eventboxfield" eventboxfield
-    sd eventbox
-    setcall eventbox eventboxfield(box)
-    return eventbox
+	callret eventboxfield(box)
 endfunction
 
 import "connect_signal" connect_signal

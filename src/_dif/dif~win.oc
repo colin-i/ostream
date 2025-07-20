@@ -115,18 +115,15 @@ function system_variables_alignment_pad(data value,data greatest)
 endfunction
 
 
-importx "__time32" time
+#importx "__time32" time #is not for future
+importx "_time" time
 function timeNode(data ptrtime_t)
-    data time_t#1
-    setcall time_t time(ptrtime_t)
-    return time_t
+	callret time(ptrtime_t) #cannot
 endfunction
 
 importx "_chdir" chd
 function chdr(str value)
-    data x#1
-    setcall x chd(value)
-    return x
+	callret chd(value) #pointer
 endfunction
 
 importx "_snprintf" snprintf
@@ -139,14 +136,11 @@ endfunction
 
 importx "_gtk_file_chooser_get_filename_utf8" gtk_file_chooser_get_filename_utf8
 function file_chooser_get_fname(sd dialog)
-    sd file
-    setcall file gtk_file_chooser_get_filename_utf8(dialog)
-    return file
+	callret gtk_file_chooser_get_filename_utf8(dialog) #pointer
 endfunction
 importx "_g_strdup" g_strdup
 function ov_frame_clone(ss file) #already utf8
-	set file g_strdup(file) #nothing about null return
-	return file
+	callret g_strdup(file) #pointer #nothing about null return
 end
 
 
@@ -178,7 +172,7 @@ endfunction
 function get_time()
     importx "_GetTickCount@0" GetTickCount
     sd milliseconds
-    setcall milliseconds GetTickCount()
+	setcall milliseconds GetTickCount() #DWORD
     return milliseconds
 endfunction
 
@@ -528,9 +522,7 @@ function mass_init_file()
         return 0
     endif
     call files_counter((value_set),0)
-    sd foldername
-    setcall foldername filechooserfield_folder()
-    return foldername
+	callret filechooserfield_folder()
 endfunction
 
 ##all folders
@@ -628,9 +620,7 @@ function file_seek_dif_cursor(sd file,sd off)
     import "seek_err" seek_err
     sd int
     setcall int fseek64(file,off,0,(SEEK_CUR))
-    sd err
-    setcall err seek_err(int)
-    return err
+	callret seek_err(int)
 endfunction
 
 #sound preview
@@ -917,9 +907,7 @@ function filechooserfield_folder()
     str GTK_STOCK_OK="gtk-ok"
     sd dialog
     setcall dialog gtk_file_chooser_dialog_new(select_folder,main,(GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER),GTK_STOCK_CANCEL,responsecancel,GTK_STOCK_OK,(GTK_RESPONSE_ACCEPT),0)
-    sd filename
-    setcall filename filechooserfield_dialog(dialog)
-    return filename
+	callret filechooserfield_dialog(dialog)
 endfunction
 
 #e
@@ -987,6 +975,5 @@ endfunction
 importx "__fullpath" fullpath
 #path
 function real_path(sd path)
-	sd mem;setcall mem fullpath((NULL),path,(MAX_PATH))
-	return mem
+	callret fullpath((NULL),path,(MAX_PATH))
 endfunction

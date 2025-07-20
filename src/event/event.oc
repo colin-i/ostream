@@ -83,7 +83,5 @@ function eventbutton_get_coords(sd event,sd p_y)
     if p_y!=0
         setcall p_y# double_to_int(_p_y)
     endif
-    sd x
-    setcall x double_to_int(_p_x)
-    return x
+	callret double_to_int(_p_x)
 endfunction

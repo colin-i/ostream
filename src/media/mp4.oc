@@ -257,16 +257,12 @@ endfunction
 
 #bool
 function mp4_piece(sd file,sd name,sd forward)
-    sd bool
-    setcall bool mp4_content(file,name,forward,0,4,0)
-    return bool
+	callret mp4_content(file,name,forward,0,4,0)
 endfunction
 
 #bool
 function mp4_content(sd file,sd name,sd forward,sd f_data,sd sizefield_bytes,sd substract)
-    sd bool
-    setcall bool mp4_wrap(file,name,forward,f_data,sizefield_bytes,substract,0)
-    return bool
+	callret mp4_wrap(file,name,forward,f_data,sizefield_bytes,substract,0)
 endfunction
 import "file_read" file_read
 #bool
@@ -2519,9 +2515,7 @@ function mp4_write_or_no(sd mem,sd size,sd file)
     if procedure=(mp4_expand)
         return (noerror)
     endif
-    sd err
-    setcall err file_write(mem,size,file)
-    return err
+	callret file_write(mem,size,file)
 endfunction
 
 #implement expand mp4

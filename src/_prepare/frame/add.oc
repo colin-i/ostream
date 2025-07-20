@@ -253,12 +253,6 @@ function stage_frame_form_data(sd action,sd value)
     setcall color color_widget_get_color_to_rgb(color_entry)
 
     import "new_pixbuf_color" new_pixbuf_color
-    sd pixbuf
-    setcall pixbuf new_pixbuf_color(width,height,color)
-    if pixbuf=0
-        return 0
-    endif
-
-    return pixbuf
+	callret new_pixbuf_color(width,height,color)
 endfunction
 

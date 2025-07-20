@@ -40,8 +40,7 @@ function write_jpeg_file(sd pixbuf,sd quality)
         return 0
     endif
 
-    setcall bool jpeg_encode_main(pixbuf)
-    return bool
+	callret jpeg_encode_main(pixbuf)
 endfunction
 
 
@@ -138,6 +137,7 @@ function write_jpeg_blocks(sd pixbuf)
 
     #write blocks from top to bottom 8x8 pieces
     sd j=0
+	sd bool
     while j<h
         sd i=0
         while i<w
@@ -150,8 +150,6 @@ function write_jpeg_blocks(sd pixbuf)
             str Cr^Cr_data
             ##1
             call jpeg_blocks_8x8(Y,Cb,Cr,pixbuf,i,j,w,h)
-
-            sd bool
 
             #apply fast DCT and zigzag
             #int16
@@ -191,8 +189,7 @@ function write_jpeg_blocks(sd pixbuf)
 		#Write End of Image Marker
 		char EOI_data={0xFF,0xD9}
 		vstr EOI^EOI_data
-		setcall bool jpeg_file_mem_add(EOI,2)
-		return bool
+		callret jpeg_file_mem_add(EOI,2)
 	end
 	return 0
 endfunction
@@ -241,9 +238,7 @@ function jpeg_file_mem(sd action,sd arg,sd append_size)
 endfunction
 
 function jpeg_file_mem_add(sd append,sd append_size)
-    sd bool
-    setcall bool jpeg_file_mem((value_append),append,append_size)
-    return bool
+	callret jpeg_file_mem((value_append),append,append_size)
 endfunction
 
 
@@ -562,9 +557,7 @@ function Huffman_DC_Luminance(sd action,sd ptr_values)
 
         set Values_size (YDC_Values_-YDC_Values)
 
-        sd bool
-        setcall bool Huffman_init_write(HT,p_NRCodes,NRCodes_size,p_Values,Values_size)
-        return bool
+		callret Huffman_init_write(HT,p_NRCodes,NRCodes_size,p_Values,Values_size)
     endif
 
     set ptr_values# p_Values
@@ -613,9 +606,7 @@ function Huffman_AC_Luminance(sd action,sd ptr_values)
 
         set Values_size (YAC_Values_-YAC_Values)
 
-        sd bool
-        setcall bool Huffman_init_write(HT,p_NRCodes,NRCodes_size,p_Values,Values_size)
-        return bool
+		callret Huffman_init_write(HT,p_NRCodes,NRCodes_size,p_Values,Values_size)
     endif
     set ptr_values# p_Values
     return p_NRCodes
@@ -643,9 +634,7 @@ function Huffman_DC_Chromiance(sd action,sd ptr_values)
 
         set Values_size (CbDC_Values_-CbDC_Values)
 
-        sd bool
-        setcall bool Huffman_init_write(HT,p_NRCodes,NRCodes_size,p_Values,Values_size)
-        return bool
+		callret Huffman_init_write(HT,p_NRCodes,NRCodes_size,p_Values,Values_size)
     endif
     set ptr_values# p_Values
     return p_NRCodes
@@ -693,9 +682,7 @@ function Huffman_AC_Chromiance(sd action,sd ptr_values)
 
         set Values_size (CbAC_Values_-CbAC_Values)
 
-        sd bool
-        setcall bool Huffman_init_write(HT,p_NRCodes,NRCodes_size,p_Values,Values_size)
-        return bool
+		callret Huffman_init_write(HT,p_NRCodes,NRCodes_size,p_Values,Values_size)
     endif
     set ptr_values# p_Values
     return p_NRCodes
@@ -883,17 +870,13 @@ function jpeg_YCbCr_256color_equation(sd value,sd color)
     call double_add(p_double,p_pre_double)
     call double_mult(p_double,p_color_double)
 
-    sd res
-    setcall res double_to_int(p_double)
-    return res
+	callret double_to_int(p_double)
 endfunction
 
 function bytemult4_getfromstruct(sd index,sd block)
     mult index 4
     import "structure_get_int" structure_get_int
-    sd value
-    setcall value structure_get_int(block,index)
-    return value
+	callret structure_get_int(block,index)
 endfunction
 function jpeg_YCbCr_256color_get3(sd red,sd green,sd blue,sd red_tab,sd green_tab,sd blue_tab)
     sd value
@@ -901,8 +884,7 @@ function jpeg_YCbCr_256color_get3(sd red,sd green,sd blue,sd red_tab,sd green_ta
     addcall value bytemult4_getfromstruct(green,green_tab)
     addcall value bytemult4_getfromstruct(blue,blue_tab)
     import "sar32" sar32
-    setcall value sar32(value,16)
-    return value
+	callret sar32(value,16)
 endfunction
 
 function jpeg_blocks_8x8(ss Y_tab,ss Cb_tab,ss Cr_tab,sd pixbuf,sd i,sd j,sd max_i,sd max_j)
@@ -1334,14 +1316,11 @@ function gettwofloats_offs_and_op(sd floats,sd offA,sd offB,sd offset,sd operati
     mult offset 4
     add f2 offset
 
-    sd value
-    #0=add,1=sub
-    if operation=0
-        setcall value float_add(f1,f2#)
-    else
-        setcall value float_sub(f1,f2#)
-    endelse
-    return value
+	#0=add,1=sub
+	if operation=0
+		callret float_add(f1,f2#)
+	end
+	callret float_sub(f1,f2#)
 endfunction
 
 ###
@@ -1761,8 +1740,7 @@ function jpeg_write_byte(ss p)
 	if bool=1
 		if p#=0xff
 			vstr null=""
-			setcall bool jpeg_file_mem_add(null,1)
-			return bool
+			callret jpeg_file_mem_add(null,1)
 		endif
 		return 1
 	endif
@@ -1782,8 +1760,7 @@ function jpeg_write_last()
 		mult bytenew f
 		sub f 1
 		or bytenew f
-		sd bool;set bool jpeg_write_byte(#bytenew)
-		return bool
+		callret jpeg_write_byte(#bytenew)
 	end
 	return 1
 end

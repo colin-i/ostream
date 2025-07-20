@@ -231,10 +231,8 @@ function setdisplay_setfile_search(sd method,sd argument,sd text)
             sd size
             setcall size slen(buffer)
             inc size
-            sd e
             import "file_write" file_write
-            setcall e file_write(buffer,size,file)
-            return e
+			callret file_write(buffer,size,file)
         endelse
     endelse
     data noe=noerror

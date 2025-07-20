@@ -53,16 +53,12 @@ endfunction
 
 import "time" time
 function timeNode(data ptrtime_t)
-    data time_t#1
-    setcall time_t time(ptrtime_t)
-    return time_t
+	callret time(ptrtime_t) #can't work if remain int after 2038...
 endfunction
 
 import "chdir" chd
 function chdr(str value)
-    data x#1
-    setcall x chd(value)
-    return x
+	callret chd(value) #pointer
 endfunction
 
 import "snprintf" snprintf
@@ -74,18 +70,16 @@ endfunction
 
 importx "gtk_file_chooser_get_filename" gtk_file_chooser_get_filename
 function file_chooser_get_fname(sd dialog)
-	sd file
-	setcall file gtk_file_chooser_get_filename(dialog) #platform encoding
-	return file
+	callret gtk_file_chooser_get_filename(dialog) #pointer #platform encoding
 endfunction
 function ov_frame_clone(ss file) #here is from filechooser
 	importx "g_filename_to_utf8" g_filename_to_utf8
-	ss f;set f g_filename_to_utf8(file,-1,(NULL),(NULL),(NULL)) #G_CONVERT_ERROR_EMBEDDED_NUL(output contains a nul character) is not because len is -1
+	callret g_filename_to_utf8(file,-1,(NULL),(NULL),(NULL)) #pointer
+	#G_CONVERT_ERROR_EMBEDDED_NUL(output contains a nul character) is not because len is -1
 	#G_CONVERT_ERROR_ILLEGAL_SEQUENCE(A nul character found inside the string) , same -1 len
 	#if f!=(NULL) #"or NULL on an error"
 	#	call g_free(file) can't free orig here, is from filechooser forward
 	#end
-	return f
 end
 
 
@@ -292,8 +286,7 @@ function fd_mask(sd d)
     import "shl" shl
     sd mask
     setcall mask rest(d,(nfdbits))
-    setcall mask shl(1,mask)
-    return mask
+	callret shl(1,mask)
 endfunction
 function fds_bits(sd fds,sd d)
     #__FDS_BITS(set) ((set)->fds_bits)
@@ -303,9 +296,7 @@ function fds_bits(sd fds,sd d)
     setcall elt fd_elt(d)
 
     import "array_get_int" array_get_int
-    sd value
-    setcall value array_get_int(fds,elt)
-    return value
+	callret array_get_int(fds,elt)
 endfunction
 function fd_elt(sd d)
     #__FD_ELT(d)	((d) / __NFDBITS)
@@ -360,9 +351,7 @@ endfunction
 #er
 function file_seek_dif_cursor(sd file,sd off)
     import "file_seek_cursor" file_seek_cursor
-    sd err
-    setcall err file_seek_cursor(file,off)
-    return err
+	callret file_seek_cursor(file,off)
 endfunction
 
 
@@ -837,8 +826,7 @@ endfunction
 #path
 function real_path(sd p)
 importx "realpath" realpath
-	sd mem;setcall mem realpath(p,(NULL))
-	return mem
+	callret realpath(p,(NULL)) #pointer
 endfunction
 
 #e

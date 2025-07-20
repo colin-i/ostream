@@ -27,23 +27,19 @@ endfunction
 function boxwidget()
         data widget#1
         setcall widget mainwidget()
-        setcall widget firstwidgetFromcontainer(widget)
-        return widget
+	callret firstwidgetFromcontainer(widget)
 endfunction
 #vbox/nth
 function boxwidget_nth(data index)
     data widget#1
     setcall widget boxwidget()
-    setcall widget nthwidgetFromcontainer(widget,index)
-    return widget
+	callret nthwidgetFromcontainer(widget,index)
 endfunction
 
 #######edit
 function editWidget()
-    data widget#1
     Data i=mainwinEditIndex
-    setcall widget boxwidget_nth(i)
-    return widget
+	callret boxwidget_nth(i)
 endfunction
 #buffer, forward
 importx "_gtk_entry_get_text" gtk_entry_get_text
@@ -61,34 +57,27 @@ endfunction
 
 #######draw
 function drawwidget()
-    data widget#1
     Data draw=mainwinDrawIndex
-    setcall widget boxwidget_nth(draw)
-    return widget
+	callret boxwidget_nth(draw)
 endfunction
 
 #######buttons
 function buttonsalignWidget()
-    data widget#1
     Data mainwinButtonsIndex=mainwinButtonsIndex
-    setcall widget boxwidget_nth(mainwinButtonsIndex)
-    return widget
+		callret boxwidget_nth(mainwinButtonsIndex)
 endfunction
 
 function buttonswidget()
     data widget#1
     setcall widget buttonsalignWidget()
-    setcall widget firstwidgetFromcontainer(widget)
-    return widget
+	callret firstwidgetFromcontainer(widget)
 endfunction
 
 #######stage
 #stage window widget
 function stagewidget()
-    data widget#1
     Data st=mainwinStageIndex
-    setcall widget boxwidget_nth(st)
-    return widget
+	callret boxwidget_nth(st)
 endfunction
 
 #######info

@@ -46,9 +46,7 @@ function avc_encode(sd file,sd settype,sd pixbuf)
         call avc_enc_frame(pixbuf)
     endelse
 
-    sd bool
-    setcall bool avc_write(file)
-    return bool
+	callret avc_write(file)
 endfunction
 
 #bool
