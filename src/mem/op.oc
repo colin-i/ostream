@@ -85,10 +85,8 @@ endfunction
 
 #e
 function get_mem_int_advance(sd dest,sd src_sz)
-    sd er
     data a=4
-    setcall er cpymem_safesrc_advance(dest,src_sz,a)
-    return er
+	callret cpymem_safesrc_advance(dest,src_sz,a)
 endfunction
 #e
 function get_str_advance(sd dest,sd size,sd src_sz)
@@ -144,9 +142,7 @@ function cmpmem_s(str m1,data s1,str m2,data s2)
     if s1!=s2
         return different
     endif
-    data result#1
-    setcall result cmpmem(m1,m2,s1)
-    return result
+	callret cmpmem(m1,m2,s1)
 endfunction
 
 import "slen" slen
@@ -157,9 +153,7 @@ function cmpstr(ss s1,ss s2)
     sd size2
     setcall size1 slen(s1)
     setcall size2 slen(s2)
-    sd result
-    setcall result cmpmem_s(s1,size1,s2,size2)
-    return result
+	callret cmpmem_s(s1,size1,s2,size2)
 endfunction
 
 ##valinmem

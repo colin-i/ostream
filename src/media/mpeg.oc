@@ -69,9 +69,7 @@ endfunction
 function mpeg_encode(sd pixbuf,sd position,sd p_is_key_frame)
     data b#1
     data p_b^b
-    sd bool
-    setcall bool mpeg_write_frame(p_b,pixbuf,position,p_is_key_frame)
-    return bool
+	callret mpeg_write_frame(p_b,pixbuf,position,p_is_key_frame)
 endfunction
 
 function mpeg_release()
@@ -326,7 +324,6 @@ endfunction
 #pbuf
 function mpeg_bframe_values(sd p_sec,sd p_nth_sec,sd bframes_store,sd flush_counter)
     import "array_get_int" array_get_int
-    sd pbuf
     sd ind
 
     set ind flush_counter
@@ -337,9 +334,7 @@ function mpeg_bframe_values(sd p_sec,sd p_nth_sec,sd bframes_store,sd flush_coun
     inc ind
     setcall p_nth_sec# array_get_int(bframes_store,ind)
     inc ind
-    setcall pbuf array_get_int(bframes_store,ind)
-
-    return pbuf
+	callret array_get_int(bframes_store,ind)
 endfunction
 
 #bool
@@ -691,9 +686,7 @@ function mpeg_write(sd buffer,sd size)
 endfunction
 
 function mpeg_file_mem_append(sd append,sd append_bits)
-    sd bool
-    setcall bool mpeg_file_mem((value_append),append,append_bits)
-    return bool
+	callret mpeg_file_mem((value_append),append,append_bits)
 endfunction
 
 ####output memory
@@ -840,23 +833,17 @@ function mpeg_mem_pad(sd mode)
     sd p_stuff^stuff
     add p_stuff value
 
-    sd bool
-    setcall bool mpeg_file_mem_append(p_stuff#,pad)
-    return bool
+	callret mpeg_file_mem_append(p_stuff#,pad)
 endfunction
 
 #bool
 function mpeg_mem_bit(sd value)
-    sd bool
-    setcall bool mpeg_file_mem_append(value,1)
-    return bool
+	callret mpeg_file_mem_append(value,1)
 endfunction
 
 #bool
 function mpeg_mem_marker()
-    sd bool
-    setcall bool mpeg_file_mem_append(1,1)
-    return bool
+	callret mpeg_file_mem_append(1,1)
 endfunction
 
 #bool
@@ -1006,8 +993,7 @@ function log2_resolution()
     setcall bits log2bin(fps)
 
     import "get_higher" get_higher
-    setcall bits get_higher(bits,1)
-    return bits
+	callret get_higher(bits,1)
 endfunction
 
 ###########################################VOL header

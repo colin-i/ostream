@@ -107,9 +107,7 @@ endfunction
 #bits
 function mp3_outer_loop(sd l3enc_tt,sd gr_info,sd max_bits)
     call mp3_search_StepSize(l3enc_tt,gr_info,max_bits)
-    sd value
-    setcall value mp3_inner_loop(l3enc_tt,gr_info,max_bits)
-    return value
+	callret mp3_inner_loop(l3enc_tt,gr_info,max_bits)
 endfunction
 
 function mp3_ResvFrameEnd(sd ResvSize,sd ResvMax,sd mean_bits)

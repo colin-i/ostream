@@ -27,11 +27,12 @@ function yuv_rgb(ss Y,ss U,ss V,sd y_coef,sd u_coef,sd v_coef,sd add)
     add value add
 
     div value 100
-    if value<0
-        set value 0
-    elseif value>0xff
-        set value 0xff
-    endelseif
+	if value<0
+		return 0
+	end
+	if value>0xff
+		return 0xff
+	end
     return value
 endfunction
 import "multiple_of_nr" multiple_of_nr
@@ -60,8 +61,7 @@ endfunction
 #rowstride
 function rgb_get_rowstride(sd width)
     mult width 3
-    setcall width multiple_of_nr(width,4)
-    return width
+	callret multiple_of_nr(width,4)
 endfunction
 #void
 function yuvi420_to_rgb(ss yuv,ss rgb,sd width,sd height)
@@ -208,9 +208,7 @@ function yuv_get_all_sizes(sd width,sd height,sd p_planeU,sd p_planeV)
 endfunction
 #yuv size
 function yuv_get_size(sd width,sd height)
-    sd size
-    setcall size yuv_get_all_sizes(width,height,0,0)
-    return size
+	callret yuv_get_all_sizes(width,height,0,0)
 endfunction
 
 function rgb_to_yuvi420(ss bitmap_rgb,ss yuv,sd width,sd height)
@@ -468,16 +466,12 @@ endfunction
 #e
 function rgb_to_yuvi420_write_fn(sd yuv,sd size,sd file)
     import "file_write" file_write
-    sd err
-    setcall err file_write(yuv,size,file)
-    return err
+	callret file_write(yuv,size,file)
 endfunction
 #e
 function rgb_to_yuvi420_write(sd rgb,sd width,sd height,sd file)
     data f^rgb_to_yuvi420_write_fn
-    sd err
-    setcall err rgb_to_yuvi420_forward_data(rgb,width,height,f,file)
-    return err
+	callret rgb_to_yuvi420_forward_data(rgb,width,height,f,file)
 endfunction
 
 importx "_gdk_pixbuf_get_rowstride" gdk_pixbuf_get_rowstride
@@ -580,9 +574,7 @@ function gdkcolor2byte(ss ptr_g)
     inc p_word_color
     set p_word_color# ptr_g#
     import "rule3" rule3
-    sd x
-    setcall x rule3(word_color,0xffFF,255)
-    return x
+	callret rule3(word_color,0xffFF,255)
 endfunction
 
 #considering bps=8(<8 will be bad, >8 the return will be strange)
@@ -632,9 +624,7 @@ function rgb_pixbuf_get_pixel(ss pixbuf,sd x,sd y,sd bps,sd n_chan)
     setcall pixels gdk_pixbuf_get_pixels(pixbuf)
     sd rowstride
     setcall rowstride gdk_pixbuf_get_rowstride(pixbuf)
-    sd value
-    setcall value rgb_px_get(pixels,x,y,bps,n_chan,rowstride)
-    return value
+	callret rgb_px_get(pixels,x,y,bps,n_chan,rowstride)
 endfunction
 function rgb_pixbuf_set_pixel(sd value,ss pixbuf,sd x,sd y,sd bps,sd n_chan)
     sd pixels

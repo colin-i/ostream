@@ -55,28 +55,21 @@ endfunction
 function file_seek(sd file,sd off,sd method)
     data seekint#1
     SetCall seekint fseek(file,off,method)
-    sd err
-    setcall err seek_err(seekint)
+	callret seek_err(seekint)
 endfunction
 
 #e
 function file_seek_set(sd file,sd off)
-    sd err
-    setcall err file_seek(file,off,(SEEK_SET))
-    return err
+	callret file_seek(file,off,(SEEK_SET))
 endfunction
 
 #e
 function file_seek_end(sd file)
-    sd err
-    setcall err file_seek(file,0,(SEEK_END))
-    return err
+	callret file_seek(file,0,(SEEK_END))
 endfunction
 #e
 function file_seek_cursor(sd file,sd off)
-    sd err
-    setcall err file_seek(file,off,(SEEK_CUR))
-    return err
+	callret file_seek(file,off,(SEEK_CUR))
 endfunction
 
 #e
@@ -98,8 +91,7 @@ function file_length(sd file,sd ptr_size)
         return err
     endif
 
-    setcall err file_tell(file,ptr_size)
-    return err
+	callret file_tell(file,ptr_size)
 endfunction
 
 #e
@@ -225,10 +217,8 @@ EndFunction
 
 #err
 function file_get_content(str path,data ptrsize,data ptrmem)
-    data err#1
     data null=0
-    setcall err file_get_content_offset_trail(path,ptrsize,ptrmem,null,null)
-    return err
+	callret file_get_content_offset_trail(path,ptrsize,ptrmem,null,null)
 EndFunction
 
 function file_get_content_forward(ss filename,sv forward)
@@ -252,9 +242,7 @@ endfunction
 function file_forward_read(ss path,sd forward)
     sd method
     setcall method getreadmode()
-    sd returnvalue
-    setcall returnvalue file_forward(path,method,forward)
-    return returnvalue
+	callret file_forward(path,method,forward)
 endfunction
 #e
 function file_read(sd mem,sd size,sd file)
@@ -286,9 +274,7 @@ function file_get_size_forward(sd file,sd size,sv forward)
 endfunction
 #e
 function file_get_dword(sd file,sd p_dw)
-    sd err
-    setcall err file_read(p_dw,4,file)
-    return err
+	callret file_read(p_dw,4,file)
 endfunction
 #e
 function file_get_dword_reverse(sd file,sd p_dw)

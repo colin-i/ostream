@@ -22,9 +22,7 @@ EndFunction
 
 #0/mem
 function memalloc(sd size)
-    sd mem
-    setcall mem memrealloc(0,size)
-    return mem
+	callret memrealloc(0,size)
 endfunction
 
 #################
@@ -78,9 +76,7 @@ function allocsum_null(sd strings,sd ptrmem)
 
     inc sizetoalloc
 
-    data err#1
-    setcall err memoryalloc(sizetoalloc,ptrmem)
-    return err
+	callret memoryalloc(sizetoalloc,ptrmem)
 endfunction
 
 #e

@@ -399,8 +399,7 @@ function stage_file_get_format()
     sd index
     set index ptr_index#
     ss iter^entry1
-    setcall iter get_string_at_index(iter,index)
-    return iter
+	callret get_string_at_index(iter,index)
 endfunction
 #get the name string of the output format for gstreamer options
 function stage_file_get_format_name()
@@ -500,10 +499,7 @@ function stage_get_output_container()
     setcall format stage_file_get_format()
     import "save_destination" save_destination
 
-    sd output_container
-    setcall output_container save_destination(format)
-
-    return output_container
+	callret save_destination(format)
 endfunction
 
 
@@ -601,8 +597,5 @@ function write_sound_options(sd file,sd p_channels,sd p_rate,sd p_bps)
     if err!=(noerror)
         return err
     endif
-    setcall err file_write(p_bps,4,file)
-    if err!=(noerror)
-        return err
-    endif
+	callret file_write(p_bps,4,file)
 endfunction

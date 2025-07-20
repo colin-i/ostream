@@ -178,9 +178,7 @@ import "slen" slen
 function strtoint(sd str,sd ptrout)
     sd sz
     setcall sz slen(str)
-    sd bool
-    setcall bool memtoint(str,sz,ptrout)
-    return bool
+	callret memtoint(str,sz,ptrout)
 endfunction
 
 import "texter" texter
@@ -319,9 +317,7 @@ function rule3_two_offsets(sd k_off,sd knownA,sd knownB,sd x_off,sd unknownB)
 #x+off
     sub knownA k_off
     sub knownB k_off
-    sd x
-    setcall x rule3_offset(knownA,knownB,x_off,unknownB)
-    return x
+	callret rule3_offset(knownA,knownB,x_off,unknownB)
 endfunction
 
 #width,height in p_height
@@ -425,8 +421,7 @@ function short_get_to_int(sd short)
     sd value=0
     sd p_value^value
     call cpymem(p_value,short,2)
-    setcall value short_to_int(value)
-    return value
+	callret short_to_int(value)
 endfunction
 function int_into_short(sd int,sd p_short)
     sd p_int^int
@@ -497,17 +492,12 @@ function array_get_int16(ss array,sd pos)
     set highword array#
     mult highword 0x100
     or result highword
-#
-    setcall result short_to_int(result)
-#
-    return result
+	callret short_to_int(result)
 endfunction
 function array_get_int16_bi(ss array,sd set1,sd set1_size,sd set2)
     sd pos
     setcall pos array_bi_index(set1,set1_size,set2)
-    sd value
-    setcall value array_get_int16(array,pos)
-    return value
+	callret array_get_int16(array,pos)
 endfunction
 
 function array_set_word_off(sd array,sd value,sd offset)

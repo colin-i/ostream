@@ -30,8 +30,7 @@ function folder_enterleave_data(ss folder,sv forward,sd data)
         return err
     endif
     call forward(data)
-    setcall err dirch("../")
-    return err
+	callret dirch("../")
 endfunction
 
 function folder_enterleave(ss folder,data forward)

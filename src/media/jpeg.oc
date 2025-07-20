@@ -99,8 +99,7 @@ function read_jpeg(sd file,sd forward)
     importx "_jpeg_destroy_decompress" jpeg_destroy_decompress
     call jpeg_destroy_decompress(jdestruct)
 
-    setcall continue jpeg_continue((value_get))
-    return continue
+	callret jpeg_continue((value_get))
 endfunction
 
 function read_jpeg_prepare(sd file,sd forward)

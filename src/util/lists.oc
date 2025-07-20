@@ -34,9 +34,7 @@ endfunction
 #nr of widget childrens
 function widget_get_children_number(sd widget)
     data fn^widget_get_children_number_count
-    sd ret
-    setcall ret widget_forward_children_data(widget,fn)
-    return ret
+	callret widget_forward_children_data(widget,fn)
 endfunction
 
 
@@ -44,9 +42,7 @@ endfunction
 function widget_position_in_container(sd widget,sd container)
     importx "_g_list_index" g_list_index
     data f^g_list_index
-    sd ret
-    setcall ret widget_forward_children_data(container,f,widget)
-    return ret
+	callret widget_forward_children_data(container,f,widget)
 endfunction
 
 importx "_g_list_nth_data" g_list_nth_data
@@ -62,7 +58,5 @@ function nthwidgetFromcontainer(data container,data index)
 endfunction
 
 function firstwidgetFromcontainer(sd container)
-    sd widget
-    setcall widget nthwidgetFromcontainer(container,0)
-    return widget
+	callret nthwidgetFromcontainer(container,0)
 endfunction

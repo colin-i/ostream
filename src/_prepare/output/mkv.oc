@@ -284,8 +284,7 @@ function mkv_seekhead_fn(sd action,sd file)
         char KaxTracks={0x16,0x54,0xAE,0x6B}
         sd dodata^KaxTracks
 
-        setcall bool seek_entry(dodata#,file,ptr_tracks)
-        return bool
+		callret seek_entry(dodata#,file,ptr_tracks)
 	endif
         sd seg_base%ptr_segment_base
         sd position_value
@@ -312,9 +311,7 @@ endfunction
 
 #bool
 function mkv_seekhead(sd file)
-    sd bool
-    setcall bool mkv_seekhead_fn(0,file)
-    return bool
+	callret mkv_seekhead_fn(0,file)
 endfunction
 
 #bool
@@ -529,8 +526,7 @@ function mkv_track(sd file,sd size,sd filepos)
     endelse
 
     data sound_f^mkv_sound
-    setcall bool mkv_size_pass(file,sound_f,start,end)
-    return bool
+	callret mkv_size_pass(file,sound_f,start,end)
 endfunction
 
 importx "_gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
@@ -766,12 +762,10 @@ import "file_get_size_forward" file_get_size_forward
 
 function mkv_codecid(sd file,sd size,sd *filepos)
     sd err
-    sd bool
     sd io
     setcall io mkv_write_read_get()
 	if io=(mkv_write)
-        setcall bool mkv_codecid_data(io,file)
-        return bool
+		callret mkv_codecid_data(io,file)
 	endif
         data f^mkv_codecid_read
         setcall err file_get_size_forward(file,size,f)
@@ -1642,10 +1636,8 @@ function mkv_readentry(sd frames,sd newtime,sd p_resultedframes)
     call g_object_unref(pixbuf)
 
     #add to stage
-    sd bool
     sd entry^px
-    setcall bool stage_read_values((value_append),entry,8)
-    return bool
+	callret stage_read_values((value_append),entry,8)
 endfunction
 
 
@@ -1851,9 +1843,7 @@ const audiospec_=\
     const audio_size=audiospec_@-_audio
     data audio^CodecID
 
-    sd bool
-    setcall bool mkv_write_seek(audio,(audio_size),file)
-    return bool
+	callret mkv_write_seek(audio,(audio_size),file)
 endfunction
 
 function mkv_read_sound(sd mem,sd size)

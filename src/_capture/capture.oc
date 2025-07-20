@@ -553,9 +553,7 @@ endfunction
 
 function capture_obtain_screenshot()
     call capture_rect_screenshot((value_screenshot))
-    sd pixbuf
-    setcall pixbuf capture_pixbuf((value_get))
-    return pixbuf
+	callret capture_pixbuf((value_get))
 endfunction
 
 const CAIRO_FORMAT_RGB24=1

@@ -71,9 +71,7 @@ function stage_pencil_zoomvalue(sd action,sd value)
         set zoomfield value
     else
         import "hscale_get" hscale_get
-        sd pos
-        setcall pos hscale_get(zoomfield)
-        return pos
+		callret hscale_get(zoomfield)
     endelse
 endfunction
 

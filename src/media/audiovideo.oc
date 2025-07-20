@@ -155,9 +155,7 @@ function riff_chunk_w_r(sd file,sd forward,ss riff)
 endfunction
 
 function riff_w_r_name(sd file,ss name)
-    sd bool
-    setcall bool av_writeseek(name,4,file)
-    return bool
+	callret av_writeseek(name,4,file)
 endfunction
 
 
@@ -524,8 +522,7 @@ endfunction
 
 #bool
 function riff_head(sd mem_sz,ss chunk,sd p_chunk_size,ss riff_ex)
-	sd bool;set bool riff_head_ex(mem_sz,chunk,p_chunk_size,riff_ex,(riff_noflag))
-	return bool
+	callret riff_head_ex(mem_sz,chunk,p_chunk_size,riff_ex,(riff_noflag))
 end
 function riff_head_ex(sd mem_sz,ss chunk,sd p_chunk_size,ss riff_ex,sd flags)
     sd mem
@@ -582,17 +579,14 @@ endfunction
 
 function combo_location(sd bool,sd data)
     import "stage_get_output_container" stage_get_output_container
-    sd location
-    if bool=0
-        setcall location stage_get_output_container()
-    else
+	if bool=0
+		callret stage_get_output_container()
+	end
         import "capture_path" capture_path
         import "stage_file_get_format" stage_file_get_format
         ss format
         setcall format stage_file_get_format()
-        setcall location capture_path(format,1,data)
-    endelse
-    return location
+	callret capture_path(format,1,data)
 endfunction
 
 

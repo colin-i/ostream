@@ -10,9 +10,7 @@ function stage_unselected_frame(sd parent)
     ss normalframe
     import "unselectedframe" unselectedframe
     setcall normalframe unselectedframe()
-    sd img
-    setcall img stage_img_with_length(normalframe,parent)
-    return img
+	callret stage_img_with_length(normalframe,parent)
 endfunction
 
 #selected frame
@@ -187,9 +185,7 @@ function stage_sel_framebar_pixbuf()
         return 0
     endif
     importx "_gtk_image_get_pixbuf" gtk_image_get_pixbuf
-    sd pixbuf
-    setcall pixbuf gtk_image_get_pixbuf(img)
-    return pixbuf
+	callret gtk_image_get_pixbuf(img) #pointer
 endfunction
 
 function stage_sel_pointer()
@@ -309,9 +305,7 @@ function frame_jobs()
     if img=0
         return 0
     endif
-    sd bool
-    setcall bool mass_remove_job()
-    return bool
+	callret mass_remove_job()
 endfunction
 
 #bool
@@ -354,9 +348,7 @@ function stage_get_sel_pos()
     sd selparent
     sd p_selparent^selparent
     call stage_get_sel_parent(p_selparent)
-    sd pos
-    setcall pos stage_frame_index(selparent)
-    return pos
+	callret stage_frame_index(selparent)
 endfunction
 #e
 function stage_get_sel_position(sd p_pos)
