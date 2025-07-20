@@ -44,11 +44,9 @@ EndFunction
 
 #err
 function memoryalloc(data size,data memptr)
-        Data err#1
         Data null=NULL
         Set memptr# null
-        SetCall err memoryrealloc(memptr,size)
-        Return err
+	callret memoryrealloc(memptr,size)
 endfunction
 
 import "slen" slen
