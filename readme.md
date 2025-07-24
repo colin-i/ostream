@@ -1,8 +1,8 @@
 # O Video
 
 ## Install
-On Ubuntu, <i>.deb</i> file from [releases](https://github.com/colin-i/ostream/releases).\
-Or from PPA.
+On Ubuntu, <i>.deb</i> file from [releases](https://github.com/colin-i/ostream/releases)(jammy also working at noble).\
+Or from PPA(i386)(xenial bionic focal jammy).
 ```sh
 sudo add-apt-repository ppa:colin-i/ppa
 ```
@@ -12,7 +12,7 @@ Install:
 sudo apt-get install ovideo
 ```
 \
-On openSUSE (i586), run the following as __root__:\
+On openSUSE(i586), run the following as __root__:\
 For openSUSE Tumbleweed:
 ```sh
 zypper addrepo https://download.opensuse.org/repositories/home:costin/openSUSE_Tumbleweed/home:costin.repo
@@ -31,7 +31,7 @@ On Windows, <i>.windows.zip</i> file from [releases](https://github.com/colin-i/
 <i>Gstreamer sdk</i> x86 0.10 from [here](https://cgit.freedesktop.org/gstreamer/gstreamer/refs/heads).
 \
 \
-On linux distributions, <i>.AppImage</i> file from [releases](https://github.com/colin-i/ostream/releases).
+On linux distributions(x86_64), <i>.AppImage</i> file from [releases](https://github.com/colin-i/ostream/releases).
 
 ## From source
 Compile with [O Compiler](https://github.com/colin-i/o). At linux, for example: link with <i>lld</i> and having gstreamer1(with good/bad plugins), gtk2, libsoup2, libasound2, libjpeg8.

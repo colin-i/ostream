@@ -10,8 +10,9 @@ jobs:
       a="`cat 1 | jq '.assets[] | .name'`"
       i=0
       for b in ${a}; do
-       b=${b:-4}
+       b=${b:0-5:4}
        if [ $b = .deb ]; then
+        echo ok
         break
        fi
        i=$((i+1))
@@ -20,6 +21,6 @@ jobs:
       b=${b:1:-1}
       wget $b -O a.deb
 
-      dpkg --add-architecture i386
-      apt update
-      apt install -y a.deb
+      sudo dpkg --add-architecture i386
+      sudo apt update
+      sudo apt install -y ./a.deb
