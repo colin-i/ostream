@@ -1,3 +1,9 @@
+ovideo (1-197) bionic; urgency=medium
+
+  * callret optimizations
+
+ -- bc <bc@bc-desktop>  Thu, 24 Jul 2025 11:15:54 +0300
+
 ovideo (1-196) bionic; urgency=medium
 
   * jpeg save location
