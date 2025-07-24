@@ -1,0 +1,25 @@
+on:
+ workflow_dispatch:
+jobs:
+ tdep:
+  runs-on: ubuntu-24.04
+  steps:
+   - name: Run a multi-line script
+     run: |
+      curl https://api.github.com/repos/colin-i/ostream/releases/latest -s > 1
+      a="`cat 1 | jq '.assets[] | .name'`"
+      i=0
+      for b in ${a}; do
+       b=${b:-4}
+       if [ $b = .deb ]; then
+        break
+       fi
+       i=$((i+1))
+      done
+      b="`cat 1 | jq .assets[${i}].browser_download_url`"
+      b=${b:1:-1}
+      wget $b -O a.deb
+
+      dpkg --add-architecture i386
+      apt update
+      apt install -y a.deb
