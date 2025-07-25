@@ -92,10 +92,10 @@ function stage_display_info(sd widget)
     setcall seconds_total rest(seconds_total,60)
     div minutes_total 60
     #
-	inc position
 	sd position_total
 	setcall position_total stage_get_frames()
-	inc length_at_index
+	dec position_total
+	dec length_total
 	call sprintf(string,format,position,position_total,minutes_pos,seconds_pos,minutes_total,seconds_total,length_at_index,length_total)
 	call texter(string)
 endfunction
