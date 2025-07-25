@@ -57,19 +57,15 @@ endfunction
 import "stage_frame_time_numbers" stage_frame_time_numbers
 
 function stage_display_info(sd widget)
-    #display the frame position and time informations
-    str format="Frame: %u/%u; Time: %u:%02u from %u:%02u; Position: %u from %u"
-    char data#200
-    str string^data
+	#display the frame position and time informations
+	vstr  format="Frame: %u/%u; Time: %u:%02u/%u:%02u; Position: %u/%u"
+	charx data#7+        10+1+10+8+   10+1+2+1+10+1+2+2+10+       10+1+10+1
+	vstr string^data
     sd length_at_index
     sd length_total
 
     sd position
     setcall position stage_frame_index(widget)
-    #
-    sd position_total
-    setcall position_total stage_get_frames()
-    dec position_total
     #
     import "stage_file_options_fps" stage_file_options_fps
     import "rest" rest
@@ -96,8 +92,12 @@ function stage_display_info(sd widget)
     setcall seconds_total rest(seconds_total,60)
     div minutes_total 60
     #
-    call sprintf(string,format,position,position_total,minutes_pos,seconds_pos,minutes_total,seconds_total,length_at_index,length_total)
-    call texter(string)
+	inc position
+	sd position_total
+	setcall position_total stage_get_frames()
+	inc length_at_index
+	call sprintf(string,format,position,position_total,minutes_pos,seconds_pos,minutes_total,seconds_total,length_at_index,length_total)
+	call texter(string)
 endfunction
 
 function stage_display_pixbuf(sd widget)
