@@ -977,3 +977,14 @@ importx "__fullpath" fullpath
 function real_path(sd path)
 	callret fullpath((NULL),path,(MAX_PATH))
 endfunction
+
+function tmp_file()
+	sd output_file
+	import "save_destination" save_destination
+	setcall output_file save_destination("temp")
+	#these formats are related to format_max. D is temporary file
+	sd file
+	import "openfile" openfile
+	call openfile(#file,output_file,"w+Db")
+	return file
+end

@@ -71,12 +71,11 @@ function mp3_file(sd bool,sv extra_off1,sv mp3_off)
 		end
 		set nothing 0
 
-		sd err
 		sd file
 		ss r;set r getreadmode()
-		set err openfile(#file,src,r) #after this the resources are claimed at least to what the opened file reached
+		call openfile(#file,src,r) #after this the resources are claimed at least to what the opened file reached
 		#linux, for example, can rename the resources to .nfs000000000068516d00000006 if the file information header is deleted
-		if err=(noerror)
+		if file!=(NULL)
 			charx aux#1;set aux dest#
 			set dest# 0x33   #mp4->mp3 , hacky way
 
@@ -85,8 +84,8 @@ function mp3_file(sd bool,sv extra_off1,sv mp3_off)
 			if mp3Mem!=(NULL)
 				sd mp3__file
 				ss w;set w getwritemode()
-				set err openfile(#mp3__file,src,w)
-				if err=(noerror)
+				call openfile(#mp3__file,src,w)
+				if mp3__file!=(NULL)
 					call file_seek_set(file,extra_off1) #this was ok
 					sdu rd;set rd fread(mp3Mem,mp3_off,1,file)
 					if rd=1 #if the resources are ok at main open it doesn't mean async is not changeable for second open
@@ -2557,9 +2556,8 @@ function mp4_expand_go(ss filepath,ss temppath)
     import "openfile" openfile
     importx "_fclose" fclose
     sd file
-    sd err
-    setcall err openfile(#file,temppath,"rb")
-    if err=(noerror)
+	call openfile(#file,temppath,"rb")
+	if file!=(NULL)
         #info
         call dialog_modal_texter_draw("Preparing the original file")
         #store read handle for reading at the other file
@@ -2586,5 +2584,5 @@ function mp4_expand_go(ss filepath,ss temppath)
                 call remove(temppath)
             endif
         endelse
-    endif
+	endif
 endfunction

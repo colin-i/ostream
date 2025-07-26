@@ -281,8 +281,8 @@ function stage_save_img()
 		import "openfile" openfile
 		importx "_fclose" fclose
 		ss mode="wb"
-		setcall err openfile(p_file,location,mode)
-		if err=(noerror)
+		call openfile(p_file,location,mode)
+		if file!=(NULL)
 			sd pixbuf
 			setcall pixbuf object_get_dword_name(eventbox)
 

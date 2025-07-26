@@ -961,3 +961,10 @@ endfunction
 function ulltoa(sd low,sd high,sd str)
 	call sprintf(str,"%llu",low,high)
 endfunction
+
+function tmp_file()
+	sd file
+	importx "tmpfile" tmpfile
+	set file tmpfile() #opens a unique temporary file in binary read/write (w+b) mode
+	return file
+end

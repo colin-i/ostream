@@ -144,17 +144,16 @@ endfunction
 
 #err/returns what forward returns
 function file_forward(ss path,sd method,sv forward)
-    sd returnvalue
-    data noerr=noerror
-    sd file
-    sd ptrfile^file
-    SetCall returnvalue openfile(ptrfile,path,method)
-    If returnvalue!=noerr
-            Return returnvalue
-    EndIf
-    setcall returnvalue forward(file,path)
-    call fclose(file)
-    return returnvalue
+	sd file
+	sd ptrfile^file
+	Call openfile(ptrfile,path,method)
+	If file!=(NULL)
+		sd returnvalue
+		setcall returnvalue forward(file,path)
+		call fclose(file)
+		return returnvalue
+	end
+	return file ##marker
 EndFunction
 
 ##read
@@ -198,17 +197,16 @@ endfunction
 #get: offset+size+trail
 Function file_get_content_offset_trail(str path,data ptrsize,data ptrmem,data offset,data trail)
         Data err#1
-        Data noerr=noerror
 
         Data file#1
         Data ptrfile^file
 
         str readfile#1
         setcall readfile getreadmode()
-        SetCall err openfile(ptrfile,path,readfile)
-        If err!=noerr
-                Return err
-        EndIf
+	call openfile(ptrfile,path,readfile)
+	If file=(NULL)
+		Return (error)
+	EndIf
 
         setcall err readtomem(file,ptrsize,ptrmem,offset,trail)
         Call fclose(file)
@@ -249,9 +247,8 @@ function file_forward_data_read(ss path,sv forward,sd data)
 	sd method
 	setcall method getreadmode()
 	sd file
-	sd er
-	SetCall er openfile(#file,path,method)
-	If er=(noerror)
+	Call openfile(#file,path,method)
+	If file!=(NULL)
 		call forward(file,data)
 		call fclose(file)
 	end
