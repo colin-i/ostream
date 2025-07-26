@@ -153,7 +153,7 @@ function file_forward(ss path,sd method,sv forward)
 		call fclose(file)
 		return returnvalue
 	end
-	return file ##marker
+	return (error)
 EndFunction
 
 ##read
