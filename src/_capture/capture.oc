@@ -877,13 +877,13 @@ function capture_direct_start(sd *data)
     sd raw_flag
     setcall raw_flag capture_raw_option((value_get))
     if raw_flag=0
-#these formats are related to format_max
+#these formats are related to format_max. D is temporary file
         ss temp_format="temp"
         ss temp_method="w+Db"
         set format temp_format
         set method temp_method
     else
-        ss raw_method="wb"
+		vstr raw_method="wb"
         setcall format capture_raw_extension()
         set method raw_method
     endelse
@@ -1205,13 +1205,17 @@ function capture_raw_read_file(sd file,sd path)
     char delim="."
     setcall sz valinmemsens(filepath,sz,delim) #,(BACKWARD)
     sub filepath sz
-    set filepath# 0
-
-    data f_raw^capture_raw_read_filedata
-    call file_forward_read(path,f_raw)
+	if path!=filepath
+		set filepath# 0
+		import "file_forward_data_read" file_forward_data_read
+		data f_raw^capture_raw_read_filedata
+		call file_forward_data_read(path,f_raw,(FALSE))
+	else  #this case is new when saving the stage to raw
+		call capture_raw_read_filedata(file,(TRUE))
+	end
 endfunction
 
-function capture_raw_read_filedata(sd file)
+function capture_raw_read_filedata(sd file,sd is_stage)
     sd width
     sd height
     sd frames_per_file
@@ -1268,7 +1272,9 @@ function capture_raw_read_filedata(sd file)
         if er!=(noerror)
             return 0
         endif
-        call bytes_swap_reverse(mem,width,height)
+		if is_stage=(FALSE)
+			call bytes_swap_reverse(mem,width,height)
+		end
         data free_mem^free
         setcall pixbuf gdk_pixbuf_new_from_data(mem,(GDK_COLORSPACE_RGB),(FALSE),8,width,height,rowstride,free_mem,mem)
 
@@ -1290,3 +1296,79 @@ function capture_raw_read_filedata(sd file)
         inc i
     endwhile
 endfunction
+
+function capture_save()
+	ss location
+	import "stage_get_output_container" stage_get_output_container
+	setcall location stage_get_output_container()
+	call av_dialog_run(capture_save_run,location)
+end
+function capture_save_run(ss filename)
+	sd file
+	sd p_file^file
+	sd er
+	setcall er openfile(p_file,filename,capture_direct_start.raw_method)
+	if er=(noerror)
+		sd ebox
+		import "stage_nthwidgetFromcontainer" stage_nthwidgetFromcontainer
+		setcall ebox stage_nthwidgetFromcontainer(0) #isn't this thread unsafe? gtk_container_get_children? or is simple value get
+		import "object_get_dword_name" object_get_dword_name
+		sd pixbuf
+		setcall pixbuf object_get_dword_name(ebox) #no unref required
+
+		datax w#1
+		datax h#1
+		value wh^w
+		import "pixbuf_get_wh" pixbuf_get_wh
+		call pixbuf_get_wh(pixbuf,wh)
+		sd rgb_size
+		setcall rgb_size rgb_get_size(w,h)
+
+		setcall er file_write(wh,(DWORD+DWORD),file)
+		if er=(noerror)
+			sd position_total
+			import "stage_get_frames" stage_get_frames
+			setcall position_total stage_get_frames()
+			setcall er file_write(#position_total,(DWORD),file)
+			if er=(noerror)
+				setcall er file_write(#position_total,(DWORD),file)
+				if er=(noerror)
+					data nr_of_file=0
+					setcall er file_write(#nr_of_file,(DWORD),file)
+					if er=(noerror)
+						sd i=0
+						while i!=position_total
+							setcall ebox stage_nthwidgetFromcontainer(i)
+							setcall pixbuf object_get_dword_name(ebox)
+							sd bytes
+							setcall bytes gdk_pixbuf_get_pixels(pixbuf)
+							setcall er file_write(bytes,rgb_size,file)
+							if er!=(noerror)
+								break
+							end
+							sd len
+							import "stage_get_fr_length" stage_get_fr_length
+							set len stage_get_fr_length(ebox)
+							setcall er file_write(#len,(DWORD),file)
+							if er!=(noerror)
+								break
+							end
+							import "av_display_info_progress" av_display_info_progress
+							call av_display_info_progress(file,i)
+							inc i
+						end
+						if er=(noerror)
+							import "save_inform_saved_th" save_inform_saved_th
+							call save_inform_saved_th(filename)
+						end
+					end
+				end
+			end
+		end
+		call fclose(file)
+	endif
+	if er!=(noerror)
+		call texter(er)
+	end
+	call av_dialog_close()
+end

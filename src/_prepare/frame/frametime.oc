@@ -90,7 +90,7 @@ function stage_frame_time_numbers(sd method,sd index,sd newvalue,sd numberoftime
         data ptr_frames^frames
         set size 0
         set frames 0
-        return 1
+        ret #urn 1
 	endif
 	if method=(stage_frame_time_append)
         #const stage_frame_time_append=1
@@ -105,7 +105,7 @@ function stage_frame_time_numbers(sd method,sd index,sd newvalue,sd numberoftime
             sub pointer 4
             set pointer# index
         endif
-        return 1
+		ret #urn 1
 	endif
 	if method=(stage_frame_time_free)
         #const stage_frame_time_free=2
@@ -113,7 +113,7 @@ function stage_frame_time_numbers(sd method,sd index,sd newvalue,sd numberoftime
         if frames!=0
             call free(frames)
         endif
-        return 1
+		ret #urn 1
 	endif
 	if method=(stage_frame_time_get_at_index)
     #get the index from the created database
@@ -130,13 +130,13 @@ function stage_frame_time_numbers(sd method,sd index,sd newvalue,sd numberoftime
     #modify a frame length
         mult index 4
         if index>=size
-            return 1
+			ret #urn 1
         endif
         sd loc
         set loc frames
         add loc index
         set loc# newvalue
-        return 1
+		ret #urn 1
 	endif
 	if method=(stage_frame_time_insert)
     #insert at index newvalue and numberoftimes
@@ -174,13 +174,13 @@ function stage_frame_time_numbers(sd method,sd index,sd newvalue,sd numberoftime
                 sub newzone 4
             endwhile
         endif
-        return 1
+		ret #urn 1
 	endif
 	if method=(stage_frame_time_delete_frame)
     #a frame was deleted
         mult index 4
         if index>=size
-            return 1
+			ret #urn 1
         endif
 
         sd mem_src_cursor
@@ -199,7 +199,7 @@ function stage_frame_time_numbers(sd method,sd index,sd newvalue,sd numberoftime
             add index 4
         endwhile
         sub size 4
-        return 1
+		ret #urn 1
 	endif
 	if method=(stage_frame_time_sum_at_index)
     #length at pos returned
