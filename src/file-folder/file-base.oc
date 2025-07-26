@@ -229,7 +229,7 @@ function file_get_content_forward(ss filename,sv forward)
     sd ptr_mem^mem
     setcall err file_get_content(filename,ptr_size,ptr_mem)
     if err!=noerr
-        return err
+        ret #urn err
     endif
     call forward(mem,size)
     importx "_free" free

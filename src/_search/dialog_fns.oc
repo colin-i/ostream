@@ -169,7 +169,7 @@ function search_preferences_read_set()
 
     setcall err file_get_content(path,ptrsz,ptr_search_mem)
     if err!=noerr
-        return err
+        ret #urn err
     endif
     set mem ptr_search_mem#
 
