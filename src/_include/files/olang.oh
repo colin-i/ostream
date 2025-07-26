@@ -9,7 +9,7 @@ Const error=-1
 
 
 const dword_max=10
-const format_max=6
+const format_max=6   ;# 3+mux
 
 #Const charnullcompilationstyle=1
 #-charnullcompilationstyle
@@ -98,10 +98,10 @@ const value_custom=5
 const format_raw=-1
 
 const format_avi=0
-    const format_avi_raw=0
-    const format_avi_i420=1
-    const format_avi_mjpg=2
-    const format_avi_xvid=3
+#    const format_avi_raw=0
+    const format_avi_i420=0
+    const format_avi_mjpg=1
+    const format_avi_xvid=2
         const format_avi_last=format_avi+format_avi_xvid
 const format_mxf=format_avi_last+1
 const format_mkv=format_mxf+1

@@ -39,11 +39,12 @@ function is_local_avi()
     sd cmp
     setcall cmp cmpmem(format,avi,3)
     if cmp=(equalCompare)
-        sd encoder
-        setcall encoder stage_file_get_avi_encoder()
-        if encoder!=(format_avi_raw)
-            return 1
-        endif
+		# ok this is not working now, and there is already avi i420/pcm that is the same+- pcm sound
+		#sd encoder
+		#setcall encoder stage_file_get_avi_encoder()
+		#if encoder!=(format_avi_raw)
+		return 1
+		#endif
     endif
     return 0
 endfunction
@@ -150,7 +151,7 @@ function avidialog(sd file)
     #encoder inits
     sd bool
     data f^avicontent
-    setcall bool av_dialog_run(f,file)
+    setcall bool av_dialog_run(f,file) #this bool is 1 ok
     if bool!=1
         return (error)
     endif

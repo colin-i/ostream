@@ -17,6 +17,8 @@ Const SEEK_END=2
 
 const F_OK=0
 
+const PATH_MAX=4096
+
 const bitsperbyte=8
 
 
@@ -41,4 +43,3 @@ const to_mod=to_regopcode*8
 const mod_disp8=1*to_mod
 #const mod_disp32=2*to_mod
 const mod_reg=3*to_mod
-

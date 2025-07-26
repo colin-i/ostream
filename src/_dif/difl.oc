@@ -1,6 +1,9 @@
 
 entryraw _start(sd argc,sv argv)
 
+#importx "XInitThreads" XInitThreads
+#at qemu ./mrd still sometimes crashing, and sometimes saying about this
+#call XInitThreads()
 
 import "init_args" init_args
 sd bool;setcall bool init_args(argc,#argv)

@@ -222,7 +222,7 @@ function capture_files_loop(sd action)
             #loop 1 can be if max size detected
             set loop 0
 
-            # can be temp/raw
+            # can be straight/temp/raw
             setcall bool capture_direct((value_run))
             if bool=1
             #mkv
@@ -552,7 +552,7 @@ function capture_time(sd action)
 endfunction
 
 function capture_obtain_screenshot()
-    call capture_rect_screenshot((value_screenshot))
+	call capture_rect_screenshot((value_screenshot))
 	callret capture_pixbuf((value_get))
 endfunction
 
@@ -742,7 +742,7 @@ function capture_pixbuf(sd action,sd x,sd y,sd pix_width,sd pix_height,sd cursor
         if raw_flag=0
             sd encoder
             setcall encoder stage_file_get_mkv_encoder()
-            if encoder!=(format_mkv_rgb24)
+            if encoder!=(format_mkv_rgb24) #for this format will reverse at mkv, or no reverse(faster) if raw
                 #reverse bytes
                 call bytes_swap_reverse(mem,pix_width,pix_height)
             endif
@@ -818,8 +818,8 @@ function capture_direct(sd action)
 
         import "av_dialog_run" av_dialog_run
         data forward^capture_direct_start
-        sd bool
-        setcall bool av_dialog_run(forward,0)
+        charx bool#1
+        call av_dialog_run(forward) #,0)
 
         #temp flag
         #before dialog run no;after dialog run for capture_take_screenshot
@@ -891,24 +891,30 @@ function capture_direct_start(sd *data)
     sd output_file
     setcall output_file save_destination(format)
 
-    sd bool
-    setcall bool capture_direct_run(output_file,method)
-
-    if raw_flag=1
-    #here all raw files will be processed
-        call capture_raw_files(output_file)
-        set bool 0
-    endif
+    set capture_direct.bool capture_direct_run(output_file,method)
+	if raw_flag=1
+	#here all raw files will be processed
+		call capture_raw_files(output_file)
+		set capture_direct.bool 0
+	else
+		sd how
+		importx "_access" access
+		importx "_unlink" unlink
+		#on linux there is no fopen D flag
+		set how access(output_file,(F_OK))
+		if how=0
+			call unlink(output_file) #file is not yet fclose'd, will not free the resources now
+		end
+	end
 
     import "av_dialog_close" av_dialog_close
     call av_dialog_close()
-    return bool
 endfunction
 
 function capture_raw_extension()
 #these formats are related to format_max
-    str raw_format="raw"
-    return raw_format
+	vstr raw_format="raw"
+	return raw_format
 endfunction
 
 #bool
@@ -1140,11 +1146,15 @@ function capture_raw_files(sd output_file)
             sub all_frames frames_per_file
         endelse
 
-        importx "_sprintf" sprintf
-        char outfile_data#100
-        str outfile^outfile_data
-        str outformat="%s.%u"
-        call sprintf(outfile,outformat,output_file,files)
+		importx "_snprintf" snprintf
+		charx outfile_data#PATH_MAX
+		vstr outfile^outfile_data
+		vstr outformat="%s.%u"
+		datax n#1;set n snprintf(outfile,(PATH_MAX),outformat,output_file,files) #int return
+		if n>=(PATH_MAX)
+			call texter("big path error at raw capture")
+			ret
+		end
         import "file_write_forward" file_write_forward
         data forward_raw^capture_raw_writeOnFile
         call file_write_forward(outfile,forward_raw)
@@ -1206,6 +1216,7 @@ function capture_raw_read_file(sd file,sd path)
     setcall sz valinmemsens(filepath,sz,delim) #,(BACKWARD)
     sub filepath sz
 	if path!=filepath
+		dec filepath
 		set filepath# 0
 		import "file_forward_data_read" file_forward_data_read
 		data f_raw^capture_raw_read_filedata

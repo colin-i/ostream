@@ -213,8 +213,8 @@ function stage_file_options_structure(sd start,sd arg1)
 
         importx "_gtk_combo_box_text_append_text" gtk_combo_box_text_append_text
 
-        str entry1="AVI yuv"
-        call gtk_combo_box_text_append_text(outformat_list,entry1)
+#        str entry1="AVI yuv"
+#        call gtk_combo_box_text_append_text(outformat_list,entry1)
         str entry1_i420="AVI/I420\\PCM"
         call gtk_combo_box_text_append_text(outformat_list,entry1_i420)
         str entry1_jpg="AVI/MJPEG\\PCM"
@@ -377,11 +377,11 @@ import "get_string_at_index" get_string_at_index
 #type/extension
 function stage_file_get_format()
     sd ptr_index%ptr_output
-#these formats are related to format_max
+#these formats are related to format_max , and default format preference
     #Audio Video Interleaved
-    char entry1="avi"
+    #char entry1="avi"
     #Audio Video Interleaved / I420
-    char *="avi"
+    char entry1="avi"
     #Audio Video Interleaved / MJPEG
     char *="avi"
     #Audio Video Interleaved / MPG4-ASP
