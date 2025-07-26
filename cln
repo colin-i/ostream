@@ -1,1 +1,2 @@
-make clean && cd _fix && ./fix clean && cd .. && git status
+make clean && cd _fix && ./fix clean
+cd .. && git status
