@@ -138,13 +138,13 @@ function capture_start()
     sd bool
     setcall bool capture_rect((value_setrect))
     if bool!=1
-        return 0
+        ret #urn 0
     endif
 
     #verify for output format
     setcall bool capture_format()
     if bool!=1
-        return 0
+        ret #urn 0
     endif
 
     #init max allowed
@@ -236,12 +236,12 @@ function capture_files_loop(sd action)
         #restore info message
         call stage_file_options_info_message((value_set),info)
 
-        sd temp_file
-        setcall temp_file capture_temp_file((value_get))
-        if temp_file!=0
-            importx "_fclose" fclose
-            call fclose(temp_file)
-        endif
+		sd temp_file
+		setcall temp_file capture_temp_file((value_get))
+		if temp_file!=0
+			importx "_fclose" fclose
+			call fclose(temp_file)
+		endif
 
         call capture_pixbuf((value_unset))
     endelse
@@ -830,12 +830,12 @@ function capture_direct(sd action)
 endfunction
 
 function capture_temp_file(sd action,sd value)
-    data temp_file#1
-    if action=(value_set)
-        set temp_file value
-    else
-        return temp_file
-    endelse
+	valuex temp_file#1
+	if action=(value_set)
+		set temp_file value
+	else
+		return temp_file
+	endelse
 endfunction
 function capture_direct_frames(sd action,sd value)
     data temp_frames#1
@@ -872,39 +872,29 @@ function capture_direct_start(sd *data)
     #init captured frames counter
     call capture_direct_frames((value_set),0)
 
-    ss format
-    ss method
-    sd raw_flag
-    setcall raw_flag capture_raw_option((value_get))
-    if raw_flag=0
-#these formats are related to format_max. D is temporary file
-        ss temp_format="temp"
-        ss temp_method="w+Db"
-        set format temp_format
-        set method temp_method
-    else
+	import "save_destination" save_destination
+	sd output_file
+	sd file
+	ss format
+	sd raw_flag
+	setcall raw_flag capture_raw_option((value_get))
+	if raw_flag=0
+		import "tmp_file" tmp_file
+		set file tmp_file()
+	else
+		setcall format capture_raw_extension()
+		setcall output_file save_destination(format)
 		vstr raw_method="wb"
-        setcall format capture_raw_extension()
-        set method raw_method
-    endelse
-    import "save_destination" save_destination
-    sd output_file
-    setcall output_file save_destination(format)
-
-    set capture_direct.bool capture_direct_run(output_file,method)
+		call openfile(#file,output_file,raw_method)
+	endelse
+	if file=(NULL)
+		ret #urn 0
+	endif
+	set capture_direct.bool capture_direct_run(file)
 	if raw_flag=1
 	#here all raw files will be processed
 		call capture_raw_files(output_file)
 		set capture_direct.bool 0
-	else
-		sd how
-		importx "_access" access
-		importx "_unlink" unlink
-		#on linux there is no fopen D flag
-		set how access(output_file,(F_OK))
-		if how=0
-			call unlink(output_file) #file is not yet fclose'd, will not free the resources now
-		end
 	end
 
     import "av_dialog_close" av_dialog_close
@@ -918,17 +908,8 @@ function capture_raw_extension()
 endfunction
 
 #bool
-function capture_direct_run(sd output_file,sd method)
-    sd file
-    sd er
-    #open file
-    import "openfile" openfile
-    sd p_file^file
-    setcall er openfile(p_file,output_file,method)
-    if er!=(noerror)
-        return 0
-    endif
-    call capture_temp_file((value_set),file)
+function capture_direct_run(sd file)
+	call capture_temp_file((value_set),file)
 
     #get rect size
     sd width
@@ -953,6 +934,7 @@ function capture_direct_run(sd output_file,sd method)
         importx "_gdk_pixbuf_get_pixels" gdk_pixbuf_get_pixels
         sd bytes
         setcall bytes gdk_pixbuf_get_pixels(pixbuf)
+		sd er
         setcall er file_write(bytes,rgb_rect_size,file)
         if er!=(noerror)
             return 0
@@ -1317,9 +1299,9 @@ end
 function capture_save_run(ss filename)
 	sd file
 	sd p_file^file
-	sd er
-	setcall er openfile(p_file,filename,capture_direct_start.raw_method)
-	if er=(noerror)
+	import "openfile" openfile
+	call openfile(p_file,filename,capture_direct_start.raw_method)
+	if file!=(NULL)
 		sd ebox
 		import "stage_nthwidgetFromcontainer" stage_nthwidgetFromcontainer
 		setcall ebox stage_nthwidgetFromcontainer(0) #isn't this thread unsafe? gtk_container_get_children? or is simple value get
@@ -1335,6 +1317,7 @@ function capture_save_run(ss filename)
 		sd rgb_size
 		setcall rgb_size rgb_get_size(w,h)
 
+		sd er
 		setcall er file_write(wh,(DWORD+DWORD),file)
 		if er=(noerror)
 			sd position_total
@@ -1378,8 +1361,8 @@ function capture_save_run(ss filename)
 		end
 		call fclose(file)
 	endif
-	if er!=(noerror)
-		call texter(er)
-	end
+	#if er!=(noerror) #err is texted already
+	#	call texter(er)
+	#end
 	call av_dialog_close()
 end

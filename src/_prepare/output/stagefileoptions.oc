@@ -310,21 +310,20 @@ function stage_file_options_structure(sd start,sd arg1)
         setcall currentframestext gtk_entry_get_text(fps_edit)
 
         sd err
-        data noerr=noerror
 
         import "strtoint" strtoint
         sd fpspointer%ptr_fps
         call strtoint(currentframestext,fpspointer)
         call av_good_fps(fpspointer)
         setcall err file_write(fpspointer,4,arg1)
-        if err!=noerr
-            return err
-        endif
+		if err!=(noerror)
+			ret #urn err
+		endif
 
         setcall err file_write(ptr_out,4,arg1)
-        if err!=noerr
-            return err
-        endif
+		if err!=(noerror)
+			ret #urn err
+		endif
 #
         ss file_sound
         setcall file_sound sound_file()
@@ -332,10 +331,10 @@ function stage_file_options_structure(sd start,sd arg1)
         sd p_audio_file^audio_file
         str s_fmode="wb"
         import "openfile" openfile
-        setcall err openfile(p_audio_file,file_sound,s_fmode)
-        if err!=noerr
-            return err
-        endif
+		call openfile(p_audio_file,file_sound,s_fmode)
+		if p_audio_file=(NULL)
+			ret #urn err
+		endif
         import "entry_to_nr_minValue" entry_to_nr_minValue
 
         call entry_to_nr_minValue(ch_opt,p_channels,1)
@@ -358,14 +357,13 @@ function stage_file_options_structure(sd start,sd arg1)
         setcall toggle_flag gtk_toggle_button_get_active(results_toggle)
         call stage_file_options_info_message((value_set),toggle_flag)
         setcall err file_write(p_toggle_flag,4,arg1)
-        if err!=noerr
-            return err
-        endif
+		if err!=(noerror)
+			ret #urn err
+		endif
         #
         sd up_flag
         setcall up_flag gtk_toggle_button_get_active(update_toggle)
         call update_set(up_flag)
-        #
     endelse
 endfunction
 function stage_oformat_changed(sd combo,sd p_loc)

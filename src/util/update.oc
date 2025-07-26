@@ -101,12 +101,11 @@ importx "_fclose" fclose
 function update_set(sd value)
     ss path
     setcall path update_path()
-    sd err
     sd file
-    setcall err openfile(#file,path,"wb")
-    if err!=(noerror)
-        ret #urn (void)
-    endif
+	call openfile(#file,path,"wb")
+	if file=(NULL)
+		ret #urn (void)
+	endif
     import "file_write" file_write
     call file_write(#value,4,file)
     call fclose(file)
@@ -118,12 +117,11 @@ endfunction
 function update_get()
     ss path
     setcall path update_path()
-    sd err
-    sd file
-    setcall err openfile(#file,path,"rb")
-    if err!=(noerror)
-        return (FALSE)
-    endif
+	sd file
+	call openfile(#file,path,"rb")
+	if file=(NULL)
+		return (FALSE)
+	endif
     import "file_get_dword" file_get_dword
     sd value=0
     call file_get_dword(file,#value)

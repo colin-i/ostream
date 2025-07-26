@@ -1150,3 +1150,10 @@ function stage_sound_buffer(sd gstappsink,sd *user_data)
 	call gst_mini_object_unref(s)
 	return ret
 endfunction
+
+function tmp_file()
+	sd file
+	importx "tmpfile" tmpfile
+	set file tmpfile() #opens a unique temporary file in binary read/write (w+b) mode
+	return file
+end
