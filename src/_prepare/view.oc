@@ -52,7 +52,7 @@ function stage_buttons_enter(sd container)
         #
     import "stage_files_read" stage_files_read
     char *="open.bmp"
-    char *="Append a file created with mkv(i420,mjpeg,rgb24), avi(i420,mjpeg), raw capture output format"
+    char *="Append a file created with mkv(i420,mjpeg,rgb24), avi(i420,mjpeg) or raw capture output formats"
     data *^stage_files_read
         #
     import "stage_sound" stage_sound

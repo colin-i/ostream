@@ -109,6 +109,9 @@ function capture_path(ss format,sd extrabool,sd extranumber)
 	if extrabool=0
 		ss null=""
 		set extra null
+		if format#=(Nullchar) #a new case for raw
+			set fmt "%s/%s%u%s"
+		end
 	else
 		sd extra_data#5
 		ss extra_str^extra_data

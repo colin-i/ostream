@@ -245,6 +245,18 @@ function file_forward_read(ss path,sd forward)
 	callret file_forward(path,method,forward)
 endfunction
 #e
+function file_forward_data_read(ss path,sv forward,sd data)
+	sd method
+	setcall method getreadmode()
+	sd file
+	sd er
+	SetCall er openfile(#file,path,method)
+	If er=(noerror)
+		call forward(file,data)
+		call fclose(file)
+	end
+endfunction
+#e
 function file_read(sd mem,sd size,sd file)
     sd readed
     setcall readed fread(mem,1,size,file)

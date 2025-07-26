@@ -376,7 +376,7 @@ function stage_save_all()
 	end
 
     #file format
-    sd format
+    ss format
     import "stage_file_get_format" stage_file_get_format
     setcall format stage_file_get_format()
     import "cmpmem" cmpmem
@@ -406,6 +406,12 @@ function stage_save_all()
         call mp4_write()
         ret #urn 1
     endif
+
+	if format#=(Nullchar)
+		import "capture_save" capture_save
+		call capture_save()
+		ret
+	endif
 
     data file_frames%stage_file_frames
     set file_frames# 0
