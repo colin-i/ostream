@@ -890,7 +890,6 @@ function init_args(sd argc)
 	return -1
 endfunction
 
-const PATH_MAX=4096
 importx "malloc" malloc
 importx "free" free
 importx "strlen" strlen

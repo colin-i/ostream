@@ -262,7 +262,6 @@ function av_dialog_run(sd forward,sd data)
 		call dialog_modal_texter_drawwidget((value_set),0) #if an idle_add is still coming
 		call av_dialog_multiline_info((value_set),0) #if an idle_add is still coming
 	endif
-
 	return bool
 
 	const av_dialog^dialog

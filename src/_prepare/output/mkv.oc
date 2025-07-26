@@ -15,8 +15,6 @@ import "file_seek_cursor_get_dword_reverse" file_seek_cursor_get_dword_reverse
 import "memoryrealloc" memoryrealloc
 import "rgb_get_all_sizes" rgb_get_all_sizes
 
-import "pixbuf_from_pixbuf_reverse" pixbuf_from_pixbuf_reverse
-
 const mkv_yuv_init=0
 const mkv_yuv_p_bytes=1
 const mkv_yuv_set_size=2
@@ -1058,20 +1056,13 @@ function mkv_simpleblock(sd file,sd size,sd filepos)
 		    call pixbuf_get_wh(pixbuf,rgb_dim)
 		    setcall rgb_sz rgb_get_size(rgb_width,rgb_height)
 
-		    sd capture_flag
-		    setcall capture_flag mkv_capture((value_get))
-		    if capture_flag=0
-		        sd reverse_pixbuf
-		        setcall reverse_pixbuf pixbuf_from_pixbuf_reverse(pixbuf)
-		        setcall rgb_pixels gdk_pixbuf_get_pixels(reverse_pixbuf)
-		    endif
-		    #
-		    setcall err file_write(rgb_pixels,rgb_sz,file)
-		    #
-		    if capture_flag=0
-		        importx "_g_object_unref" g_object_unref
-		        call g_object_unref(reverse_pixbuf)
-		    endif
+			sd capture_flag
+			setcall capture_flag mkv_capture((value_get))
+			if capture_flag=1
+				import "bytes_swap_reverse" bytes_swap_reverse
+				call bytes_swap_reverse(rgb_pixels,rgb_width,rgb_height)
+			endif
+			setcall err file_write(rgb_pixels,rgb_sz,file)
 
 		    if err!=(noerror)
 		        return 0
@@ -1617,23 +1608,24 @@ function mkv_readentry(sd frames,sd newtime,sd p_resultedframes)
     sd rowstride
     sd p_rowstride^rowstride
     call rgb_get_all_sizes(w,h,p_rowstride)
-    sd pixbuf
-    setcall pixbuf gdk_pixbuf_new_from_data(p_rgb#,(GDK_COLORSPACE_RGB),(FALSE),8,w,h,rowstride,(NULL),0)
+    sd pixbuf;setcall pixbuf gdk_pixbuf_new_from_data(p_rgb#,(GDK_COLORSPACE_RGB),(FALSE),8,w,h,rowstride,(NULL),0)
+    #setcall px gdk_pixbuf_new_from_data(p_rgb#,(GDK_COLORSPACE_RGB),(FALSE),8,w,h,rowstride,(NULL),0)
 
-    #keep the pixbuf
-    import "pixbuf_copy" pixbuf_copy
-    setcall px pixbuf_copy(pixbuf)
-    if px=0
-        return 0
-    endif
-    if encoder=(format_mkv_rgb24)
-        #bitmap is right to left from file
-        import "rgb_color_swap" rgb_color_swap
-        sd newbytes
-        setcall newbytes gdk_pixbuf_get_pixels(px)
-        call rgb_color_swap(newbytes,w,h)
-    endif
-    call g_object_unref(pixbuf)
+    #keep the pixbuf. ? . must be something with "Note that this does not copy the options set on the original GdkPixbuf" at gdk_pixbuf_copy, else I see blank if not this way
+	import "pixbuf_copy" pixbuf_copy
+	setcall px pixbuf_copy(pixbuf)
+	if px=0
+		return 0
+	endif
+    #if encoder=(format_mkv_rgb24)
+    #    #bitmap is right to left from file
+    #    import "rgb_color_swap" rgb_color_swap
+    #    sd newbytes
+    #    setcall newbytes gdk_pixbuf_get_pixels(px)
+    #    call rgb_color_swap(newbytes,w,h)
+    #endif
+	importx "_g_object_unref" g_object_unref
+	call g_object_unref(pixbuf)
 
     #add to stage
     sd entry^px
