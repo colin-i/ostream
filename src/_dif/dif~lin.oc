@@ -366,21 +366,23 @@ const SND_PCM_FORMAT_S16_LE=2
 const SND_PCM_NONBLOCK=1
 #const SND_PCM_ASYNC=2
 
-import "snd_pcm_open" snd_pcm_open
-import "snd_pcm_hw_params_malloc" snd_pcm_hw_params_malloc
-import "snd_pcm_hw_params_free" snd_pcm_hw_params_free
-import "snd_pcm_close" snd_pcm_close
-import "snd_pcm_writei" snd_pcm_writei
-import "snd_pcm_avail_update" snd_pcm_avail_update
-import "snd_pcm_get_params" snd_pcm_get_params
+#at this time, alsa will ask for pipewire-alsa
 
-import "snd_pcm_hw_params_any" snd_pcm_hw_params_any
-import "snd_pcm_hw_params_set_access" snd_pcm_hw_params_set_access
-import "snd_pcm_hw_params_set_format" snd_pcm_hw_params_set_format
-import "snd_pcm_hw_params_set_rate" snd_pcm_hw_params_set_rate
-import "snd_pcm_hw_params_set_channels" snd_pcm_hw_params_set_channels
-import "snd_pcm_hw_params" snd_pcm_hw_params
-import "snd_pcm_prepare" snd_pcm_prepare
+importx "snd_pcm_open" snd_pcm_open
+importx "snd_pcm_hw_params_malloc" snd_pcm_hw_params_malloc
+importx "snd_pcm_hw_params_free" snd_pcm_hw_params_free
+importx "snd_pcm_close" snd_pcm_close
+importx "snd_pcm_writei" snd_pcm_writei
+importx "snd_pcm_avail_update" snd_pcm_avail_update
+importx "snd_pcm_get_params" snd_pcm_get_params
+
+importx "snd_pcm_hw_params_any" snd_pcm_hw_params_any
+importx "snd_pcm_hw_params_set_access" snd_pcm_hw_params_set_access
+importx "snd_pcm_hw_params_set_format" snd_pcm_hw_params_set_format
+importx "snd_pcm_hw_params_set_rate" snd_pcm_hw_params_set_rate
+importx "snd_pcm_hw_params_set_channels" snd_pcm_hw_params_set_channels
+importx "snd_pcm_hw_params" snd_pcm_hw_params
+importx "snd_pcm_prepare" snd_pcm_prepare
 
 #bool
 function sound_preview_init()
