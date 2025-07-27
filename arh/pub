@@ -33,7 +33,7 @@ gh workflow run testdep.yml && \
 #git restore debian/files && git diff --exit-code
 #~/test/updeb
 
-#there is a problem with asp: -----------------|-|---------------|-
-#will show:                                     1 2               3
-#workaround:                  -|---------------|-|-|-------------|-
-#same avi at i420 is ok
+#there is a problem with avi-asp: -----------------|-|---------------|-
+#will show:                                         1 2               3
+#workaround:                      -|---------------|-|-|-------------|-
+#same avi at i420 is ok , same asp at mkv is ok

@@ -360,6 +360,8 @@ const SND_PCM_FORMAT_S16_LE=2
 const SND_PCM_NONBLOCK=1
 #const SND_PCM_ASYNC=2
 
+#at this time, alsa will ask for pipewire-alsa
+
 importx "snd_pcm_open" snd_pcm_open
 importx "snd_pcm_hw_params_malloc" snd_pcm_hw_params_malloc
 importx "snd_pcm_hw_params_free" snd_pcm_hw_params_free
@@ -1004,6 +1006,15 @@ function ulltoa(sd low,sd high,sd str)
 	call sprintf(str,"%llu",low,high)
 endfunction
 
+function tmp_file()
+	sd file
+	importx "tmpfile" tmpfile
+	set file tmpfile() #opens a unique temporary file in binary read/write (w+b) mode
+	return file
+end
+
+
+
 
 importx "gdk_x11_drawable_get_xid" gdk_x11_drawable_get_xid
 importx "gst_video_overlay_get_type" gst_video_overlay_get_type
@@ -1150,10 +1161,3 @@ function stage_sound_buffer(sd gstappsink,sd *user_data)
 	call gst_mini_object_unref(s)
 	return ret
 endfunction
-
-function tmp_file()
-	sd file
-	importx "tmpfile" tmpfile
-	set file tmpfile() #opens a unique temporary file in binary read/write (w+b) mode
-	return file
-end
