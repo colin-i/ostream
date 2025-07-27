@@ -1059,14 +1059,22 @@ function mkv_simpleblock(sd file,sd size,sd filepos)
 			sd capture_flag
 			setcall capture_flag mkv_capture((value_get))
 			if capture_flag=1
-				import "bytes_swap_reverse" bytes_swap_reverse
-				call bytes_swap_reverse(rgb_pixels,rgb_width,rgb_height)
+				import "rgb_reverse" rgb_reverse
+				call rgb_reverse(rgb_pixels,rgb_width,rgb_height)
+				setcall err file_write(rgb_pixels,rgb_sz,file)
+			else
+				import "pixbuf_from_pixbuf_color_swap" pixbuf_from_pixbuf_color_swap
+				sd px;set px pixbuf_from_pixbuf_color_swap(pixbuf)
+				if px=(NULL)
+					return (FALSE)
+				end
+				set rgb_pixels gdk_pixbuf_get_pixels(px)
+				setcall err file_write(rgb_pixels,rgb_sz,file)
+				call g_object_unref(px)
+			endelse
+			if err!=(noerror)
+				return 0
 			endif
-			setcall err file_write(rgb_pixels,rgb_sz,file)
-
-		    if err!=(noerror)
-		        return 0
-		    endif
 		endelse
 		#info display
 		call av_display_info((value_write),file,currentframe)
@@ -1617,13 +1625,13 @@ function mkv_readentry(sd frames,sd newtime,sd p_resultedframes)
 	if px=0
 		return 0
 	endif
-    #if encoder=(format_mkv_rgb24)
-    #    #bitmap is right to left from file
-    #    import "rgb_color_swap" rgb_color_swap
-    #    sd newbytes
-    #    setcall newbytes gdk_pixbuf_get_pixels(px)
-    #    call rgb_color_swap(newbytes,w,h)
-    #endif
+	if encoder=(format_mkv_rgb24)
+		# bmp is right to left from file
+		sd pxbytes
+		setcall pxbytes gdk_pixbuf_get_pixels(px)
+		import "rgb_color_swap" rgb_color_swap
+		call rgb_color_swap(pxbytes,w,h)
+	endif
 	importx "_g_object_unref" g_object_unref
 	call g_object_unref(pixbuf)
 
