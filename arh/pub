@@ -32,3 +32,8 @@ gh workflow run testdep.yml && \
 #~/test/debuild2 x
 #git restore debian/files && git diff --exit-code
 #~/test/updeb
+
+#there is a problem with asp: -----------------|-|---------------|-
+#will show:                                     1 2               3
+#workaround:                  -|---------------|-|-|-------------|-
+#same avi at i420 is ok
