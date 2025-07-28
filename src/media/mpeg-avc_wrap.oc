@@ -124,7 +124,7 @@ endfunction
 #bool
 function avc_rounding(sd value)
     import "rest" rest
-    setcall value rest(value,16)
+    setcall value rest(value,(avc_minimum))
     if value!=0
         import "texter" texter
         str er="Width or height isn't a multiple of 16."

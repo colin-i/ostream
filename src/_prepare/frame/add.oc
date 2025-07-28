@@ -222,37 +222,38 @@ function stage_frame_form_data_init(sd vbox,sd pixbuf)
 endfunction
 
 function stage_frame_form_data(sd action,sd value)
-	if action=0
-        data width_entry#1
-        set width_entry value
-        return 0
+	if action=(stage_frame_form_data_width)
+		data width_entry#1
+		set width_entry value
+		ret #urn 0
 	endif
-	if action=1
-        data height_entry#1
-        set height_entry value
-        return 0
+	if action=(stage_frame_form_data_height)
+		data height_entry#1
+		set height_entry value
+		ret #urn 0
 	endif
-	if action=2
-        data color_entry#1
-        set color_entry value
-        return 0
+	if action=(stage_frame_form_data_color)
+		data color_entry#1
+		set color_entry value
+		ret #urn 0
 	endif
 
-    import "entry_to_nr_minValue" entry_to_nr_minValue
+	#stage_frame_form_data_pixbuf
+	import "entry_to_nr_minValue_preferredValue" entry_to_nr_minValue_preferredValue
 
-    sd width
-    sd p_w^width
-    call entry_to_nr_minValue(width_entry,p_w,4)
+	sd width
+	sd p_w^width
+	call entry_to_nr_minValue_preferredValue(width_entry,p_w,4,(avc_minimum))
 
-    sd height
-    sd p_h^height
-    call entry_to_nr_minValue(height_entry,p_h,4)
+	sd height
+	sd p_h^height
+	call entry_to_nr_minValue_preferredValue(height_entry,p_h,4,(avc_minimum))
 
-    import "color_widget_get_color_to_rgb" color_widget_get_color_to_rgb
-    sd color
-    setcall color color_widget_get_color_to_rgb(color_entry)
+	import "color_widget_get_color_to_rgb" color_widget_get_color_to_rgb
+	sd color
+	setcall color color_widget_get_color_to_rgb(color_entry)
 
-    import "new_pixbuf_color" new_pixbuf_color
+	import "new_pixbuf_color" new_pixbuf_color
 	callret new_pixbuf_color(width,height,color)
 endfunction
 

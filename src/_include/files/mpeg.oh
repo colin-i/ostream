@@ -63,6 +63,8 @@ const avc_mb_size=avc_mb_cache_offset+avc_mb_cache_size
 const avc_I_16x16=2
 const avc_P_SKIP=6
 
+const avc_minimum=16
+
 
 #mp3
 const mp3_channels_stereo=2
