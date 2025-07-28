@@ -351,6 +351,15 @@ function entry_to_nr_minValue(sd entry,sd p_out,sd min)
         set p_out# min
     endif
 endfunction
+function entry_to_nr_minValue_preferredValue(sd entry,sd p_out,sd min,sd pref)
+	sd text
+	setcall text gtk_entry_get_text(entry)
+	sd bool
+	setcall bool strtoint_positive_N_or_Greater(text,p_out,min)
+	if bool=0
+		set p_out# pref
+	endif
+endfunction
 
 function int_to_entry(sd int,sd entry)
     sd number#4
