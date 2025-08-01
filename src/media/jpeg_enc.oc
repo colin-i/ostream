@@ -1781,7 +1781,7 @@ function jpeg_dialog()
 endfunction
 
 function jpeg_settings_init(sd vbox,sd *dialog)
-    str q="Quality: "
+	vstr q="Quality: "
     import "hboxfield_cnt" hboxfield_cnt
     sd hbox
     setcall hbox hboxfield_cnt(vbox)
@@ -1800,9 +1800,9 @@ function jpeg_settings_init(sd vbox,sd *dialog)
     sd p_step_d^step_d_low
     call int_to_double(1,p_min_d)
     call int_to_double(900,p_max_d)
-    call int_to_double(100,p_step_d)
+    call int_to_double(10,p_step_d)
 
-    data hscale#1
+	valuex hscale#1
     setcall hscale gtk_hscale_new_with_range(min_d_low,min_d_high,max_d_low,max_d_high,step_d_low,step_d_high)
 
     importx "_gtk_range_set_value" gtk_range_set_value
@@ -1816,11 +1816,31 @@ function jpeg_settings_init(sd vbox,sd *dialog)
 
     import "packstart" packstart
     call packstart(hbox,hscale,(TRUE))
-    #
-    str max="Best"
-    call labelfield_left_default(max,hbox)
 
-    const p_hscale^hscale
+	importx "_gtk_radio_button_new_with_label" gtk_radio_button_new_with_label
+	sd qradio
+	set qradio gtk_radio_button_new_with_label(0,"Option 1")
+	call packstart(hbox,qradio,(FALSE))
+
+	setcall hbox hboxfield_cnt(vbox)
+	call labelfield_left_default(q,hbox)
+	valuex hscale2#1
+	setcall hscale2 gtk_hscale_new_with_range(min_d_low,min_d_high,max_d_low,max_d_high,step_d_low,step_d_high)
+	setcall currentpos jpeg_quality2((value_get))
+	call int_to_double(currentpos,p_doublepos)
+	call gtk_range_set_value(hscale2,doublepos_low,doublepos_high)
+	call packstart(hbox,hscale2,(TRUE))
+
+	importx "_gtk_radio_button_get_group" gtk_radio_button_get_group
+	sd radiogroup
+	setcall radiogroup gtk_radio_button_get_group(qradio)
+	valuex o2#1
+	setcall o2 gtk_radio_button_new_with_label(radiogroup,"Option 2")
+	call packstart(hbox,o2,(FALSE))
+
+	data sel_quality=0
+	importx "_gtk_toggle_button_set_active" gtk_toggle_button_set_active
+	call gtk_toggle_button_set_active(o2,sel_quality)
 endfunction
 
 function jpeg_settings_set()
@@ -1832,14 +1852,23 @@ function jpeg_settings_set()
     call file_write_forward_sys_folder_enter_leave(jpeg_fl_str,forw_jpeg)
 endfunction
 function jpeg_settings_set_write(sd jpeg_fl)
-    import "hscale_get" hscale_get
-    sd p_hscale%p_hscale
-    sd value
-    setcall value hscale_get(p_hscale#)
-    call jpeg_quality((value_set),value)
+	import "hscale_get" hscale_get
+	sd value
+	setcall value hscale_get(jpeg_settings_init.hscale)
+	call jpeg_quality((value_set),value)
 
-    sd p_value^value
-    call file_write(p_value,4,jpeg_fl)
+	sd er
+	set er file_write(#value,(DWORD),jpeg_fl)
+	if er=(noerror)
+		setcall value hscale_get(jpeg_settings_init.hscale2)
+		call jpeg_quality2((value_set),value)
+		set er file_write(#value,(DWORD),jpeg_fl)
+		if er=(noerror)
+			importx "_gtk_toggle_button_get_active" gtk_toggle_button_get_active
+			set jpeg_settings_init.sel_quality gtk_toggle_button_get_active(jpeg_settings_init.o2)
+			call file_write(#jpeg_settings_init.sel_quality,(DWORD),jpeg_fl)
+		end
+	end
 endfunction
 
 
@@ -1852,17 +1881,38 @@ function jpeg_quality(sd action,sd value)
         return quality
     endelse
 endfunction
+function jpeg_quality2(sd action,sd value)
+	data quality=890
+	if action=(value_set)
+		set quality value
+	else
+		return quality
+	endelse
+endfunction
 
 function jpeg_get_quality(sd mem,sd *size)
-    sd quality
-    sd p_quality^quality
+	sd quality
+	sd p_quality^quality
 
-    import "get_mem_int_advance" get_mem_int_advance
-    sd mem_sz^mem
-    sd err
-    setcall err get_mem_int_advance(p_quality,mem_sz)
-    if err!=(noerror)
-        return 0
-    endif
-    call jpeg_quality((value_set),quality)
+	import "get_mem_int_advance" get_mem_int_advance
+	sd mem_sz^mem
+	sd err
+	setcall err get_mem_int_advance(p_quality,mem_sz)
+	if err!=(noerror)
+		ret #urn 0
+	endif
+	call jpeg_quality((value_set),quality)
+	setcall err get_mem_int_advance(p_quality,mem_sz)
+	if err!=(noerror)
+		ret
+	endif
+	call jpeg_quality2((value_set),quality)
+	call get_mem_int_advance(#jpeg_settings_init.sel_quality,mem_sz)
 endfunction
+
+function jpeg_quality_options()
+	if jpeg_settings_init.sel_quality=0
+		return jpeg_quality.quality
+	end
+	return jpeg_quality2.quality
+end
