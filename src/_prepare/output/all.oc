@@ -474,9 +474,9 @@ endfunction
 
 #bool
 function stage_jpeg_write(sd file,sd pixbuf)
-    import "jpeg_quality" jpeg_quality
+    import "jpeg_quality_options" jpeg_quality_options
     sd quality
-    setcall quality jpeg_quality((value_get))
+    setcall quality jpeg_quality_options()
 
     #flip the value, so 1 is best 900 is lowest
     import "rule3_two_offsets" rule3_two_offsets
