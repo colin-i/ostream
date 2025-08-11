@@ -1,3 +1,9 @@
+ovideo (1-199x) xenial; urgency=medium
+
+  * jpeg q options
+
+ -- bc <bc@bc-desktop>  Mon, 11 Aug 2025 10:48:10 +0300
+
 ovideo (1-198x) xenial; urgency=medium
 
   * mkv-rgb fix
