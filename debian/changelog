@@ -1,3 +1,9 @@
+ovideo (1-199) bionic; urgency=medium
+
+  * jpeg q options
+
+ -- bc <bc@bc-desktop>  Mon, 11 Aug 2025 11:13:19 +0300
+
 ovideo (1-198) bionic; urgency=medium
 
   * mkv/rgb fix
