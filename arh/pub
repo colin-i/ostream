@@ -27,7 +27,8 @@ gh workflow run testdep.yml && \
 ~/test/lp x "${tars}" && \
 ~/test/arh2 ${last}
 
-#deb if not going to amd64 will end of life at launchpad after bionic, and from noble,questing.. is a problem with libgdk-pixbuf2.0-0 if from bionic. introduced debuild here
+#deb if not going to amd64 will end of life at launchpad after bionic(or we-ll link like in debuild with lld?)
+#and from noble,questing.. is a problem with libgdk-pixbuf2.0-0 if from bionic. introduced debuild here (this is doing amd64 with lld from jammy)
 #sudo gh act -r -j debuild workflow_dispatch -W .github/workflows/debuild.yml -P ubuntu-18.04=ubuntu:bionic  #ubuntu:lucid is the first one
 #~/test/debuild2 x
 #git restore debian/files && git diff --exit-code
