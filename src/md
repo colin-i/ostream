@@ -5,9 +5,9 @@ else
 a=${1}
 fi
 
-#make compile prefix=/usr && make linkapp linkerflags=
+LD_LIBRARY_PATH=/home/bc/Desktop/out/ld/usr/lib/i386-linux-gnu make ${a} prefix=/usr OFLAGSEXTRA="function_name 1 nul_res_pref 1" linkerflags="${linkerflags}" LD=/home/bc/Desktop/out/ld/usr/bin/i686-linux-gnu-ld.bfd items_prefix=`pwd`/
 
-LD_LIBRARY_PATH=/home/bc/Desktop/out/ld/usr/lib/i386-linux-gnu make ${a} prefix=/usr OFLAGSEXTRA="function_name 1 nul_res_pref 1" linkerflags= LD=/home/bc/Desktop/out/ld/usr/bin/i686-linux-gnu-ld.bfd items_prefix=`pwd`/
+#make compile prefix=/usr && make linkapp linkerflags=
 
 #old remark: for arm is the appimage, extracted, ./AppRun
 #on noble gtk2 changed some dependecies and need to rebuild but i386 maximum at bionic, to test on noble for focal:
