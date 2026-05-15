@@ -1,12 +1,12 @@
 # O Video
 
 ## Install
-On Ubuntu, <i>.deb</i> file from [releases](https://github.com/colin-i/ostream/releases)(jammy also working at noble).\
+On Ubuntu, <i>.deb</i> file from [releases](https://github.com/colin-i/ostream/releases)(jammy also working at noble/resolute).\
 Or from PPA(i386)(xenial bionic focal jammy).
 ```sh
 sudo add-apt-repository ppa:colin-i/ppa
 ```
-Or the *manual installation step* from this link *https://gist.github.com/colin-i/e324e85e0438ed71219673fbcc661da6* \
+Or the *manual installation step* from this [link](https://gist.github.com/colin-i/e324e85e0438ed71219673fbcc661da6#manual-installation-step).\
 Install:
 ```sh
 sudo apt-get install ovideo
@@ -41,5 +41,4 @@ Compile with [O Compiler](https://github.com/colin-i/o). At linux, for example: 
 On Linux, follow ```ovideo --help``` to remove configuration data. On Windows, remove configuration with one argument at command line start.
 
 ## Donations
-The *donations* section is here
-*https://gist.github.com/colin-i/e324e85e0438ed71219673fbcc661da6*
+The *donations* section is [here](https://gist.github.com/colin-i/e324e85e0438ed71219673fbcc661da6#donations).
