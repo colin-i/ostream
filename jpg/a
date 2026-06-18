@@ -1,0 +1,3 @@
+set -e
+cd ../src
+routedstart=../jpg/a ./mrd $@

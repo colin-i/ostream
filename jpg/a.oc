@@ -1,0 +1,30 @@
+
+format elfobj
+
+import "init_args" init_args;import "prog_free" prog_free;import "debug_free" debug_free;import "initfn" initfn;import "gstset" gstset;import "gstunset" gstunset;import "ov_init" ov_init
+value *^init_args;value *^prog_free;value *^debug_free;value *^initfn;value *^gstset;value *^gstunset;value *^ov_init
+include "../src/_include/include.oh"
+data *=LC_NUMERIC
+function main_thread()
+i3
+end
+
+importx "exit" exit
+importx "printf" printf
+
+entryraw _start(sd argc,ss *arg0,ss arg1,ss arg2)
+
+if argc!=3
+	call exit(1)
+end
+
+call printf("from %s to %s\n",arg1,arg2)
+
+importx "gdk_pixbuf_new_from_file" gdk_pixbuf_new_from_file
+value gerror=0
+sd pix
+set pix gdk_pixbuf_new_from_file(arg1,#gerror)
+if pix!=(NULL)
+	call exit(0)
+end
+call exit(1)

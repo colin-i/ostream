@@ -1,0 +1,5 @@
+
+cd ../../squashfs-root
+
+#and add the other tricks with gemu-i386 and $@
+./AppRun ostream "$@"
