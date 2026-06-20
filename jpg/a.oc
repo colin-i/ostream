@@ -15,6 +15,7 @@ importx "printf" printf
 entryraw _start(sd argc,ss *arg0,ss arg1,ss arg2,sd arg3)
 
 if argc!=4
+	call printf("put: from, to, quality\n")
 	call exit(1)
 end
 importx "atoi" atoi
