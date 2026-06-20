@@ -12,19 +12,27 @@ end
 importx "exit" exit
 importx "printf" printf
 
-entryraw _start(sd argc,ss *arg0,ss arg1,ss arg2)
+entryraw _start(sd argc,ss *arg0,ss arg1,ss arg2,sd arg3)
 
-if argc!=3
+if argc!=4
 	call exit(1)
 end
-
-call printf("from %s to %s\n",arg1,arg2)
+importx "atoi" atoi
+sd q
+set q atoi(arg3)
+call printf("from %s to %s, q %u\n",arg1,arg2,q)
 
 importx "gdk_pixbuf_new_from_file" gdk_pixbuf_new_from_file
 value gerror=0
 sd pix
 set pix gdk_pixbuf_new_from_file(arg1,#gerror)
 if pix!=(NULL)
-	call exit(0)
+	import "fopen" fopen
+	sd f;set f fopen(arg2,"wb")
+	if f!=(NULL)
+		import "write_jpeg" write_jpeg
+		call write_jpeg(f,pix,q)
+		call exit(0)
+	end
 end
 call exit(1)
