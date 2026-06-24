@@ -11,6 +11,8 @@ end
 
 importx "exit" exit
 importx "printf" printf
+importx "puts" puts
+#importx "realpath" realpath
 
 entryraw _start(sd argc,ss *arg0,ss arg1,ss arg2,sd arg3)
 
@@ -21,6 +23,7 @@ end
 importx "atoi" atoi
 sd q
 set q atoi(arg3)
+#ss from;set from realpath(arg1,0);ss to;set to realpath(arg2,0)
 call printf("from %s to %s, q %u\n",arg1,arg2,q)
 
 importx "gdk_pixbuf_new_from_file" gdk_pixbuf_new_from_file
@@ -32,8 +35,11 @@ if pix!=(NULL)
 	sd f;set f fopen(arg2,"wb")
 	if f!=(NULL)
 		import "write_jpeg" write_jpeg
-		call write_jpeg(f,pix,q)
-		call exit(0)
+		sd b;set b write_jpeg(f,pix,q)
+		if b=1
+			call exit(0)
+		end
 	end
 end
+call puts("error")
 call exit(1)

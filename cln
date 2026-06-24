@@ -1,2 +1,5 @@
-make clean && cd _fix && ./fix clean
-cd .. && git status
+set -e
+make clean
+cd jpg; ./c; cd ..
+cd _fix; ./fix clean; cd ..
+git status

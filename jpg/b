@@ -1,5 +1,8 @@
+echo $2
+f=`readlink -f $1`
+t=`readlink -f $2`
 
 cd ../../squashfs-root
 
 #and add the other tricks with gemu-i386 and $@
-./AppRun jpg "$@"
+./AppRun jpg "$f" "$t" $3
