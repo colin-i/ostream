@@ -3,3 +3,8 @@ make clean
 cd jpg; ./c; cd ..
 cd _fix; ./fix clean; cd ..
 git status
+
+#there is a problem with avi-asp: -----------------|-|---------------|-
+#will show:                                         1 2               3
+#workaround:                      -|---------------|-|-|-------------|-
+#same avi at i420 is ok , same asp at mkv is ok
