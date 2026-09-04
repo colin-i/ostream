@@ -179,5 +179,3 @@ test:
 install: all install-proc
 
 .PHONY: all install install-proc clean platform-clean distclean uninstall test
-
-.NOTPARALLEL:

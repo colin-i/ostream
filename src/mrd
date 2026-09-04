@@ -5,7 +5,7 @@ PKG_CONFIG_PATH=/home/bc/a/v/ovideo-1/_fix/pc \
 LD_LIBRARY_PATH=${HOME}/Desktop/binutils-arm64-i686-focal/usr/lib/aarch64-linux-gnu LD=${HOME}/Desktop/binutils-arm64-i686-focal/usr/bin/i686-linux-gnu-ld.bfd \
 Lc=-L/home/bc/a/v/ovideo-1/_fix/l \
 OFLAGSEXTRA+=" function_name 1 nul_res_pref 1" linkerflags= \
-	make prefix=/usr items_prefix=`pwd`/ $@
+	make -j4 prefix=/usr items_prefix=`pwd`/ $@
 if [ "$1" != clean ]; then
 	mv ovideo ../../squashfs-root/`if [ -n "${name}" ]; then echo -n ${name}; else echo usr/bin/ostream; fi`
 fi
